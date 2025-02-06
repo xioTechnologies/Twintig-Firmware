@@ -1,57 +1,35 @@
-/*******************************************************************************
-  Main Source File
+/**
+ * @file main.c
+ * @author Seb Madgwick
+ * @brief Main file.
+ *
+ * Device:
+ * PIC32MZ2048EFH144
+ *
+ * Compiler:
+ * XC32 v4.50, MPLAB Harmony 3
+ */
 
-  Company:
-    Microchip Technology Inc.
+//------------------------------------------------------------------------------
+// Includes
 
-  File Name:
-    main.c
+#include "definitions.h"
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdlib.h>
 
-  Summary:
-    This file contains the "main" function for a project.
+//------------------------------------------------------------------------------
+// Functions
 
-  Description:
-    This file contains the "main" function for a project.  The
-    "main" function calls the "SYS_Initialize" function to initialize the state
-    machines of all modules in the system
- *******************************************************************************/
+int main(void) {
+    SYS_Initialize(NULL);
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: Included Files
-// *****************************************************************************
-// *****************************************************************************
-
-#include <stddef.h>                     // Defines NULL
-#include <stdbool.h>                    // Defines true
-#include <stdlib.h>                     // Defines EXIT_FAILURE
-#include "definitions.h"                // SYS function prototypes
-
-
-// *****************************************************************************
-// *****************************************************************************
-// Section: Main Entry Point
-// *****************************************************************************
-// *****************************************************************************
-
-int main ( void )
-{
-    /* Initialize all modules */
-    SYS_Initialize ( NULL );
-
-    while ( true )
-    {
-        /* Maintain state machines of all polled MPLAB Harmony modules. */
-        SYS_Tasks ( );
+    // Main program loop
+    while (true) {
+        SYS_Tasks();
     }
-
-    /* Execution should not come here during normal operation */
-
-    return ( EXIT_FAILURE );
+    return (EXIT_FAILURE);
 }
 
-
-/*******************************************************************************
- End of File
-*/
-
+//------------------------------------------------------------------------------
+// End of file
