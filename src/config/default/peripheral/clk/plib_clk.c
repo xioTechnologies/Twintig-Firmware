@@ -103,6 +103,21 @@ void CLK_Initialize( void )
 
     CFGCONbits.PMDLOCK = 1;
 
+    /* Peripheral Bus 1 is by default enabled, set its divisor */
+    PB1DIVbits.PBDIV = 2;
+
+    /* Peripheral Bus 2 is by default enabled, set its divisor */
+    PB2DIVbits.PBDIV = 2;
+
+    /* Peripheral Bus 3 is by default enabled, set its divisor */
+    PB3DIVbits.PBDIV = 2;
+
+    /* Peripheral Bus 5 is by default enabled, set its divisor */
+    PB5DIVbits.PBDIV = 2;
+
+    /* Peripheral Bus 8 is by default enabled, set its divisor */
+    PB8DIVbits.PBDIV = 2;
+
 
       
 

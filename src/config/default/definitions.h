@@ -67,7 +67,7 @@ extern "C" {
 #define DEVICE_SERIES        "PIC32MZ"
 
 /* CPU clock frequency */
-#define CPU_CLOCK_FREQUENCY 200000000U
+#define CPU_CLOCK_FREQUENCY 252000000U
 
 // *****************************************************************************
 // *****************************************************************************

@@ -75,7 +75,7 @@
 #pragma config DMTINTV =    WIN_127_128
 #pragma config FSOSCEN =    OFF
 #pragma config IESO =       OFF
-#pragma config POSCMOD =    OFF
+#pragma config POSCMOD =    EC
 #pragma config OSCIOFNC =   OFF
 #pragma config FCKSM =      CSECME
 #pragma config WDTPS =      PS1048576
@@ -88,9 +88,9 @@
 
 /*** DEVCFG2 ***/
 #pragma config FPLLIDIV =   DIV_1
-#pragma config FPLLRNG =    RANGE_5_10_MHZ
-#pragma config FPLLICLK =   PLL_FRC
-#pragma config FPLLMULT =   MUL_50
+#pragma config FPLLRNG =    RANGE_13_26_MHZ
+#pragma config FPLLICLK =   PLL_POSC
+#pragma config FPLLMULT =   MUL_21
 #pragma config FPLLODIV =   DIV_2
 #pragma config UPLLFSEL =   FREQ_24MHZ
 
@@ -177,7 +177,7 @@ void SYS_Initialize ( void* data )
     CLK_Initialize();
     /* Configure Prefetch, Wait States and ECC */
     PRECONbits.PREFEN = 3;
-    PRECONbits.PFMWS = 3;
+    PRECONbits.PFMWS = 2;
     CFGCONbits.ECCCON = 3;
 
 
