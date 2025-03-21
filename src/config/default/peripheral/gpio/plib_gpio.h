@@ -62,6 +62,101 @@
 // *****************************************************************************
 
 
+/*** Macros for SDO_CH5 pin ***/
+#define SDO_CH5_Get()               ((PORTC >> 1) & 0x1U)
+#define SDO_CH5_GetLatch()          ((LATC >> 1) & 0x1U)
+#define SDO_CH5_PIN                  GPIO_PIN_RC1
+
+/*** Macros for SCL_HAPTIC pin ***/
+#define SCL_HAPTIC_Set()               (LATCSET = (1U<<2))
+#define SCL_HAPTIC_Clear()             (LATCCLR = (1U<<2))
+#define SCL_HAPTIC_Toggle()            (LATCINV= (1U<<2))
+#define SCL_HAPTIC_OutputEnable()      (TRISCCLR = (1U<<2))
+#define SCL_HAPTIC_InputEnable()       (TRISCSET = (1U<<2))
+#define SCL_HAPTIC_Get()               ((PORTC >> 2) & 0x1U)
+#define SCL_HAPTIC_GetLatch()          ((LATC >> 2) & 0x1U)
+#define SCL_HAPTIC_PIN                  GPIO_PIN_RC2
+
+/*** Macros for SDA_HAPTIC pin ***/
+#define SDA_HAPTIC_Set()               (LATCSET = (1U<<3))
+#define SDA_HAPTIC_Clear()             (LATCCLR = (1U<<3))
+#define SDA_HAPTIC_Toggle()            (LATCINV= (1U<<3))
+#define SDA_HAPTIC_OutputEnable()      (TRISCCLR = (1U<<3))
+#define SDA_HAPTIC_InputEnable()       (TRISCSET = (1U<<3))
+#define SDA_HAPTIC_Get()               ((PORTC >> 3) & 0x1U)
+#define SDA_HAPTIC_GetLatch()          ((LATC >> 3) & 0x1U)
+#define SDA_HAPTIC_PIN                  GPIO_PIN_RC3
+
+/*** Macros for SDI_CH5 pin ***/
+#define SDI_CH5_Get()               ((PORTC >> 4) & 0x1U)
+#define SDI_CH5_GetLatch()          ((LATC >> 4) & 0x1U)
+#define SDI_CH5_PIN                  GPIO_PIN_RC4
+
+/*** Macros for SCLK_CH5 pin ***/
+#define SCLK_CH5_Get()               ((PORTG >> 6) & 0x1U)
+#define SCLK_CH5_GetLatch()          ((LATG >> 6) & 0x1U)
+#define SCLK_CH5_PIN                  GPIO_PIN_RG6
+
+/*** Macros for SDA_CH5 pin ***/
+#define SDA_CH5_Get()               ((PORTG >> 7) & 0x1U)
+#define SDA_CH5_GetLatch()          ((LATG >> 7) & 0x1U)
+#define SDA_CH5_PIN                  GPIO_PIN_RG7
+
+/*** Macros for SCL_CH5 pin ***/
+#define SCL_CH5_Get()               ((PORTG >> 8) & 0x1U)
+#define SCL_CH5_GetLatch()          ((LATG >> 8) & 0x1U)
+#define SCL_CH5_PIN                  GPIO_PIN_RG8
+
+/*** Macros for CS1_CH5 pin ***/
+#define CS1_CH5_Set()               (LATKSET = (1U<<0))
+#define CS1_CH5_Clear()             (LATKCLR = (1U<<0))
+#define CS1_CH5_Toggle()            (LATKINV= (1U<<0))
+#define CS1_CH5_OutputEnable()      (TRISKCLR = (1U<<0))
+#define CS1_CH5_InputEnable()       (TRISKSET = (1U<<0))
+#define CS1_CH5_Get()               ((PORTK >> 0) & 0x1U)
+#define CS1_CH5_GetLatch()          ((LATK >> 0) & 0x1U)
+#define CS1_CH5_PIN                  GPIO_PIN_RK0
+
+/*** Macros for ENABLE_CH5 pin ***/
+#define ENABLE_CH5_Set()               (LATGSET = (1U<<9))
+#define ENABLE_CH5_Clear()             (LATGCLR = (1U<<9))
+#define ENABLE_CH5_Toggle()            (LATGINV= (1U<<9))
+#define ENABLE_CH5_OutputEnable()      (TRISGCLR = (1U<<9))
+#define ENABLE_CH5_InputEnable()       (TRISGSET = (1U<<9))
+#define ENABLE_CH5_Get()               ((PORTG >> 9) & 0x1U)
+#define ENABLE_CH5_GetLatch()          ((LATG >> 9) & 0x1U)
+#define ENABLE_CH5_PIN                  GPIO_PIN_RG9
+
+/*** Macros for CS2_CH5 pin ***/
+#define CS2_CH5_Set()               (LATASET = (1U<<0))
+#define CS2_CH5_Clear()             (LATACLR = (1U<<0))
+#define CS2_CH5_Toggle()            (LATAINV= (1U<<0))
+#define CS2_CH5_OutputEnable()      (TRISACLR = (1U<<0))
+#define CS2_CH5_InputEnable()       (TRISASET = (1U<<0))
+#define CS2_CH5_Get()               ((PORTA >> 0) & 0x1U)
+#define CS2_CH5_GetLatch()          ((LATA >> 0) & 0x1U)
+#define CS2_CH5_PIN                  GPIO_PIN_RA0
+
+/*** Macros for CS3_CH5 pin ***/
+#define CS3_CH5_Set()               (LATESET = (1U<<8))
+#define CS3_CH5_Clear()             (LATECLR = (1U<<8))
+#define CS3_CH5_Toggle()            (LATEINV= (1U<<8))
+#define CS3_CH5_OutputEnable()      (TRISECLR = (1U<<8))
+#define CS3_CH5_InputEnable()       (TRISESET = (1U<<8))
+#define CS3_CH5_Get()               ((PORTE >> 8) & 0x1U)
+#define CS3_CH5_GetLatch()          ((LATE >> 8) & 0x1U)
+#define CS3_CH5_PIN                  GPIO_PIN_RE8
+
+/*** Macros for CS4_CH5 pin ***/
+#define CS4_CH5_Set()               (LATESET = (1U<<9))
+#define CS4_CH5_Clear()             (LATECLR = (1U<<9))
+#define CS4_CH5_Toggle()            (LATEINV= (1U<<9))
+#define CS4_CH5_OutputEnable()      (TRISECLR = (1U<<9))
+#define CS4_CH5_InputEnable()       (TRISESET = (1U<<9))
+#define CS4_CH5_Get()               ((PORTE >> 9) & 0x1U)
+#define CS4_CH5_GetLatch()          ((LATE >> 9) & 0x1U)
+#define CS4_CH5_PIN                  GPIO_PIN_RE9
+
 
 // *****************************************************************************
 /* GPIO Port

@@ -4,17 +4,17 @@
 
 
 project: Twintig-Firmware
-creation_date: 2025-02-06T15:34:55.674Z[Europe/London]    # ISO 8601 format: https://www.w3.org/TR/NOTE-datetime
-operating_system: Windows 10
+creation_date: 2025-03-21T17:55:24.910Z[Europe/London]    # ISO 8601 format: https://www.w3.org/TR/NOTE-datetime
+operating_system: Windows 11
 mcc_mode: IDE            # [IDE|Standalone|Headless]
-mcc_version: v5.5.0
-mcc_core_version: v5.7.0
-mplabx_version: v6.20        # if MPLAB X plugin only
+mcc_version: v5.5.2
+mcc_core_version: v5.7.1
+mplabx_version: v6.25        # if MPLAB X plugin only
 harmony_version: v1.5.4
-compiler: XC32 4.50
+compiler: XC32 4.60
 
 modules:
-    - {name: "csp", version: "v3.20.0"}
+    - {name: "csp", version: "v3.22.0"}
 
 packs:
     - {name: "PIC32MZ-EF_DFP", version: "1.4.168"}
