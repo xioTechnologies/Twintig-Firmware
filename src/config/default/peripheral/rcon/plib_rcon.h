@@ -1,26 +1,27 @@
 /*******************************************************************************
- System Interrupts File
+  Resets (RCON) PLIB
 
-  Company:
+  Company
     Microchip Technology Inc.
 
-  File Name:
-    interrupt.c
+  File Name
+    plib_rcon.h
 
-  Summary:
-    Interrupt vectors mapping
+  Summary
+    RCON PLIB Header File.
 
-  Description:
-    This file maps all the interrupt vectors to their corresponding
-    implementations. If a particular module interrupt is used, then its ISR
-    definition can be found in corresponding PLIB source file. If a module
-    interrupt is not used, then its ISR implementation is mapped to dummy
-    handler.
- *******************************************************************************/
+  Description
+    This file defines the interface to the RCON peripheral library.
+    This library provides access to and control of the associated Resets.
+
+  Remarks:
+    None.
+
+*******************************************************************************/
 
 // DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2025 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2019 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -40,60 +41,80 @@
 * FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
- *******************************************************************************/
+*******************************************************************************/
 // DOM-IGNORE-END
+
+#ifndef PLIB_RCON_H      // Guards against multiple inclusion
+#define PLIB_RCON_H
 
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-#include "interrupts.h"
-#include "definitions.h"
 
+#include <stdbool.h>
+#include <stddef.h>
+#include "device.h"
 
+// DOM-IGNORE-BEGIN
+#ifdef __cplusplus // Provide C++ Compatibility
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: System Interrupt Vector Functions
-// *****************************************************************************
-// *****************************************************************************
+    extern "C" {
 
-
-/* All the handlers are defined here.  Each will call its PLIB-specific function. */
-// *****************************************************************************
-// *****************************************************************************
-// Section: System Interrupt Vector declarations
-// *****************************************************************************
-// *****************************************************************************
-void TIMER_3_Handler (void);
-void UART3_RX_Handler (void);
-void UART3_TX_Handler (void);
-
+#endif
+// DOM-IGNORE-END
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: System Interrupt Vector definitions
+// Section: Data Types
 // *****************************************************************************
 // *****************************************************************************
-void __attribute__((used)) __ISR(_TIMER_3_VECTOR, ipl7SRS) TIMER_3_Handler (void)
+
+typedef enum
 {
-    Timer3InterruptHandler();
-}
+    RCON_RESET_CAUSE_POR = _RCON_POR_MASK,
 
-void __attribute__((used)) __ISR(_UART3_RX_VECTOR, ipl1SRS) UART3_RX_Handler (void)
-{
-    Uart3RXInterruptHandler();
-}
+    RCON_RESET_CAUSE_BOR = _RCON_BOR_MASK,
 
-void __attribute__((used)) __ISR(_UART3_TX_VECTOR, ipl1SRS) UART3_TX_Handler (void)
-{
-    Uart3TXInterruptHandler();
-}
+    RCON_RESET_CAUSE_IDLE = _RCON_IDLE_MASK,
 
+    RCON_RESET_CAUSE_SLEEP = _RCON_SLEEP_MASK,
 
+    RCON_RESET_CAUSE_WDTO = _RCON_WDTO_MASK,
 
+    RCON_RESET_CAUSE_DMTO = _RCON_DMTO_MASK,
 
-/*******************************************************************************
- End of File
-*/
+    RCON_RESET_CAUSE_SWR = _RCON_SWR_MASK,
+
+    RCON_RESET_CAUSE_EXTR = _RCON_EXTR_MASK,
+
+    RCON_RESET_CAUSE_CMR = _RCON_CMR_MASK,
+
+    RCON_RESET_CAUSE_BCFGFAIL = _RCON_BCFGFAIL_MASK,
+
+    RCON_RESET_CAUSE_BCFGERR = _RCON_BCFGERR_MASK,
+
+} RCON_RESET_CAUSE;
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Interface
+// *****************************************************************************
+// *****************************************************************************
+
+RCON_RESET_CAUSE RCON_ResetCauseGet( void );
+
+void RCON_ResetCauseClear( RCON_RESET_CAUSE cause );
+
+void RCON_SoftwareReset( void );
+
+// DOM-IGNORE-BEGIN
+#ifdef __cplusplus  // Provide C++ Compatibility
+
+    }
+
+#endif
+// DOM-IGNORE-END
+
+#endif /* PLIB_RCON_H */

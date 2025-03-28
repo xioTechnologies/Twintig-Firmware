@@ -38,6 +38,7 @@
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *******************************************************************************/
 #include <stddef.h>
+#include "Uart/Uart3.h"
 
 extern int read(int handle, void *buffer, unsigned int len);
 extern int write(int handle, void * buffer, size_t count);
@@ -50,5 +51,6 @@ int read(int handle, void *buffer, unsigned int len)
 
 int write(int handle, void * buffer, size_t count)
 {
-   return -1;
+    Uart3Write(buffer, count);
+    return count;
 }

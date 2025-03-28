@@ -17,12 +17,27 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include "Timer/Timer.h"
+#include "ResetCause/ResetCause.h"
+#include "Uart/Uart3.h"
 
 //------------------------------------------------------------------------------
 // Functions
 
 int main(void) {
     SYS_Initialize(NULL);
+
+    // Initialise debug UART
+    Uart3Initialise(&uartSettingsDefault);
+
+    // Print start up message
+    const RCON_RESET_CAUSE resetCause = ResetCauseGet();
+    ResetCausePrint(resetCause);
+    printf("Twintig v0.0.0\n");
+
+    // Initialise modules
+    TimerInitialise();
 
     // Main program loop
     while (true) {
