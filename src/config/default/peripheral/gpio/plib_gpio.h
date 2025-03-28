@@ -157,6 +157,606 @@
 #define CS4_CH5_GetLatch()          ((LATE >> 9) & 0x1U)
 #define CS4_CH5_PIN                  GPIO_PIN_RE9
 
+/*** Macros for SDI_CH4 pin ***/
+#define SDI_CH4_Get()               ((PORTB >> 5) & 0x1U)
+#define SDI_CH4_GetLatch()          ((LATB >> 5) & 0x1U)
+#define SDI_CH4_PIN                  GPIO_PIN_RB5
+
+/*** Macros for INT1_CH5 pin ***/
+#define INT1_CH5_Set()               (LATBSET = (1U<<4))
+#define INT1_CH5_Clear()             (LATBCLR = (1U<<4))
+#define INT1_CH5_Toggle()            (LATBINV= (1U<<4))
+#define INT1_CH5_OutputEnable()      (TRISBCLR = (1U<<4))
+#define INT1_CH5_InputEnable()       (TRISBSET = (1U<<4))
+#define INT1_CH5_Get()               ((PORTB >> 4) & 0x1U)
+#define INT1_CH5_GetLatch()          ((LATB >> 4) & 0x1U)
+#define INT1_CH5_PIN                  GPIO_PIN_RB4
+
+/*** Macros for INT2_CH5 pin ***/
+#define INT2_CH5_Set()               (LATJSET = (1U<<11))
+#define INT2_CH5_Clear()             (LATJCLR = (1U<<11))
+#define INT2_CH5_Toggle()            (LATJINV= (1U<<11))
+#define INT2_CH5_OutputEnable()      (TRISJCLR = (1U<<11))
+#define INT2_CH5_InputEnable()       (TRISJSET = (1U<<11))
+#define INT2_CH5_Get()               ((PORTJ >> 11) & 0x1U)
+#define INT2_CH5_GetLatch()          ((LATJ >> 11) & 0x1U)
+#define INT2_CH5_PIN                  GPIO_PIN_RJ11
+
+/*** Macros for INT3_CH5 pin ***/
+#define INT3_CH5_Set()               (LATJSET = (1U<<13))
+#define INT3_CH5_Clear()             (LATJCLR = (1U<<13))
+#define INT3_CH5_Toggle()            (LATJINV= (1U<<13))
+#define INT3_CH5_OutputEnable()      (TRISJCLR = (1U<<13))
+#define INT3_CH5_InputEnable()       (TRISJSET = (1U<<13))
+#define INT3_CH5_Get()               ((PORTJ >> 13) & 0x1U)
+#define INT3_CH5_GetLatch()          ((LATJ >> 13) & 0x1U)
+#define INT3_CH5_PIN                  GPIO_PIN_RJ13
+
+/*** Macros for INT4_CH5 pin ***/
+#define INT4_CH5_Set()               (LATJSET = (1U<<14))
+#define INT4_CH5_Clear()             (LATJCLR = (1U<<14))
+#define INT4_CH5_Toggle()            (LATJINV= (1U<<14))
+#define INT4_CH5_OutputEnable()      (TRISJCLR = (1U<<14))
+#define INT4_CH5_InputEnable()       (TRISJSET = (1U<<14))
+#define INT4_CH5_Get()               ((PORTJ >> 14) & 0x1U)
+#define INT4_CH5_GetLatch()          ((LATJ >> 14) & 0x1U)
+#define INT4_CH5_PIN                  GPIO_PIN_RJ14
+
+/*** Macros for CS2_CH4 pin ***/
+#define CS2_CH4_Set()               (LATJSET = (1U<<15))
+#define CS2_CH4_Clear()             (LATJCLR = (1U<<15))
+#define CS2_CH4_Toggle()            (LATJINV= (1U<<15))
+#define CS2_CH4_OutputEnable()      (TRISJCLR = (1U<<15))
+#define CS2_CH4_InputEnable()       (TRISJSET = (1U<<15))
+#define CS2_CH4_Get()               ((PORTJ >> 15) & 0x1U)
+#define CS2_CH4_GetLatch()          ((LATJ >> 15) & 0x1U)
+#define CS2_CH4_PIN                  GPIO_PIN_RJ15
+
+/*** Macros for SDO_CH4 pin ***/
+#define SDO_CH4_Get()               ((PORTB >> 3) & 0x1U)
+#define SDO_CH4_GetLatch()          ((LATB >> 3) & 0x1U)
+#define SDO_CH4_PIN                  GPIO_PIN_RB3
+
+/*** Macros for CS1_CH4 pin ***/
+#define CS1_CH4_Set()               (LATBSET = (1U<<2))
+#define CS1_CH4_Clear()             (LATBCLR = (1U<<2))
+#define CS1_CH4_Toggle()            (LATBINV= (1U<<2))
+#define CS1_CH4_OutputEnable()      (TRISBCLR = (1U<<2))
+#define CS1_CH4_InputEnable()       (TRISBSET = (1U<<2))
+#define CS1_CH4_Get()               ((PORTB >> 2) & 0x1U)
+#define CS1_CH4_GetLatch()          ((LATB >> 2) & 0x1U)
+#define CS1_CH4_PIN                  GPIO_PIN_RB2
+
+/*** Macros for SDI_CH2 pin ***/
+#define SDI_CH2_Get()               ((PORTB >> 6) & 0x1U)
+#define SDI_CH2_GetLatch()          ((LATB >> 6) & 0x1U)
+#define SDI_CH2_PIN                  GPIO_PIN_RB6
+
+/*** Macros for ENABLE_CH4 pin ***/
+#define ENABLE_CH4_Set()               (LATBSET = (1U<<7))
+#define ENABLE_CH4_Clear()             (LATBCLR = (1U<<7))
+#define ENABLE_CH4_Toggle()            (LATBINV= (1U<<7))
+#define ENABLE_CH4_OutputEnable()      (TRISBCLR = (1U<<7))
+#define ENABLE_CH4_InputEnable()       (TRISBSET = (1U<<7))
+#define ENABLE_CH4_Get()               ((PORTB >> 7) & 0x1U)
+#define ENABLE_CH4_GetLatch()          ((LATB >> 7) & 0x1U)
+#define ENABLE_CH4_PIN                  GPIO_PIN_RB7
+
+/*** Macros for INT1_CH4 pin ***/
+#define INT1_CH4_Set()               (LATASET = (1U<<9))
+#define INT1_CH4_Clear()             (LATACLR = (1U<<9))
+#define INT1_CH4_Toggle()            (LATAINV= (1U<<9))
+#define INT1_CH4_OutputEnable()      (TRISACLR = (1U<<9))
+#define INT1_CH4_InputEnable()       (TRISASET = (1U<<9))
+#define INT1_CH4_Get()               ((PORTA >> 9) & 0x1U)
+#define INT1_CH4_GetLatch()          ((LATA >> 9) & 0x1U)
+#define INT1_CH4_PIN                  GPIO_PIN_RA9
+
+/*** Macros for ENABLE_CH3 pin ***/
+#define ENABLE_CH3_Set()               (LATASET = (1U<<10))
+#define ENABLE_CH3_Clear()             (LATACLR = (1U<<10))
+#define ENABLE_CH3_Toggle()            (LATAINV= (1U<<10))
+#define ENABLE_CH3_OutputEnable()      (TRISACLR = (1U<<10))
+#define ENABLE_CH3_InputEnable()       (TRISASET = (1U<<10))
+#define ENABLE_CH3_Get()               ((PORTA >> 10) & 0x1U)
+#define ENABLE_CH3_GetLatch()          ((LATA >> 10) & 0x1U)
+#define ENABLE_CH3_PIN                  GPIO_PIN_RA10
+
+/*** Macros for INT2_CH4 pin ***/
+#define INT2_CH4_Set()               (LATHSET = (1U<<0))
+#define INT2_CH4_Clear()             (LATHCLR = (1U<<0))
+#define INT2_CH4_Toggle()            (LATHINV= (1U<<0))
+#define INT2_CH4_OutputEnable()      (TRISHCLR = (1U<<0))
+#define INT2_CH4_InputEnable()       (TRISHSET = (1U<<0))
+#define INT2_CH4_Get()               ((PORTH >> 0) & 0x1U)
+#define INT2_CH4_GetLatch()          ((LATH >> 0) & 0x1U)
+#define INT2_CH4_PIN                  GPIO_PIN_RH0
+
+/*** Macros for INT3_CH4 pin ***/
+#define INT3_CH4_Set()               (LATHSET = (1U<<1))
+#define INT3_CH4_Clear()             (LATHCLR = (1U<<1))
+#define INT3_CH4_Toggle()            (LATHINV= (1U<<1))
+#define INT3_CH4_OutputEnable()      (TRISHCLR = (1U<<1))
+#define INT3_CH4_InputEnable()       (TRISHSET = (1U<<1))
+#define INT3_CH4_Get()               ((PORTH >> 1) & 0x1U)
+#define INT3_CH4_GetLatch()          ((LATH >> 1) & 0x1U)
+#define INT3_CH4_PIN                  GPIO_PIN_RH1
+
+/*** Macros for INT4_CH4 pin ***/
+#define INT4_CH4_Set()               (LATHSET = (1U<<2))
+#define INT4_CH4_Clear()             (LATHCLR = (1U<<2))
+#define INT4_CH4_Toggle()            (LATHINV= (1U<<2))
+#define INT4_CH4_OutputEnable()      (TRISHCLR = (1U<<2))
+#define INT4_CH4_InputEnable()       (TRISHSET = (1U<<2))
+#define INT4_CH4_Get()               ((PORTH >> 2) & 0x1U)
+#define INT4_CH4_GetLatch()          ((LATH >> 2) & 0x1U)
+#define INT4_CH4_PIN                  GPIO_PIN_RH2
+
+/*** Macros for CS4_CH4 pin ***/
+#define CS4_CH4_Set()               (LATHSET = (1U<<3))
+#define CS4_CH4_Clear()             (LATHCLR = (1U<<3))
+#define CS4_CH4_Toggle()            (LATHINV= (1U<<3))
+#define CS4_CH4_OutputEnable()      (TRISHCLR = (1U<<3))
+#define CS4_CH4_InputEnable()       (TRISHSET = (1U<<3))
+#define CS4_CH4_Get()               ((PORTH >> 3) & 0x1U)
+#define CS4_CH4_GetLatch()          ((LATH >> 3) & 0x1U)
+#define CS4_CH4_PIN                  GPIO_PIN_RH3
+
+/*** Macros for CS3_CH4 pin ***/
+#define CS3_CH4_Set()               (LATBSET = (1U<<8))
+#define CS3_CH4_Clear()             (LATBCLR = (1U<<8))
+#define CS3_CH4_Toggle()            (LATBINV= (1U<<8))
+#define CS3_CH4_OutputEnable()      (TRISBCLR = (1U<<8))
+#define CS3_CH4_InputEnable()       (TRISBSET = (1U<<8))
+#define CS3_CH4_Get()               ((PORTB >> 8) & 0x1U)
+#define CS3_CH4_GetLatch()          ((LATB >> 8) & 0x1U)
+#define CS3_CH4_PIN                  GPIO_PIN_RB8
+
+/*** Macros for SDO_CH3 pin ***/
+#define SDO_CH3_Get()               ((PORTB >> 9) & 0x1U)
+#define SDO_CH3_GetLatch()          ((LATB >> 9) & 0x1U)
+#define SDO_CH3_PIN                  GPIO_PIN_RB9
+
+/*** Macros for SDI_CH3 pin ***/
+#define SDI_CH3_Get()               ((PORTB >> 10) & 0x1U)
+#define SDI_CH3_GetLatch()          ((LATB >> 10) & 0x1U)
+#define SDI_CH3_PIN                  GPIO_PIN_RB10
+
+/*** Macros for CS1_CH3 pin ***/
+#define CS1_CH3_Set()               (LATBSET = (1U<<11))
+#define CS1_CH3_Clear()             (LATBCLR = (1U<<11))
+#define CS1_CH3_Toggle()            (LATBINV= (1U<<11))
+#define CS1_CH3_OutputEnable()      (TRISBCLR = (1U<<11))
+#define CS1_CH3_InputEnable()       (TRISBSET = (1U<<11))
+#define CS1_CH3_Get()               ((PORTB >> 11) & 0x1U)
+#define CS1_CH3_GetLatch()          ((LATB >> 11) & 0x1U)
+#define CS1_CH3_PIN                  GPIO_PIN_RB11
+
+/*** Macros for CS2_CH3 pin ***/
+#define CS2_CH3_Set()               (LATKSET = (1U<<1))
+#define CS2_CH3_Clear()             (LATKCLR = (1U<<1))
+#define CS2_CH3_Toggle()            (LATKINV= (1U<<1))
+#define CS2_CH3_OutputEnable()      (TRISKCLR = (1U<<1))
+#define CS2_CH3_InputEnable()       (TRISKSET = (1U<<1))
+#define CS2_CH3_Get()               ((PORTK >> 1) & 0x1U)
+#define CS2_CH3_GetLatch()          ((LATK >> 1) & 0x1U)
+#define CS2_CH3_PIN                  GPIO_PIN_RK1
+
+/*** Macros for CS3_CH3 pin ***/
+#define CS3_CH3_Set()               (LATKSET = (1U<<2))
+#define CS3_CH3_Clear()             (LATKCLR = (1U<<2))
+#define CS3_CH3_Toggle()            (LATKINV= (1U<<2))
+#define CS3_CH3_OutputEnable()      (TRISKCLR = (1U<<2))
+#define CS3_CH3_InputEnable()       (TRISKSET = (1U<<2))
+#define CS3_CH3_Get()               ((PORTK >> 2) & 0x1U)
+#define CS3_CH3_GetLatch()          ((LATK >> 2) & 0x1U)
+#define CS3_CH3_PIN                  GPIO_PIN_RK2
+
+/*** Macros for CS4_CH3 pin ***/
+#define CS4_CH3_Set()               (LATKSET = (1U<<3))
+#define CS4_CH3_Clear()             (LATKCLR = (1U<<3))
+#define CS4_CH3_Toggle()            (LATKINV= (1U<<3))
+#define CS4_CH3_OutputEnable()      (TRISKCLR = (1U<<3))
+#define CS4_CH3_InputEnable()       (TRISKSET = (1U<<3))
+#define CS4_CH3_Get()               ((PORTK >> 3) & 0x1U)
+#define CS4_CH3_GetLatch()          ((LATK >> 3) & 0x1U)
+#define CS4_CH3_PIN                  GPIO_PIN_RK3
+
+/*** Macros for INT1_CH3 pin ***/
+#define INT1_CH3_Set()               (LATASET = (1U<<1))
+#define INT1_CH3_Clear()             (LATACLR = (1U<<1))
+#define INT1_CH3_Toggle()            (LATAINV= (1U<<1))
+#define INT1_CH3_OutputEnable()      (TRISACLR = (1U<<1))
+#define INT1_CH3_InputEnable()       (TRISASET = (1U<<1))
+#define INT1_CH3_Get()               ((PORTA >> 1) & 0x1U)
+#define INT1_CH3_GetLatch()          ((LATA >> 1) & 0x1U)
+#define INT1_CH3_PIN                  GPIO_PIN_RA1
+
+/*** Macros for SCK_CH4 pin ***/
+#define SCK_CH4_Get()               ((PORTF >> 13) & 0x1U)
+#define SCK_CH4_GetLatch()          ((LATF >> 13) & 0x1U)
+#define SCK_CH4_PIN                  GPIO_PIN_RF13
+
+/*** Macros for INT2_CH3 pin ***/
+#define INT2_CH3_Set()               (LATFSET = (1U<<12))
+#define INT2_CH3_Clear()             (LATFCLR = (1U<<12))
+#define INT2_CH3_Toggle()            (LATFINV= (1U<<12))
+#define INT2_CH3_OutputEnable()      (TRISFCLR = (1U<<12))
+#define INT2_CH3_InputEnable()       (TRISFSET = (1U<<12))
+#define INT2_CH3_Get()               ((PORTF >> 12) & 0x1U)
+#define INT2_CH3_GetLatch()          ((LATF >> 12) & 0x1U)
+#define INT2_CH3_PIN                  GPIO_PIN_RF12
+
+/*** Macros for INT3_CH3 pin ***/
+#define INT3_CH3_Set()               (LATBSET = (1U<<12))
+#define INT3_CH3_Clear()             (LATBCLR = (1U<<12))
+#define INT3_CH3_Toggle()            (LATBINV= (1U<<12))
+#define INT3_CH3_OutputEnable()      (TRISBCLR = (1U<<12))
+#define INT3_CH3_InputEnable()       (TRISBSET = (1U<<12))
+#define INT3_CH3_Get()               ((PORTB >> 12) & 0x1U)
+#define INT3_CH3_GetLatch()          ((LATB >> 12) & 0x1U)
+#define INT3_CH3_PIN                  GPIO_PIN_RB12
+
+/*** Macros for INT4_CH3 pin ***/
+#define INT4_CH3_Set()               (LATBSET = (1U<<13))
+#define INT4_CH3_Clear()             (LATBCLR = (1U<<13))
+#define INT4_CH3_Toggle()            (LATBINV= (1U<<13))
+#define INT4_CH3_OutputEnable()      (TRISBCLR = (1U<<13))
+#define INT4_CH3_InputEnable()       (TRISBSET = (1U<<13))
+#define INT4_CH3_Get()               ((PORTB >> 13) & 0x1U)
+#define INT4_CH3_GetLatch()          ((LATB >> 13) & 0x1U)
+#define INT4_CH3_PIN                  GPIO_PIN_RB13
+
+/*** Macros for SCK_CH3 pin ***/
+#define SCK_CH3_Get()               ((PORTB >> 14) & 0x1U)
+#define SCK_CH3_GetLatch()          ((LATB >> 14) & 0x1U)
+#define SCK_CH3_PIN                  GPIO_PIN_RB14
+
+/*** Macros for SDO_CH2 pin ***/
+#define SDO_CH2_Get()               ((PORTB >> 15) & 0x1U)
+#define SDO_CH2_GetLatch()          ((LATB >> 15) & 0x1U)
+#define SDO_CH2_PIN                  GPIO_PIN_RB15
+
+/*** Macros for CS4_CH2 pin ***/
+#define CS4_CH2_Set()               (LATHSET = (1U<<4))
+#define CS4_CH2_Clear()             (LATHCLR = (1U<<4))
+#define CS4_CH2_Toggle()            (LATHINV= (1U<<4))
+#define CS4_CH2_OutputEnable()      (TRISHCLR = (1U<<4))
+#define CS4_CH2_InputEnable()       (TRISHSET = (1U<<4))
+#define CS4_CH2_Get()               ((PORTH >> 4) & 0x1U)
+#define CS4_CH2_GetLatch()          ((LATH >> 4) & 0x1U)
+#define CS4_CH2_PIN                  GPIO_PIN_RH4
+
+/*** Macros for ENABLE_CH2 pin ***/
+#define ENABLE_CH2_Set()               (LATHSET = (1U<<5))
+#define ENABLE_CH2_Clear()             (LATHCLR = (1U<<5))
+#define ENABLE_CH2_Toggle()            (LATHINV= (1U<<5))
+#define ENABLE_CH2_OutputEnable()      (TRISHCLR = (1U<<5))
+#define ENABLE_CH2_InputEnable()       (TRISHSET = (1U<<5))
+#define ENABLE_CH2_Get()               ((PORTH >> 5) & 0x1U)
+#define ENABLE_CH2_GetLatch()          ((LATH >> 5) & 0x1U)
+#define ENABLE_CH2_PIN                  GPIO_PIN_RH5
+
+/*** Macros for CS3_CH2 pin ***/
+#define CS3_CH2_Set()               (LATHSET = (1U<<6))
+#define CS3_CH2_Clear()             (LATHCLR = (1U<<6))
+#define CS3_CH2_Toggle()            (LATHINV= (1U<<6))
+#define CS3_CH2_OutputEnable()      (TRISHCLR = (1U<<6))
+#define CS3_CH2_InputEnable()       (TRISHSET = (1U<<6))
+#define CS3_CH2_Get()               ((PORTH >> 6) & 0x1U)
+#define CS3_CH2_GetLatch()          ((LATH >> 6) & 0x1U)
+#define CS3_CH2_PIN                  GPIO_PIN_RH6
+
+/*** Macros for CS2_CH2 pin ***/
+#define CS2_CH2_Set()               (LATHSET = (1U<<7))
+#define CS2_CH2_Clear()             (LATHCLR = (1U<<7))
+#define CS2_CH2_Toggle()            (LATHINV= (1U<<7))
+#define CS2_CH2_OutputEnable()      (TRISHCLR = (1U<<7))
+#define CS2_CH2_InputEnable()       (TRISHSET = (1U<<7))
+#define CS2_CH2_Get()               ((PORTH >> 7) & 0x1U)
+#define CS2_CH2_GetLatch()          ((LATH >> 7) & 0x1U)
+#define CS2_CH2_PIN                  GPIO_PIN_RH7
+
+/*** Macros for CS1_CH2 pin ***/
+#define CS1_CH2_Set()               (LATDSET = (1U<<14))
+#define CS1_CH2_Clear()             (LATDCLR = (1U<<14))
+#define CS1_CH2_Toggle()            (LATDINV= (1U<<14))
+#define CS1_CH2_OutputEnable()      (TRISDCLR = (1U<<14))
+#define CS1_CH2_InputEnable()       (TRISDSET = (1U<<14))
+#define CS1_CH2_Get()               ((PORTD >> 14) & 0x1U)
+#define CS1_CH2_GetLatch()          ((LATD >> 14) & 0x1U)
+#define CS1_CH2_PIN                  GPIO_PIN_RD14
+
+/*** Macros for SCK_CH2 pin ***/
+#define SCK_CH2_Get()               ((PORTD >> 15) & 0x1U)
+#define SCK_CH2_GetLatch()          ((LATD >> 15) & 0x1U)
+#define SCK_CH2_PIN                  GPIO_PIN_RD15
+
+/*** Macros for ENABLE_CH1 pin ***/
+#define ENABLE_CH1_Set()               (LATCSET = (1U<<15))
+#define ENABLE_CH1_Clear()             (LATCCLR = (1U<<15))
+#define ENABLE_CH1_Toggle()            (LATCINV= (1U<<15))
+#define ENABLE_CH1_OutputEnable()      (TRISCCLR = (1U<<15))
+#define ENABLE_CH1_InputEnable()       (TRISCSET = (1U<<15))
+#define ENABLE_CH1_Get()               ((PORTC >> 15) & 0x1U)
+#define ENABLE_CH1_GetLatch()          ((LATC >> 15) & 0x1U)
+#define ENABLE_CH1_PIN                  GPIO_PIN_RC15
+
+/*** Macros for SDA_CH1 pin ***/
+#define SDA_CH1_Get()               ((PORTF >> 2) & 0x1U)
+#define SDA_CH1_GetLatch()          ((LATF >> 2) & 0x1U)
+#define SDA_CH1_PIN                  GPIO_PIN_RF2
+
+/*** Macros for SCL_CH1 pin ***/
+#define SCL_CH1_Get()               ((PORTF >> 8) & 0x1U)
+#define SCL_CH1_GetLatch()          ((LATF >> 8) & 0x1U)
+#define SCL_CH1_PIN                  GPIO_PIN_RF8
+
+/*** Macros for INT4_CH2 pin ***/
+#define INT4_CH2_Set()               (LATHSET = (1U<<8))
+#define INT4_CH2_Clear()             (LATHCLR = (1U<<8))
+#define INT4_CH2_Toggle()            (LATHINV= (1U<<8))
+#define INT4_CH2_OutputEnable()      (TRISHCLR = (1U<<8))
+#define INT4_CH2_InputEnable()       (TRISHSET = (1U<<8))
+#define INT4_CH2_Get()               ((PORTH >> 8) & 0x1U)
+#define INT4_CH2_GetLatch()          ((LATH >> 8) & 0x1U)
+#define INT4_CH2_PIN                  GPIO_PIN_RH8
+
+/*** Macros for INT3_CH2 pin ***/
+#define INT3_CH2_Set()               (LATHSET = (1U<<9))
+#define INT3_CH2_Clear()             (LATHCLR = (1U<<9))
+#define INT3_CH2_Toggle()            (LATHINV= (1U<<9))
+#define INT3_CH2_OutputEnable()      (TRISHCLR = (1U<<9))
+#define INT3_CH2_InputEnable()       (TRISHSET = (1U<<9))
+#define INT3_CH2_Get()               ((PORTH >> 9) & 0x1U)
+#define INT3_CH2_GetLatch()          ((LATH >> 9) & 0x1U)
+#define INT3_CH2_PIN                  GPIO_PIN_RH9
+
+/*** Macros for INT2_CH2 pin ***/
+#define INT2_CH2_Set()               (LATHSET = (1U<<10))
+#define INT2_CH2_Clear()             (LATHCLR = (1U<<10))
+#define INT2_CH2_Toggle()            (LATHINV= (1U<<10))
+#define INT2_CH2_OutputEnable()      (TRISHCLR = (1U<<10))
+#define INT2_CH2_InputEnable()       (TRISHSET = (1U<<10))
+#define INT2_CH2_Get()               ((PORTH >> 10) & 0x1U)
+#define INT2_CH2_GetLatch()          ((LATH >> 10) & 0x1U)
+#define INT2_CH2_PIN                  GPIO_PIN_RH10
+
+/*** Macros for INT1_CH2 pin ***/
+#define INT1_CH2_Set()               (LATHSET = (1U<<11))
+#define INT1_CH2_Clear()             (LATHCLR = (1U<<11))
+#define INT1_CH2_Toggle()            (LATHINV= (1U<<11))
+#define INT1_CH2_OutputEnable()      (TRISHCLR = (1U<<11))
+#define INT1_CH2_InputEnable()       (TRISHSET = (1U<<11))
+#define INT1_CH2_Get()               ((PORTH >> 11) & 0x1U)
+#define INT1_CH2_GetLatch()          ((LATH >> 11) & 0x1U)
+#define INT1_CH2_PIN                  GPIO_PIN_RH11
+
+/*** Macros for SCL_CH2 pin ***/
+#define SCL_CH2_Get()               ((PORTA >> 2) & 0x1U)
+#define SCL_CH2_GetLatch()          ((LATA >> 2) & 0x1U)
+#define SCL_CH2_PIN                  GPIO_PIN_RA2
+
+/*** Macros for SDA_CH2 pin ***/
+#define SDA_CH2_Get()               ((PORTA >> 3) & 0x1U)
+#define SDA_CH2_GetLatch()          ((LATA >> 3) & 0x1U)
+#define SDA_CH2_PIN                  GPIO_PIN_RA3
+
+/*** Macros for CS1_CH1 pin ***/
+#define CS1_CH1_Set()               (LATASET = (1U<<4))
+#define CS1_CH1_Clear()             (LATACLR = (1U<<4))
+#define CS1_CH1_Toggle()            (LATAINV= (1U<<4))
+#define CS1_CH1_OutputEnable()      (TRISACLR = (1U<<4))
+#define CS1_CH1_InputEnable()       (TRISASET = (1U<<4))
+#define CS1_CH1_Get()               ((PORTA >> 4) & 0x1U)
+#define CS1_CH1_GetLatch()          ((LATA >> 4) & 0x1U)
+#define CS1_CH1_PIN                  GPIO_PIN_RA4
+
+/*** Macros for SDA_CH3 pin ***/
+#define SDA_CH3_Get()               ((PORTF >> 4) & 0x1U)
+#define SDA_CH3_GetLatch()          ((LATF >> 4) & 0x1U)
+#define SDA_CH3_PIN                  GPIO_PIN_RF4
+
+/*** Macros for SCL_CH3 pin ***/
+#define SCL_CH3_Get()               ((PORTF >> 5) & 0x1U)
+#define SCL_CH3_GetLatch()          ((LATF >> 5) & 0x1U)
+#define SCL_CH3_PIN                  GPIO_PIN_RF5
+
+/*** Macros for CS2_CH1 pin ***/
+#define CS2_CH1_Set()               (LATKSET = (1U<<4))
+#define CS2_CH1_Clear()             (LATKCLR = (1U<<4))
+#define CS2_CH1_Toggle()            (LATKINV= (1U<<4))
+#define CS2_CH1_OutputEnable()      (TRISKCLR = (1U<<4))
+#define CS2_CH1_InputEnable()       (TRISKSET = (1U<<4))
+#define CS2_CH1_Get()               ((PORTK >> 4) & 0x1U)
+#define CS2_CH1_GetLatch()          ((LATK >> 4) & 0x1U)
+#define CS2_CH1_PIN                  GPIO_PIN_RK4
+
+/*** Macros for CS3_CH1 pin ***/
+#define CS3_CH1_Set()               (LATKSET = (1U<<5))
+#define CS3_CH1_Clear()             (LATKCLR = (1U<<5))
+#define CS3_CH1_Toggle()            (LATKINV= (1U<<5))
+#define CS3_CH1_OutputEnable()      (TRISKCLR = (1U<<5))
+#define CS3_CH1_InputEnable()       (TRISKSET = (1U<<5))
+#define CS3_CH1_Get()               ((PORTK >> 5) & 0x1U)
+#define CS3_CH1_GetLatch()          ((LATK >> 5) & 0x1U)
+#define CS3_CH1_PIN                  GPIO_PIN_RK5
+
+/*** Macros for CS4_CH1 pin ***/
+#define CS4_CH1_Set()               (LATKSET = (1U<<6))
+#define CS4_CH1_Clear()             (LATKCLR = (1U<<6))
+#define CS4_CH1_Toggle()            (LATKINV= (1U<<6))
+#define CS4_CH1_OutputEnable()      (TRISKCLR = (1U<<6))
+#define CS4_CH1_InputEnable()       (TRISKSET = (1U<<6))
+#define CS4_CH1_Get()               ((PORTK >> 6) & 0x1U)
+#define CS4_CH1_GetLatch()          ((LATK >> 6) & 0x1U)
+#define CS4_CH1_PIN                  GPIO_PIN_RK6
+
+/*** Macros for SCL_CH4 pin ***/
+#define SCL_CH4_Get()               ((PORTA >> 14) & 0x1U)
+#define SCL_CH4_GetLatch()          ((LATA >> 14) & 0x1U)
+#define SCL_CH4_PIN                  GPIO_PIN_RA14
+
+/*** Macros for SDA_CH4 pin ***/
+#define SDA_CH4_Get()               ((PORTA >> 15) & 0x1U)
+#define SDA_CH4_GetLatch()          ((LATA >> 15) & 0x1U)
+#define SDA_CH4_PIN                  GPIO_PIN_RA15
+
+/*** Macros for INT1_CH1 pin ***/
+#define INT1_CH1_Set()               (LATDSET = (1U<<9))
+#define INT1_CH1_Clear()             (LATDCLR = (1U<<9))
+#define INT1_CH1_Toggle()            (LATDINV= (1U<<9))
+#define INT1_CH1_OutputEnable()      (TRISDCLR = (1U<<9))
+#define INT1_CH1_InputEnable()       (TRISDSET = (1U<<9))
+#define INT1_CH1_Get()               ((PORTD >> 9) & 0x1U)
+#define INT1_CH1_GetLatch()          ((LATD >> 9) & 0x1U)
+#define INT1_CH1_PIN                  GPIO_PIN_RD9
+
+/*** Macros for SCK_CH1 pin ***/
+#define SCK_CH1_Get()               ((PORTD >> 10) & 0x1U)
+#define SCK_CH1_GetLatch()          ((LATD >> 10) & 0x1U)
+#define SCK_CH1_PIN                  GPIO_PIN_RD10
+
+/*** Macros for SDI_CH1 pin ***/
+#define SDI_CH1_Get()               ((PORTD >> 11) & 0x1U)
+#define SDI_CH1_GetLatch()          ((LATD >> 11) & 0x1U)
+#define SDI_CH1_PIN                  GPIO_PIN_RD11
+
+/*** Macros for INT2_CH1 pin ***/
+#define INT2_CH1_Set()               (LATHSET = (1U<<12))
+#define INT2_CH1_Clear()             (LATHCLR = (1U<<12))
+#define INT2_CH1_Toggle()            (LATHINV= (1U<<12))
+#define INT2_CH1_OutputEnable()      (TRISHCLR = (1U<<12))
+#define INT2_CH1_InputEnable()       (TRISHSET = (1U<<12))
+#define INT2_CH1_Get()               ((PORTH >> 12) & 0x1U)
+#define INT2_CH1_GetLatch()          ((LATH >> 12) & 0x1U)
+#define INT2_CH1_PIN                  GPIO_PIN_RH12
+
+/*** Macros for INT4_CH1 pin ***/
+#define INT4_CH1_Set()               (LATHSET = (1U<<13))
+#define INT4_CH1_Clear()             (LATHCLR = (1U<<13))
+#define INT4_CH1_Toggle()            (LATHINV= (1U<<13))
+#define INT4_CH1_OutputEnable()      (TRISHCLR = (1U<<13))
+#define INT4_CH1_InputEnable()       (TRISHSET = (1U<<13))
+#define INT4_CH1_Get()               ((PORTH >> 13) & 0x1U)
+#define INT4_CH1_GetLatch()          ((LATH >> 13) & 0x1U)
+#define INT4_CH1_PIN                  GPIO_PIN_RH13
+
+/*** Macros for INT3_CH1 pin ***/
+#define INT3_CH1_Set()               (LATHSET = (1U<<14))
+#define INT3_CH1_Clear()             (LATHCLR = (1U<<14))
+#define INT3_CH1_Toggle()            (LATHINV= (1U<<14))
+#define INT3_CH1_OutputEnable()      (TRISHCLR = (1U<<14))
+#define INT3_CH1_InputEnable()       (TRISHSET = (1U<<14))
+#define INT3_CH1_Get()               ((PORTH >> 14) & 0x1U)
+#define INT3_CH1_GetLatch()          ((LATH >> 14) & 0x1U)
+#define INT3_CH1_PIN                  GPIO_PIN_RH14
+
+/*** Macros for SDO_CH1 pin ***/
+#define SDO_CH1_Get()               ((PORTD >> 0) & 0x1U)
+#define SDO_CH1_GetLatch()          ((LATD >> 0) & 0x1U)
+#define SDO_CH1_PIN                  GPIO_PIN_RD0
+
+/*** Macros for SCL_EEPROM pin ***/
+#define SCL_EEPROM_Set()               (LATCSET = (1U<<13))
+#define SCL_EEPROM_Clear()             (LATCCLR = (1U<<13))
+#define SCL_EEPROM_Toggle()            (LATCINV= (1U<<13))
+#define SCL_EEPROM_OutputEnable()      (TRISCCLR = (1U<<13))
+#define SCL_EEPROM_InputEnable()       (TRISCSET = (1U<<13))
+#define SCL_EEPROM_Get()               ((PORTC >> 13) & 0x1U)
+#define SCL_EEPROM_GetLatch()          ((LATC >> 13) & 0x1U)
+#define SCL_EEPROM_PIN                  GPIO_PIN_RC13
+
+/*** Macros for SDA_EEPROM pin ***/
+#define SDA_EEPROM_Set()               (LATCSET = (1U<<14))
+#define SDA_EEPROM_Clear()             (LATCCLR = (1U<<14))
+#define SDA_EEPROM_Toggle()            (LATCINV= (1U<<14))
+#define SDA_EEPROM_OutputEnable()      (TRISCCLR = (1U<<14))
+#define SDA_EEPROM_InputEnable()       (TRISCSET = (1U<<14))
+#define SDA_EEPROM_Get()               ((PORTC >> 14) & 0x1U)
+#define SDA_EEPROM_GetLatch()          ((LATC >> 14) & 0x1U)
+#define SDA_EEPROM_PIN                  GPIO_PIN_RC14
+
+/*** Macros for RGB_SCK pin ***/
+#define RGB_SCK_Get()               ((PORTD >> 1) & 0x1U)
+#define RGB_SCK_GetLatch()          ((LATD >> 1) & 0x1U)
+#define RGB_SCK_PIN                  GPIO_PIN_RD1
+
+/*** Macros for RGB_SDI pin ***/
+#define RGB_SDI_Get()               ((PORTD >> 2) & 0x1U)
+#define RGB_SDI_GetLatch()          ((LATD >> 2) & 0x1U)
+#define RGB_SDI_PIN                  GPIO_PIN_RD2
+
+/*** Macros for RGB pin ***/
+#define RGB_Get()               ((PORTD >> 3) & 0x1U)
+#define RGB_GetLatch()          ((LATD >> 3) & 0x1U)
+#define RGB_PIN                  GPIO_PIN_RD3
+
+/*** Macros for ENABLE pin ***/
+#define ENABLE_Set()               (LATDSET = (1U<<13))
+#define ENABLE_Clear()             (LATDCLR = (1U<<13))
+#define ENABLE_Toggle()            (LATDINV= (1U<<13))
+#define ENABLE_OutputEnable()      (TRISDCLR = (1U<<13))
+#define ENABLE_InputEnable()       (TRISDSET = (1U<<13))
+#define ENABLE_Get()               ((PORTD >> 13) & 0x1U)
+#define ENABLE_GetLatch()          ((LATD >> 13) & 0x1U)
+#define ENABLE_PIN                  GPIO_PIN_RD13
+
+/*** Macros for VBUS_DETECT pin ***/
+#define VBUS_DETECT_Set()               (LATJSET = (1U<<3))
+#define VBUS_DETECT_Clear()             (LATJCLR = (1U<<3))
+#define VBUS_DETECT_Toggle()            (LATJINV= (1U<<3))
+#define VBUS_DETECT_OutputEnable()      (TRISJCLR = (1U<<3))
+#define VBUS_DETECT_InputEnable()       (TRISJSET = (1U<<3))
+#define VBUS_DETECT_Get()               ((PORTJ >> 3) & 0x1U)
+#define VBUS_DETECT_GetLatch()          ((LATJ >> 3) & 0x1U)
+#define VBUS_DETECT_PIN                  GPIO_PIN_RJ3
+
+/*** Macros for RTS pin ***/
+#define RTS_Get()               ((PORTD >> 4) & 0x1U)
+#define RTS_GetLatch()          ((LATD >> 4) & 0x1U)
+#define RTS_PIN                  GPIO_PIN_RD4
+
+/*** Macros for CTS pin ***/
+#define CTS_Get()               ((PORTD >> 5) & 0x1U)
+#define CTS_GetLatch()          ((LATD >> 5) & 0x1U)
+#define CTS_PIN                  GPIO_PIN_RD5
+
+/*** Macros for GPIO_1 pin ***/
+#define GPIO_1_Set()               (LATDSET = (1U<<7))
+#define GPIO_1_Clear()             (LATDCLR = (1U<<7))
+#define GPIO_1_Toggle()            (LATDINV= (1U<<7))
+#define GPIO_1_OutputEnable()      (TRISDCLR = (1U<<7))
+#define GPIO_1_InputEnable()       (TRISDSET = (1U<<7))
+#define GPIO_1_Get()               ((PORTD >> 7) & 0x1U)
+#define GPIO_1_GetLatch()          ((LATD >> 7) & 0x1U)
+#define GPIO_1_PIN                  GPIO_PIN_RD7
+
+/*** Macros for DEBUG pin ***/
+#define DEBUG_Get()               ((PORTF >> 1) & 0x1U)
+#define DEBUG_GetLatch()          ((LATF >> 1) & 0x1U)
+#define DEBUG_PIN                  GPIO_PIN_RF1
+
+/*** Macros for GPIO_2 pin ***/
+#define GPIO_2_Set()               (LATKSET = (1U<<7))
+#define GPIO_2_Clear()             (LATKCLR = (1U<<7))
+#define GPIO_2_Toggle()            (LATKINV= (1U<<7))
+#define GPIO_2_OutputEnable()      (TRISKCLR = (1U<<7))
+#define GPIO_2_InputEnable()       (TRISKSET = (1U<<7))
+#define GPIO_2_Get()               ((PORTK >> 7) & 0x1U)
+#define GPIO_2_GetLatch()          ((LATK >> 7) & 0x1U)
+#define GPIO_2_PIN                  GPIO_PIN_RK7
+
+/*** Macros for RX pin ***/
+#define RX_Get()               ((PORTG >> 1) & 0x1U)
+#define RX_GetLatch()          ((LATG >> 1) & 0x1U)
+#define RX_PIN                  GPIO_PIN_RG1
+
+/*** Macros for TX pin ***/
+#define TX_Get()               ((PORTG >> 0) & 0x1U)
+#define TX_GetLatch()          ((LATG >> 0) & 0x1U)
+#define TX_PIN                  GPIO_PIN_RG0
+
 
 // *****************************************************************************
 /* GPIO Port
