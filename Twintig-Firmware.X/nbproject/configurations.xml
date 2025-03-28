@@ -26,9 +26,16 @@
           <itemPath>../src/config/default/toolchain_specifics.h</itemPath>
         </logicalFolder>
       </logicalFolder>
+      <logicalFolder name="Haptic" displayName="Haptic" projectFiles="true">
+        <itemPath>../src/Haptic/Haptic.h</itemPath>
+      </logicalFolder>
       <logicalFolder name="x-io-PIC32-Library"
                      displayName="x-io-PIC32-Library"
                      projectFiles="true">
+        <logicalFolder name="I2C" displayName="I2C" projectFiles="true">
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2CBitBang.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2CClientAddress.h</itemPath>
+        </logicalFolder>
         <logicalFolder name="NeoPixels" displayName="NeoPixels" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/NeoPixels/HexToBitPattern.h</itemPath>
           <itemPath>../src/x-io-PIC32-Library/NeoPixels/NeoPixels.h</itemPath>
@@ -94,9 +101,15 @@
           <itemPath>../src/config/default/interrupts.c</itemPath>
         </logicalFolder>
       </logicalFolder>
+      <logicalFolder name="Haptic" displayName="Haptic" projectFiles="true">
+        <itemPath>../src/Haptic/Haptic.c</itemPath>
+      </logicalFolder>
       <logicalFolder name="x-io-PIC32-Library"
                      displayName="x-io-PIC32-Library"
                      projectFiles="true">
+        <logicalFolder name="I2C" displayName="I2C" projectFiles="true">
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2CClientAddress.c</itemPath>
+        </logicalFolder>
         <logicalFolder name="NeoPixels" displayName="NeoPixels" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/NeoPixels/NeoPixels.c</itemPath>
         </logicalFolder>
@@ -119,6 +132,7 @@
   </logicalFolder>
   <sourceRootList>
     <Elem>../src/x-io-PIC32-Library</Elem>
+    <Elem>../src/Haptic</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>

@@ -14,6 +14,7 @@
 // Includes
 
 #include "definitions.h"
+#include "Haptic/Haptic.h"
 #include "NeoPixels/NeoPixels.h"
 #include "ResetCause/ResetCause.h"
 #include <stdbool.h>
@@ -40,6 +41,7 @@ int main(void) {
     // Initialise modules
     TimerInitialise();
     NeoPixelsInitialise();
+    HapticInitialise();
 
     GPIO_PinSet(ENABLE_PIN);
 
@@ -53,6 +55,7 @@ int main(void) {
             {.rgb = 0xFFFFFF}
         };
         for (int index = 0; index < 4; index++) {
+            HapticPlay(12);
             NeoPixelsSet(&colours[index]);
             TimerDelayMilliseconds(500);
         }
