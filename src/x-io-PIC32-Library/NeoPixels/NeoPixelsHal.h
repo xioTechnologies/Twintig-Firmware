@@ -11,7 +11,7 @@
 // Includes
 
 #include "definitions.h"
-#include "Spi/Spi.h"
+#include "Spi/Spi1DmaTX.h"
 #include <stdbool.h>
 #include <stddef.h>
 
@@ -21,7 +21,7 @@
 /**
  * @brief Number of NeoPixels.
  */
-#define NEOPIXELS_HAL_NUMBER_OF_PIXELS 1
+#define NEOPIXELS_HAL_NUMBER_OF_PIXELS 4
 
 //------------------------------------------------------------------------------
 // Inline functions
@@ -31,10 +31,7 @@
  * @param settings Settings.
  */
 static inline __attribute__((always_inline)) void NeoPixelsHalSpiInitialise(const SpiSettings * const settings) {
-    SPI1CONbits.MSTEN = 1;
-    SPI1CONbits.ENHBUF = 1;
-    SPI1BRG = SpiCalculateSpixbrg(settings->clockFrequency);
-    SPI1CONbits.ON = 1;
+    Spi1DmaTXInitialise(settings);
 }
 
 /**
@@ -48,10 +45,7 @@ static inline __attribute__((always_inline)) void NeoPixelsHalSpiInitialise(cons
  * @param transferComplete Transfer complete callback function.
  */
 static inline __attribute__((always_inline)) void NeoPixelsHalSpiTransfer(const GPIO_PIN csPin, void* const data, const size_t numberOfBytes, void (*transferComplete)(void)) {
-    for (int index = 0; index < numberOfBytes; index++) {
-        while (SPI1STATbits.SPITBF == 1); // wait while transmit buffer full
-        SPI1BUF = ((uint8_t*) data)[index];
-    }
+    Spi1DmaTXTransfer(csPin, data, numberOfBytes, transferComplete);
 }
 
 /**
@@ -59,7 +53,7 @@ static inline __attribute__((always_inline)) void NeoPixelsHalSpiTransfer(const 
  * @return True while the transfer is in progress.
  */
 static inline __attribute__((always_inline)) bool NeoPixelsHalSpiTransferInProgress(void) {
-    return false;
+    return Spi1DmaTXTransferInProgress();
 }
 
 #endif

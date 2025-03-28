@@ -46,6 +46,7 @@
         </logicalFolder>
         <logicalFolder name="Spi" displayName="Spi" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Spi/Spi.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Spi/Spi1DmaTX.h</itemPath>
         </logicalFolder>
         <logicalFolder name="Timer" displayName="Timer" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Timer/Timer.h</itemPath>
@@ -118,6 +119,7 @@
         </logicalFolder>
         <logicalFolder name="Spi" displayName="Spi" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Spi/Spi.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Spi/Spi1DmaTX.c</itemPath>
         </logicalFolder>
         <logicalFolder name="Timer" displayName="Timer" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Timer/Timer.c</itemPath>

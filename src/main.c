@@ -48,17 +48,19 @@ int main(void) {
     // Main program loop
     while (true) {
         SYS_Tasks();
-        const NeoPixelsPixel colours[] = {
-            {.rgb = 0xFF0000},
-            {.rgb = 0x00FF00},
-            {.rgb = 0x0000FF},
-            {.rgb = 0xFFFFFF}
+        static const NeoPixelsPixel left[] = {
+            {.rgb = 0x110011},
+            {.rgb = 0x001111},
         };
-        for (int index = 0; index < 4; index++) {
-            HapticPlay(12);
-            NeoPixelsSet(&colours[index]);
-            TimerDelayMilliseconds(500);
-        }
+        static const NeoPixelsPixel right[] = {
+            {.rgb = 0x001111},
+            {.rgb = 0x110011},
+        };
+        HapticPlay(12);
+        NeoPixelsSet(left);
+        TimerDelayMilliseconds(500);
+        NeoPixelsSet(right);
+        TimerDelayMilliseconds(500);
     }
     return (EXIT_FAILURE);
 }
