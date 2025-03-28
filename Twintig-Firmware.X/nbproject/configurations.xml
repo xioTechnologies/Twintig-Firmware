@@ -29,8 +29,16 @@
       <logicalFolder name="x-io-PIC32-Library"
                      displayName="x-io-PIC32-Library"
                      projectFiles="true">
+        <logicalFolder name="NeoPixels" displayName="NeoPixels" projectFiles="true">
+          <itemPath>../src/x-io-PIC32-Library/NeoPixels/HexToBitPattern.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/NeoPixels/NeoPixels.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/NeoPixels/NeoPixelsHal.h</itemPath>
+        </logicalFolder>
         <logicalFolder name="ResetCause" displayName="ResetCause" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/ResetCause/ResetCause.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="Spi" displayName="Spi" projectFiles="true">
+          <itemPath>../src/x-io-PIC32-Library/Spi/Spi.h</itemPath>
         </logicalFolder>
         <logicalFolder name="Timer" displayName="Timer" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Timer/Timer.h</itemPath>
@@ -89,8 +97,14 @@
       <logicalFolder name="x-io-PIC32-Library"
                      displayName="x-io-PIC32-Library"
                      projectFiles="true">
+        <logicalFolder name="NeoPixels" displayName="NeoPixels" projectFiles="true">
+          <itemPath>../src/x-io-PIC32-Library/NeoPixels/NeoPixels.c</itemPath>
+        </logicalFolder>
         <logicalFolder name="ResetCause" displayName="ResetCause" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/ResetCause/ResetCause.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="Spi" displayName="Spi" projectFiles="true">
+          <itemPath>../src/x-io-PIC32-Library/Spi/Spi.c</itemPath>
         </logicalFolder>
         <logicalFolder name="Timer" displayName="Timer" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Timer/Timer.c</itemPath>
