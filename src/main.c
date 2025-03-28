@@ -44,6 +44,11 @@ int main(void) {
     HapticInitialise();
 
     GPIO_PinSet(ENABLE_PIN);
+    GPIO_PinSet(ENABLE_CH1_PIN);
+    GPIO_PinSet(ENABLE_CH2_PIN);
+    GPIO_PinSet(ENABLE_CH3_PIN);
+    GPIO_PinSet(ENABLE_CH4_PIN);
+    GPIO_PinSet(ENABLE_CH5_PIN);
 
     // Main program loop
     while (true) {
@@ -56,7 +61,7 @@ int main(void) {
             {.rgb = 0x001111},
             {.rgb = 0x110011},
         };
-        HapticPlay(12);
+        //HapticPlay(12);
         NeoPixelsSet(left);
         TimerDelayMilliseconds(500);
         NeoPixelsSet(right);
