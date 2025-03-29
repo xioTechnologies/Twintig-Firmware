@@ -25,6 +25,7 @@
 #include "Uart/Uart1.h"
 #include "Uart/Uart3.h"
 #include "Usb/UsbCdc.h"
+#include "Ximu3Device/Ximu3Device.h"
 
 //------------------------------------------------------------------------------
 // Functions
@@ -57,13 +58,7 @@ int main(void) {
     while (true) {
         SYS_Tasks();
         UsbCdcTasks();
-
-        while (UsbCdcGetReadAvailable() > 0) {
-            UsbCdcWriteByte(UsbCdcReadByte());
-        }
-        while (Uart1GetReadAvailable() > 0) {
-            Uart1WriteByte(Uart1ReadByte());
-        }
+        Ximu3DeviceTasks();
 
         //        static const NeoPixelsPixel left[] = {
         //            {.rgb = 0x110011},
