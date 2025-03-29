@@ -23,6 +23,7 @@
 #include <stdlib.h>
 #include "Timer/Timer.h"
 #include "Uart/Uart3.h"
+#include "Usb/UsbCdc.h"
 
 //------------------------------------------------------------------------------
 // Functions
@@ -53,19 +54,25 @@ int main(void) {
     // Main program loop
     while (true) {
         SYS_Tasks();
-        static const NeoPixelsPixel left[] = {
-            {.rgb = 0x110011},
-            {.rgb = 0x001111},
-        };
-        static const NeoPixelsPixel right[] = {
-            {.rgb = 0x001111},
-            {.rgb = 0x110011},
-        };
-        //HapticPlay(12);
-        NeoPixelsSet(left);
-        TimerDelayMilliseconds(500);
-        NeoPixelsSet(right);
-        TimerDelayMilliseconds(500);
+        UsbCdcTasks();
+
+        while (UsbCdcGetReadAvailable() > 0) {
+            UsbCdcWriteByte(UsbCdcReadByte());
+        }
+
+//        static const NeoPixelsPixel left[] = {
+//            {.rgb = 0x110011},
+//            {.rgb = 0x001111},
+//        };
+//        static const NeoPixelsPixel right[] = {
+//            {.rgb = 0x001111},
+//            {.rgb = 0x110011},
+//        };
+//        //HapticPlay(12);
+//        NeoPixelsSet(left);
+//        TimerDelayMilliseconds(500);
+//        NeoPixelsSet(right);
+//        TimerDelayMilliseconds(500);
     }
     return (EXIT_FAILURE);
 }

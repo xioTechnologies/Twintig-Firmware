@@ -1,22 +1,30 @@
 /*******************************************************************************
- System Interrupts File
+  Driver Layer Interface Header
 
   Company:
     Microchip Technology Inc.
 
   File Name:
-    interrupt.h
+    driver.h
 
   Summary:
-    Interrupt vectors mapping
+    Driver layer data types and definitions.
 
   Description:
-    This file contains declarations of device vectors used by Harmony 3
+    This file defines the common macros and definitions for the driver layer
+    modules.
+
+  Remarks:
+    The parent directory to the "system" directory should be added to the
+    compiler's search path for header files such that the following include
+    statement will successfully include this file.
+
+    #include "system/system.h"
  *******************************************************************************/
 
-// DOM-IGNORE-BEGIN
+//DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2025 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -37,31 +45,24 @@
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
  *******************************************************************************/
-// DOM-IGNORE-END
+//DOM-IGNORE-END
 
-#ifndef INTERRUPTS_H
-#define INTERRUPTS_H
+#ifndef SYSTEM_H
+#define SYSTEM_H
+
 
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-#include <stdint.h>
+
+#include "system/system_common.h"
+#include "system/system_module.h"
 
 
+#endif // SYSTEM_H
+/*******************************************************************************
+ End of File
+*/
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: Handler Routines
-// *****************************************************************************
-// *****************************************************************************
-void DRV_USBHS_InterruptHandler( void );
-void DRV_USBHS_DMAInterruptHandler( void );
-
-void Timer3InterruptHandler(void);
-void Uart3RXInterruptHandler(void);
-void Uart3TXInterruptHandler(void);
-
-
-#endif // INTERRUPTS_H

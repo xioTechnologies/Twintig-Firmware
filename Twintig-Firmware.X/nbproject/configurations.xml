@@ -6,6 +6,54 @@
                    projectFiles="true">
       <logicalFolder name="config" displayName="config" projectFiles="true">
         <logicalFolder name="default" displayName="default" projectFiles="true">
+          <logicalFolder name="driver" displayName="driver" projectFiles="true">
+            <logicalFolder name="usb" displayName="usb" projectFiles="true">
+              <logicalFolder name="usbhs" displayName="usbhs" projectFiles="true">
+                <logicalFolder name="src" displayName="src" projectFiles="true">
+                  <logicalFolder name="templates" displayName="templates" projectFiles="true">
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_USBIDControl_Default.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_EP0Status_Unsupported.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_RxEPStatus_Unsupported.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_HighSpeedSupport_Unsupported.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_SoftReset_Default.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_EndpointFIFO_Default.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_EndpointOperations_Unsupported.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_EndpointOperations_Default.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_Interrupts_Default.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_EP0Status_Default.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_EndpointFIFO_Unsupported.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_TxEPStatus_Unsupported.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_HighSpeedSupport_Default.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_ModuleControl_Unsupported.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_ModuleControl_Default.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_TxEPStatus_Default.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_RxEPStatus_Default.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_ClockResetControl_Unsupported.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_Interrupts_Unsupported.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_registers.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_SoftReset_Unsupported.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_ClockResetControl_Default.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_USBIDControl_Unsupported.h</itemPath>
+                  </logicalFolder>
+                  <itemPath>../src/config/default/driver/usb/usbhs/src/plib_usbhs.h</itemPath>
+                  <itemPath>../src/config/default/driver/usb/usbhs/src/drv_usbhs_variant_mapping.h</itemPath>
+                  <itemPath>../src/config/default/driver/usb/usbhs/src/plib_usbhs_header.h</itemPath>
+                  <itemPath>../src/config/default/driver/usb/usbhs/src/usbhs_registers.h</itemPath>
+                  <itemPath>../src/config/default/driver/usb/usbhs/src/drv_usbhs_local.h</itemPath>
+                </logicalFolder>
+                <itemPath>../src/config/default/driver/usb/usbhs/drv_usbhs.h</itemPath>
+              </logicalFolder>
+              <itemPath>../src/config/default/driver/usb/drv_usb_external_dependencies.h</itemPath>
+              <itemPath>../src/config/default/driver/usb/drv_usb.h</itemPath>
+            </logicalFolder>
+            <itemPath>../src/config/default/driver/driver_common.h</itemPath>
+            <itemPath>../src/config/default/driver/driver.h</itemPath>
+          </logicalFolder>
+          <logicalFolder name="osal" displayName="osal" projectFiles="true">
+            <itemPath>../src/config/default/osal/osal_impl_basic.h</itemPath>
+            <itemPath>../src/config/default/osal/osal.h</itemPath>
+            <itemPath>../src/config/default/osal/osal_definitions.h</itemPath>
+          </logicalFolder>
           <logicalFolder name="peripheral" displayName="peripheral" projectFiles="true">
             <logicalFolder name="clk" displayName="clk" projectFiles="true">
               <itemPath>../src/config/default/peripheral/clk/plib_clk.h</itemPath>
@@ -20,10 +68,43 @@
               <itemPath>../src/config/default/peripheral/rcon/plib_rcon.h</itemPath>
             </logicalFolder>
           </logicalFolder>
+          <logicalFolder name="system" displayName="system" projectFiles="true">
+            <logicalFolder name="debug" displayName="debug" projectFiles="true">
+              <itemPath>../src/config/default/system/debug/sys_debug.h</itemPath>
+            </logicalFolder>
+            <logicalFolder name="int" displayName="int" projectFiles="true">
+              <itemPath>../src/config/default/system/int/sys_int.h</itemPath>
+              <itemPath>../src/config/default/system/int/sys_int_mapping.h</itemPath>
+            </logicalFolder>
+            <itemPath>../src/config/default/system/system_module.h</itemPath>
+            <itemPath>../src/config/default/system/system.h</itemPath>
+            <itemPath>../src/config/default/system/system_common.h</itemPath>
+          </logicalFolder>
+          <logicalFolder name="usb" displayName="usb" projectFiles="true">
+            <logicalFolder name="src" displayName="src" projectFiles="true">
+              <itemPath>../src/config/default/usb/src/usb_device_function_driver.h</itemPath>
+              <itemPath>../src/config/default/usb/src/usb_device_cdc_local.h</itemPath>
+              <itemPath>../src/config/default/usb/src/usb_external_dependencies.h</itemPath>
+              <itemPath>../src/config/default/usb/src/usb_device_mapping.h</itemPath>
+              <itemPath>../src/config/default/usb/src/usb_device_local.h</itemPath>
+            </logicalFolder>
+            <itemPath>../src/config/default/usb/usb_device_cdc.h</itemPath>
+            <itemPath>../src/config/default/usb/usb_device.h</itemPath>
+            <itemPath>../src/config/default/usb/usb_hub.h</itemPath>
+            <itemPath>../src/config/default/usb/usb_chapter_9.h</itemPath>
+            <itemPath>../src/config/default/usb/usb_common.h</itemPath>
+            <itemPath>../src/config/default/usb/usb_host.h</itemPath>
+            <itemPath>../src/config/default/usb/usb_cdc.h</itemPath>
+            <itemPath>../src/config/default/usb/usb_host_client_driver.h</itemPath>
+            <itemPath>../src/config/default/usb/usb_host_hub_interface.h</itemPath>
+          </logicalFolder>
           <itemPath>../src/config/default/device.h</itemPath>
           <itemPath>../src/config/default/definitions.h</itemPath>
           <itemPath>../src/config/default/interrupts.h</itemPath>
           <itemPath>../src/config/default/toolchain_specifics.h</itemPath>
+          <itemPath>../src/config/default/user.h</itemPath>
+          <itemPath>../src/config/default/sys_tasks.h</itemPath>
+          <itemPath>../src/config/default/configuration.h</itemPath>
         </logicalFolder>
       </logicalFolder>
       <logicalFolder name="Haptic" displayName="Haptic" projectFiles="true">
@@ -56,6 +137,9 @@
           <itemPath>../src/x-io-PIC32-Library/Uart/Uart.h</itemPath>
           <itemPath>../src/x-io-PIC32-Library/Uart/Uart3.h</itemPath>
         </logicalFolder>
+        <logicalFolder name="Usb" displayName="Usb" projectFiles="true">
+          <itemPath>../src/x-io-PIC32-Library/Usb/UsbCdc.h</itemPath>
+        </logicalFolder>
         <itemPath>../src/x-io-PIC32-Library/Fifo.h</itemPath>
         <itemPath>../src/x-io-PIC32-Library/PeripheralBusClockFrequency.h</itemPath>
       </logicalFolder>
@@ -80,6 +164,16 @@
                    projectFiles="true">
       <logicalFolder name="config" displayName="config" projectFiles="true">
         <logicalFolder name="default" displayName="default" projectFiles="true">
+          <logicalFolder name="driver" displayName="driver" projectFiles="true">
+            <logicalFolder name="usb" displayName="usb" projectFiles="true">
+              <logicalFolder name="usbhs" displayName="usbhs" projectFiles="true">
+                <logicalFolder name="src" displayName="src" projectFiles="true">
+                  <itemPath>../src/config/default/driver/usb/usbhs/src/drv_usbhs_device.c</itemPath>
+                  <itemPath>../src/config/default/driver/usb/usbhs/src/drv_usbhs.c</itemPath>
+                </logicalFolder>
+              </logicalFolder>
+            </logicalFolder>
+          </logicalFolder>
           <logicalFolder name="peripheral" displayName="peripheral" projectFiles="true">
             <logicalFolder name="clk" displayName="clk" projectFiles="true">
               <itemPath>../src/config/default/peripheral/clk/plib_clk.c</itemPath>
@@ -97,9 +191,23 @@
           <logicalFolder name="stdio" displayName="stdio" projectFiles="true">
             <itemPath>../src/config/default/stdio/xc32_monitor.c</itemPath>
           </logicalFolder>
+          <logicalFolder name="system" displayName="system" projectFiles="true">
+            <logicalFolder name="int" displayName="int" projectFiles="true">
+              <itemPath>../src/config/default/system/int/src/sys_int.c</itemPath>
+            </logicalFolder>
+          </logicalFolder>
+          <logicalFolder name="usb" displayName="usb" projectFiles="true">
+            <logicalFolder name="src" displayName="src" projectFiles="true">
+              <itemPath>../src/config/default/usb/src/usb_device.c</itemPath>
+              <itemPath>../src/config/default/usb/src/usb_device_cdc_acm.c</itemPath>
+              <itemPath>../src/config/default/usb/src/usb_device_cdc.c</itemPath>
+            </logicalFolder>
+          </logicalFolder>
           <itemPath>../src/config/default/exceptions.c</itemPath>
           <itemPath>../src/config/default/initialization.c</itemPath>
           <itemPath>../src/config/default/interrupts.c</itemPath>
+          <itemPath>../src/config/default/usb_device_init_data.c</itemPath>
+          <itemPath>../src/config/default/tasks.c</itemPath>
         </logicalFolder>
       </logicalFolder>
       <logicalFolder name="Haptic" displayName="Haptic" projectFiles="true">
@@ -127,6 +235,9 @@
         <logicalFolder name="Uart" displayName="Uart" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Uart/Uart.c</itemPath>
           <itemPath>../src/x-io-PIC32-Library/Uart/Uart3.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="Usb" displayName="Usb" projectFiles="true">
+          <itemPath>../src/x-io-PIC32-Library/Usb/UsbCdc.c</itemPath>
         </logicalFolder>
       </logicalFolder>
       <itemPath>../src/main.c</itemPath>
@@ -182,7 +293,6 @@
       <C32>
         <property key="additional-warnings" value="true"/>
         <property key="addresss-attribute-use" value="false"/>
-        <property key="appendMe" value=""/>
         <property key="cast-align" value="false"/>
         <property key="code-model" value="default"/>
         <property key="const-model" value="default"/>
@@ -261,7 +371,6 @@
         <property key="additional-options-use-response-files" value="false"/>
         <property key="additional-options-write-sla" value="false"/>
         <property key="allocate-dinit" value="false"/>
-        <property key="appendMe" value=""/>
         <property key="code-dinit" value="false"/>
         <property key="ebase-addr" value=""/>
         <property key="enable-check-sections" value="false"/>
@@ -307,7 +416,6 @@
       <C32CPP>
         <property key="additional-warnings" value="false"/>
         <property key="addresss-attribute-use" value="false"/>
-        <property key="appendMe" value=""/>
         <property key="check-new" value="false"/>
         <property key="eh-specs" value="true"/>
         <property key="enable-app-io" value="false"/>

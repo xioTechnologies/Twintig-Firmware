@@ -1,22 +1,24 @@
 /*******************************************************************************
- System Interrupts File
+  Interrupt System Service Mapping File
 
   Company:
     Microchip Technology Inc.
 
   File Name:
-    interrupt.h
+    sys_int_mapping.h
 
   Summary:
-    Interrupt vectors mapping
+    Interrupt System Service mapping file.
 
   Description:
-    This file contains declarations of device vectors used by Harmony 3
- *******************************************************************************/
+    This header file contains the mapping of the APIs defined in the API header
+    to either the function implementations or macro implementation or the
+    specific variant implementation.
+*******************************************************************************/
 
-// DOM-IGNORE-BEGIN
-/*******************************************************************************
-* Copyright (C) 2025 Microchip Technology Inc. and its subsidiaries.
+//DOM-IGNORE-BEGIN
+/******************************************************************************
+* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -36,32 +38,27 @@
 * FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
- *******************************************************************************/
-// DOM-IGNORE-END
+*******************************************************************************/
+//DOM-IGNORE-END
 
-#ifndef INTERRUPTS_H
-#define INTERRUPTS_H
-
-// *****************************************************************************
-// *****************************************************************************
-// Section: Included Files
-// *****************************************************************************
-// *****************************************************************************
-#include <stdint.h>
-
-
+#ifndef SYS_INT_MAPPING_H
+#define SYS_INT_MAPPING_H
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Handler Routines
+// Section: Interrupt System Service Mapping
 // *****************************************************************************
 // *****************************************************************************
-void DRV_USBHS_InterruptHandler( void );
-void DRV_USBHS_DMAInterruptHandler( void );
 
-void Timer3InterruptHandler(void);
-void Uart3RXInterruptHandler(void);
-void Uart3TXInterruptHandler(void);
+/* MISRA C-2012 Rule 5.8 deviated:6 Deviation record ID -  H3_MISRAC_2012_R_5_8_DR_1 */
 
+#define SYS_INT_IsEnabled()                 ((bool)(_CP0_GET_STATUS() & 0x01))
+#define SYS_INT_SourceEnable( source )      EVIC_SourceEnable( source )
+#define SYS_INT_SourceIsEnabled( source )   EVIC_SourceIsEnabled( source )
+#define SYS_INT_SourceStatusGet( source )   EVIC_SourceStatusGet( source )
+#define SYS_INT_SourceStatusSet( source )   EVIC_SourceStatusSet( source )
+#define SYS_INT_SourceStatusClear( source ) EVIC_SourceStatusClear( source )
 
-#endif // INTERRUPTS_H
+/* MISRAC 2012 deviation block end */
+
+#endif // SYS_INT_MAPPING_H

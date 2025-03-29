@@ -1,22 +1,22 @@
 /*******************************************************************************
- System Interrupts File
+  USB stack external dependencies file
 
   Company:
     Microchip Technology Inc.
 
   File Name:
-    interrupt.h
+    usb_external_dependencies.h
 
   Summary:
-    Interrupt vectors mapping
+    USB stack external dependencies file
 
   Description:
-    This file contains declarations of device vectors used by Harmony 3
- *******************************************************************************/
+    USB stack external dependencies file. 
+*******************************************************************************/
 
-// DOM-IGNORE-BEGIN
+//DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2025 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -37,31 +37,31 @@
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
  *******************************************************************************/
-// DOM-IGNORE-END
+//DOM-IGNORE-END
 
-#ifndef INTERRUPTS_H
-#define INTERRUPTS_H
+#ifndef USB_EXTERNAL_DEPENDENCIES_H
+#define USB_EXTERNAL_DEPENDENCIES_H
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: Included Files
-// *****************************************************************************
-// *****************************************************************************
-#include <stdint.h>
+#include <string.h>
+#include "system/system_common.h"
+#include "configuration.h"
+#include "system/system_module.h"
 
+#if defined (USB_HOST_DEVICES_NUMBER) &&  (USB_HOST_DEVICES_NUMBER > 0)
+#include "system/time/sys_time.h"
+#define SYS_TMR_HANDLE_INVALID SYS_TIME_HANDLE_INVALID
+#define SYS_TMR_CallbackSingle(delay,context,callback) SYS_TIME_CallbackRegisterMS(callback,context,delay, SYS_TIME_SINGLE)
+#endif 
 
+#ifndef SYS_DEBUG_ENABLE
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: Handler Routines
-// *****************************************************************************
-// *****************************************************************************
-void DRV_USBHS_InterruptHandler( void );
-void DRV_USBHS_DMAInterruptHandler( void );
-
-void Timer3InterruptHandler(void);
-void Uart3RXInterruptHandler(void);
-void Uart3TXInterruptHandler(void);
-
-
-#endif // INTERRUPTS_H
+    #define SYS_DEBUG_PRINT(level, format, ...) 
+    #define SYS_DEBUG_MESSAGE(a,b, ...)     
+    #define SYS_DEBUG(a,b)
+#else
+    #include "system/debug/sys_debug.h"
+#endif 
+#endif 
+/*******************************************************************************
+ End of File
+*/

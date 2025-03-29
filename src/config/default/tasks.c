@@ -1,26 +1,27 @@
 /*******************************************************************************
- System Interrupts File
-
-  Company:
-    Microchip Technology Inc.
+ System Tasks File
 
   File Name:
-    interrupt.c
+    tasks.c
 
   Summary:
-    Interrupt vectors mapping
+    This file contains source code necessary to maintain system's polled tasks.
 
   Description:
-    This file maps all the interrupt vectors to their corresponding
-    implementations. If a particular module interrupt is used, then its ISR
-    definition can be found in corresponding PLIB source file. If a module
-    interrupt is not used, then its ISR implementation is mapped to dummy
-    handler.
+    This file contains source code necessary to maintain system's polled tasks.
+    It implements the "SYS_Tasks" function that calls the individual "Tasks"
+    functions for all polled MPLAB Harmony modules in the system.
+
+  Remarks:
+    This file requires access to the systemObjects global data structure that
+    contains the object handles to all MPLAB Harmony module objects executing
+    polled in the system.  These handles are passed into the individual module
+    "Tasks" functions to identify the instance of the module to maintain.
  *******************************************************************************/
 
 // DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2025 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -48,66 +49,48 @@
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
+
 #include "configuration.h"
-#include "interrupts.h"
 #include "definitions.h"
+#include "sys_tasks.h"
 
 
-
-// *****************************************************************************
-// *****************************************************************************
-// Section: System Interrupt Vector Functions
-// *****************************************************************************
-// *****************************************************************************
-
-
-/* All the handlers are defined here.  Each will call its PLIB-specific function. */
-
-// *****************************************************************************
-// *****************************************************************************
-// Section: System Interrupt Vector declarations
-// *****************************************************************************
-// *****************************************************************************
-void TIMER_3_Handler (void);
-void USB_Handler (void);
-void USB_DMA_Handler (void);
-void UART3_RX_Handler (void);
-void UART3_TX_Handler (void);
 
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: System Interrupt Vector definitions
+// Section: System "Tasks" Routine
 // *****************************************************************************
 // *****************************************************************************
-void __attribute__((used)) __ISR(_TIMER_3_VECTOR, ipl7SRS) TIMER_3_Handler (void)
+
+/*******************************************************************************
+  Function:
+    void SYS_Tasks ( void )
+
+  Remarks:
+    See prototype in system/common/sys_module.h.
+*/
+void SYS_Tasks ( void )
 {
-    Timer3InterruptHandler();
+    /* Maintain system services */
+    
+
+    /* Maintain Device Drivers */
+    
+
+    /* Maintain Middleware & Other Libraries */
+        /* USBHS Driver Task Routine */ 
+    DRV_USBHS_Tasks(sysObj.drvUSBHSObject);
+
+    /* USB Device layer tasks routine */ 
+    USB_DEVICE_Tasks(sysObj.usbDevObject0);
+
+
+
+
 }
-
-void __attribute__((used)) __ISR(_USB_VECTOR, ipl1SRS) USB_Handler (void)
-{
-    DRV_USBHS_InterruptHandler();
-}
-
-void __attribute__((used)) __ISR(_USB_DMA_VECTOR, ipl1SRS) USB_DMA_Handler (void)
-{
-    DRV_USBHS_DMAInterruptHandler();
-}
-
-void __attribute__((used)) __ISR(_UART3_RX_VECTOR, ipl1SRS) UART3_RX_Handler (void)
-{
-    Uart3RXInterruptHandler();
-}
-
-void __attribute__((used)) __ISR(_UART3_TX_VECTOR, ipl1SRS) UART3_TX_Handler (void)
-{
-    Uart3TXInterruptHandler();
-}
-
-
-
 
 /*******************************************************************************
  End of File
-*/
+ */
+
