@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Timer/Timer.h"
+#include "Uart/Uart1.h"
 #include "Uart/Uart3.h"
 #include "Usb/UsbCdc.h"
 
@@ -43,6 +44,7 @@ int main(void) {
     TimerInitialise();
     NeoPixelsInitialise();
     HapticInitialise();
+    Uart1Initialise(&uartSettingsDefault);
 
     GPIO_PinSet(ENABLE_PIN);
     GPIO_PinSet(ENABLE_CH1_PIN);
@@ -59,20 +61,23 @@ int main(void) {
         while (UsbCdcGetReadAvailable() > 0) {
             UsbCdcWriteByte(UsbCdcReadByte());
         }
+        while (Uart1GetReadAvailable() > 0) {
+            Uart1WriteByte(Uart1ReadByte());
+        }
 
-//        static const NeoPixelsPixel left[] = {
-//            {.rgb = 0x110011},
-//            {.rgb = 0x001111},
-//        };
-//        static const NeoPixelsPixel right[] = {
-//            {.rgb = 0x001111},
-//            {.rgb = 0x110011},
-//        };
-//        //HapticPlay(12);
-//        NeoPixelsSet(left);
-//        TimerDelayMilliseconds(500);
-//        NeoPixelsSet(right);
-//        TimerDelayMilliseconds(500);
+        //        static const NeoPixelsPixel left[] = {
+        //            {.rgb = 0x110011},
+        //            {.rgb = 0x001111},
+        //        };
+        //        static const NeoPixelsPixel right[] = {
+        //            {.rgb = 0x001111},
+        //            {.rgb = 0x110011},
+        //        };
+        //        //HapticPlay(12);
+        //        NeoPixelsSet(left);
+        //        TimerDelayMilliseconds(500);
+        //        NeoPixelsSet(right);
+        //        TimerDelayMilliseconds(500);
     }
     return (EXIT_FAILURE);
 }

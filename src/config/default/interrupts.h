@@ -60,6 +60,8 @@ void DRV_USBHS_InterruptHandler( void );
 void DRV_USBHS_DMAInterruptHandler( void );
 
 void Timer3InterruptHandler(void);
+void Uart1RXInterruptHandler(void);
+void Uart1TXInterruptHandler(void);
 void Uart3RXInterruptHandler(void);
 void Uart3TXInterruptHandler(void);
 

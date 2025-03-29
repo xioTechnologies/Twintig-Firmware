@@ -69,6 +69,8 @@
 // *****************************************************************************
 // *****************************************************************************
 void TIMER_3_Handler (void);
+void UART1_RX_Handler (void);
+void UART1_TX_Handler (void);
 void USB_Handler (void);
 void USB_DMA_Handler (void);
 void UART3_RX_Handler (void);
@@ -83,6 +85,16 @@ void UART3_TX_Handler (void);
 void __attribute__((used)) __ISR(_TIMER_3_VECTOR, ipl7SRS) TIMER_3_Handler (void)
 {
     Timer3InterruptHandler();
+}
+
+void __attribute__((used)) __ISR(_UART1_RX_VECTOR, ipl1SRS) UART1_RX_Handler (void)
+{
+    Uart1RXInterruptHandler();
+}
+
+void __attribute__((used)) __ISR(_UART1_TX_VECTOR, ipl1SRS) UART1_TX_Handler (void)
+{
+    Uart1TXInterruptHandler();
 }
 
 void __attribute__((used)) __ISR(_USB_VECTOR, ipl1SRS) USB_Handler (void)

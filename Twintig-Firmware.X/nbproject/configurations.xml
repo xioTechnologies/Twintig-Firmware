@@ -136,6 +136,7 @@
         <logicalFolder name="Uart" displayName="Uart" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Uart/Uart.h</itemPath>
           <itemPath>../src/x-io-PIC32-Library/Uart/Uart3.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Uart/Uart1.h</itemPath>
         </logicalFolder>
         <logicalFolder name="Usb" displayName="Usb" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Usb/UsbCdc.h</itemPath>
@@ -235,6 +236,7 @@
         <logicalFolder name="Uart" displayName="Uart" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Uart/Uart.c</itemPath>
           <itemPath>../src/x-io-PIC32-Library/Uart/Uart3.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Uart/Uart1.c</itemPath>
         </logicalFolder>
         <logicalFolder name="Usb" displayName="Usb" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Usb/UsbCdc.c</itemPath>
@@ -568,8 +570,6 @@
         <property key="memories.programmemory" value="true"/>
         <property key="memories.programmemory.ranges" value="1d000000-1d1fffff"/>
         <property key="poweroptions.powerenable" value="false"/>
-        <property key="programmerToGoFilePath"
-                  value="C:/MyFiles/x-io/Services/MICA Lab/Twintig/Twintig-Firmware/Twintig-Firmware.X/debug/default/Twintig-Firmware_ptg"/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>
         <property key="programoptions.ledbrightness" value="5"/>
