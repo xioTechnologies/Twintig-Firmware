@@ -9,10 +9,10 @@
 
 #include <stdio.h>
 #include "Timer/Timer.h"
+#include "Uart/Uart1.h"
 #include "Usb/UsbCdc.h"
 #include "x-IMU3-Device/Ximu3Command.h"
 #include "x-IMU3-Device/Ximu3Data.h"
-#include "Uart/Uart1.h"
 
 //------------------------------------------------------------------------------
 // Function declarations

@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Timer/Timer.h"
+#include "Timer/TimerScheduler.h"
 #include "Uart/Uart1.h"
 #include "Uart/Uart3.h"
 #include "Usb/UsbCdc.h"
@@ -60,19 +61,18 @@ int main(void) {
         UsbCdcTasks();
         Ximu3DeviceTasks();
 
-        //        static const NeoPixelsPixel left[] = {
-        //            {.rgb = 0x110011},
-        //            {.rgb = 0x001111},
-        //        };
-        //        static const NeoPixelsPixel right[] = {
-        //            {.rgb = 0x001111},
-        //            {.rgb = 0x110011},
-        //        };
-        //        //HapticPlay(12);
-        //        NeoPixelsSet(left);
-        //        TimerDelayMilliseconds(500);
-        //        NeoPixelsSet(right);
-        //        TimerDelayMilliseconds(500);
+        if (TIMER_SCHEDULER_POLL(0.5f)) {
+            static const NeoPixelsPixel left[] = {
+                {.rgb = 0x110011},
+                {.rgb = 0x001111},
+            };
+            static const NeoPixelsPixel right[] = {
+                {.rgb = 0x001111},
+                {.rgb = 0x110011},
+            };
+            static int counter;
+            NeoPixelsSet((counter++ & 0x1) ? left : right);
+        }
     }
     return (EXIT_FAILURE);
 }
