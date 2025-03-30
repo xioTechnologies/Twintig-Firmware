@@ -161,6 +161,8 @@
           <itemPath>../src/Ximu3Device/x-IMU3-Device/Ximu3SettingsJson.h</itemPath>
         </logicalFolder>
         <itemPath>../src/Ximu3Device/Ximu3Device.h</itemPath>
+        <itemPath>../src/Ximu3Device/Commands.h</itemPath>
+        <itemPath>../src/Ximu3Device/Interfaces.h</itemPath>
       </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
@@ -275,6 +277,8 @@
           <itemPath>../src/Ximu3Device/x-IMU3-Device/Ximu3SettingsJson.c</itemPath>
         </logicalFolder>
         <itemPath>../src/Ximu3Device/Ximu3Device.c</itemPath>
+        <itemPath>../src/Ximu3Device/Commands.c</itemPath>
+        <itemPath>../src/Ximu3Device/Interfaces.c</itemPath>
       </logicalFolder>
       <itemPath>../src/main.c</itemPath>
     </logicalFolder>

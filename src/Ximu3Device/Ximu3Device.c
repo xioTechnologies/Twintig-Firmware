@@ -7,18 +7,16 @@
 //------------------------------------------------------------------------------
 // Includes
 
-#include <stdio.h>
+#include "Commands.h"
+#include "Interfaces.h"
 #include "Timer/Timer.h"
-#include "Uart/Uart1.h"
-#include "Usb/UsbCdc.h"
 #include "x-IMU3-Device/Ximu3Command.h"
 #include "x-IMU3-Device/Ximu3Data.h"
 
 //------------------------------------------------------------------------------
 // Function declarations
 
-static void Ping(const char* * const value, Ximu3CommandResponse * const response);
-static void Error(const char* const error);
+static void Error(const char* const error, void* const context);
 
 //------------------------------------------------------------------------------
 // Variables
@@ -26,17 +24,17 @@ static void Error(const char* const error);
 static Ximu3CommandInterface interfaces[] = {
     {
         .name = "USB",
-        .read = UsbCdcRead,
-        .write = UsbCdcWrite,
+        .read = InterfacesUsbRead,
+        .write = InterfacesUsbWrite,
     },
     {
         .name = "Serial",
-        .read = Uart1Read,
-        .write = Uart1Write,
+        .read = InterfacesSerialRead,
+        .write = InterfacesSerialWrite,
     },
 };
 static const Ximu3CommandMap commands[] = {
-    {"ping", Ping},
+    {"ping", CommandsPing},
 };
 static Ximu3CommandBridge bridge = {
     .interfaces = interfaces,
@@ -44,6 +42,7 @@ static Ximu3CommandBridge bridge = {
     .commands = commands,
     .numberOfCommands = sizeof (commands) / sizeof (Ximu3CommandMap),
     .error = Error,
+    .context = NULL, // TODO: use context for MUX
 };
 
 //------------------------------------------------------------------------------
@@ -58,29 +57,19 @@ void Ximu3DeviceTasks(void) {
 }
 
 /**
- * @brief Ping command.
- * @param value Value.
- * @param response Response.
- */
-static void Ping(const char* * const value, Ximu3CommandResponse * const response) {
-    if (Ximu3CommandParseNull(value, response) != 0) {
-        return;
-    }
-    Ximu3CommandRespondPing(response, "Twintig", "01234567");
-}
-
-/**
  * @brief Error handler.
  * @param error error.
+ * @param context Context.
  */
-static void Error(const char* const error) {
+static void Error(const char* const error, void* const context) {
     const Ximu3DataError data = {
         .timestamp = TimerGetTicks64() / TIMER_TICKS_PER_MICROSECOND,
         .string = error,
     };
     char message[256];
     const int numberOfBytes = Ximu3DataErrorAscii(message, sizeof (message), &data);
-    UsbCdcWrite(message, numberOfBytes);
+    InterfacesUsbWrite(message, numberOfBytes, context);
+    InterfacesSerialWrite(message, numberOfBytes, context);
 }
 
 //------------------------------------------------------------------------------
