@@ -163,6 +163,7 @@
         <itemPath>../src/Ximu3Device/Ximu3Device.h</itemPath>
         <itemPath>../src/Ximu3Device/Commands.h</itemPath>
         <itemPath>../src/Ximu3Device/Interfaces.h</itemPath>
+        <itemPath>../src/Ximu3Device/Context.h</itemPath>
       </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"

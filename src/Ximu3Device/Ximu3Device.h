@@ -10,6 +10,7 @@
 //------------------------------------------------------------------------------
 // Function declarations
 
+void Ximu3DeviceInitialise(void);
 void Ximu3DeviceTasks(void);
 
 #endif

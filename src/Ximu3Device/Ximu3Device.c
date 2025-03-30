@@ -8,6 +8,7 @@
 // Includes
 
 #include "Commands.h"
+#include "Context.h"
 #include "Interfaces.h"
 #include "Timer/Timer.h"
 #include "x-IMU3-Device/Ximu3Command.h"
@@ -16,37 +17,58 @@
 //------------------------------------------------------------------------------
 // Function declarations
 
+static void InitialiseEpilogue(void* const context);
+static void DefaultsEpilogue(void* const context);
+static void WriteEpilogue(const Ximu3SettingsIndex index, void* const context);
 static void Error(const char* const error, void* const context);
 
 //------------------------------------------------------------------------------
 // Variables
 
-static Ximu3CommandInterface interfaces[] = {
-    {
-        .name = "USB",
-        .read = InterfacesUsbRead,
-        .write = InterfacesUsbWrite,
-    },
-    {
-        .name = "Serial",
-        .read = InterfacesSerialRead,
-        .write = InterfacesSerialWrite,
-    },
-};
 static const Ximu3CommandMap commands[] = {
+    {"default", CommandsDefault},
+    {"save", CommandsSave},
     {"ping", CommandsPing},
+    {"factory", CommandsFactory},
+};
+
+static Ximu3CommandInterface interfaces[] = {
+    { .name = "USB", .read = InterfacesUsbRead, .write = InterfacesUsbWrite},
+    { .name = "Serial", .read = InterfacesSerialRead, .write = InterfacesSerialWrite},
+};
+static Ximu3Settings settings = {
+    .nvmRead = NULL,
+    .nvmWrite = NULL,
+    .initialiseEpilogue = InitialiseEpilogue,
+    .defaultsEpilogue = DefaultsEpilogue,
 };
 static Ximu3CommandBridge bridge = {
     .interfaces = interfaces,
     .numberOfInterfaces = sizeof (interfaces) / sizeof (Ximu3CommandInterface),
     .commands = commands,
+    .settings = &settings,
     .numberOfCommands = sizeof (commands) / sizeof (Ximu3CommandMap),
+    .overrideReadOnly = CommandsOverrideReadOnly,
+    .writeEpilogue = WriteEpilogue,
     .error = Error,
-    .context = NULL, // TODO: use context for MUX
+};
+static Context context = {
+    .settings = &settings,
+    .factoryMode = false,
 };
 
 //------------------------------------------------------------------------------
 // Functions
+
+/**
+ * @brief Initialises the module. This function must only be called once, on
+ * system startup.
+ */
+void Ximu3DeviceInitialise(void) {
+    settings.context = &context;
+    bridge.context = &context;
+    Ximu3SettingsInitialise(&settings);
+}
 
 /**
  * @brief Module tasks. This function should be called repeatedly within the
@@ -54,6 +76,29 @@ static Ximu3CommandBridge bridge = {
  */
 void Ximu3DeviceTasks(void) {
     Ximu3CommandTasks(&bridge);
+}
+
+/**
+ * @brief Initialise epilogue.
+ * @param context Context.
+ */
+static void InitialiseEpilogue(void* const context) {
+}
+
+/**
+ * @brief Defaults epilogue.
+ * @param context Context.
+ */
+static void DefaultsEpilogue(void* const context) {
+}
+
+/**
+ * @brief Write epilogue.
+ * @param index Index.
+ * @param context Context.
+ */
+static void WriteEpilogue(const Ximu3SettingsIndex index, void* const context) {
+    // TODO: apply settings
 }
 
 /**

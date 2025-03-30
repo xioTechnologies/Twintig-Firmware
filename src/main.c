@@ -47,6 +47,7 @@ int main(void) {
     NeoPixelsInitialise();
     HapticInitialise();
     Uart1Initialise(&uartSettingsDefault);
+    Ximu3DeviceInitialise();
 
     GPIO_PinSet(ENABLE_PIN);
     GPIO_PinSet(ENABLE_CH1_PIN);
