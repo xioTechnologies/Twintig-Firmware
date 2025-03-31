@@ -19,6 +19,7 @@
 void CommandsDefault(const char* * const value, Ximu3CommandResponse * const response, void* const context);
 void CommandsSave(const char* * const value, Ximu3CommandResponse * const response, void* const context);
 void CommandsPing(const char* * const value, Ximu3CommandResponse * const response, void* const context);
+void CommandsHaptic(const char* * const value, Ximu3CommandResponse * const response, void* const context);
 void CommandsFactory(const char* * const value, Ximu3CommandResponse * const response, void* const context);
 bool CommandsOverrideReadOnly(void* const context);
 

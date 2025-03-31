@@ -9,6 +9,7 @@
 
 #include "Commands.h"
 #include "Context.h"
+#include "Haptic/Haptic.h"
 #include "x-IMU3-Device/Ximu3Settings.h"
 
 //------------------------------------------------------------------------------
@@ -41,6 +42,7 @@ void CommandsSave(const char* * const value, Ximu3CommandResponse * const respon
     Context * const context_ = context;
     if (context_->nvmBlank && (context_->factoryMode == false)) {
         Ximu3CommandRespondError(response, "NVM blank");
+        return;
     }
     Ximu3SettingsSave(context_->settings);
     Ximu3CommandRespond(response);
@@ -58,6 +60,24 @@ void CommandsPing(const char* * const value, Ximu3CommandResponse * const respon
     }
     Context * const context_ = context;
     Ximu3CommandRespondPing(response, Ximu3SettingsGet(context_->settings)->deviceName, Ximu3SettingsGet(context_->settings)->serialNumber);
+}
+
+/**
+ * @brief Haptic command.
+ * @param value Value.
+ * @param response Response.
+ * @param context Context.
+ */
+void CommandsHaptic(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
+    float id;
+    if (Ximu3CommandParseNumber(value, response, &id) != 0) {
+        return;
+    }
+    if (HapticPlay((int) id) != 0) {
+        Ximu3CommandRespondError(response, "Invalid ID");
+        return;
+    }
+    Ximu3CommandRespond(response);
 }
 
 /**
