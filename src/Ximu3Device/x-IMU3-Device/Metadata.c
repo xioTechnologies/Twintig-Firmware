@@ -50,7 +50,7 @@ const void* const defaults[] = {
     (void*) (&(char[32]) {"Unknown"}),
     (void*) (&(float) {0.0f}),
     (void*) (&(float) {1.0f}),
-    (void*) (&(char[32]) {"x-IMU3"}),
+    (void*) (&(char[32]) {"Twintig"}),
     (void*) (&(char[16]) {"Unknown"}),
     (void*) (&(char[32]) {"Unknown"}),
     (void*) (&(bool) {false}),

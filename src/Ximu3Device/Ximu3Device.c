@@ -10,6 +10,7 @@
 #include "Commands.h"
 #include "Context.h"
 #include "Interfaces.h"
+#include "Nvm.h"
 #include "Timer/Timer.h"
 #include "x-IMU3-Device/Ximu3Command.h"
 #include "x-IMU3-Device/Ximu3Data.h"
@@ -31,14 +32,13 @@ static const Ximu3CommandMap commands[] = {
     {"ping", CommandsPing},
     {"factory", CommandsFactory},
 };
-
 static Ximu3CommandInterface interfaces[] = {
     { .name = "USB", .read = InterfacesUsbRead, .write = InterfacesUsbWrite},
     { .name = "Serial", .read = InterfacesSerialRead, .write = InterfacesSerialWrite},
 };
 static Ximu3Settings settings = {
-    .nvmRead = NULL,
-    .nvmWrite = NULL,
+    .nvmRead = NvmRead,
+    .nvmWrite = NvmWrite,
     .initialiseEpilogue = InitialiseEpilogue,
     .defaultsEpilogue = DefaultsEpilogue,
 };

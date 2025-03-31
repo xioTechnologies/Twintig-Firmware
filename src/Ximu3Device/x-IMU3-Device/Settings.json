@@ -25,7 +25,7 @@
         {
             "name": "Device name",
             "declaration": "char name[32]",
-            "default": "{\"x-IMU3\"}"
+            "default": "{\"Twintig\"}"
         },
         {
             "name": "Serial number",
