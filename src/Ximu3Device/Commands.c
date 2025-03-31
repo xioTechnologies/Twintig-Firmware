@@ -39,6 +39,9 @@ void CommandsSave(const char* * const value, Ximu3CommandResponse * const respon
         return;
     }
     Context * const context_ = context;
+    if (context_->nvmBlank && (context_->factoryMode == false)) {
+        Ximu3CommandRespondError(response, "NVM blank");
+    }
     Ximu3SettingsSave(context_->settings);
     Ximu3CommandRespond(response);
 }

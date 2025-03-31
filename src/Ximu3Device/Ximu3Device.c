@@ -18,8 +18,8 @@
 //------------------------------------------------------------------------------
 // Function declarations
 
-static void InitialiseEpilogue(void* const context);
-static void DefaultsEpilogue(void* const context);
+static void InitialiseEpilogue(const bool nvmBlank, void* const context);
+static void DefaultsEpilogue(const bool preservedOverwriten, void* const context);
 static void WriteEpilogue(const Ximu3SettingsIndex index, void* const context);
 static void Error(const char* const error, void* const context);
 
@@ -54,6 +54,7 @@ static Ximu3CommandBridge bridge = {
 };
 static Context context = {
     .settings = &settings,
+    .nvmBlank = false,
     .factoryMode = false,
 };
 
@@ -80,16 +81,20 @@ void Ximu3DeviceTasks(void) {
 
 /**
  * @brief Initialise epilogue.
+ * @param nvmBlank True if NVM is blank.
  * @param context Context.
  */
-static void InitialiseEpilogue(void* const context) {
+static void InitialiseEpilogue(const bool nvmBlank, void* const context) {
+    Context * const context_ = context;
+    context_->nvmBlank = nvmBlank;
 }
 
 /**
  * @brief Defaults epilogue.
+ * @param preservedOverwriten True if preserved settings overwritten.
  * @param context Context.
  */
-static void DefaultsEpilogue(void* const context) {
+static void DefaultsEpilogue(const bool preservedOverwriten, void* const context) {
 }
 
 /**

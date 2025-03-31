@@ -21,6 +21,7 @@
  */
 typedef struct {
     Ximu3Settings * const settings;
+    bool nvmBlank;
     bool factoryMode;
 } Context;
 
