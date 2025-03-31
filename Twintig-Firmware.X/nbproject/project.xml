@@ -12,6 +12,7 @@
                 <sourceRootElem>../src/x-io-PIC32-Library</sourceRootElem>
                 <sourceRootElem>../src/Haptic</sourceRootElem>
                 <sourceRootElem>../src/Ximu3Device</sourceRootElem>
+                <sourceRootElem>../src/Leds</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

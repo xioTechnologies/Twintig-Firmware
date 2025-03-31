@@ -15,7 +15,7 @@
 
 #include "definitions.h"
 #include "Haptic/Haptic.h"
-#include "NeoPixels/NeoPixels.h"
+#include "Leds/Leds.h"
 #include "ResetCause/ResetCause.h"
 #include <stdbool.h>
 #include <stddef.h>
@@ -44,35 +44,18 @@ int main(void) {
 
     // Initialise modules
     TimerInitialise();
-    NeoPixelsInitialise();
+    LedsInitialise();
     HapticInitialise();
     Uart1Initialise(&uartSettingsDefault);
     Ximu3DeviceInitialise();
-
-    GPIO_PinSet(ENABLE_PIN);
-    GPIO_PinSet(ENABLE_CH1_PIN);
-    GPIO_PinSet(ENABLE_CH2_PIN);
-    GPIO_PinSet(ENABLE_CH3_PIN);
-    GPIO_PinSet(ENABLE_CH4_PIN);
-    GPIO_PinSet(ENABLE_CH5_PIN);
 
     // Main program loop
     while (true) {
         SYS_Tasks();
         UsbCdcTasks();
         Ximu3DeviceTasks();
-
         if (TIMER_SCHEDULER_POLL(0.5f)) {
-            static const NeoPixelsPixel left[] = {
-                {.rgb = 0x110011},
-                {.rgb = 0x001111},
-            };
-            static const NeoPixelsPixel right[] = {
-                {.rgb = 0x001111},
-                {.rgb = 0x110011},
-            };
-            static int counter;
-            NeoPixelsSet((counter++ & 0x1) ? left : right);
+            printf(".");
         }
     }
     return (EXIT_FAILURE);

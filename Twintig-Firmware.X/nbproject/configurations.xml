@@ -110,6 +110,9 @@
       <logicalFolder name="Haptic" displayName="Haptic" projectFiles="true">
         <itemPath>../src/Haptic/Haptic.h</itemPath>
       </logicalFolder>
+      <logicalFolder name="Leds" displayName="Leds" projectFiles="true">
+        <itemPath>../src/Leds/Leds.h</itemPath>
+      </logicalFolder>
       <logicalFolder name="x-io-PIC32-Library"
                      displayName="x-io-PIC32-Library"
                      projectFiles="true">
@@ -236,6 +239,9 @@
       <logicalFolder name="Haptic" displayName="Haptic" projectFiles="true">
         <itemPath>../src/Haptic/Haptic.c</itemPath>
       </logicalFolder>
+      <logicalFolder name="Leds" displayName="Leds" projectFiles="true">
+        <itemPath>../src/Leds/Leds.c</itemPath>
+      </logicalFolder>
       <logicalFolder name="x-io-PIC32-Library"
                      displayName="x-io-PIC32-Library"
                      projectFiles="true">
@@ -290,6 +296,7 @@
     <Elem>../src/x-io-PIC32-Library</Elem>
     <Elem>../src/Haptic</Elem>
     <Elem>../src/Ximu3Device</Elem>
+    <Elem>../src/Leds</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
