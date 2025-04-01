@@ -1,7 +1,7 @@
 /**
  * @file Leds.c
  * @author Seb Madgwick
- * @brief Driver for LEDs.
+ * @brief LEDs driver.
  */
 
 //------------------------------------------------------------------------------

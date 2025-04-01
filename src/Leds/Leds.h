@@ -1,7 +1,7 @@
 /**
  * @file Leds.h
  * @author Seb Madgwick
- * @brief Driver for LEDs.
+ * @brief LEDs driver.
  */
 
 #ifndef LEDS_H

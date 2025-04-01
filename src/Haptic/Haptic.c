@@ -1,7 +1,7 @@
 /**
  * @file Haptic.c
  * @author Seb Madgwick
- * @brief Driver for the DRV2605L haptic driver.
+ * @brief DRV2605L haptic driver.
  */
 
 //------------------------------------------------------------------------------
