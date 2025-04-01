@@ -73,6 +73,9 @@ void UART1_RX_Handler (void);
 void UART1_TX_Handler (void);
 void USB_Handler (void);
 void USB_DMA_Handler (void);
+void DMA3_Handler (void);
+void DMA5_Handler (void);
+void DMA7_Handler (void);
 void UART3_RX_Handler (void);
 void UART3_TX_Handler (void);
 
@@ -105,6 +108,21 @@ void __attribute__((used)) __ISR(_USB_VECTOR, ipl1SRS) USB_Handler (void)
 void __attribute__((used)) __ISR(_USB_DMA_VECTOR, ipl1SRS) USB_DMA_Handler (void)
 {
     DRV_USBHS_DMAInterruptHandler();
+}
+
+void __attribute__((used)) __ISR(_DMA3_VECTOR, ipl1SRS) DMA3_Handler (void)
+{
+    Dma3InterruptHandler();
+}
+
+void __attribute__((used)) __ISR(_DMA5_VECTOR, ipl1SRS) DMA5_Handler (void)
+{
+    Dma5InterruptHandler();
+}
+
+void __attribute__((used)) __ISR(_DMA7_VECTOR, ipl1SRS) DMA7_Handler (void)
+{
+    Dma7InterruptHandler();
 }
 
 void __attribute__((used)) __ISR(_UART3_RX_VECTOR, ipl1SRS) UART3_RX_Handler (void)

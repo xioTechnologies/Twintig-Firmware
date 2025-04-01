@@ -131,6 +131,9 @@
         <logicalFolder name="Spi" displayName="Spi" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Spi/Spi.h</itemPath>
           <itemPath>../src/x-io-PIC32-Library/Spi/Spi1DmaTX.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Spi/Spi4Dma.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Spi/Spi3Dma.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Spi/Spi6Dma.h</itemPath>
         </logicalFolder>
         <logicalFolder name="Timer" displayName="Timer" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Timer/Timer.h</itemPath>
@@ -257,6 +260,9 @@
         <logicalFolder name="Spi" displayName="Spi" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Spi/Spi.c</itemPath>
           <itemPath>../src/x-io-PIC32-Library/Spi/Spi1DmaTX.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Spi/Spi4Dma.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Spi/Spi3Dma.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Spi/Spi6Dma.c</itemPath>
         </logicalFolder>
         <logicalFolder name="Timer" displayName="Timer" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Timer/Timer.c</itemPath>
