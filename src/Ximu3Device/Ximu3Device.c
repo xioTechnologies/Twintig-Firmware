@@ -11,6 +11,7 @@
 #include "Context.h"
 #include "Interfaces.h"
 #include "Nvm.h"
+#include <string.h>
 #include "Timer/Timer.h"
 #include "x-IMU3-Device/Ximu3Command.h"
 #include "x-IMU3-Device/Ximu3Data.h"
@@ -18,8 +19,8 @@
 //------------------------------------------------------------------------------
 // Function declarations
 
-static void InitialiseEpilogue(const bool nvmBlank, void* const context);
-static void DefaultsEpilogue(const bool preservedOverwriten, void* const context);
+static void InitialiseEpilogue(void* const context);
+static void DefaultsEpilogue(void* const context);
 static void WriteEpilogue(const Ximu3SettingsIndex index, void* const context);
 static void Error(const char* const error, void* const context);
 
@@ -82,20 +83,26 @@ void Ximu3DeviceTasks(void) {
 
 /**
  * @brief Initialise epilogue.
- * @param nvmBlank True if NVM is blank.
  * @param context Context.
  */
-static void InitialiseEpilogue(const bool nvmBlank, void* const context) {
-    Context * const context_ = context;
-    context_->nvmBlank = nvmBlank;
+static void InitialiseEpilogue(void* const context) {
+    const char* const firmwareVersion = Ximu3SettingsGet(&settings)->firmwareVersion;
+    if (strspn(firmwareVersion, "?") == strlen(firmwareVersion)) { // if NVM blank
+        Ximu3SettingsDefaults(&settings, true);
+        Context * const context_ = context;
+        context_->nvmBlank = true;
+        return;
+    }
+    if (strncmp(firmwareVersion, "v1.0.0", sizeof ("v1.0.0")) != 0) { // if firmware changed
+        Ximu3SettingsDefaults(&settings, false);
+    }
 }
 
 /**
  * @brief Defaults epilogue.
- * @param preservedOverwriten True if preserved settings overwritten.
  * @param context Context.
  */
-static void DefaultsEpilogue(const bool preservedOverwriten, void* const context) {
+static void DefaultsEpilogue(void* const context) {
 }
 
 /**

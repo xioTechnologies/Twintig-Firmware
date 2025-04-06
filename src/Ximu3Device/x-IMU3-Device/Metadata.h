@@ -25,7 +25,7 @@ typedef struct {
     const void* const defaultValue;
     const bool preserved;
     const bool readOnly;
-    bool* const applyPending;
+    bool* const applied;
 } Metadata;
 
 Metadata MetadataGet(Ximu3Settings * const settings, const Ximu3SettingsIndex index);

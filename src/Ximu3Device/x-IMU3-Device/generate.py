@@ -102,7 +102,7 @@ typedef struct {{
     const void* const defaultValue;
     const bool preserved;
     const bool readOnly;
-    bool* const applyPending;
+    bool* const applied;
 }} Metadata;
 
 Metadata MetadataGet(Ximu3Settings * const settings, const Ximu3SettingsIndex index);
@@ -127,8 +127,6 @@ defaults = "\n".join([f"    (void*) (&({s['declaration'].replace(' name', '')}) 
 preserveds = "\n".join([f"    {str(bool(s.get('preserved'))).lower()}," for s in settings])
 
 read_onlys = "\n".join([f"    {str(bool(s.get('preserved')) or bool(s.get('read-only'))).lower()}," for s in settings])
-
-apply_pendings = "\n".join(["    true," for _ in settings])
 
 template = """\
         case label:
@@ -186,7 +184,7 @@ Metadata MetadataGet(Ximu3Settings * const settings, const Ximu3SettingsIndex in
         .defaultValue = defaults[index],
         .preserved = preserveds[index],
         .readOnly = readOnlys[index],
-        .applyPending = &settings->applyPendings[index],
+        .applied = &settings->applied[index],
     }};
     return metaData;
 }}

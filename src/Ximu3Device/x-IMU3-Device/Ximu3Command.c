@@ -19,6 +19,14 @@
 #include "Ximu3SettingsJson.h"
 
 //------------------------------------------------------------------------------
+// Definitions
+
+/**
+ * @brief Uncomment this line to enable printing of messages.
+ */
+//#define PRINT_MESSAGES
+
+//------------------------------------------------------------------------------
 // Function declarations
 
 static void Receive(Ximu3CommandBridge * const bridge, Ximu3CommandInterface * const interface);
@@ -90,6 +98,9 @@ static void Receive(Ximu3CommandBridge * const bridge, Ximu3CommandInterface * c
  * @param json JSON.
  */
 static void Parse(const Ximu3CommandBridge * const bridge, const Ximu3CommandInterface * const interface, const char* * const json) {
+#ifdef PRINT_MESSAGES
+    printf("%s RX %s\n", interface->name, interface->buffer);
+#endif
 
     // Parse object start
     JsonError error = JsonParseObjectStart(json);
@@ -247,6 +258,9 @@ void Ximu3CommandRespond(Ximu3CommandResponse * const response) {
     char string[XIMU3_OBJECT_SIZE];
     snprintf(string, sizeof (string), "{\"%s\":%s}\n", response->key, response->value);
     response->interface->write(string, strlen(string), response->context);
+#ifdef PRINT_MESSAGES
+    printf("%s TX %s", response->interface->name, string);
+#endif
 }
 
 /**

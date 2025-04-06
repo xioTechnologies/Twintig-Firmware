@@ -23,10 +23,10 @@
 typedef struct {
     void(*nvmRead)(void* const destination, size_t numberOfBytes, void* const context); // NULL if unused
     void(*nvmWrite)(const void* const data, const size_t numberOfBytes, void* const context); // NULL if unused
-    void(*initialiseEpilogue)(const bool nvmBlank, void* const context); // NULL if unused
-    void(*defaultsEpilogue)(const bool preservedOverwriten, void* const context); // NULL if unused
+    void(*initialiseEpilogue)(void* const context); // NULL if unused
+    void(*defaultsEpilogue)(void* const context); // NULL if unused
     Ximu3SettingsValues values; // private
-    bool applyPendings[XIMU3_NUMBER_OF_SETTINGS]; // private
+    bool applied[XIMU3_NUMBER_OF_SETTINGS]; // private
     void* context;
 } Ximu3Settings;
 

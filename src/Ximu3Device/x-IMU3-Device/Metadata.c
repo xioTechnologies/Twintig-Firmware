@@ -112,7 +112,7 @@ Metadata MetadataGet(Ximu3Settings * const settings, const Ximu3SettingsIndex in
         .defaultValue = defaults[index],
         .preserved = preserveds[index],
         .readOnly = readOnlys[index],
-        .applyPending = &settings->applyPendings[index],
+        .applied = &settings->applied[index],
     };
     return metaData;
 }

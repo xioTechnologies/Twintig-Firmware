@@ -8,6 +8,7 @@
 // Includes
 
 #include <ctype.h>
+#include <math.h>
 #include "Metadata.h"
 #include <string.h>
 #include "Ximu3Settings.h"
@@ -15,7 +16,9 @@
 //------------------------------------------------------------------------------
 // Function declarations
 
-static void WriteString(char* const destination, const size_t destinationSize, const char* string);
+static void SetValue(const Metadata * const metadata, const void* const value);
+static void CopyString(char* const destination, const size_t destinationSize, const char* string);
+static bool IsNanOrInf(const float value);
 
 //------------------------------------------------------------------------------
 // Functions
@@ -28,27 +31,21 @@ static void WriteString(char* const destination, const size_t destinationSize, c
 void Ximu3SettingsInitialise(Ximu3Settings * const settings) {
 
     // Read values from NVM
-    Ximu3SettingsValues blankValues;
-    memset(&blankValues, 0xFF, sizeof (blankValues));
-    settings->values = blankValues;
     if (settings->nvmRead != NULL) {
         settings->nvmRead(&settings->values, sizeof (settings->values), settings->context);
+    } else {
+        memset(&settings->values, 0xFF, sizeof (settings->values));
     }
 
-    // Load defaults if NVM blank
-    const bool nvmBlank = memcmp(&settings->values, &blankValues, sizeof (settings->values)) == 0;
-    if (nvmBlank) {
-        Ximu3SettingsDefaults(settings, true);
-    }
-
-    // Set apply pending flags
-    for (size_t index = 0; index < XIMU3_NUMBER_OF_SETTINGS; index++) {
-        settings->applyPendings[index] = true;
+    // Fix invalid values
+    for (int index = 0; index < XIMU3_NUMBER_OF_SETTINGS; index++) {
+        const Metadata metadata = MetadataGet(settings, index);
+        SetValue(&metadata, metadata.value);
     }
 
     // Epilogue
     if (settings->initialiseEpilogue != NULL) {
-        settings->initialiseEpilogue(nvmBlank, settings->context);
+        settings->initialiseEpilogue(settings->context);
     }
 }
 
@@ -70,7 +67,7 @@ void Ximu3SettingsDefaults(Ximu3Settings * const settings, const bool overwriteP
 
     // Epilogue
     if (settings->defaultsEpilogue != NULL) {
-        settings->defaultsEpilogue(overwritePreserved, settings->context);
+        settings->defaultsEpilogue(settings->context);
     }
 }
 
@@ -106,30 +103,48 @@ void Ximu3SettingsSet(Ximu3Settings * const settings, const Ximu3SettingsIndex i
         return;
     }
 
-    // Set apply pending flag
-    *metadata.applyPending = true;
+    // Clear applied flag
+    *metadata.applied = false;
 
-    // Set value
-    switch (metadata.type) {
-        case MetadataTypeBool:
-        case MetadataTypeFloat:
-        case MetadataTypeUint32:
-            memcpy(metadata.value, value, metadata.size);
-            break;
-        case MetadataTypeCharArray:
-            WriteString(metadata.value, metadata.size, value);
-            break;
-    }
+    // Write value
+    SetValue(&metadata, value);
 }
 
 /**
- * @brief Writes string. Unprintable characters are replaced with '?'. The
+ * @brief Sets value. Invalid values (including unterminated strings) will be
+ * fixed.
+ * @param metadata Metadata.
+ * @param value Value.
+ */
+static void SetValue(const Metadata * const metadata, const void* const value) {
+
+    // Set value
+    switch (metadata->type) {
+        case MetadataTypeBool:
+        case MetadataTypeUint32:
+            memcpy(metadata->value, value, metadata->size);
+            return;
+        case MetadataTypeCharArray:
+            CopyString(metadata->value, metadata->size, value);
+            return;
+        case MetadataTypeFloat:
+            if (IsNanOrInf(*((float*) value))) {
+                break;
+            }
+            memcpy(metadata->value, value, metadata->size);
+            return;
+    }
+    memcpy(metadata->value, metadata->defaultValue, metadata->size);
+}
+
+/**
+ * @brief Copies string. Unprintable characters are replaced with '?'. The
  * destination is padded with trailing zeros.
  * @param destination Destination.
  * @param destinationSize Destination size.
  * @param string String.
  */
-static void WriteString(char* const destination, const size_t destinationSize, const char* string) {
+static void CopyString(char* const destination, const size_t destinationSize, const char* string) {
     for (size_t index = 0; index < destinationSize; index++) {
         if (*string == '\0') {
             destination[index] = *string;
@@ -143,6 +158,15 @@ static void WriteString(char* const destination, const size_t destinationSize, c
         string++;
     }
     destination[destinationSize - 1] = '\0';
+}
+
+/**
+ * @brief Returns true if NaN or Inf.
+ * @param value Value.
+ * @return True if NaN or Inf.
+ */
+static bool IsNanOrInf(const float value) {
+    return isnan(value) || isinf(value);
 }
 
 /**
@@ -164,9 +188,9 @@ void Ximu3SettingsSave(Ximu3Settings * const settings) {
  */
 bool Ximu3SettingsApplyPending(Ximu3Settings * const settings, const Ximu3SettingsIndex index) {
     const Metadata metadata = MetadataGet(settings, index);
-    const bool applyPending = *metadata.applyPending;
-    *metadata.applyPending = false;
-    return applyPending;
+    const bool applied = *metadata.applied;
+    *metadata.applied = true;
+    return applied == false;
 }
 
 //------------------------------------------------------------------------------
