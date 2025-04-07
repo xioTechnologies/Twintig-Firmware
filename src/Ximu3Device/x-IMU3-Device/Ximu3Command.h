@@ -24,8 +24,8 @@ typedef struct {
     const char* const name;
     size_t(*read)(void* const destination, size_t numberOfBytes, void* const context);
     void(*write)(const void* const data, const size_t numberOfBytes, void* const context);
-    char buffer[XIMU3_OBJECT_SIZE];
-    size_t index;
+    char buffer[XIMU3_OBJECT_SIZE]; // private
+    size_t index; // private
 } Ximu3CommandInterface;
 
 /**
