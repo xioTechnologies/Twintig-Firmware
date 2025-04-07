@@ -13,8 +13,7 @@
 #include "Nvm.h"
 #include <string.h>
 #include "Timer/Timer.h"
-#include "x-IMU3-Device/Ximu3Command.h"
-#include "x-IMU3-Device/Ximu3Data.h"
+#include "x-IMU3-Device/Ximu3.h"
 
 //------------------------------------------------------------------------------
 // Function declarations

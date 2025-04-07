@@ -10,7 +10,7 @@
 #include "Commands.h"
 #include "Context.h"
 #include "Haptic/Haptic.h"
-#include "x-IMU3-Device/Ximu3Settings.h"
+#include "x-IMU3-Device/Ximu3.h"
 
 //------------------------------------------------------------------------------
 // Functions

@@ -165,6 +165,7 @@
           <itemPath>../src/Ximu3Device/x-IMU3-Device/Ximu3Definitions.h</itemPath>
           <itemPath>../src/Ximu3Device/x-IMU3-Device/Ximu3Settings.h</itemPath>
           <itemPath>../src/Ximu3Device/x-IMU3-Device/Ximu3SettingsJson.h</itemPath>
+          <itemPath>../src/Ximu3Device/x-IMU3-Device/Ximu3.h</itemPath>
         </logicalFolder>
         <itemPath>../src/Ximu3Device/Ximu3Device.h</itemPath>
         <itemPath>../src/Ximu3Device/Commands.h</itemPath>

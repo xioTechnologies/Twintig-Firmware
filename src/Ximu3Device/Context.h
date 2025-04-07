@@ -11,7 +11,7 @@
 // Includes
 
 #include <stdbool.h>
-#include "x-IMU3-Device/Ximu3Settings.h"
+#include "x-IMU3-Device/Ximu3.h"
 
 //------------------------------------------------------------------------------
 // Definitions
