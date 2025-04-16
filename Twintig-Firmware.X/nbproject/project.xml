@@ -13,6 +13,7 @@
                 <sourceRootElem>../src/Haptic</sourceRootElem>
                 <sourceRootElem>../src/Ximu3Device</sourceRootElem>
                 <sourceRootElem>../src/Leds</sourceRootElem>
+                <sourceRootElem>../src/Imu</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

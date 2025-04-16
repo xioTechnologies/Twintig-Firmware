@@ -15,6 +15,7 @@
 
 #include "definitions.h"
 #include "Haptic/Haptic.h"
+#include "Imu/Imu.h"
 #include "Leds/Leds.h"
 #include "ResetCause/ResetCause.h"
 #include <stdbool.h>
@@ -26,10 +27,27 @@
 #include "Uart/Uart1.h"
 #include "Uart/Uart3.h"
 #include "Usb/UsbCdc.h"
+#include "Ximu3Device/x-IMU3-Device/Ximu3.h"
 #include "Ximu3Device/Ximu3Device.h"
 
 //------------------------------------------------------------------------------
 // Functions
+
+static void ImuDataReady(const ImuData * const imuData) {
+    const Ximu3DataInertial inertialData = {
+        .timestamp = imuData->timestamp / TIMER_TICKS_PER_MICROSECOND,
+        .gyroscopeX = imuData->gyroscopeX,
+        .gyroscopeY = imuData->gyroscopeY,
+        .gyroscopeZ = imuData->gyroscopeZ,
+        .accelerometerX = imuData->accelerometerX,
+        .accelerometerY = imuData->accelerometerY,
+        .accelerometerZ = imuData->accelerometerZ,
+    };
+    uint8_t message[64];
+    const size_t numberOfBytes = Ximu3DataInertialBinary(message, sizeof (message), &inertialData);
+    UsbCdcWrite(message, numberOfBytes);
+    Uart1Write(message, numberOfBytes);
+}
 
 int main(void) {
     SYS_Initialize(NULL);
@@ -49,13 +67,16 @@ int main(void) {
     Uart1Initialise(&uartSettingsDefault);
     Ximu3DeviceInitialise();
 
+    ImuSetDataReadyCallback(ImuDataReady);
+    ImuInitialise(ImuOdr50Hz);
+
     // Main program loop
     while (true) {
         SYS_Tasks();
         UsbCdcTasks();
         Ximu3DeviceTasks();
-        if (TIMER_SCHEDULER_POLL(0.5f)) {
-            printf(".");
+        if (TIMER_SCHEDULER_POLL(0.01f)) {
+            ImuRead();
         }
     }
     return (EXIT_FAILURE);

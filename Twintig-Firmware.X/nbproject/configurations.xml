@@ -110,6 +110,9 @@
       <logicalFolder name="Haptic" displayName="Haptic" projectFiles="true">
         <itemPath>../src/Haptic/Haptic.h</itemPath>
       </logicalFolder>
+      <logicalFolder name="Imu" displayName="Imu" projectFiles="true">
+        <itemPath>../src/Imu/Imu.h</itemPath>
+      </logicalFolder>
       <logicalFolder name="Leds" displayName="Leds" projectFiles="true">
         <itemPath>../src/Leds/Leds.h</itemPath>
       </logicalFolder>
@@ -243,6 +246,9 @@
       <logicalFolder name="Haptic" displayName="Haptic" projectFiles="true">
         <itemPath>../src/Haptic/Haptic.c</itemPath>
       </logicalFolder>
+      <logicalFolder name="Imu" displayName="Imu" projectFiles="true">
+        <itemPath>../src/Imu/Imu.c</itemPath>
+      </logicalFolder>
       <logicalFolder name="Leds" displayName="Leds" projectFiles="true">
         <itemPath>../src/Leds/Leds.c</itemPath>
       </logicalFolder>
@@ -304,6 +310,7 @@
     <Elem>../src/Haptic</Elem>
     <Elem>../src/Ximu3Device</Elem>
     <Elem>../src/Leds</Elem>
+    <Elem>../src/Imu</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
