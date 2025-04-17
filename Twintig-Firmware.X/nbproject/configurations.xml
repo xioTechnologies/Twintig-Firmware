@@ -176,6 +176,7 @@
         <itemPath>../src/Ximu3Device/Context.h</itemPath>
         <itemPath>../src/Ximu3Device/Nvm.h</itemPath>
       </logicalFolder>
+      <itemPath>../src/FirmwareVersion.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -306,11 +307,7 @@
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
-    <Elem>../src/x-io-PIC32-Library</Elem>
-    <Elem>../src/Haptic</Elem>
-    <Elem>../src/Ximu3Device</Elem>
-    <Elem>../src/Leds</Elem>
-    <Elem>../src/Imu</Elem>
+    <Elem>../src</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>

@@ -9,11 +9,7 @@
             <sourceEncoding>ISO-8859-1</sourceEncoding>
             <make-dep-projects/>
             <sourceRootList>
-                <sourceRootElem>../src/x-io-PIC32-Library</sourceRootElem>
-                <sourceRootElem>../src/Haptic</sourceRootElem>
-                <sourceRootElem>../src/Ximu3Device</sourceRootElem>
-                <sourceRootElem>../src/Leds</sourceRootElem>
-                <sourceRootElem>../src/Imu</sourceRootElem>
+                <sourceRootElem>../src</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

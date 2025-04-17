@@ -9,6 +9,7 @@
 
 #include "Commands.h"
 #include "Context.h"
+#include "FirmwareVersion.h"
 #include "Interfaces.h"
 #include "Nvm.h"
 #include <string.h>
@@ -92,7 +93,7 @@ static void InitialiseEpilogue(void* const context) {
         context_->nvmBlank = true;
         return;
     }
-    if (strncmp(firmwareVersion, "v1.0.0", sizeof ("v1.0.0")) != 0) { // if firmware changed
+    if (strncmp(firmwareVersion, FIRMWARE_VERSION, sizeof (FIRMWARE_VERSION)) != 0) { // if firmware changed
         Ximu3SettingsDefaults(&settings, false);
     }
 }
@@ -102,6 +103,7 @@ static void InitialiseEpilogue(void* const context) {
  * @param context Context.
  */
 static void DefaultsEpilogue(void* const context) {
+    Ximu3SettingsSet(&settings, Ximu3SettingsIndexFirmwareVersion, FIRMWARE_VERSION, true);
 }
 
 /**

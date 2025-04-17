@@ -14,6 +14,7 @@
 // Includes
 
 #include "definitions.h"
+#include "FirmwareVersion.h"
 #include "Haptic/Haptic.h"
 #include "Imu/Imu.h"
 #include "Leds/Leds.h"
@@ -68,7 +69,7 @@ int main(void) {
     // Print start up message
     const RCON_RESET_CAUSE resetCause = ResetCauseGet();
     ResetCausePrint(resetCause);
-    printf("Twintig v0.0.0\n");
+    printf("Twintig " FIRMWARE_VERSION "\n");
 
     // Initialise modules
     TimerInitialise();
