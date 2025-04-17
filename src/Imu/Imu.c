@@ -115,6 +115,9 @@ typedef struct {
     int16_t gyroDataX;
     int16_t gyroDataY;
     int16_t gyroDataZ;
+    //    uint8_t tmstFsyncH;
+    //    uint8_t tmstFsyncL;
+    //    uint8_t intStatus;
 } __attribute__((__packed__)) TempAccelGyroRegisters;
 
 /**
@@ -310,6 +313,10 @@ void ImuInitialise(const ImuOdr odr) {
     accelConfig0Register.accelOdr = odr;
     WriteRegister(ACCEL_CONFIG0_ADDRESS, accelConfig0Register.value);
 
+    //    // Configure interrupt
+    //    GPIO_PinInterruptCallbackRegister(INT4_CH1_PIN, ExternalInterrupt, (uintptr_t) NULL);
+    //    GPIO_PinIntEnable(INT4_CH1_PIN, GPIO_INTERRUPT_ON_BOTH_EDGES); // only both edges supported
+
     // Turn on gyroscope and accelerometer
     PwrMgmt0Register pwrMgmt0Register = {.value = ReadRegister(PWR_MGMT0_ADDRESS)};
     pwrMgmt0Register.gyroMode = 0b11;
@@ -372,7 +379,7 @@ static void WriteRegister(const uint8_t address, const uint8_t value) {
  * @param context COntext.
  */
 static void ExternalInterrupt(GPIO_PIN pin, uintptr_t context) {
-    if (GPIO_PinRead(pin) == false) {
+    if (GPIO_PinRead(pin) == true) { // ignore rising edges
         return;
     }
     if (Spi4DmaTransferInProgress()) {
