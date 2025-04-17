@@ -26,6 +26,8 @@ typedef enum {
     ImuOdr100Hz = 0b1000,
     ImuOdr50Hz = 0b1001,
     ImuOdr25Hz = 0b1010,
+    ImuOdr12Hz = 0b1011,
+    ImuOdr500Hz = 0b1111,
 } ImuOdr;
 
 typedef struct {
@@ -45,7 +47,6 @@ typedef struct {
 void ImuInitialise(const ImuOdr odr);
 void ImuDeinitialise(void);
 void ImuSetDataReadyCallback(void (*dataReady_)(const ImuData * const data));
-void ImuRead(void);
 
 //------------------------------------------------------------------------------
 // End of file

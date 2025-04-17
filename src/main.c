@@ -47,6 +47,16 @@ static void ImuDataReady(const ImuData * const imuData) {
     const size_t numberOfBytes = Ximu3DataInertialBinary(message, sizeof (message), &inertialData);
     UsbCdcWrite(message, numberOfBytes);
     Uart1Write(message, numberOfBytes);
+    if (TIMER_SCHEDULER_POLL(0.2f)) {
+        const Ximu3DataTemperature temperatureData = {
+            .timestamp = imuData->timestamp / TIMER_TICKS_PER_MICROSECOND,
+            .temperature = imuData->temperature,
+        };
+        uint8_t message[64];
+        const size_t numberOfBytes = Ximu3DataTemperatureBinary(message, sizeof (message), &temperatureData);
+        UsbCdcWrite(message, numberOfBytes);
+        Uart1Write(message, numberOfBytes);
+    }
 }
 
 int main(void) {
@@ -64,20 +74,19 @@ int main(void) {
     TimerInitialise();
     LedsInitialise();
     HapticInitialise();
-    Uart1Initialise(&uartSettingsDefault);
+    UartSettings settings = uartSettingsDefault;
+    settings.baudRate = 3000000;
+    Uart1Initialise(&settings);
     Ximu3DeviceInitialise();
 
     ImuSetDataReadyCallback(ImuDataReady);
-    ImuInitialise(ImuOdr50Hz);
+    ImuInitialise(ImuOdr8kHz);
 
     // Main program loop
     while (true) {
         SYS_Tasks();
         UsbCdcTasks();
         Ximu3DeviceTasks();
-        if (TIMER_SCHEDULER_POLL(0.01f)) {
-            ImuRead();
-        }
     }
     return (EXIT_FAILURE);
 }

@@ -71,6 +71,7 @@
 void TIMER_3_Handler (void);
 void UART1_RX_Handler (void);
 void UART1_TX_Handler (void);
+void CHANGE_NOTICE_H_Handler (void);
 void USB_Handler (void);
 void USB_DMA_Handler (void);
 void DMA3_Handler (void);
@@ -98,6 +99,11 @@ void __attribute__((used)) __ISR(_UART1_RX_VECTOR, ipl1SRS) UART1_RX_Handler (vo
 void __attribute__((used)) __ISR(_UART1_TX_VECTOR, ipl1SRS) UART1_TX_Handler (void)
 {
     Uart1TXInterruptHandler();
+}
+
+void __attribute__((used)) __ISR(_CHANGE_NOTICE_H_VECTOR, ipl1SRS) CHANGE_NOTICE_H_Handler (void)
+{
+    CHANGE_NOTICE_H_InterruptHandler();
 }
 
 void __attribute__((used)) __ISR(_USB_VECTOR, ipl1SRS) USB_Handler (void)

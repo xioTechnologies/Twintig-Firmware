@@ -53,6 +53,16 @@
  */
 #define ACCEL_CONFIG0_ADDRESS (0x50)
 
+///**
+// * @brief INT_CONFIG0 register address.
+// */
+//#define INT_CONFIG0_ADDRESS (0x63)
+
+/**
+ * @brief INT_CONFIG1 register address.
+ */
+#define INT_CONFIG1_ADDRESS (0x64)
+
 /**
  * @brief INT_SOURCE0 register address.
  */
@@ -164,6 +174,35 @@ typedef union {
     uint8_t value;
 } AccelConfig0Register;
 
+///**
+// * @brief INT_CONFIG0 register.
+// */
+//typedef union {
+//
+//    struct {
+//        unsigned FifoFullIntClear : 2;
+//        unsigned FifoThsIntClear : 2;
+//        unsigned UIDrdyIntClear : 2;
+//        unsigned : 2;
+//    } __attribute__((__packed__));
+//    uint8_t value;
+//} IntConfig0Register;
+
+/**
+ * @brief INT_CONFIG1 register.
+ */
+typedef union {
+
+    struct {
+        unsigned : 4;
+        unsigned IntAysncReset : 1;
+        unsigned IntTdeassertDisable : 1;
+        unsigned IntTpulseDuration : 1;
+        unsigned : 1;
+    } __attribute__((__packed__));
+    uint8_t value;
+} IntConfig1Register;
+
 /**
  * @brief INT_SOURCE0 register.
  */
@@ -196,6 +235,7 @@ typedef struct {
 
 static uint8_t ReadRegister(const uint8_t address);
 static void WriteRegister(const uint8_t address, const uint8_t byte);
+static void ExternalInterrupt(GPIO_PIN pin, uintptr_t context);
 static void TransferComplete(void);
 
 //------------------------------------------------------------------------------
@@ -219,7 +259,9 @@ void ImuInitialise(const ImuOdr odr) {
     ImuDeinitialise();
 
     // Initialise SPI
-    Spi4DmaInitialise(&spiSettingsDefault);
+    SpiSettings settings = spiSettingsDefault;
+    settings.clockFrequency = 16000000;
+    Spi4DmaInitialise(&settings);
 
     // Verify identity of the device
     initialisationFailed = ReadRegister(WHO_AM_I) != 0x47;
@@ -237,8 +279,21 @@ void ImuInitialise(const ImuOdr odr) {
 
     // Configure interrupt pin
     IntConfigRegister intConfigRegister = {.value = ReadRegister(INT_CONFIG_ADDRESS)};
+    //    intConfigRegister.int1Mode = 1; // latched mode
     intConfigRegister.int1DriveCircuit = 1; // push pull
     WriteRegister(INT_CONFIG_ADDRESS, intConfigRegister.value);
+
+    //    // Configure interrupt clear
+    //    IntConfig0Register intConfig0Register = {.value = ReadRegister(INT_CONFIG0_ADDRESS)};
+    //    intConfig0Register.UIDrdyIntClear = 0b10; // clear on Sensor Register Read
+    //    WriteRegister(INT_CONFIG0_ADDRESS, intConfig0Register.value);
+
+    // Configure interrupt pulse
+    IntConfig1Register intConfig1Register = {.value = ReadRegister(INT_CONFIG1_ADDRESS)};
+    intConfig1Register.IntTpulseDuration = 1; // interrupt pulse duration is 8 us. Required if ODR ? 4kHz, optional for ODR < 4kHz.
+    intConfig1Register.IntTdeassertDisable = 1; // disables de-assert duration. Required if ODR ? 4kHz, optional for ODR < 4kHz
+    intConfig1Register.IntAysncReset = 1; // user should change setting to 0 from default setting of 1, for proper INT1 and INT2 pin operation
+    WriteRegister(INT_CONFIG1_ADDRESS, intConfig1Register.value);
 
     // Configure interrupt source
     IntSource0Register intSource0Register = {.value = ReadRegister(INT_SOURCE0_ADDRESS)};
@@ -260,9 +315,11 @@ void ImuInitialise(const ImuOdr odr) {
     pwrMgmt0Register.gyroMode = 0b11;
     pwrMgmt0Register.accelMode = 0b11;
     WriteRegister(PWR_MGMT0_ADDRESS, pwrMgmt0Register.value);
+    TimerDelayMilliseconds(45);
 
     // Configure interrupt
-    // TODO: enable interrupt
+    GPIO_PinInterruptCallbackRegister(INT4_CH1_PIN, ExternalInterrupt, (uintptr_t) NULL);
+    GPIO_PinIntEnable(INT4_CH1_PIN, GPIO_INTERRUPT_ON_BOTH_EDGES); // only both edges supported
 }
 
 /**
@@ -271,7 +328,7 @@ void ImuInitialise(const ImuOdr odr) {
 void ImuDeinitialise(void) {
     while (Spi4DmaTransferInProgress());
     Spi4DmaDeinitialise();
-    // TODO: disable interrupt
+    GPIO_PinIntDisable(INT4_CH1_PIN);
 }
 
 /**
@@ -310,9 +367,14 @@ static void WriteRegister(const uint8_t address, const uint8_t value) {
 }
 
 /**
- * @brief Triggers read.
+ * @brief External interrupt callback function.
+ * @param pin Pin.
+ * @param context COntext.
  */
-void ImuRead(void) {
+static void ExternalInterrupt(GPIO_PIN pin, uintptr_t context) {
+    if (GPIO_PinRead(pin) == false) {
+        return;
+    }
     if (Spi4DmaTransferInProgress()) {
         return;
     }
