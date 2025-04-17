@@ -11,6 +11,7 @@
 // Includes
 
 #include <stdbool.h>
+#include <stdint.h>
 #include "x-IMU3-Device/Ximu3.h"
 
 //------------------------------------------------------------------------------
@@ -23,6 +24,7 @@ typedef struct {
     Ximu3Settings * const settings;
     bool nvmBlank;
     bool factoryMode;
+    uint64_t applyTimeout;
 } Context;
 
 #endif

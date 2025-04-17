@@ -75,9 +75,6 @@ int main(void) {
     TimerInitialise();
     LedsInitialise();
     HapticInitialise();
-    UartSettings settings = uartSettingsDefault;
-    settings.baudRate = 3000000;
-    Uart1Initialise(&settings);
     Ximu3DeviceInitialise();
 
     ImuSetDataReadyCallback(ImuDataReady);

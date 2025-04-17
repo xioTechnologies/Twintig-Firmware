@@ -12,9 +12,9 @@
 
 #define XIMU3_OBJECT_SIZE 1024
 
-#define XIMU3_MAX_KEY_LENGTH 20
+#define XIMU3_MAX_KEY_LENGTH 22
 
-#define XIMU3_NUMBER_OF_SETTINGS 8
+#define XIMU3_NUMBER_OF_SETTINGS 9
 
 typedef struct {
     char serialNumber[16];
@@ -23,8 +23,9 @@ typedef struct {
     float sensitivity;
     char firmwareVersion[32];
     char deviceName[32];
-    bool binaryMode;
-    uint32_t messageRateDivisor;
+    bool serialEnabled;
+    uint32_t serialBaudRate;
+    bool serialRtsCtsEnabled;
 } Ximu3SettingsValues;
 
 typedef enum {
@@ -34,8 +35,9 @@ typedef enum {
     Ximu3SettingsIndexSensitivity,
     Ximu3SettingsIndexFirmwareVersion,
     Ximu3SettingsIndexDeviceName,
-    Ximu3SettingsIndexBinaryMode,
-    Ximu3SettingsIndexMessageRateDivisor,
+    Ximu3SettingsIndexSerialEnabled,
+    Ximu3SettingsIndexSerialBaudRate,
+    Ximu3SettingsIndexSerialRtsCtsEnabled,
 } Ximu3SettingsIndex;
 
 #endif

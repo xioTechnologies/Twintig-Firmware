@@ -7,6 +7,7 @@
 //------------------------------------------------------------------------------
 // Includes
 
+#include "Apply.h"
 #include "Commands.h"
 #include "Context.h"
 #include "FirmwareVersion.h"
@@ -29,6 +30,7 @@ static void Error(const char* const error, void* const context);
 
 static const Ximu3CommandMap commands[] = {
     {"default", CommandsDefault},
+    {"apply", CommandsApply},
     {"save", CommandsSave},
     {"ping", CommandsPing},
     {"haptic", CommandsHaptic},
@@ -58,6 +60,7 @@ static Context context = {
     .settings = &settings,
     .nvmBlank = false,
     .factoryMode = false,
+    .applyTimeout = 0,
 };
 
 //------------------------------------------------------------------------------
@@ -71,6 +74,7 @@ void Ximu3DeviceInitialise(void) {
     settings.context = &context;
     bridge.context = &context;
     Ximu3SettingsInitialise(&settings);
+    ApplyNow(&context);
 }
 
 /**
@@ -79,6 +83,7 @@ void Ximu3DeviceInitialise(void) {
  */
 void Ximu3DeviceTasks(void) {
     Ximu3CommandTasks(&bridge);
+    ApplyTasks(&context);
 }
 
 /**
@@ -112,7 +117,7 @@ static void DefaultsEpilogue(void* const context) {
  * @param context Context.
  */
 static void WriteEpilogue(const Ximu3SettingsIndex index, void* const context) {
-    // TODO: apply settings
+    ApplyAfterDelay((Context * const) context);
 }
 
 /**

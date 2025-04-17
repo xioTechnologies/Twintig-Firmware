@@ -40,14 +40,19 @@
             "default": "{\"Twintig\"}"
         },
         {
-            "name": "Binary mode",
+            "name": "Serial enabled",
             "declaration": "bool name",
-            "default": "{false}"
+            "default": "{true}"
         },
         {
-            "name": "Message rate divisor",
+            "name": "Serial baud rate",
             "declaration": "uint32_t name",
-            "default": "{1}"
+            "default": "{115200}"
+        },
+        {
+            "name": "Serial RTS/CTS enabled",
+            "declaration": "bool name",
+            "default": "{false}"
         }
     ]
 }

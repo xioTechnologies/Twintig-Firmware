@@ -7,6 +7,7 @@
 //------------------------------------------------------------------------------
 // Includes
 
+#include "Apply.h"
 #include "Commands.h"
 #include "Context.h"
 #include "Haptic/Haptic.h"
@@ -26,7 +27,21 @@ void CommandsDefault(const char* * const value, Ximu3CommandResponse * const res
     }
     Context * const context_ = context;
     Ximu3SettingsDefaults(context_->settings, context_->factoryMode);
-    // TODO: apply settings
+    ApplyAfterDelay(context_);
+    Ximu3CommandRespond(response);
+}
+
+/**
+ * @brief Apply command.
+ * @param value Value.
+ * @param response Response.
+ */
+void CommandsApply(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
+    if (Ximu3CommandParseNull(value, response) != 0) {
+        return;
+    }
+    Context * const context_ = context;
+    ApplyNow(context_);
     Ximu3CommandRespond(response);
 }
 
