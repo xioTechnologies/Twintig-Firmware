@@ -10,6 +10,7 @@
 //------------------------------------------------------------------------------
 // Includes
 
+#include <stdbool.h>
 #include <stdint.h>
 
 //------------------------------------------------------------------------------
@@ -46,7 +47,7 @@ typedef struct {
 
 void ImuInitialise(const ImuOdr odr);
 void ImuDeinitialise(void);
-void ImuSetDataReadyCallback(void (*dataReady_)(const ImuData * const data));
+bool ImuGetData(ImuData * const data);
 
 //------------------------------------------------------------------------------
 // End of file

@@ -8,6 +8,7 @@
 // Includes
 
 #include "definitions.h"
+#include "Fifo.h"
 #include "Imu.h"
 #include "Spi/Spi4Dma.h"
 #include <stdbool.h>
@@ -52,11 +53,6 @@
  * @brief ACCEL_CONFIG0 register address.
  */
 #define ACCEL_CONFIG0_ADDRESS (0x50)
-
-///**
-// * @brief INT_CONFIG0 register address.
-// */
-//#define INT_CONFIG0_ADDRESS (0x63)
 
 /**
  * @brief INT_CONFIG1 register address.
@@ -105,7 +101,7 @@ typedef union {
 } IntConfigRegister;
 
 /**
- * @brief TEMP_DATA1 to GYRO _DATA_Z0 registers.
+ * @brief Sensor registers.
  */
 typedef struct {
     int16_t tempData;
@@ -115,10 +111,7 @@ typedef struct {
     int16_t gyroDataX;
     int16_t gyroDataY;
     int16_t gyroDataZ;
-    //    uint8_t tmstFsyncH;
-    //    uint8_t tmstFsyncL;
-    //    uint8_t intStatus;
-} __attribute__((__packed__)) TempAccelGyroRegisters;
+} __attribute__((__packed__)) SensorRegisters;
 
 /**
  * @brief INTF_CONFIG0 register.
@@ -177,20 +170,6 @@ typedef union {
     uint8_t value;
 } AccelConfig0Register;
 
-///**
-// * @brief INT_CONFIG0 register.
-// */
-//typedef union {
-//
-//    struct {
-//        unsigned FifoFullIntClear : 2;
-//        unsigned FifoThsIntClear : 2;
-//        unsigned UIDrdyIntClear : 2;
-//        unsigned : 2;
-//    } __attribute__((__packed__));
-//    uint8_t value;
-//} IntConfig0Register;
-
 /**
  * @brief INT_CONFIG1 register.
  */
@@ -230,14 +209,26 @@ typedef union {
 typedef struct {
     unsigned int address : 7;
     unsigned int rw : 1;
-    uint8_t data[32];
+
+    union {
+        uint8_t data[32];
+        uint8_t value;
+    };
 } __attribute__((__packed__)) SpiPacket;
+
+/**
+ * @brief FIFO packet.
+ */
+typedef struct {
+    uint64_t timestamp;
+    SensorRegisters registers;
+} __attribute__((__packed__)) FifoPacket;
 
 //------------------------------------------------------------------------------
 // Function declarations
 
 static uint8_t ReadRegister(const uint8_t address);
-static void WriteRegister(const uint8_t address, const uint8_t byte);
+static void WriteRegister(const uint8_t address, const uint8_t value);
 static void ExternalInterrupt(GPIO_PIN pin, uintptr_t context);
 static void TransferComplete(void);
 
@@ -246,8 +237,9 @@ static void TransferComplete(void);
 
 static __attribute__((coherent)) SpiPacket spiPacket;
 static bool initialisationFailed;
-static void (*dataReady)(const ImuData * const data);
-static ImuData imuData;
+static uint64_t timestamp;
+static uint8_t fifoData[1000 * sizeof (FifoPacket)];
+static Fifo fifo = {.data = fifoData, .dataSize = sizeof (fifoData)};
 
 //------------------------------------------------------------------------------
 // Functions
@@ -282,14 +274,8 @@ void ImuInitialise(const ImuOdr odr) {
 
     // Configure interrupt pin
     IntConfigRegister intConfigRegister = {.value = ReadRegister(INT_CONFIG_ADDRESS)};
-    //    intConfigRegister.int1Mode = 1; // latched mode
     intConfigRegister.int1DriveCircuit = 1; // push pull
     WriteRegister(INT_CONFIG_ADDRESS, intConfigRegister.value);
-
-    //    // Configure interrupt clear
-    //    IntConfig0Register intConfig0Register = {.value = ReadRegister(INT_CONFIG0_ADDRESS)};
-    //    intConfig0Register.UIDrdyIntClear = 0b10; // clear on Sensor Register Read
-    //    WriteRegister(INT_CONFIG0_ADDRESS, intConfig0Register.value);
 
     // Configure interrupt pulse
     IntConfig1Register intConfig1Register = {.value = ReadRegister(INT_CONFIG1_ADDRESS)};
@@ -313,10 +299,6 @@ void ImuInitialise(const ImuOdr odr) {
     accelConfig0Register.accelOdr = odr;
     WriteRegister(ACCEL_CONFIG0_ADDRESS, accelConfig0Register.value);
 
-    //    // Configure interrupt
-    //    GPIO_PinInterruptCallbackRegister(INT4_CH1_PIN, ExternalInterrupt, (uintptr_t) NULL);
-    //    GPIO_PinIntEnable(INT4_CH1_PIN, GPIO_INTERRUPT_ON_BOTH_EDGES); // only both edges supported
-
     // Turn on gyroscope and accelerometer
     PwrMgmt0Register pwrMgmt0Register = {.value = ReadRegister(PWR_MGMT0_ADDRESS)};
     pwrMgmt0Register.gyroMode = 0b11;
@@ -336,14 +318,7 @@ void ImuDeinitialise(void) {
     while (Spi4DmaTransferInProgress());
     Spi4DmaDeinitialise();
     GPIO_PinIntDisable(INT4_CH1_PIN);
-}
-
-/**
- * @brief Sets the data ready callback.
- * @param dataReady_ Data ready callback.
- */
-void ImuSetDataReadyCallback(void (*dataReady_)(const ImuData * const data)) {
-    dataReady = dataReady_;
+    FifoClear(&fifo);
 }
 
 /**
@@ -352,9 +327,7 @@ void ImuSetDataReadyCallback(void (*dataReady_)(const ImuData * const data)) {
  * @return Value.
  */
 static uint8_t ReadRegister(const uint8_t address) {
-    spiPacket.rw = 1;
-    spiPacket.address = address;
-    spiPacket.data[0] = 0;
+    spiPacket = (SpiPacket){.rw = 1, .address = address};
     Spi4DmaTransfer(CS4_CH1_PIN, &spiPacket, 2, NULL);
     while (Spi4DmaTransferInProgress());
     return spiPacket.data[0];
@@ -366,9 +339,7 @@ static uint8_t ReadRegister(const uint8_t address) {
  * @param value Value.
  */
 static void WriteRegister(const uint8_t address, const uint8_t value) {
-    spiPacket.rw = 0;
-    spiPacket.address = address;
-    spiPacket.data[0] = value;
+    spiPacket = (SpiPacket){.rw = 0, .address = address, .value = value};
     Spi4DmaTransfer(CS4_CH1_PIN, &spiPacket, 2, NULL);
     while (Spi4DmaTransferInProgress());
 }
@@ -385,27 +356,42 @@ static void ExternalInterrupt(GPIO_PIN pin, uintptr_t context) {
     if (Spi4DmaTransferInProgress()) {
         return;
     }
-    imuData.timestamp = TimerGetTicks64();
+    timestamp = TimerGetTicks64();
     spiPacket.rw = 1;
     spiPacket.address = TEMP_DATA1_ADDRESS;
-    Spi4DmaTransfer(CS4_CH1_PIN, (void *const) &spiPacket, sizeof (TempAccelGyroRegisters) + 1, TransferComplete);
+    Spi4DmaTransfer(CS4_CH1_PIN, (void *const) &spiPacket, sizeof (SensorRegisters) + 1, TransferComplete);
 }
 
 /**
  * @brief Transfer complete callback function.
  */
 static void TransferComplete(void) {
-    const TempAccelGyroRegisters * const registers = (void *) spiPacket.data;
-    imuData.gyroscopeX = (float) registers->gyroDataX * (1.0f / 16.4f);
-    imuData.gyroscopeY = (float) registers->gyroDataY * (1.0f / 16.4f);
-    imuData.gyroscopeZ = (float) registers->gyroDataZ * (1.0f / 16.4f);
-    imuData.accelerometerX = (float) registers->accelDataX * (1.0f / 2048.0f);
-    imuData.accelerometerY = (float) registers->accelDataY * (1.0f / 2048.0f);
-    imuData.accelerometerZ = (float) registers->accelDataZ * (1.0f / 2048.0f);
-    imuData.temperature = (float) registers->tempData * (1.0f / 132.48f) + 25.0f;
-    if (dataReady != NULL) {
-        dataReady(&imuData);
+    const FifoPacket fifoPacket = {
+        .timestamp = timestamp,
+        .registers = *((SensorRegisters*) spiPacket.data),
+    };
+    FifoWrite(&fifo, &fifoPacket, sizeof (fifoPacket));
+}
+
+/**
+ * @brief Get IMU data.
+ * @param data Data.
+ * @return True if IMU data avaliable.
+ */
+bool ImuGetData(ImuData * const data) {
+    FifoPacket fifoPacket;
+    if (FifoRead(&fifo, &fifoPacket, sizeof (fifoPacket)) == 0) {
+        return false;
     }
+    data->timestamp = fifoPacket.timestamp;
+    data->gyroscopeX = (float) fifoPacket.registers.gyroDataX * (1.0f / 16.4f);
+    data->gyroscopeY = (float) fifoPacket.registers.gyroDataY * (1.0f / 16.4f);
+    data->gyroscopeZ = (float) fifoPacket.registers.gyroDataZ * (1.0f / 16.4f);
+    data->accelerometerX = (float) fifoPacket.registers.accelDataX * (1.0f / 2048.0f);
+    data->accelerometerY = (float) fifoPacket.registers.accelDataY * (1.0f / 2048.0f);
+    data->accelerometerZ = (float) fifoPacket.registers.accelDataZ * (1.0f / 2048.0f);
+    data->temperature = (float) fifoPacket.registers.tempData * (1.0f / 132.48f) + 25.0f;
+    return true;
 }
 
 //------------------------------------------------------------------------------

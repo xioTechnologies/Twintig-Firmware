@@ -34,32 +34,6 @@
 //------------------------------------------------------------------------------
 // Functions
 
-static void ImuDataReady(const ImuData * const imuData) {
-    const Ximu3DataInertial inertialData = {
-        .timestamp = imuData->timestamp / TIMER_TICKS_PER_MICROSECOND,
-        .gyroscopeX = imuData->gyroscopeX,
-        .gyroscopeY = imuData->gyroscopeY,
-        .gyroscopeZ = imuData->gyroscopeZ,
-        .accelerometerX = imuData->accelerometerX,
-        .accelerometerY = imuData->accelerometerY,
-        .accelerometerZ = imuData->accelerometerZ,
-    };
-    uint8_t message[64];
-    const size_t numberOfBytes = Ximu3DataInertialBinary(message, sizeof (message), &inertialData);
-    UsbCdcWrite(message, numberOfBytes);
-    Uart1Write(message, numberOfBytes);
-    if (TIMER_SCHEDULER_POLL(0.2f)) {
-        const Ximu3DataTemperature temperatureData = {
-            .timestamp = imuData->timestamp / TIMER_TICKS_PER_MICROSECOND,
-            .temperature = imuData->temperature,
-        };
-        uint8_t message[64];
-        const size_t numberOfBytes = Ximu3DataTemperatureBinary(message, sizeof (message), &temperatureData);
-        UsbCdcWrite(message, numberOfBytes);
-        Uart1Write(message, numberOfBytes);
-    }
-}
-
 int main(void) {
     SYS_Initialize(NULL);
 
@@ -77,14 +51,40 @@ int main(void) {
     HapticInitialise();
     Ximu3DeviceInitialise();
 
-    ImuSetDataReadyCallback(ImuDataReady);
-    ImuInitialise(ImuOdr8kHz);
+    ImuInitialise(ImuOdr32kHz);
 
     // Main program loop
     while (true) {
         SYS_Tasks();
         UsbCdcTasks();
         Ximu3DeviceTasks();
+
+        ImuData imuData;
+        while (ImuGetData(&imuData)) {
+            const Ximu3DataInertial inertialData = {
+                .timestamp = imuData.timestamp / TIMER_TICKS_PER_MICROSECOND,
+                .gyroscopeX = imuData.gyroscopeX,
+                .gyroscopeY = imuData.gyroscopeY,
+                .gyroscopeZ = imuData.gyroscopeZ,
+                .accelerometerX = imuData.accelerometerX,
+                .accelerometerY = imuData.accelerometerY,
+                .accelerometerZ = imuData.accelerometerZ,
+            };
+            uint8_t message[64];
+            const size_t numberOfBytes = Ximu3DataInertialBinary(message, sizeof (message), &inertialData);
+            UsbCdcWrite(message, numberOfBytes);
+            Uart1Write(message, numberOfBytes);
+            if (TIMER_SCHEDULER_POLL(0.2f)) {
+                const Ximu3DataTemperature temperatureData = {
+                    .timestamp = imuData.timestamp / TIMER_TICKS_PER_MICROSECOND,
+                    .temperature = imuData.temperature,
+                };
+                uint8_t message[64];
+                const size_t numberOfBytes = Ximu3DataTemperatureBinary(message, sizeof (message), &temperatureData);
+                UsbCdcWrite(message, numberOfBytes);
+                Uart1Write(message, numberOfBytes);
+            }
+        }
     }
     return (EXIT_FAILURE);
 }

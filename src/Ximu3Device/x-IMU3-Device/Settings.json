@@ -47,7 +47,7 @@
         {
             "name": "Serial baud rate",
             "declaration": "uint32_t name",
-            "default": "{115200}"
+            "default": "{3000000}"
         },
         {
             "name": "Serial RTS/CTS enabled",
