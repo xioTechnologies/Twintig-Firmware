@@ -85,6 +85,16 @@ int main(void) {
                 Uart1Write(message, numberOfBytes);
             }
         }
+        if (TIMER_SCHEDULER_POLL(1.0f)) {
+            const Ximu3DataNotification notificationData = {
+                .timestamp = imuData.timestamp / TIMER_TICKS_PER_MICROSECOND,
+                .string = "Tick",
+            };
+            uint8_t message[64];
+            const size_t numberOfBytes = Ximu3DataNotificationBinary(message, sizeof (message), &notificationData);
+            UsbCdcWrite(message, numberOfBytes);
+            Uart1Write(message, numberOfBytes);
+        }
     }
     return (EXIT_FAILURE);
 }
