@@ -1,7 +1,7 @@
 /**
- * @file Imu.c
+ * @file Icm.c
  * @author Seb Madgwick
- * @brief ICM-42688-P IMU driver.
+ * @brief ICM-42688-P driver.
  */
 
 //------------------------------------------------------------------------------
@@ -9,7 +9,7 @@
 
 #include "definitions.h"
 #include "Fifo.h"
-#include "Imu.h"
+#include "Icm.h"
 #include "Spi/Spi4Dma.h"
 #include <stdbool.h>
 #include <stddef.h>
@@ -248,10 +248,10 @@ static Fifo fifo = {.data = fifoData, .dataSize = sizeof (fifoData)};
  * @brief Initialises the module.
  * @param odr ODR.
  */
-void ImuInitialise(const ImuOdr odr) {
+void IcmInitialise(const IcmOdr odr) {
 
     // Ensure default states
-    ImuDeinitialise();
+    IcmDeinitialise();
 
     // Initialise SPI
     SpiSettings settings = spiSettingsDefault;
@@ -314,7 +314,7 @@ void ImuInitialise(const ImuOdr odr) {
 /**
  * @brief Deinitialises the module.
  */
-void ImuDeinitialise(void) {
+void IcmDeinitialise(void) {
     while (Spi4DmaTransferInProgress());
     Spi4DmaDeinitialise();
     GPIO_PinIntDisable(INT4_CH1_PIN);
@@ -374,11 +374,11 @@ static void TransferComplete(void) {
 }
 
 /**
- * @brief Get IMU data.
+ * @brief Get data.
  * @param data Data.
- * @return True if IMU data avaliable.
+ * @return True if data avaliable.
  */
-bool ImuGetData(ImuData * const data) {
+bool IcmGetData(IcmData * const data) {
     FifoPacket fifoPacket;
     if (FifoRead(&fifo, &fifoPacket, sizeof (fifoPacket)) == 0) {
         return false;

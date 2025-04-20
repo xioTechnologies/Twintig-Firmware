@@ -111,7 +111,7 @@
         <itemPath>../src/Haptic/Haptic.h</itemPath>
       </logicalFolder>
       <logicalFolder name="Imu" displayName="Imu" projectFiles="true">
-        <itemPath>../src/Imu/Imu.h</itemPath>
+        <itemPath>../src/Imu/Icm.h</itemPath>
       </logicalFolder>
       <logicalFolder name="Leds" displayName="Leds" projectFiles="true">
         <itemPath>../src/Leds/Leds.h</itemPath>
@@ -249,7 +249,7 @@
         <itemPath>../src/Haptic/Haptic.c</itemPath>
       </logicalFolder>
       <logicalFolder name="Imu" displayName="Imu" projectFiles="true">
-        <itemPath>../src/Imu/Imu.c</itemPath>
+        <itemPath>../src/Imu/Icm.c</itemPath>
       </logicalFolder>
       <logicalFolder name="Leds" displayName="Leds" projectFiles="true">
         <itemPath>../src/Leds/Leds.c</itemPath>

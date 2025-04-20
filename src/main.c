@@ -16,7 +16,7 @@
 #include "definitions.h"
 #include "FirmwareVersion.h"
 #include "Haptic/Haptic.h"
-#include "Imu/Imu.h"
+#include "Imu/Icm.h"
 #include "Leds/Leds.h"
 #include "ResetCause/ResetCause.h"
 #include <stdbool.h>
@@ -51,7 +51,7 @@ int main(void) {
     HapticInitialise();
     Ximu3DeviceInitialise();
 
-    ImuInitialise(ImuOdr32kHz);
+    IcmInitialise(IcmOdr32kHz);
 
     // Main program loop
     while (true) {
@@ -59,8 +59,8 @@ int main(void) {
         UsbCdcTasks();
         Ximu3DeviceTasks();
 
-        ImuData imuData;
-        while (ImuGetData(&imuData)) {
+        IcmData imuData;
+        while (IcmGetData(&imuData)) {
             const Ximu3DataInertial inertialData = {
                 .timestamp = imuData.timestamp / TIMER_TICKS_PER_MICROSECOND,
                 .gyroscopeX = imuData.gyroscopeX,
