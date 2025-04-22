@@ -129,6 +129,11 @@
       <logicalFolder name="Leds" displayName="Leds" projectFiles="true">
         <itemPath>../src/Leds/Leds.h</itemPath>
       </logicalFolder>
+      <logicalFolder name="Notification"
+                     displayName="Notification"
+                     projectFiles="true">
+        <itemPath>../src/Notification/Notification.h</itemPath>
+      </logicalFolder>
       <logicalFolder name="Send" displayName="Send" projectFiles="true">
         <itemPath>../src/Send/Send.h</itemPath>
       </logicalFolder>
@@ -168,6 +173,7 @@
         </logicalFolder>
         <itemPath>../src/x-io-PIC32-Library/Fifo.h</itemPath>
         <itemPath>../src/x-io-PIC32-Library/PeripheralBusClockFrequency.h</itemPath>
+        <itemPath>../src/x-io-PIC32-Library/OnChange.h</itemPath>
       </logicalFolder>
       <logicalFolder name="Ximu3Device" displayName="Ximu3Device" projectFiles="true">
         <logicalFolder name="x-IMU3-Device"
@@ -277,6 +283,11 @@
       </logicalFolder>
       <logicalFolder name="Leds" displayName="Leds" projectFiles="true">
         <itemPath>../src/Leds/Leds.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="Notification"
+                     displayName="Notification"
+                     projectFiles="true">
+        <itemPath>../src/Notification/Notification.c</itemPath>
       </logicalFolder>
       <logicalFolder name="Send" displayName="Send" projectFiles="true">
         <itemPath>../src/Send/Send.c</itemPath>

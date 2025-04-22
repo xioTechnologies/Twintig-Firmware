@@ -239,11 +239,14 @@ const Icm icm1 = {
     .initialise = IcmInitialise,
     .deinitialise = IcmDeinitialise,
     .getData = IcmGetData,
+    .bufferOverflow = IcmBufferOverflow,
 };
 static __attribute__((coherent)) SpiPacket spiPacket;
 static uint64_t timestamp;
+static bool lock;
 static uint8_t fifoData[1000 * sizeof (FifoPacket)];
 static Fifo fifo = {.data = fifoData, .dataSize = sizeof (fifoData)};
+static uint32_t bufferOverflow;
 
 //------------------------------------------------------------------------------
 // Functions
@@ -364,6 +367,10 @@ static void ExternalInterrupt(GPIO_PIN pin, uintptr_t context) {
     if (Spi4DmaTransferInProgress()) {
         return;
     }
+    if (lock) {
+        return;
+    }
+    lock = true;
     timestamp = TimerGetTicks64();
     spiPacket.rw = 1;
     spiPacket.address = TEMP_DATA1_ADDRESS;
@@ -378,7 +385,10 @@ static void TransferComplete(void) {
         .timestamp = timestamp,
         .registers = *((SensorRegisters*) spiPacket.data),
     };
-    FifoWrite(&fifo, &fifoPacket, sizeof (fifoPacket));
+    lock = false;
+    if (FifoWrite(&fifo, &fifoPacket, sizeof (fifoPacket)) != FifoResultOK) {
+        bufferOverflow++;
+    }
 }
 
 /**
@@ -400,6 +410,15 @@ IcmResult IcmGetData(IcmData * const data) {
     data->accelerometerZ = (float) fifoPacket.registers.accelDataZ * (1.0f / 2048.0f);
     data->temperature = (float) fifoPacket.registers.tempData * (1.0f / 132.48f) + 25.0f;
     return IcmResultOK;
+}
+
+/**
+ * @brief Returns the number of samples discarded due to buffer overflow.
+ * Calling this function will reset the value.
+ * @return Number of samples discarded due to buffer overflow.
+ */
+uint32_t IcmBufferOverflow(void) {
+    return __sync_lock_test_and_set(&bufferOverflow, 0);
 }
 
 /**

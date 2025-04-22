@@ -62,6 +62,7 @@ typedef struct {
     const IcmResult(*initialise)(const IcmOdr odr);
     const void (*deinitialise)(void);
     const IcmResult(*getData)(IcmData * const data);
+    const uint32_t(*bufferOverflow)(void);
 } Icm;
 
 //------------------------------------------------------------------------------
@@ -75,6 +76,7 @@ extern const Icm icm1;
 IcmResult IcmInitialise(const IcmOdr odr);
 void IcmDeinitialise(void);
 IcmResult IcmGetData(IcmData * const data);
+uint32_t IcmBufferOverflow(void);
 float IcmOdrToFloat(const IcmOdr odr);
 
 //------------------------------------------------------------------------------

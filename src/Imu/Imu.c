@@ -31,7 +31,7 @@ void ImuTasks(Imu * const imu) {
         return;
     }
 
-    // Process avaliable data
+    // Process available data
     IcmData imuData;
     while (imu->icm->getData(&imuData) == IcmResultOK) {
 

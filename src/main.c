@@ -18,6 +18,7 @@
 #include "Haptic/Haptic.h"
 #include "Imu/Imu.h"
 #include "Leds/Leds.h"
+#include "Notification/Notification.h"
 #include "ResetCause/ResetCause.h"
 #include <stdbool.h>
 #include <stddef.h>
@@ -55,6 +56,7 @@ int main(void) {
 
         // Application tasks
         ImuTasks(&imu1);
+        NotificationTasks();
         UsbCdcTasks();
         Ximu3DeviceTasks();
     }
