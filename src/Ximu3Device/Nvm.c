@@ -16,7 +16,7 @@
  * @brief Reads from NVM.
  * @param destination Destination.
  * @param numberOfBytes Number of bytes.
- * @param context Context. 
+ * @param context Context.
  */
 void NvmRead(void* const destination, size_t numberOfBytes, void* const context) {
 }
@@ -25,7 +25,7 @@ void NvmRead(void* const destination, size_t numberOfBytes, void* const context)
  * @brief Writes to NVM.
  * @param data Data.
  * @param numberOfBytes Number of bytes.
- * @param context Context. 
+ * @param context Context.
  */
 void NvmWrite(const void* const data, const size_t numberOfBytes, void* const context) {
 }

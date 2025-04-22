@@ -20,7 +20,7 @@
  * @brief Reads data from the read buffer.
  * @param destination Destination.
  * @param numberOfBytes Number of bytes.
- * @param context Context. 
+ * @param context Context.
  * @return Number of bytes read.
  */
 size_t InterfacesUsbRead(void* const destination, size_t numberOfBytes, void* const context) {
@@ -31,7 +31,7 @@ size_t InterfacesUsbRead(void* const destination, size_t numberOfBytes, void* co
  * @brief Writes data to the write buffer.
  * @param data Data.
  * @param numberOfBytes Number of bytes.
- * @param context Context. 
+ * @param context Context.
  */
 void InterfacesUsbWrite(const void* const data, const size_t numberOfBytes, void* const context) {
     const Context * const context_ = context;
@@ -42,7 +42,7 @@ void InterfacesUsbWrite(const void* const data, const size_t numberOfBytes, void
  * @brief Reads data from the read buffer.
  * @param destination Destination.
  * @param numberOfBytes Number of bytes.
- * @param context Context. 
+ * @param context Context.
  * @return Number of bytes read.
  */
 size_t InterfacesSerialRead(void* const destination, size_t numberOfBytes, void* const context) {
@@ -53,7 +53,7 @@ size_t InterfacesSerialRead(void* const destination, size_t numberOfBytes, void*
  * @brief Writes data to the write buffer.
  * @param data Data.
  * @param numberOfBytes Number of bytes.
- * @param context Context. 
+ * @param context Context.
  */
 void InterfacesSerialWrite(const void* const data, const size_t numberOfBytes, void* const context) {
     const Context * const context_ = context;

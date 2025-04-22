@@ -51,10 +51,10 @@ typedef struct {
     FusionAhrsFlags flags; // private
     FusionVector downsampledGyroscope; // private
     FusionVector downsampledAccelerometer; // private
-    uint32_t downsampledInertialCount; // private    
+    uint32_t downsampledInertialCount; // private
     uint32_t downsampledAhrsCount; // private
     float downsampledTemperature; // private
-    uint32_t downsampledTemperatureCount; // private        
+    uint32_t downsampledTemperatureCount; // private
 } Send;
 
 //------------------------------------------------------------------------------
