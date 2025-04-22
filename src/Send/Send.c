@@ -29,6 +29,7 @@ static void SendEulerAngles(const Send * const send, const ImuAhrsData * const i
 static void SendLinearAcceleration(const Send * const send, const ImuAhrsData * const imuData);
 static void SendEarthAcceleration(const Send * const send, const ImuAhrsData * const imuData);
 static void TemperatureDataReady(const ImuTemperatureData * const data, void* const context);
+static void SendData(const Send * const send, const void* const data, const size_t numberOfBytes);
 
 //------------------------------------------------------------------------------
 // Variables
@@ -114,8 +115,7 @@ static void InertialDataReady(const ImuInertialData * const imuData, void* const
     } else {
         messageSize = Ximu3DataInertialAscii(message, sizeof (message), &ximu3Data);
     }
-    UsbCdcWrite(message, messageSize);
-    Uart1Write(message, messageSize);
+    SendData(send, message, messageSize);
 }
 
 /**
@@ -178,8 +178,7 @@ static void SendAhrsStatus(const Send * const send, const uint64_t timestamp, co
     } else {
         messageSize = Ximu3DataAhrsStatusAscii(message, sizeof (message), &ximu3Data);
     }
-    UsbCdcWrite(message, messageSize);
-    Uart1Write(message, messageSize);
+    SendData(send, message, messageSize);
 }
 
 /**
@@ -203,8 +202,7 @@ static void SendQuaternion(const Send * const send, const ImuAhrsData * const im
     } else {
         messageSize = Ximu3DataQuaternionAscii(message, sizeof (message), &ximu3Data);
     }
-    UsbCdcWrite(message, messageSize);
-    Uart1Write(message, messageSize);
+    SendData(send, message, messageSize);
 }
 
 /**
@@ -233,8 +231,7 @@ static void SendRotationMatrix(const Send * const send, const ImuAhrsData * cons
     } else {
         messageSize = Ximu3DataRotationMatrixAscii(message, sizeof (message), &ximu3Data);
     }
-    UsbCdcWrite(message, messageSize);
-    Uart1Write(message, messageSize);
+    SendData(send, message, messageSize);
 }
 
 /**
@@ -257,8 +254,7 @@ static void SendEulerAngles(const Send * const send, const ImuAhrsData * const i
     } else {
         messageSize = Ximu3DataEulerAnglesAscii(message, sizeof (message), &ximu3Data);
     }
-    UsbCdcWrite(message, messageSize);
-    Uart1Write(message, messageSize);
+    SendData(send, message, messageSize);
 }
 
 /**
@@ -286,8 +282,7 @@ static void SendLinearAcceleration(const Send * const send, const ImuAhrsData * 
     } else {
         messageSize = Ximu3DataLinearAccelerationAscii(message, sizeof (message), &ximu3Data);
     }
-    UsbCdcWrite(message, messageSize);
-    Uart1Write(message, messageSize);
+    SendData(send, message, messageSize);
 }
 
 /**
@@ -315,8 +310,7 @@ static void SendEarthAcceleration(const Send * const send, const ImuAhrsData * c
     } else {
         messageSize = Ximu3DataEarthAccelerationAscii(message, sizeof (message), &ximu3Data);
     }
-    UsbCdcWrite(message, messageSize);
-    Uart1Write(message, messageSize);
+    SendData(send, message, messageSize);
 }
 
 /**
@@ -353,8 +347,7 @@ static void TemperatureDataReady(const ImuTemperatureData * const imuData, void*
     } else {
         messageSize = Ximu3DataTemperatureAscii(message, sizeof (message), &ximu3Data);
     }
-    UsbCdcWrite(message, messageSize);
-    Uart1Write(message, messageSize);
+    SendData(send, message, messageSize);
 }
 
 /**
@@ -384,8 +377,7 @@ void SendNotification(const Send * const send, const char* format, ...) {
     } else {
         messageSize = Ximu3DataNotificationAscii(message, sizeof (message), &ximu3Data);
     }
-    UsbCdcWrite(message, messageSize);
-    Uart1Write(message, messageSize);
+    SendData(send, message, messageSize);
 }
 
 /**
@@ -415,8 +407,7 @@ void SendError(const Send * const send, const char* format, ...) {
     } else {
         messageSize = Ximu3DataErrorAscii(message, sizeof (message), &ximu3Data);
     }
-    UsbCdcWrite(message, messageSize);
-    Uart1Write(message, messageSize);
+    SendData(send, message, messageSize);
 
     // Blink LED
     // TODO
@@ -429,7 +420,7 @@ void SendError(const Send * const send, const char* format, ...) {
  * @param numberOfBytes Number of bytes.
  */
 void SendResponseUsb(const Send * const send, const void* const data, const size_t numberOfBytes) {
-    UsbCdcWrite(data, numberOfBytes);
+    UsbCdcWrite(data, numberOfBytes); // TODO: use SendData with priority
 }
 
 /**
@@ -439,6 +430,16 @@ void SendResponseUsb(const Send * const send, const void* const data, const size
  * @param numberOfBytes Number of bytes.
  */
 void SendResponseSerial(const Send * const send, const void* const data, const size_t numberOfBytes) {
+    Uart1Write(data, numberOfBytes); // TODO: use SendData with priority
+}
+
+/**
+ * @brief Sends data.
+ * @param data Data.
+ * @param numberOfBytes Number of bytes.
+ */
+static void SendData(const Send * const send, const void* const data, const size_t numberOfBytes) { // TODO: implement priority
+    UsbCdcWrite(data, numberOfBytes);
     Uart1Write(data, numberOfBytes);
 }
 
