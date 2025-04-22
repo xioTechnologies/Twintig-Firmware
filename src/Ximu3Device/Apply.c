@@ -8,14 +8,16 @@
 // Includes
 
 #include "Apply.h"
+#include "Send/Send.h"
 #include "Timer/Timer.h"
 #include "Uart/Uart1.h"
-#include "x-IMU3-Device/Ximu3.h"
 
 //------------------------------------------------------------------------------
 // Function declarations
 
-static void ApplySerial(Ximu3Settings * const settings);
+static void ApplySerial(Context * const context);
+static void ApplyImu(Context * const context);
+static void ApplySend(Context * const context);
 
 //------------------------------------------------------------------------------
 // Functions
@@ -37,7 +39,9 @@ void ApplyTasks(Context * const context) {
  */
 void ApplyNow(Context * const context) {
     context->applyTimeout = 0;
-    ApplySerial(context->settings);
+    ApplySerial(context);
+    ApplyImu(context);
+    ApplySend(context);
 }
 
 /**
@@ -50,28 +54,104 @@ void ApplyAfterDelay(Context * const context) {
 
 /**
  * @brief Applies serial settings.
- * @param settings Settings.
+ * @param context Context.
  */
-void ApplySerial(Ximu3Settings * const settings) {
+void ApplySerial(Context * const context) {
 
     // Do nothing if settings unchanged
     bool applyPending = false;
-    applyPending |= Ximu3SettingsApplyPending(settings, Ximu3SettingsIndexSerialEnabled);
-    applyPending |= Ximu3SettingsApplyPending(settings, Ximu3SettingsIndexSerialBaudRate);
-    applyPending |= Ximu3SettingsApplyPending(settings, Ximu3SettingsIndexSerialRtsCtsEnabled);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSerialEnabled);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSerialBaudRate);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSerialRtsCtsEnabled);
     if (applyPending == false) {
         return;
     }
 
     // Apply settings
-    if (Ximu3SettingsGet(settings)->serialEnabled) {
+    if (Ximu3SettingsGet(context->settings)->serialEnabled) {
         UartSettings uartSettings = uartSettingsDefault;
-        uartSettings.baudRate = Ximu3SettingsGet(settings)->serialBaudRate;
-        uartSettings.rtsCtsEnabled = Ximu3SettingsGet(settings)->serialRtsCtsEnabled;
+        uartSettings.baudRate = Ximu3SettingsGet(context->settings)->serialBaudRate;
+        uartSettings.rtsCtsEnabled = Ximu3SettingsGet(context->settings)->serialRtsCtsEnabled;
         Uart1Initialise(&uartSettings);
     } else {
         Uart1Deinitialise();
     }
+}
+
+/**
+ * @brief Applies IMU settings.
+ * @param context Context.
+ */
+static void ApplyImu(Context * const context) {
+
+    // Do nothing if settings unchanged
+    bool applyPending = false;
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSampleRate);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeMisalignment);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeSensitivity);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeOffset);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAccelerometerMisalignment);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAccelerometerSensitivity);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAccelerometerOffset);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAxesAlignment);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeOffsetCorrectionEnabled);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsUpdateRateDivisor);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsAxesConvention);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsGain);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsAccelerationRejection);
+    if (applyPending == false) {
+        return;
+    }
+
+    // Apply settings
+    const ImuSettings imuSettings = {
+        .sampleRate = Ximu3SettingsGet(context->settings)->sampleRate,
+        .gyroscopeMisalignment = Ximu3SettingsGet(context->settings)->gyroscopeMisalignment,
+        .gyroscopeSensitivity = Ximu3SettingsGet(context->settings)->gyroscopeSensitivity,
+        .gyroscopeOffset = Ximu3SettingsGet(context->settings)->gyroscopeOffset,
+        .accelerometerMisalignment = Ximu3SettingsGet(context->settings)->accelerometerMisalignment,
+        .accelerometerSensitivity = Ximu3SettingsGet(context->settings)->accelerometerSensitivity,
+        .accelerometerOffset = Ximu3SettingsGet(context->settings)->accelerometerOffset,
+        .axisAlignment = Ximu3SettingsGet(context->settings)->axesAlignment,
+        .gyroscopeOffsetEnabled = Ximu3SettingsGet(context->settings)->gyroscopeOffsetCorrectionEnabled,
+        .ahrsUpdateRateDivisor = Ximu3SettingsGet(context->settings)->ahrsUpdateRateDivisor,
+        .ahrsAxesConvention = Ximu3SettingsGet(context->settings)->ahrsAxesConvention,
+        .ahrsGain = Ximu3SettingsGet(context->settings)->ahrsGain,
+        .ahrsAccelerationRejection = Ximu3SettingsGet(context->settings)->ahrsAccelerationRejection,
+    };
+    ImuSetSettings(context->imu, &imuSettings);
+}
+
+/**
+ * @brief Applies send settings.
+ * @param context Context.
+ */
+static void ApplySend(Context * const context) {
+
+    // Do nothing if settings unchanged
+    bool applyPending = false;
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexBinaryModeEnabled);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsMessageType);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexInertialMessageRateDivisor);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsMessageRateDivisor);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexTemperatureMessageRateDivisor);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexUsbDataMessagesEnabled);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSerialDataMessagesEnabled);
+    if (applyPending == false) {
+        return;
+    }
+
+    // Apply settings
+    const SendSettings sendSettings = {
+        .binaryModeEnabled = Ximu3SettingsGet(context->settings)->binaryModeEnabled,
+        .ahrsMessageType = Ximu3SettingsGet(context->settings)->ahrsMessageType,
+        .inertialMessageRateDivisor = Ximu3SettingsGet(context->settings)->inertialMessageRateDivisor,
+        .ahrsMessageRateDivisor = Ximu3SettingsGet(context->settings)->ahrsMessageRateDivisor,
+        .temperatureMessageRateDivisor = Ximu3SettingsGet(context->settings)->temperatureMessageRateDivisor,
+        .usbDataMessagesEnabled = Ximu3SettingsGet(context->settings)->usbDataMessagesEnabled,
+        .serialDataMessagesEnabled = Ximu3SettingsGet(context->settings)->serialDataMessagesEnabled,
+    };
+    SendSetSettings(context->send, &sendSettings);
 }
 
 //------------------------------------------------------------------------------

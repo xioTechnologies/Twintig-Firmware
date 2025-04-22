@@ -1,5 +1,8 @@
 {
     "includes": [
+        "\"Imu/Fusion/Fusion.h\"",
+        "\"Imu/Icm/Icm.h\"",
+        "\"Send/Send.h\"",
         "<stdbool.h>",
         "<stdint.h>"
     ],
@@ -17,15 +20,39 @@
             "preserved": true
         },
         {
-            "name": "Offset",
-            "declaration": "float name",
-            "default": "{0.0f}",
+            "name": "Gyroscope misalignment",
+            "declaration": "FusionMatrix name",
+            "default": "{{{1.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}}}",
             "preserved": true
         },
         {
-            "name": "Sensitivity",
-            "declaration": "float name",
-            "default": "{1.0f}",
+            "name": "Gyroscope sensitivity",
+            "declaration": "FusionVector name",
+            "default": "{{1.0f, 1.0f, 1.0f}}",
+            "preserved": true
+        },
+        {
+            "name": "Gyroscope offset",
+            "declaration": "FusionVector name",
+            "default": "{{0.0f, 0.0f, 0.0f}}",
+            "preserved": true
+        },
+        {
+            "name": "Accelerometer misalignment",
+            "declaration": "FusionMatrix name",
+            "default": "{{{1.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}}}",
+            "preserved": true
+        },
+        {
+            "name": "Accelerometer sensitivity",
+            "declaration": "FusionVector name",
+            "default": "{{1.0f, 1.0f, 1.0f}}",
+            "preserved": true
+        },
+        {
+            "name": "Accelerometer offset",
+            "declaration": "FusionVector name",
+            "default": "{{0.0f, 0.0f, 0.0f}}",
             "preserved": true
         },
         {
@@ -53,6 +80,76 @@
             "name": "Serial RTS/CTS enabled",
             "declaration": "bool name",
             "default": "{false}"
+        },
+        {
+            "name": "Sample rate",
+            "declaration": "IcmOdr name",
+            "default": "{IcmOdr50Hz}"
+        },
+        {
+            "name": "Axes alignment",
+            "declaration": "FusionAxesAlignment name",
+            "default": "{FusionAxesAlignmentPXPYPZ}"
+        },
+        {
+            "name": "Gyroscope offset correction enabled",
+            "declaration": "bool name",
+            "default": "{true}"
+        },
+        {
+            "name": "AHRS update rate divisor",
+            "declaration": "uint32_t name",
+            "default": "{1}"
+        },
+        {
+            "name": "AHRS axes convention",
+            "declaration": "FusionConvention name",
+            "default": "{FusionConventionNwu}"
+        },
+        {
+            "name": "AHRS gain",
+            "declaration": "float name",
+            "default": "{0.5f}"
+        },
+        {
+            "name": "AHRS acceleration rejection",
+            "declaration": "float name",
+            "default": "{10.0f}"
+        },
+        {
+            "name": "Binary mode enabled",
+            "declaration": "bool name",
+            "default": "{true}"
+        },
+        {
+            "name": "AHRS message type",
+            "declaration": "SendAhrsMessageType name",
+            "default": "{SendAhrsMessageTypeQuaternion}"
+        },
+        {
+            "name": "Inertial message rate divisor",
+            "declaration": "uint32_t name",
+            "default": "{1}"
+        },
+        {
+            "name": "AHRS message rate divisor",
+            "declaration": "uint32_t name",
+            "default": "{1}"
+        },
+        {
+            "name": "Temperature message rate divisor",
+            "declaration": "uint32_t name",
+            "default": "{1}"
+        },
+        {
+            "name": "USB data messages enabled",
+            "declaration": "bool name",
+            "default": "{true}"
+        },
+        {
+            "name": "Serial data messages enabled",
+            "declaration": "bool name",
+            "default": "{true}"
         }
     ]
 }

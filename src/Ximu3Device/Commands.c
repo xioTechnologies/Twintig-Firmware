@@ -54,7 +54,7 @@ void CommandsSave(const char* * const value, Ximu3CommandResponse * const respon
     if (Ximu3CommandParseNull(value, response) != 0) {
         return;
     }
-    Context * const context_ = context;
+    const Context * const context_ = context;
     if (context_->nvmBlank && (context_->factoryMode == false)) {
         Ximu3CommandRespondError(response, "NVM blank");
         return;
@@ -73,7 +73,7 @@ void CommandsPing(const char* * const value, Ximu3CommandResponse * const respon
     if (Ximu3CommandParseNull(value, response) != 0) {
         return;
     }
-    Context * const context_ = context;
+    const Context * const context_ = context;
     Ximu3CommandRespondPing(response, Ximu3SettingsGet(context_->settings)->deviceName, Ximu3SettingsGet(context_->settings)->serialNumber);
 }
 
@@ -114,7 +114,7 @@ void CommandsFactory(const char* * const value, Ximu3CommandResponse * const res
  * @return True if factory mode enabled.
  */
 bool CommandsOverrideReadOnly(void* const context) {
-    Context * const context_ = context;
+    const Context * const context_ = context;
     return context_->factoryMode;
 }
 

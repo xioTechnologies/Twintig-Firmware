@@ -235,8 +235,12 @@ static void TransferComplete(void);
 //------------------------------------------------------------------------------
 // Variables
 
+const Icm icm1 = {
+    .initialise = IcmInitialise,
+    .deinitialise = IcmDeinitialise,
+    .getData = IcmGetData,
+};
 static __attribute__((coherent)) SpiPacket spiPacket;
-static bool initialisationFailed;
 static uint64_t timestamp;
 static uint8_t fifoData[1000 * sizeof (FifoPacket)];
 static Fifo fifo = {.data = fifoData, .dataSize = sizeof (fifoData)};
@@ -247,8 +251,9 @@ static Fifo fifo = {.data = fifoData, .dataSize = sizeof (fifoData)};
 /**
  * @brief Initialises the module.
  * @param odr ODR.
+ * @return Result.
  */
-void IcmInitialise(const IcmOdr odr) {
+IcmResult IcmInitialise(const IcmOdr odr) {
 
     // Ensure default states
     IcmDeinitialise();
@@ -259,7 +264,9 @@ void IcmInitialise(const IcmOdr odr) {
     Spi4DmaInitialise(&settings);
 
     // Verify identity of the device
-    initialisationFailed = ReadRegister(WHO_AM_I) != 0x47;
+    if (ReadRegister(WHO_AM_I) != 0x47) {
+        return IcmResultError;
+    }
 
     // Software reset
     DeviceConfigRegister deviceConfigRegister = {.value = ReadRegister(DEVICE_CONFIG_ADDRESS)};
@@ -279,8 +286,8 @@ void IcmInitialise(const IcmOdr odr) {
 
     // Configure interrupt pulse
     IntConfig1Register intConfig1Register = {.value = ReadRegister(INT_CONFIG1_ADDRESS)};
-    intConfig1Register.IntTpulseDuration = 1; // interrupt pulse duration is 8 us. Required if ODR ? 4kHz, optional for ODR < 4kHz.
-    intConfig1Register.IntTdeassertDisable = 1; // disables de-assert duration. Required if ODR ? 4kHz, optional for ODR < 4kHz
+    intConfig1Register.IntTpulseDuration = 1; // interrupt pulse duration is 8 us. Required if ODR > 4kHz, optional for ODR < 4kHz.
+    intConfig1Register.IntTdeassertDisable = 1; // disables de-assert duration. Required if ODR > 4kHz, optional for ODR < 4kHz
     intConfig1Register.IntAysncReset = 1; // user should change setting to 0 from default setting of 1, for proper INT1 and INT2 pin operation
     WriteRegister(INT_CONFIG1_ADDRESS, intConfig1Register.value);
 
@@ -309,6 +316,7 @@ void IcmInitialise(const IcmOdr odr) {
     // Configure interrupt
     GPIO_PinInterruptCallbackRegister(INT4_CH1_PIN, ExternalInterrupt, (uintptr_t) NULL);
     GPIO_PinIntEnable(INT4_CH1_PIN, GPIO_INTERRUPT_ON_BOTH_EDGES); // only both edges supported
+    return IcmResultOK;
 }
 
 /**
@@ -376,12 +384,12 @@ static void TransferComplete(void) {
 /**
  * @brief Get data.
  * @param data Data.
- * @return True if data avaliable.
+ * @return Result.
  */
-bool IcmGetData(IcmData * const data) {
+IcmResult IcmGetData(IcmData * const data) {
     FifoPacket fifoPacket;
     if (FifoRead(&fifo, &fifoPacket, sizeof (fifoPacket)) == 0) {
-        return false;
+        return IcmResultError;
     }
     data->timestamp = fifoPacket.timestamp;
     data->gyroscopeX = (float) fifoPacket.registers.gyroDataX * (1.0f / 16.4f);
@@ -391,7 +399,42 @@ bool IcmGetData(IcmData * const data) {
     data->accelerometerY = (float) fifoPacket.registers.accelDataY * (1.0f / 2048.0f);
     data->accelerometerZ = (float) fifoPacket.registers.accelDataZ * (1.0f / 2048.0f);
     data->temperature = (float) fifoPacket.registers.tempData * (1.0f / 132.48f) + 25.0f;
-    return true;
+    return IcmResultOK;
+}
+
+/**
+ * @brief Returns ODR as float.
+ * @param odr ODR.
+ * @return ODR as float.
+ */
+float IcmOdrToFloat(const IcmOdr odr) {
+    switch (odr) {
+        case IcmOdr32kHz:
+            return 32000.0f;
+        case IcmOdr16kHz:
+            return 16000.0f;
+        case IcmOdr8kHz:
+            return 8000.0f;
+        case IcmOdr4kHz:
+            return 4000.0f;
+        case IcmOdr2kHz:
+            return 2000.0f;
+        case IcmOdr1kHz:
+            return 1000.0f;
+        case IcmOdr200Hz:
+            return 200.0f;
+        case IcmOdr100Hz:
+            return 100.0f;
+        case IcmOdr50Hz:
+            return 50.0f;
+        case IcmOdr25Hz:
+            return 25.0f;
+        case IcmOdr12Hz:
+            return 12.5f;
+        case IcmOdr500Hz:
+            return 500.0f;
+    }
+    return 0.0f; // avoid compiler warning
 }
 
 //------------------------------------------------------------------------------

@@ -13,6 +13,12 @@ typedef enum {
     MetadataTypeBool,
     MetadataTypeCharArray,
     MetadataTypeFloat,
+    MetadataTypeFusionAxesAlignment,
+    MetadataTypeFusionConvention,
+    MetadataTypeFusionMatrix,
+    MetadataTypeFusionVector,
+    MetadataTypeIcmOdr,
+    MetadataTypeSendAhrsMessageType,
     MetadataTypeUint32,
 } MetadataType;
 

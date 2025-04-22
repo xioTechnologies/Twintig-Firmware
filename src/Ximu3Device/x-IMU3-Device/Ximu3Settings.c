@@ -75,7 +75,7 @@ void Ximu3SettingsDefaults(Ximu3Settings * const settings, const bool overwriteP
  * @brief Returns values.
  * @return Values.
  */
-const Ximu3SettingsValues* Ximu3SettingsGet(Ximu3Settings * const settings) {
+const Ximu3SettingsValues* Ximu3SettingsGet(const Ximu3Settings * const settings) {
     return &settings->values;
 }
 
@@ -133,6 +133,88 @@ static void SetValue(const Metadata * const metadata, const void* const value) {
             }
             memcpy(metadata->value, value, metadata->size);
             return;
+        case MetadataTypeFusionMatrix:
+            if (IsNanOrInf(((FusionMatrix *) value)->element.xx) || IsNanOrInf(((FusionMatrix *) value)->element.xx) || IsNanOrInf(((FusionMatrix *) value)->element.xx) ||
+                IsNanOrInf(((FusionMatrix *) value)->element.yy) || IsNanOrInf(((FusionMatrix *) value)->element.yy) || IsNanOrInf(((FusionMatrix *) value)->element.yy) ||
+                IsNanOrInf(((FusionMatrix *) value)->element.zz) || IsNanOrInf(((FusionMatrix *) value)->element.zz) || IsNanOrInf(((FusionMatrix *) value)->element.zz)) {
+                break;
+            }
+            memcpy(metadata->value, value, metadata->size);
+            return;
+        case MetadataTypeFusionVector:
+            if (IsNanOrInf(((FusionVector *) value)->axis.x) || IsNanOrInf(((FusionVector *) value)->axis.y) || IsNanOrInf(((FusionVector *) value)->axis.z)) {
+                break;
+            }
+            memcpy(metadata->value, value, metadata->size);
+            return;
+        case MetadataTypeFusionAxesAlignment:
+            switch (*(FusionAxesAlignment*) value) {
+                case FusionAxesAlignmentPXPYPZ:
+                case FusionAxesAlignmentPXNZPY:
+                case FusionAxesAlignmentPXNYNZ:
+                case FusionAxesAlignmentPXPZNY:
+                case FusionAxesAlignmentNXPYNZ:
+                case FusionAxesAlignmentNXPZPY:
+                case FusionAxesAlignmentNXNYPZ:
+                case FusionAxesAlignmentNXNZNY:
+                case FusionAxesAlignmentPYNXPZ:
+                case FusionAxesAlignmentPYNZNX:
+                case FusionAxesAlignmentPYPXNZ:
+                case FusionAxesAlignmentPYPZPX:
+                case FusionAxesAlignmentNYPXPZ:
+                case FusionAxesAlignmentNYNZPX:
+                case FusionAxesAlignmentNYNXNZ:
+                case FusionAxesAlignmentNYPZNX:
+                case FusionAxesAlignmentPZPYNX:
+                case FusionAxesAlignmentPZPXPY:
+                case FusionAxesAlignmentPZNYPX:
+                case FusionAxesAlignmentPZNXNY:
+                case FusionAxesAlignmentNZPYPX:
+                case FusionAxesAlignmentNZNXPY:
+                case FusionAxesAlignmentNZNYNX:
+                case FusionAxesAlignmentNZPXNY:
+                    memcpy(metadata->value, value, metadata->size);
+                    return;
+            }
+            break;
+        case MetadataTypeFusionConvention:
+            switch (*(FusionConvention*) value) {
+                case FusionConventionNwu:
+                case FusionConventionEnu:
+                case FusionConventionNed:
+                    memcpy(metadata->value, value, metadata->size);
+                    return;
+            }
+            break;
+        case MetadataTypeIcmOdr:
+            switch (*(IcmOdr*) value) {
+                case IcmOdr32kHz:
+                case IcmOdr16kHz:
+                case IcmOdr8kHz:
+                case IcmOdr4kHz:
+                case IcmOdr2kHz:
+                case IcmOdr1kHz:
+                case IcmOdr200Hz:
+                case IcmOdr100Hz:
+                case IcmOdr50Hz:
+                case IcmOdr25Hz:
+                case IcmOdr12Hz:
+                case IcmOdr500Hz:
+                    memcpy(metadata->value, value, metadata->size);
+                    return;
+            }
+            break;
+        case MetadataTypeSendAhrsMessageType:
+            switch (*(SendAhrsMessageType*) value) {
+                case SendAhrsMessageTypeQuaternion:
+                case SendAhrsMessageTypeRotationMatrix:
+                case SendAhrsMessageTypeEulerAngles:
+                case SendAhrsMessageTypeLinearAcceleration:
+                case SendAhrsMessageTypeEarthAcceleration:
+                    memcpy(metadata->value, value, metadata->size);
+                    return;
+            }
+            break;
     }
     memcpy(metadata->value, metadata->defaultValue, metadata->size);
 }
@@ -173,7 +255,7 @@ static bool IsNanOrInf(const float value) {
  * @brief Saves to NVM.
  * @param settings Settings.
  */
-void Ximu3SettingsSave(Ximu3Settings * const settings) {
+void Ximu3SettingsSave(const Ximu3Settings * const settings) {
     if (settings->nvmWrite != NULL) {
         settings->nvmWrite(&settings->values, sizeof (settings->values), settings->context);
     }

@@ -21,6 +21,10 @@ static void Append(char* const destination, const size_t destinationSize, const 
 static JsonError ParseBool(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
 static JsonError ParseCharArray(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
 static JsonError ParseFloat(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
+static JsonError ParseFusionMatrix(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
+static JsonError ParseFusionVector(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
+static JsonError ParseFloatArray(float* const destination, const char* * const value);
+static JsonError ParseInt32(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
 static JsonError ParseUint32(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
 
 //------------------------------------------------------------------------------
@@ -76,6 +80,30 @@ void Ximu3SettingsJsonGetValue(Ximu3Settings * const settings, char* const desti
             break;
         case MetadataTypeFloat:
             snprintf(destination, destinationSize, "%f", *(float*) metadata.value);
+            break;
+        case MetadataTypeFusionAxesAlignment:
+        case MetadataTypeFusionConvention:
+        case MetadataTypeIcmOdr:
+        case MetadataTypeSendAhrsMessageType:
+            snprintf(destination, destinationSize, "%i", *(int*) metadata.value);
+            break;
+        case MetadataTypeFusionMatrix:
+            snprintf(destination, destinationSize, "[[%f,%f,%f],[%f,%f,%f],[%f,%f,%f]]",
+                    (*(FusionMatrix*) metadata.value).element.xx,
+                    (*(FusionMatrix*) metadata.value).element.xy,
+                    (*(FusionMatrix*) metadata.value).element.xz,
+                    (*(FusionMatrix*) metadata.value).element.yx,
+                    (*(FusionMatrix*) metadata.value).element.yy,
+                    (*(FusionMatrix*) metadata.value).element.yz,
+                    (*(FusionMatrix*) metadata.value).element.zx,
+                    (*(FusionMatrix*) metadata.value).element.zy,
+                    (*(FusionMatrix*) metadata.value).element.zz);
+            break;
+        case MetadataTypeFusionVector:
+            snprintf(destination, destinationSize, "[%f,%f,%f]",
+                    (*(FusionVector*) metadata.value).axis.x,
+                    (*(FusionVector*) metadata.value).axis.y,
+                    (*(FusionVector*) metadata.value).axis.z);
             break;
         case MetadataTypeUint32:
             snprintf(destination, destinationSize, "%u", *(uint32_t*) metadata.value);
@@ -178,6 +206,15 @@ JsonError Ximu3SettingsJsonSetKeyValue(Ximu3Settings * const settings, const cha
             return ParseCharArray(settings, index, value, overrideReadOnly);
         case MetadataTypeFloat:
             return ParseFloat(settings, index, value, overrideReadOnly);
+        case MetadataTypeFusionAxesAlignment:
+        case MetadataTypeFusionConvention:
+        case MetadataTypeIcmOdr:
+        case MetadataTypeSendAhrsMessageType:
+            return ParseInt32(settings, index, value, overrideReadOnly);
+        case MetadataTypeFusionMatrix:
+            return ParseFusionMatrix(settings, index, value, overrideReadOnly);
+        case MetadataTypeFusionVector:
+            return ParseFusionVector(settings, index, value, overrideReadOnly);
         case MetadataTypeUint32:
             return ParseUint32(settings, index, value, overrideReadOnly);
     }
@@ -235,6 +272,153 @@ static JsonError ParseFloat(Ximu3Settings * const settings, const Ximu3SettingsI
         return error;
     }
     Ximu3SettingsSet(settings, index, &number, overrideReadOnly);
+    return JsonErrorOK;
+}
+
+/**
+ * @brief Parse value representing a matrix.
+ * @param settings Settings.
+ * @param index Index.
+ * @param value Value.
+ * @param overrideReadOnly True to override read-only.
+ * @return JSON error.
+ */
+static JsonError ParseFusionMatrix(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly) {
+
+    // Parse array start
+    JsonError error = JsonParseArrayStart(value);
+    if (error != JsonErrorOK) {
+        return error;
+    }
+
+    // Parse first row
+    FusionMatrix matrix;
+    error = ParseFloatArray(matrix.array[0], value);
+    if (error != JsonErrorOK) {
+        return error;
+    }
+
+    // Parse comma
+    error = JsonParseComma(value);
+    if (error != JsonErrorOK) {
+        return error;
+    }
+
+    // Parse second row
+    error = ParseFloatArray(matrix.array[1], value);
+    if (error != JsonErrorOK) {
+        return error;
+    }
+
+    // Parse comma
+    error = JsonParseComma(value);
+    if (error != JsonErrorOK) {
+        return error;
+    }
+
+    // Parse third row
+    error = ParseFloatArray(matrix.array[2], value);
+    if (error != JsonErrorOK) {
+        return error;
+    }
+
+    // Parse array end
+    error = JsonParseArrayEnd(value);
+    if (error != JsonErrorOK) {
+        return error;
+    }
+
+    Ximu3SettingsSet(settings, index, &matrix, overrideReadOnly);
+    return JsonErrorOK;
+}
+
+/**
+ * @brief Parse value representing a vector.
+ * @param settings Settings.
+ * @param index Index.
+ * @param value Value.
+ * @param overrideReadOnly True to override read-only.
+ * @return JSON error.
+ */
+static JsonError ParseFusionVector(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly) {
+    FusionVector vector;
+    const JsonError error = ParseFloatArray(vector.array, value);
+    if (error != JsonErrorOK) {
+        return error;
+    }
+    Ximu3SettingsSet(settings, index, &vector, overrideReadOnly);
+    return JsonErrorOK;
+}
+
+/**
+ * @brief Parse value representing an array of three floats.
+ * @param destination Destination.
+ * @param destinationLength Destination length.
+ * @param value Value.
+ * @return JSON error.
+ */
+static JsonError ParseFloatArray(float* const destination, const char* * const value) {
+
+    // Parse array start
+    JsonError error = JsonParseArrayStart(value);
+    if (error != JsonErrorOK) {
+        return error;
+    }
+
+    // Parse first element
+    error = JsonParseNumber(value, &destination[0]);
+    if (error != JsonErrorOK) {
+        return error;
+    }
+
+    // Parse comma
+    error = JsonParseComma(value);
+    if (error != JsonErrorOK) {
+        return error;
+    }
+
+    // Parse second element
+    error = JsonParseNumber(value, &destination[1]);
+    if (error != JsonErrorOK) {
+        return error;
+    }
+
+    // Parse comma
+    error = JsonParseComma(value);
+    if (error != JsonErrorOK) {
+        return error;
+    }
+
+    // Parse third element
+    error = JsonParseNumber(value, &destination[2]);
+    if (error != JsonErrorOK) {
+        return error;
+    }
+
+    // Parse array end
+    error = JsonParseArrayEnd(value);
+    if (error != JsonErrorOK) {
+        return error;
+    }
+    return JsonErrorOK;
+}
+
+/**
+ * @brief Parse value representing an int32_t.
+ * @param settings Settings.
+ * @param index Index.
+ * @param value Value.
+ * @param overrideReadOnly True to override read-only.
+ * @return JSON error.
+ */
+static JsonError ParseInt32(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly) {
+    float numberFloat;
+    const JsonError error = JsonParseNumber(value, &numberFloat);
+    if (error != JsonErrorOK) {
+        return error;
+    }
+    const int32_t numberInt = (int32_t) numberFloat;
+    Ximu3SettingsSet(settings, index, &numberInt, overrideReadOnly);
     return JsonErrorOK;
 }
 

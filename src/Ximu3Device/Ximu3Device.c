@@ -11,8 +11,10 @@
 #include "Commands.h"
 #include "Context.h"
 #include "FirmwareVersion.h"
+#include "Imu/Imu.h"
 #include "Interfaces.h"
 #include "Nvm.h"
+#include "Send/Send.h"
 #include <string.h>
 #include "Timer/Timer.h"
 #include "x-IMU3-Device/Ximu3.h"
@@ -58,9 +60,8 @@ static Ximu3CommandBridge bridge = {
 };
 static Context context = {
     .settings = &settings,
-    .nvmBlank = false,
-    .factoryMode = false,
-    .applyTimeout = 0,
+    .imu = &imu1,
+    .send = &send1,
 };
 
 //------------------------------------------------------------------------------

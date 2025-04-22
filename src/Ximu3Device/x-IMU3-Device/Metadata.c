@@ -5,61 +5,151 @@
 static const char* const names[] = {
     "Serial Number",
     "Calibration Date",
-    "Offset",
-    "Sensitivity",
+    "Gyroscope Misalignment",
+    "Gyroscope Sensitivity",
+    "Gyroscope Offset",
+    "Accelerometer Misalignment",
+    "Accelerometer Sensitivity",
+    "Accelerometer Offset",
     "Firmware Version",
     "Device Name",
     "Serial Enabled",
     "Serial Baud Rate",
     "Serial RTS/CTS Enabled",
+    "Sample Rate",
+    "Axes Alignment",
+    "Gyroscope Offset Correction Enabled",
+    "AHRS Update Rate Divisor",
+    "AHRS Axes Convention",
+    "AHRS Gain",
+    "AHRS Acceleration Rejection",
+    "Binary Mode Enabled",
+    "AHRS Message Type",
+    "Inertial Message Rate Divisor",
+    "AHRS Message Rate Divisor",
+    "Temperature Message Rate Divisor",
+    "USB Data Messages Enabled",
+    "Serial Data Messages Enabled",
 };
 
 static const char* const keys[] = {
     "serial_number",
     "calibration_date",
-    "offset",
-    "sensitivity",
+    "gyroscope_misalignment",
+    "gyroscope_sensitivity",
+    "gyroscope_offset",
+    "accelerometer_misalignment",
+    "accelerometer_sensitivity",
+    "accelerometer_offset",
     "firmware_version",
     "device_name",
     "serial_enabled",
     "serial_baud_rate",
     "serial_rts_cts_enabled",
+    "sample_rate",
+    "axes_alignment",
+    "gyroscope_offset_correction_enabled",
+    "ahrs_update_rate_divisor",
+    "ahrs_axes_convention",
+    "ahrs_gain",
+    "ahrs_acceleration_rejection",
+    "binary_mode_enabled",
+    "ahrs_message_type",
+    "inertial_message_rate_divisor",
+    "ahrs_message_rate_divisor",
+    "temperature_message_rate_divisor",
+    "usb_data_messages_enabled",
+    "serial_data_messages_enabled",
 };
 
 const MetadataType types[] = {
     MetadataTypeCharArray,
     MetadataTypeCharArray,
-    MetadataTypeFloat,
-    MetadataTypeFloat,
+    MetadataTypeFusionMatrix,
+    MetadataTypeFusionVector,
+    MetadataTypeFusionVector,
+    MetadataTypeFusionMatrix,
+    MetadataTypeFusionVector,
+    MetadataTypeFusionVector,
     MetadataTypeCharArray,
     MetadataTypeCharArray,
     MetadataTypeBool,
     MetadataTypeUint32,
+    MetadataTypeBool,
+    MetadataTypeIcmOdr,
+    MetadataTypeFusionAxesAlignment,
+    MetadataTypeBool,
+    MetadataTypeUint32,
+    MetadataTypeFusionConvention,
+    MetadataTypeFloat,
+    MetadataTypeFloat,
+    MetadataTypeBool,
+    MetadataTypeSendAhrsMessageType,
+    MetadataTypeUint32,
+    MetadataTypeUint32,
+    MetadataTypeUint32,
+    MetadataTypeBool,
     MetadataTypeBool,
 };
 
 const size_t sizes[] = {
     sizeof (((Ximu3SettingsValues *) 0)->serialNumber),
     sizeof (((Ximu3SettingsValues *) 0)->calibrationDate),
-    sizeof (((Ximu3SettingsValues *) 0)->offset),
-    sizeof (((Ximu3SettingsValues *) 0)->sensitivity),
+    sizeof (((Ximu3SettingsValues *) 0)->gyroscopeMisalignment),
+    sizeof (((Ximu3SettingsValues *) 0)->gyroscopeSensitivity),
+    sizeof (((Ximu3SettingsValues *) 0)->gyroscopeOffset),
+    sizeof (((Ximu3SettingsValues *) 0)->accelerometerMisalignment),
+    sizeof (((Ximu3SettingsValues *) 0)->accelerometerSensitivity),
+    sizeof (((Ximu3SettingsValues *) 0)->accelerometerOffset),
     sizeof (((Ximu3SettingsValues *) 0)->firmwareVersion),
     sizeof (((Ximu3SettingsValues *) 0)->deviceName),
     sizeof (((Ximu3SettingsValues *) 0)->serialEnabled),
     sizeof (((Ximu3SettingsValues *) 0)->serialBaudRate),
     sizeof (((Ximu3SettingsValues *) 0)->serialRtsCtsEnabled),
+    sizeof (((Ximu3SettingsValues *) 0)->sampleRate),
+    sizeof (((Ximu3SettingsValues *) 0)->axesAlignment),
+    sizeof (((Ximu3SettingsValues *) 0)->gyroscopeOffsetCorrectionEnabled),
+    sizeof (((Ximu3SettingsValues *) 0)->ahrsUpdateRateDivisor),
+    sizeof (((Ximu3SettingsValues *) 0)->ahrsAxesConvention),
+    sizeof (((Ximu3SettingsValues *) 0)->ahrsGain),
+    sizeof (((Ximu3SettingsValues *) 0)->ahrsAccelerationRejection),
+    sizeof (((Ximu3SettingsValues *) 0)->binaryModeEnabled),
+    sizeof (((Ximu3SettingsValues *) 0)->ahrsMessageType),
+    sizeof (((Ximu3SettingsValues *) 0)->inertialMessageRateDivisor),
+    sizeof (((Ximu3SettingsValues *) 0)->ahrsMessageRateDivisor),
+    sizeof (((Ximu3SettingsValues *) 0)->temperatureMessageRateDivisor),
+    sizeof (((Ximu3SettingsValues *) 0)->usbDataMessagesEnabled),
+    sizeof (((Ximu3SettingsValues *) 0)->serialDataMessagesEnabled),
 };
 
 const void* const defaults[] = {
     (void*) (&(char[16]) {"Unknown"}),
     (void*) (&(char[32]) {"Unknown"}),
-    (void*) (&(float) {0.0f}),
-    (void*) (&(float) {1.0f}),
+    (void*) (&(FusionMatrix) {{{1.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}}}),
+    (void*) (&(FusionVector) {{1.0f, 1.0f, 1.0f}}),
+    (void*) (&(FusionVector) {{0.0f, 0.0f, 0.0f}}),
+    (void*) (&(FusionMatrix) {{{1.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}}}),
+    (void*) (&(FusionVector) {{1.0f, 1.0f, 1.0f}}),
+    (void*) (&(FusionVector) {{0.0f, 0.0f, 0.0f}}),
     (void*) (&(char[32]) {"Unknown"}),
     (void*) (&(char[32]) {"Twintig"}),
     (void*) (&(bool) {true}),
     (void*) (&(uint32_t) {3000000}),
     (void*) (&(bool) {false}),
+    (void*) (&(IcmOdr) {IcmOdr50Hz}),
+    (void*) (&(FusionAxesAlignment) {FusionAxesAlignmentPXPYPZ}),
+    (void*) (&(bool) {true}),
+    (void*) (&(uint32_t) {1}),
+    (void*) (&(FusionConvention) {FusionConventionNwu}),
+    (void*) (&(float) {0.5f}),
+    (void*) (&(float) {10.0f}),
+    (void*) (&(bool) {true}),
+    (void*) (&(SendAhrsMessageType) {SendAhrsMessageTypeQuaternion}),
+    (void*) (&(uint32_t) {1}),
+    (void*) (&(uint32_t) {1}),
+    (void*) (&(uint32_t) {1}),
+    (void*) (&(bool) {true}),
+    (void*) (&(bool) {true}),
 };
 
 const bool preserveds[] = {
@@ -67,6 +157,24 @@ const bool preserveds[] = {
     true,
     true,
     true,
+    true,
+    true,
+    true,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
     false,
     false,
     false,
@@ -80,6 +188,24 @@ const bool readOnlys[] = {
     true,
     true,
     true,
+    true,
+    true,
+    true,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
     false,
     false,
     false,
@@ -92,10 +218,18 @@ static void* GetValue(Ximu3Settings * const settings, const Ximu3SettingsIndex i
             return &settings->values.serialNumber;
         case Ximu3SettingsIndexCalibrationDate:
             return &settings->values.calibrationDate;
-        case Ximu3SettingsIndexOffset:
-            return &settings->values.offset;
-        case Ximu3SettingsIndexSensitivity:
-            return &settings->values.sensitivity;
+        case Ximu3SettingsIndexGyroscopeMisalignment:
+            return &settings->values.gyroscopeMisalignment;
+        case Ximu3SettingsIndexGyroscopeSensitivity:
+            return &settings->values.gyroscopeSensitivity;
+        case Ximu3SettingsIndexGyroscopeOffset:
+            return &settings->values.gyroscopeOffset;
+        case Ximu3SettingsIndexAccelerometerMisalignment:
+            return &settings->values.accelerometerMisalignment;
+        case Ximu3SettingsIndexAccelerometerSensitivity:
+            return &settings->values.accelerometerSensitivity;
+        case Ximu3SettingsIndexAccelerometerOffset:
+            return &settings->values.accelerometerOffset;
         case Ximu3SettingsIndexFirmwareVersion:
             return &settings->values.firmwareVersion;
         case Ximu3SettingsIndexDeviceName:
@@ -106,6 +240,34 @@ static void* GetValue(Ximu3Settings * const settings, const Ximu3SettingsIndex i
             return &settings->values.serialBaudRate;
         case Ximu3SettingsIndexSerialRtsCtsEnabled:
             return &settings->values.serialRtsCtsEnabled;
+        case Ximu3SettingsIndexSampleRate:
+            return &settings->values.sampleRate;
+        case Ximu3SettingsIndexAxesAlignment:
+            return &settings->values.axesAlignment;
+        case Ximu3SettingsIndexGyroscopeOffsetCorrectionEnabled:
+            return &settings->values.gyroscopeOffsetCorrectionEnabled;
+        case Ximu3SettingsIndexAhrsUpdateRateDivisor:
+            return &settings->values.ahrsUpdateRateDivisor;
+        case Ximu3SettingsIndexAhrsAxesConvention:
+            return &settings->values.ahrsAxesConvention;
+        case Ximu3SettingsIndexAhrsGain:
+            return &settings->values.ahrsGain;
+        case Ximu3SettingsIndexAhrsAccelerationRejection:
+            return &settings->values.ahrsAccelerationRejection;
+        case Ximu3SettingsIndexBinaryModeEnabled:
+            return &settings->values.binaryModeEnabled;
+        case Ximu3SettingsIndexAhrsMessageType:
+            return &settings->values.ahrsMessageType;
+        case Ximu3SettingsIndexInertialMessageRateDivisor:
+            return &settings->values.inertialMessageRateDivisor;
+        case Ximu3SettingsIndexAhrsMessageRateDivisor:
+            return &settings->values.ahrsMessageRateDivisor;
+        case Ximu3SettingsIndexTemperatureMessageRateDivisor:
+            return &settings->values.temperatureMessageRateDivisor;
+        case Ximu3SettingsIndexUsbDataMessagesEnabled:
+            return &settings->values.usbDataMessagesEnabled;
+        case Ximu3SettingsIndexSerialDataMessagesEnabled:
+            return &settings->values.serialDataMessagesEnabled;
 
     }
     return NULL; // avoid compiler warning

@@ -16,7 +16,7 @@
 #include "definitions.h"
 #include "FirmwareVersion.h"
 #include "Haptic/Haptic.h"
-#include "Imu/Icm.h"
+#include "Imu/Imu.h"
 #include "Leds/Leds.h"
 #include "ResetCause/ResetCause.h"
 #include <stdbool.h>
@@ -24,11 +24,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Timer/Timer.h"
-#include "Timer/TimerScheduler.h"
 #include "Uart/Uart1.h"
 #include "Uart/Uart3.h"
 #include "Usb/UsbCdc.h"
-#include "Ximu3Device/x-IMU3-Device/Ximu3.h"
 #include "Ximu3Device/Ximu3Device.h"
 
 //------------------------------------------------------------------------------
@@ -51,50 +49,14 @@ int main(void) {
     HapticInitialise();
     Ximu3DeviceInitialise();
 
-    IcmInitialise(IcmOdr32kHz);
-
     // Main program loop
     while (true) {
         SYS_Tasks();
+
+        // Application tasks
+        ImuTasks(&imu1);
         UsbCdcTasks();
         Ximu3DeviceTasks();
-
-        IcmData imuData;
-        while (IcmGetData(&imuData)) {
-            const Ximu3DataInertial inertialData = {
-                .timestamp = imuData.timestamp / TIMER_TICKS_PER_MICROSECOND,
-                .gyroscopeX = imuData.gyroscopeX,
-                .gyroscopeY = imuData.gyroscopeY,
-                .gyroscopeZ = imuData.gyroscopeZ,
-                .accelerometerX = imuData.accelerometerX,
-                .accelerometerY = imuData.accelerometerY,
-                .accelerometerZ = imuData.accelerometerZ,
-            };
-            uint8_t message[64];
-            const size_t numberOfBytes = Ximu3DataInertialBinary(message, sizeof (message), &inertialData);
-            UsbCdcWrite(message, numberOfBytes);
-            Uart1Write(message, numberOfBytes);
-            if (TIMER_SCHEDULER_POLL(0.2f)) {
-                const Ximu3DataTemperature temperatureData = {
-                    .timestamp = imuData.timestamp / TIMER_TICKS_PER_MICROSECOND,
-                    .temperature = imuData.temperature,
-                };
-                uint8_t message[64];
-                const size_t numberOfBytes = Ximu3DataTemperatureBinary(message, sizeof (message), &temperatureData);
-                UsbCdcWrite(message, numberOfBytes);
-                Uart1Write(message, numberOfBytes);
-            }
-        }
-        if (TIMER_SCHEDULER_POLL(1.0f)) {
-            const Ximu3DataNotification notificationData = {
-                .timestamp = imuData.timestamp / TIMER_TICKS_PER_MICROSECOND,
-                .string = "Tick",
-            };
-            uint8_t message[64];
-            const size_t numberOfBytes = Ximu3DataNotificationBinary(message, sizeof (message), &notificationData);
-            UsbCdcWrite(message, numberOfBytes);
-            Uart1Write(message, numberOfBytes);
-        }
     }
     return (EXIT_FAILURE);
 }

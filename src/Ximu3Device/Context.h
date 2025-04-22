@@ -10,6 +10,8 @@
 //------------------------------------------------------------------------------
 // Includes
 
+#include "Imu/Imu.h"
+#include "Send/Send.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include "x-IMU3-Device/Ximu3.h"
@@ -25,6 +27,8 @@ typedef struct {
     bool nvmBlank;
     bool factoryMode;
     uint64_t applyTimeout;
+    Imu * const imu;
+    Send * const send;
 } Context;
 
 #endif

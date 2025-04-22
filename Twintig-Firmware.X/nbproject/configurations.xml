@@ -111,10 +111,26 @@
         <itemPath>../src/Haptic/Haptic.h</itemPath>
       </logicalFolder>
       <logicalFolder name="Imu" displayName="Imu" projectFiles="true">
-        <itemPath>../src/Imu/Icm.h</itemPath>
+        <logicalFolder name="Fusion" displayName="Fusion" projectFiles="true">
+          <itemPath>../src/Imu/Fusion/Fusion.h</itemPath>
+          <itemPath>../src/Imu/Fusion/FusionAhrs.h</itemPath>
+          <itemPath>../src/Imu/Fusion/FusionAxes.h</itemPath>
+          <itemPath>../src/Imu/Fusion/FusionCalibration.h</itemPath>
+          <itemPath>../src/Imu/Fusion/FusionCompass.h</itemPath>
+          <itemPath>../src/Imu/Fusion/FusionConvention.h</itemPath>
+          <itemPath>../src/Imu/Fusion/FusionMath.h</itemPath>
+          <itemPath>../src/Imu/Fusion/FusionOffset.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="Icm" displayName="Icm" projectFiles="true">
+          <itemPath>../src/Imu/Icm/Icm.h</itemPath>
+        </logicalFolder>
+        <itemPath>../src/Imu/Imu.h</itemPath>
       </logicalFolder>
       <logicalFolder name="Leds" displayName="Leds" projectFiles="true">
         <itemPath>../src/Leds/Leds.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="Send" displayName="Send" projectFiles="true">
+        <itemPath>../src/Send/Send.h</itemPath>
       </logicalFolder>
       <logicalFolder name="x-io-PIC32-Library"
                      displayName="x-io-PIC32-Library"
@@ -249,10 +265,21 @@
         <itemPath>../src/Haptic/Haptic.c</itemPath>
       </logicalFolder>
       <logicalFolder name="Imu" displayName="Imu" projectFiles="true">
-        <itemPath>../src/Imu/Icm.c</itemPath>
+        <logicalFolder name="Fusion" displayName="Fusion" projectFiles="true">
+          <itemPath>../src/Imu/Fusion/FusionAhrs.c</itemPath>
+          <itemPath>../src/Imu/Fusion/FusionCompass.c</itemPath>
+          <itemPath>../src/Imu/Fusion/FusionOffset.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="Icm" displayName="Icm" projectFiles="true">
+          <itemPath>../src/Imu/Icm/Icm.c</itemPath>
+        </logicalFolder>
+        <itemPath>../src/Imu/Imu.c</itemPath>
       </logicalFolder>
       <logicalFolder name="Leds" displayName="Leds" projectFiles="true">
         <itemPath>../src/Leds/Leds.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="Send" displayName="Send" projectFiles="true">
+        <itemPath>../src/Send/Send.c</itemPath>
       </logicalFolder>
       <logicalFolder name="x-io-PIC32-Library"
                      displayName="x-io-PIC32-Library"

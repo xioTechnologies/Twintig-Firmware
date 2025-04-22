@@ -10,12 +10,22 @@
 //------------------------------------------------------------------------------
 // Includes
 
-#include <stdbool.h>
 #include <stdint.h>
 
 //------------------------------------------------------------------------------
 // Definitions
 
+/**
+ * @brief Result.
+ */
+typedef enum {
+    IcmResultOK,
+    IcmResultError,
+} IcmResult;
+
+/**
+ * @brief ODR.
+ */
 typedef enum {
     IcmOdr32kHz = 0b0001,
     IcmOdr16kHz = 0b0010,
@@ -31,6 +41,9 @@ typedef enum {
     IcmOdr500Hz = 0b1111,
 } IcmOdr;
 
+/**
+ * @brief Data.
+ */
 typedef struct {
     uint64_t timestamp;
     float gyroscopeX;
@@ -42,12 +55,27 @@ typedef struct {
     float temperature;
 } IcmData;
 
+/**
+ * @brief Interface.
+ */
+typedef struct {
+    const IcmResult(*initialise)(const IcmOdr odr);
+    const void (*deinitialise)(void);
+    const IcmResult(*getData)(IcmData * const data);
+} Icm;
+
+//------------------------------------------------------------------------------
+// Variable declarations
+
+extern const Icm icm1;
+
 //------------------------------------------------------------------------------
 // Function declaration
 
-void IcmInitialise(const IcmOdr odr);
+IcmResult IcmInitialise(const IcmOdr odr);
 void IcmDeinitialise(void);
-bool IcmGetData(IcmData * const data);
+IcmResult IcmGetData(IcmData * const data);
+float IcmOdrToFloat(const IcmOdr odr);
 
 //------------------------------------------------------------------------------
 // End of file

@@ -7,7 +7,9 @@
 //------------------------------------------------------------------------------
 // Includes
 
+#include "Context.h"
 #include "Interfaces.h"
+#include "Send/Send.h"
 #include "Uart/Uart1.h"
 #include "Usb/UsbCdc.h"
 
@@ -32,7 +34,8 @@ size_t InterfacesUsbRead(void* const destination, size_t numberOfBytes, void* co
  * @param context Context. 
  */
 void InterfacesUsbWrite(const void* const data, const size_t numberOfBytes, void* const context) {
-    UsbCdcWrite(data, numberOfBytes); // TODO: use context for MUX
+    const Context * const context_ = context;
+    SendResponseUsb(context_->send, data, numberOfBytes);
 }
 
 /**
@@ -53,7 +56,8 @@ size_t InterfacesSerialRead(void* const destination, size_t numberOfBytes, void*
  * @param context Context. 
  */
 void InterfacesSerialWrite(const void* const data, const size_t numberOfBytes, void* const context) {
-    Uart1Write(data, numberOfBytes); // TODO: use context for MUX
+    const Context * const context_ = context;
+    SendResponseSerial(context_->send, data, numberOfBytes);
 }
 
 //------------------------------------------------------------------------------

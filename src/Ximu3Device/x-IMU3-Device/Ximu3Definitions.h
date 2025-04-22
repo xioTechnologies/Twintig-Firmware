@@ -3,6 +3,9 @@
 #ifndef XIMU3_DEFINITIONS_H
 #define XIMU3_DEFINITIONS_H
 
+#include "Imu/Fusion/Fusion.h"
+#include "Imu/Icm/Icm.h"
+#include "Send/Send.h"
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -12,32 +15,68 @@
 
 #define XIMU3_OBJECT_SIZE 1024
 
-#define XIMU3_MAX_KEY_LENGTH 22
+#define XIMU3_MAX_KEY_LENGTH 35
 
-#define XIMU3_NUMBER_OF_SETTINGS 9
+#define XIMU3_NUMBER_OF_SETTINGS 27
 
 typedef struct {
     char serialNumber[16];
     char calibrationDate[32];
-    float offset;
-    float sensitivity;
+    FusionMatrix gyroscopeMisalignment;
+    FusionVector gyroscopeSensitivity;
+    FusionVector gyroscopeOffset;
+    FusionMatrix accelerometerMisalignment;
+    FusionVector accelerometerSensitivity;
+    FusionVector accelerometerOffset;
     char firmwareVersion[32];
     char deviceName[32];
     bool serialEnabled;
     uint32_t serialBaudRate;
     bool serialRtsCtsEnabled;
+    IcmOdr sampleRate;
+    FusionAxesAlignment axesAlignment;
+    bool gyroscopeOffsetCorrectionEnabled;
+    uint32_t ahrsUpdateRateDivisor;
+    FusionConvention ahrsAxesConvention;
+    float ahrsGain;
+    float ahrsAccelerationRejection;
+    bool binaryModeEnabled;
+    SendAhrsMessageType ahrsMessageType;
+    uint32_t inertialMessageRateDivisor;
+    uint32_t ahrsMessageRateDivisor;
+    uint32_t temperatureMessageRateDivisor;
+    bool usbDataMessagesEnabled;
+    bool serialDataMessagesEnabled;
 } Ximu3SettingsValues;
 
 typedef enum {
     Ximu3SettingsIndexSerialNumber,
     Ximu3SettingsIndexCalibrationDate,
-    Ximu3SettingsIndexOffset,
-    Ximu3SettingsIndexSensitivity,
+    Ximu3SettingsIndexGyroscopeMisalignment,
+    Ximu3SettingsIndexGyroscopeSensitivity,
+    Ximu3SettingsIndexGyroscopeOffset,
+    Ximu3SettingsIndexAccelerometerMisalignment,
+    Ximu3SettingsIndexAccelerometerSensitivity,
+    Ximu3SettingsIndexAccelerometerOffset,
     Ximu3SettingsIndexFirmwareVersion,
     Ximu3SettingsIndexDeviceName,
     Ximu3SettingsIndexSerialEnabled,
     Ximu3SettingsIndexSerialBaudRate,
     Ximu3SettingsIndexSerialRtsCtsEnabled,
+    Ximu3SettingsIndexSampleRate,
+    Ximu3SettingsIndexAxesAlignment,
+    Ximu3SettingsIndexGyroscopeOffsetCorrectionEnabled,
+    Ximu3SettingsIndexAhrsUpdateRateDivisor,
+    Ximu3SettingsIndexAhrsAxesConvention,
+    Ximu3SettingsIndexAhrsGain,
+    Ximu3SettingsIndexAhrsAccelerationRejection,
+    Ximu3SettingsIndexBinaryModeEnabled,
+    Ximu3SettingsIndexAhrsMessageType,
+    Ximu3SettingsIndexInertialMessageRateDivisor,
+    Ximu3SettingsIndexAhrsMessageRateDivisor,
+    Ximu3SettingsIndexTemperatureMessageRateDivisor,
+    Ximu3SettingsIndexUsbDataMessagesEnabled,
+    Ximu3SettingsIndexSerialDataMessagesEnabled,
 } Ximu3SettingsIndex;
 
 #endif

@@ -1,0 +1,100 @@
+/**
+ * @file Imu.h
+ * @author Seb Madgwick
+ * @brief IMU processing.
+ */
+
+#ifndef IMU_H
+#define IMU_H
+
+//------------------------------------------------------------------------------
+// Includes
+
+#include "Fusion/Fusion.h"
+#include "Icm/Icm.h"
+#include <stdbool.h>
+#include <stdint.h>
+
+//------------------------------------------------------------------------------
+// Definitions
+
+/**
+ * @brief IMU settings.
+ */
+typedef struct {
+    IcmOdr sampleRate;
+    FusionMatrix gyroscopeMisalignment;
+    FusionVector gyroscopeSensitivity;
+    FusionVector gyroscopeOffset;
+    FusionMatrix accelerometerMisalignment;
+    FusionVector accelerometerSensitivity;
+    FusionVector accelerometerOffset;
+    FusionAxesAlignment axisAlignment;
+    bool gyroscopeOffsetEnabled;
+    uint32_t ahrsUpdateRateDivisor;
+    FusionConvention ahrsAxesConvention;
+    float ahrsGain;
+    float ahrsAccelerationRejection;
+} ImuSettings;
+
+/**
+ * @brief Inertial data.
+ */
+typedef struct {
+    uint64_t timestamp;
+    FusionVector gyroscope;
+    FusionVector accelerometer;
+} ImuInertialData;
+
+/**
+ * @brief AHRS data.
+ */
+typedef struct {
+    uint64_t timestamp;
+    const FusionAhrs* ahrs;
+} ImuAhrsData;
+
+/**
+ * @brief Temperature data.
+ */
+typedef struct {
+    uint64_t timestamp;
+    float temperature;
+} ImuTemperatureData;
+
+/**
+ * @brief IMU structure.
+ */
+typedef struct {
+    const Icm * const icm;
+    void (*inertialDataReady)(const ImuInertialData * const data, void* const context); // NULL if unused
+    void (*ahrsDataReady)(const ImuAhrsData * const data, void* const context); // NULL if unused
+    void (*temperatureDataReady)(const ImuTemperatureData * const data, void* const context); // NULL if unused
+    void* context;
+    bool initialised; // private
+    ImuSettings settings; // private
+    FusionOffset offset; // private
+    FusionAhrs ahrs; // private
+    FusionVector downsampledGyroscope; // private
+    FusionVector downsampledAccelerometer; // private
+    uint32_t downsampledCount; // private
+    uint64_t previousTimestamp; // private
+} Imu;
+
+//------------------------------------------------------------------------------
+// Variable declarations
+
+extern Imu imu1;
+
+//------------------------------------------------------------------------------
+// Function declarations
+
+void ImuTasks(Imu * const imu);
+void ImuSetSettings(Imu * const imu, const ImuSettings * const settings);
+void ImuReset(Imu * const imu);
+void ImuSetHeading(Imu * const imu, const float heading);
+
+#endif
+
+//------------------------------------------------------------------------------
+// End of file
