@@ -21,6 +21,9 @@ void CommandsApply(const char* * const value, Ximu3CommandResponse * const respo
 void CommandsSave(const char* * const value, Ximu3CommandResponse * const response, void* const context);
 void CommandsPing(const char* * const value, Ximu3CommandResponse * const response, void* const context);
 void CommandsHaptic(const char* * const value, Ximu3CommandResponse * const response, void* const context);
+void CommandsInitialise(const char* * const value, Ximu3CommandResponse * const response, void* const context);
+void CommandsHeading(const char* * const value, Ximu3CommandResponse * const response, void* const context);
+void CommandsNote(const char* * const value, Ximu3CommandResponse * const response, void* const context);
 void CommandsFactory(const char* * const value, Ximu3CommandResponse * const response, void* const context);
 bool CommandsOverrideReadOnly(void* const context);
 

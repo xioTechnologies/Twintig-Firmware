@@ -36,6 +36,10 @@ static const Ximu3CommandMap commands[] = {
     {"save", CommandsSave},
     {"ping", CommandsPing},
     {"haptic", CommandsHaptic},
+    {"initialise", CommandsInitialise},
+    {"initialize", CommandsInitialise},
+    {"heading", CommandsHeading},
+    {"note", CommandsNote},
     {"factory", CommandsFactory},
 };
 static Ximu3CommandInterface interfaces[] = {

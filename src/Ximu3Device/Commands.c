@@ -96,6 +96,50 @@ void CommandsHaptic(const char* * const value, Ximu3CommandResponse * const resp
 }
 
 /**
+ * @brief Initialise command.
+ * @param value Value.
+ * @param response Response.
+ */
+void CommandsInitialise(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
+    if (Ximu3CommandParseNull(value, response) != 0) {
+        return;
+    }
+    const Context * const context_ = context;
+    ImuReset(context_->imu);
+    Ximu3CommandRespond(response);
+}
+
+/**
+ * @brief Heading command.
+ * @param value Value.
+ * @param response Response.
+ */
+void CommandsHeading(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
+    float heading;
+    if (Ximu3CommandParseNumber(value, response, &heading) != 0) {
+        return;
+    }
+    const Context * const context_ = context;
+    ImuSetHeading(context_->imu, heading);
+    Ximu3CommandRespond(response);
+}
+
+/**
+ * @brief Note command.
+ * @param value Value.
+ * @param response Response.
+ */
+void CommandsNote(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
+    char string[XIMU3_VALUE_SIZE];
+    if (Ximu3CommandParseString(value, response, string, sizeof (string), NULL) != 0) {
+        return;
+    }
+    const Context * const context_ = context;
+    SendNotification(context_->send, string);
+    Ximu3CommandRespond(response);
+}
+
+/**
  * @brief Factory command.
  * @param value Value.
  * @param response Response.
