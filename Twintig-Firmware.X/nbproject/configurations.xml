@@ -140,9 +140,23 @@
       <logicalFolder name="x-io-PIC32-Library"
                      displayName="x-io-PIC32-Library"
                      projectFiles="true">
+        <logicalFolder name="Eeprom" displayName="Eeprom" projectFiles="true">
+          <itemPath>../src/x-io-PIC32-Library/Eeprom/Eeprom.h</itemPath>
+        </logicalFolder>
         <logicalFolder name="I2C" displayName="I2C" projectFiles="true">
-          <itemPath>../src/x-io-PIC32-Library/I2C/I2CBitBang.h</itemPath>
           <itemPath>../src/x-io-PIC32-Library/I2C/I2CClientAddress.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2C.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2C1.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2C2.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2C3.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2C4.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2C5.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2CMessage.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2CStartSequence.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2CBB.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2CBB1.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2CBB2.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2CBBConfig.h</itemPath>
         </logicalFolder>
         <logicalFolder name="NeoPixels" displayName="NeoPixels" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/NeoPixels/HexToBitPattern.h</itemPath>
@@ -295,8 +309,21 @@
       <logicalFolder name="x-io-PIC32-Library"
                      displayName="x-io-PIC32-Library"
                      projectFiles="true">
+        <logicalFolder name="Eeprom" displayName="Eeprom" projectFiles="true">
+          <itemPath>../src/x-io-PIC32-Library/Eeprom/Eeprom.c</itemPath>
+        </logicalFolder>
         <logicalFolder name="I2C" displayName="I2C" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/I2C/I2CClientAddress.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2C.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2C1.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2C2.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2C3.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2C4.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2C5.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2CMessage.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2CStartSequence.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2CBB1.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2CBB2.c</itemPath>
         </logicalFolder>
         <logicalFolder name="NeoPixels" displayName="NeoPixels" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/NeoPixels/NeoPixels.c</itemPath>

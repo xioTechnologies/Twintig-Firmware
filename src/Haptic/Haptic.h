@@ -8,10 +8,21 @@
 #define HAPTIC_H
 
 //------------------------------------------------------------------------------
+// Definitions
+
+/**
+ * @brief Result.
+ */
+typedef enum {
+    HapticResultOK,
+    HapticResultError,
+} HapticResult;
+
+//------------------------------------------------------------------------------
 // Function prototypes
 
 void HapticInitialise(void);
-int HapticPlay(const int effect);
+HapticResult HapticPlay(const int effect);
 
 #endif
 

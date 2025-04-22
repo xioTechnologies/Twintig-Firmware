@@ -659,25 +659,25 @@
 #define SDO_CH1_GetLatch()          ((LATD >> 0) & 0x1U)
 #define SDO_CH1_PIN                  GPIO_PIN_RD0
 
-/*** Macros for SCL_EEPROM pin ***/
-#define SCL_EEPROM_Set()               (LATCSET = (1U<<13))
-#define SCL_EEPROM_Clear()             (LATCCLR = (1U<<13))
-#define SCL_EEPROM_Toggle()            (LATCINV= (1U<<13))
-#define SCL_EEPROM_OutputEnable()      (TRISCCLR = (1U<<13))
-#define SCL_EEPROM_InputEnable()       (TRISCSET = (1U<<13))
-#define SCL_EEPROM_Get()               ((PORTC >> 13) & 0x1U)
-#define SCL_EEPROM_GetLatch()          ((LATC >> 13) & 0x1U)
-#define SCL_EEPROM_PIN                  GPIO_PIN_RC13
-
 /*** Macros for SDA_EEPROM pin ***/
-#define SDA_EEPROM_Set()               (LATCSET = (1U<<14))
-#define SDA_EEPROM_Clear()             (LATCCLR = (1U<<14))
-#define SDA_EEPROM_Toggle()            (LATCINV= (1U<<14))
-#define SDA_EEPROM_OutputEnable()      (TRISCCLR = (1U<<14))
-#define SDA_EEPROM_InputEnable()       (TRISCSET = (1U<<14))
-#define SDA_EEPROM_Get()               ((PORTC >> 14) & 0x1U)
-#define SDA_EEPROM_GetLatch()          ((LATC >> 14) & 0x1U)
-#define SDA_EEPROM_PIN                  GPIO_PIN_RC14
+#define SDA_EEPROM_Set()               (LATCSET = (1U<<13))
+#define SDA_EEPROM_Clear()             (LATCCLR = (1U<<13))
+#define SDA_EEPROM_Toggle()            (LATCINV= (1U<<13))
+#define SDA_EEPROM_OutputEnable()      (TRISCCLR = (1U<<13))
+#define SDA_EEPROM_InputEnable()       (TRISCSET = (1U<<13))
+#define SDA_EEPROM_Get()               ((PORTC >> 13) & 0x1U)
+#define SDA_EEPROM_GetLatch()          ((LATC >> 13) & 0x1U)
+#define SDA_EEPROM_PIN                  GPIO_PIN_RC13
+
+/*** Macros for SCL_EEPROM pin ***/
+#define SCL_EEPROM_Set()               (LATCSET = (1U<<14))
+#define SCL_EEPROM_Clear()             (LATCCLR = (1U<<14))
+#define SCL_EEPROM_Toggle()            (LATCINV= (1U<<14))
+#define SCL_EEPROM_OutputEnable()      (TRISCCLR = (1U<<14))
+#define SCL_EEPROM_InputEnable()       (TRISCSET = (1U<<14))
+#define SCL_EEPROM_Get()               ((PORTC >> 14) & 0x1U)
+#define SCL_EEPROM_GetLatch()          ((LATC >> 14) & 0x1U)
+#define SCL_EEPROM_PIN                  GPIO_PIN_RC14
 
 /*** Macros for RGB_SCK pin ***/
 #define RGB_SCK_Get()               ((PORTD >> 1) & 0x1U)

@@ -14,8 +14,15 @@
 // Includes
 
 #include "definitions.h"
+#include "Eeprom/Eeprom.h"
 #include "FirmwareVersion.h"
 #include "Haptic/Haptic.h"
+#include "I2C/I2C1.h"
+#include "I2C/I2C2.h"
+#include "I2C/I2C3.h"
+#include "I2C/I2C4.h"
+#include "I2C/I2C5.h"
+#include "I2C/I2CBB1.h"
 #include "Imu/Imu.h"
 #include "Leds/Leds.h"
 #include "Notification/Notification.h"
@@ -49,6 +56,19 @@ int main(void) {
     LedsInitialise();
     HapticInitialise();
     Ximu3DeviceInitialise();
+
+    I2C1Initialise(I2CClockFrequency100kHz);
+    I2C2Initialise(I2CClockFrequency100kHz);
+    I2C3Initialise(I2CClockFrequency100kHz);
+    I2C4Initialise(I2CClockFrequency100kHz);
+    I2C5Initialise(I2CClockFrequency100kHz);
+
+    printf("%s\n", EepromTestResultToString(EepromTest(&i2cBB1)));
+    printf("%s\n", EepromTestResultToString(EepromTest(&i2c1)));
+    printf("%s\n", EepromTestResultToString(EepromTest(&i2c2)));
+    printf("%s\n", EepromTestResultToString(EepromTest(&i2c3)));
+    printf("%s\n", EepromTestResultToString(EepromTest(&i2c4)));
+    printf("%s\n", EepromTestResultToString(EepromTest(&i2c5)));
 
     // Main program loop
     while (true) {

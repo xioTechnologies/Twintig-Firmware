@@ -9350,7 +9350,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;BSP_PIN_105_FUNCTION_NAME&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;SCL_EEPROM&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;SDA_EEPROM&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -9416,7 +9416,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;BSP_PIN_106_FUNCTION_NAME&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;SDA_EEPROM&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;SCL_EEPROM&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -16686,7 +16686,7 @@
       </entry>
       <entry>
          <file>..\src\config\default\peripheral\gpio\plib_gpio.h</file>
-         <hash>f610d200e59667e4bb503a6d4c41b19276172d07b64aee7ac8ee935e43d49f79</hash>
+         <hash>f4b9256c8ddca30134e0ca4f16d957ed71ade6714cccf7e5ac630a7dfdaf0b23</hash>
       </entry>
       <entry>
          <file>..\src\config\default\peripheral\rcon\plib_rcon.c</file>

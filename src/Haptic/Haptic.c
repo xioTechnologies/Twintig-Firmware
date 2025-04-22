@@ -8,7 +8,7 @@
 // Includes
 
 #include "Haptic.h"
-#include "I2C/I2CBitBang.h"
+#include "I2C/I2CBB2.h"
 #include "I2C/I2CClientAddress.h"
 #include <stdint.h>
 #include "Timer/Timer.h"
@@ -19,46 +19,37 @@
 /**
  * @brief DRV2605L I2C client address.
  */
-#define I2C_CLIENT_ADDRESS 0x5A
+#define I2C_CLIENT_ADDRESS (0x5A)
 
 /**
  * @brief Mode register address.
  */
-#define MODE_REGISTER_ADDRESS 0x01
+#define MODE_REGISTER_ADDRESS (0x01)
 
 /**
  * @brief Library selection register address.
  */
-#define LIBRARY_SELECTION_REGISTER_ADDRESS 0x03
+#define LIBRARY_SELECTION_REGISTER_ADDRESS (0x03)
 
 /**
  * @brief Waveform sequencer register address.
  */
-#define WAVEFORM_SEQUENCER_REGISTER_ADDRESS 0x04
+#define WAVEFORM_SEQUENCER_REGISTER_ADDRESS (0x04)
 
 /**
  * @brief GO register address.
  */
-#define GO_REGISTER_ADDRESS 0x0C
+#define GO_REGISTER_ADDRESS (0x0C)
 
 /**
  * @brief Feedback control register address.
  */
-#define FEEDBACK_CONTROL_REGISTER_ADDRESS 0x1A
+#define FEEDBACK_CONTROL_REGISTER_ADDRESS (0x1A)
 
 //------------------------------------------------------------------------------
 // Function prototypes
 
 static void WriteRegister(const uint8_t address, const uint8_t byte);
-
-//------------------------------------------------------------------------------
-// Variables
-
-static const I2CBitBang i2cBitBang = {
-    .scl = SCL_HAPTIC_PIN,
-    .sda = SDA_HAPTIC_PIN,
-    .halfClockCycle = 5, // 100 kHz
-};
 
 //------------------------------------------------------------------------------
 // Functions
@@ -77,15 +68,15 @@ void HapticInitialise(void) {
 /**
  * @brief Plays waveform library effect.
  * @param effect Effect ID. See page 63 of datasheet.
- * @return 0 if successful.
+ * @return Result.
  */
-int HapticPlay(const int effect) {
+HapticResult HapticPlay(const int effect) {
     if ((effect < 0) || (effect > 123)) {
-        return 1;
+        return HapticResultError;
     }
     WriteRegister(WAVEFORM_SEQUENCER_REGISTER_ADDRESS, (uint8_t) effect);
     WriteRegister(GO_REGISTER_ADDRESS, 0x01);
-    return 0;
+    return HapticResultOK;
 }
 
 /**
@@ -94,11 +85,11 @@ int HapticPlay(const int effect) {
  * @param byte Byte.
  */
 static void WriteRegister(const uint8_t address, const uint8_t byte) {
-    I2CBitBangStart(&i2cBitBang);
-    I2CBitBangSend(&i2cBitBang, I2CClientAddressWrite(I2C_CLIENT_ADDRESS));
-    I2CBitBangSend(&i2cBitBang, address);
-    I2CBitBangSend(&i2cBitBang, byte);
-    I2CBitBangStop(&i2cBitBang);
+    I2CBB2Start();
+    I2CBB2Send(I2CClientAddressWrite(I2C_CLIENT_ADDRESS));
+    I2CBB2Send(address);
+    I2CBB2Send(byte);
+    I2CBB2Stop();
 }
 
 //------------------------------------------------------------------------------
