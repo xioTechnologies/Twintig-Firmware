@@ -8,7 +8,6 @@
 // Includes
 
 #include "definitions.h"
-#include "Fifo.h"
 #include <stdint.h>
 #include "Uart1.h"
 
@@ -49,9 +48,9 @@ void Uart1Initialise(const UartSettings * const settings) {
     }
     U1MODEbits.PDSEL = settings->parityAndData;
     U1MODEbits.STSEL = settings->stopBits;
-    U1MODEbits.BRGH = 1; // High-Speed mode - 4x baud clock enabled
-    U1STAbits.URXISEL = 0b01; // Interrupt flag bit is asserted while receive buffer is 1/2 or more full (i.e., has 4 or more data characters)
-    U1STAbits.UTXISEL = 0b10; // Interrupt is generated and asserted while the transmit buffer is empty
+    U1MODEbits.BRGH = 1; // high-Speed mode - 4x baud clock enabled
+    U1STAbits.URXISEL = 0b01; // interrupt flag bit is asserted while receive buffer is 1/2 or more full (i.e., has 4 or more data characters)
+    U1STAbits.UTXISEL = 0b10; // interrupt is generated and asserted while the transmit buffer is empty
     U1STAbits.URXEN = 1; // UARTx receiver is enabled. UxRX pin is controlled by UARTx (if ON = 1)
     U1STAbits.UTXEN = 1; // UARTx transmitter is enabled. UxTX pin is controlled by UARTx (if ON = 1)
     U1BRG = UartCalculateUxbrg(settings->baudRate);
@@ -135,19 +134,23 @@ size_t Uart1GetWriteAvailable(void) {
  * @brief Writes data to the write buffer.
  * @param data Data.
  * @param numberOfBytes Number of bytes.
+ * @return Result.
  */
-void Uart1Write(const void* const data, const size_t numberOfBytes) {
-    FifoWrite(&writeFifo, data, numberOfBytes);
+FifoResult Uart1Write(const void* const data, const size_t numberOfBytes) {
+    const FifoResult result = FifoWrite(&writeFifo, data, numberOfBytes);
     EVIC_SourceEnable(INT_SOURCE_UART1_TX);
+    return result;
 }
 
 /**
  * @brief Writes a byte to the write buffer.
  * @param byte Byte.
+ * @return Result.
  */
-void Uart1WriteByte(const uint8_t byte) {
-    FifoWriteByte(&writeFifo, byte);
+FifoResult Uart1WriteByte(const uint8_t byte) {
+    const FifoResult result = FifoWriteByte(&writeFifo, byte);
     EVIC_SourceEnable(INT_SOURCE_UART1_TX);
+    return result;
 }
 
 /**

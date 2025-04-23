@@ -8,7 +8,6 @@
 // Includes
 
 #include "definitions.h"
-#include "Fifo.h"
 #include <stdint.h>
 #include "Uart3.h"
 
@@ -49,9 +48,9 @@ void Uart3Initialise(const UartSettings * const settings) {
     }
     U3MODEbits.PDSEL = settings->parityAndData;
     U3MODEbits.STSEL = settings->stopBits;
-    U3MODEbits.BRGH = 1; // High-Speed mode - 4x baud clock enabled
-    U3STAbits.URXISEL = 0b01; // Interrupt flag bit is asserted while receive buffer is 1/2 or more full (i.e., has 4 or more data characters)
-    U3STAbits.UTXISEL = 0b10; // Interrupt is generated and asserted while the transmit buffer is empty
+    U3MODEbits.BRGH = 1; // high-Speed mode - 4x baud clock enabled
+    U3STAbits.URXISEL = 0b01; // interrupt flag bit is asserted while receive buffer is 1/2 or more full (i.e., has 4 or more data characters)
+    U3STAbits.UTXISEL = 0b10; // interrupt is generated and asserted while the transmit buffer is empty
     U3STAbits.URXEN = 1; // UARTx receiver is enabled. UxRX pin is controlled by UARTx (if ON = 1)
     U3STAbits.UTXEN = 1; // UARTx transmitter is enabled. UxTX pin is controlled by UARTx (if ON = 1)
     U3BRG = UartCalculateUxbrg(settings->baudRate);
@@ -135,19 +134,23 @@ size_t Uart3GetWriteAvailable(void) {
  * @brief Writes data to the write buffer.
  * @param data Data.
  * @param numberOfBytes Number of bytes.
+ * @return Result.
  */
-void Uart3Write(const void* const data, const size_t numberOfBytes) {
-    FifoWrite(&writeFifo, data, numberOfBytes);
+FifoResult Uart3Write(const void* const data, const size_t numberOfBytes) {
+    const FifoResult result = FifoWrite(&writeFifo, data, numberOfBytes);
     EVIC_SourceEnable(INT_SOURCE_UART3_TX);
+    return result;
 }
 
 /**
  * @brief Writes a byte to the write buffer.
  * @param byte Byte.
+ * @return Result.
  */
-void Uart3WriteByte(const uint8_t byte) {
-    FifoWriteByte(&writeFifo, byte);
+FifoResult Uart3WriteByte(const uint8_t byte) {
+    const FifoResult result = FifoWriteByte(&writeFifo, byte);
     EVIC_SourceEnable(INT_SOURCE_UART3_TX);
+    return result;
 }
 
 /**

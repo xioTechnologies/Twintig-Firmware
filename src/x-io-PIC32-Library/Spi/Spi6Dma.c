@@ -50,8 +50,8 @@ void Spi6DmaInitialise(const SpiSettings * const settings) {
     Spi6DmaDeinitialise();
 
     // Configure SPI
-    SPI6CONbits.MSTEN = 1; // Host mode
-    SPI6CONbits.SMP = 1; // Input data sampled at end of data output time
+    SPI6CONbits.MSTEN = 1; // host mode
+    SPI6CONbits.SMP = 1; // input data sampled at end of data output time
     SPI6CONbits.CKP = settings->clockPolarity;
     SPI6CONbits.CKE = settings->clockPhase;
     SPI6BRG = SpiCalculateSpixbrg(settings->clockFrequency);
@@ -66,7 +66,7 @@ void Spi6DmaInitialise(const SpiSettings * const settings) {
 #else
     DCH6ECONbits.CHSIRQ = _SPI6_TX_VECTOR;
 #endif
-    DCH6ECONbits.SIRQEN = 1; // Start channel cell transfer if an interrupt matching CHSIRQ occurs
+    DCH6ECONbits.SIRQEN = 1; // start channel cell transfer if an interrupt matching CHSIRQ occurs
     DCH6DSA = KVA_TO_PA(&SPI6BUF); // destination address
     DCH6DSIZ = 1; // destination size
     DCH6CSIZ = 1; // transfers per event
@@ -77,11 +77,11 @@ void Spi6DmaInitialise(const SpiSettings * const settings) {
 #else
     DCH7ECONbits.CHSIRQ = _SPI6_RX_VECTOR;
 #endif
-    DCH7ECONbits.SIRQEN = 1; // Start channel cell transfer if an interrupt matching CHSIRQ occurs
+    DCH7ECONbits.SIRQEN = 1; // start channel cell transfer if an interrupt matching CHSIRQ occurs
     DCH7SSA = KVA_TO_PA(&SPI6BUF); // source address
     DCH7SSIZ = 1; // source size
     DCH7CSIZ = 1; // transfers per event
-    DCH7INTbits.CHBCIE = 1; // Channel Block Transfer Complete Interrupt Enable bit
+    DCH7INTbits.CHBCIE = 1; // channel Block Transfer Complete Interrupt Enable bit
 
     // Configure RX DMA channel interrupt
     EVIC_SourceEnable(INT_SOURCE_DMA7);
