@@ -79,7 +79,7 @@ void ImuTasks(Imu * const imu) {
 
         // Downsampling
         if (imu->settings.ahrsUpdateRateDivisor == 0) {
-            break;
+            continue;
         }
         if (imu->settings.ahrsUpdateRateDivisor > 1) {
             if (imu->downsampledCount == 0) {
@@ -89,7 +89,7 @@ void ImuTasks(Imu * const imu) {
             imu->downsampledGyroscope = FusionVectorAdd(imu->downsampledGyroscope, gyroscope);
             imu->downsampledAccelerometer = FusionVectorAdd(imu->downsampledAccelerometer, accelerometer);
             if (++imu->downsampledCount < imu->settings.ahrsUpdateRateDivisor) {
-                break;
+                continue;
             }
             const float reciprocal = 1.0f / (float) imu->downsampledCount;
             gyroscope = FusionVectorMultiplyScalar(imu->downsampledGyroscope, reciprocal);
@@ -102,7 +102,7 @@ void ImuTasks(Imu * const imu) {
         const float deltaTime = (float) ((double) (imuData.timestamp - imu->previousTimestamp) * (1.0 / (double) TIMER_TICKS_PER_SECOND));
         imu->previousTimestamp = imuData.timestamp;
         if (invalid) {
-            break;
+            continue;
         }
 
         // Update AHRS
