@@ -32,7 +32,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Timer/Timer.h"
-#include "Uart/Uart1.h"
 #include "Uart/Uart3.h"
 #include "Usb/UsbCdc.h"
 #include "Ximu3Device/Ximu3Device.h"

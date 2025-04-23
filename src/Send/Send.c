@@ -8,12 +8,12 @@
 // Includes
 
 #include "Send.h"
+#include "Serial/Serial.h"
 #include <stdarg.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
 #include "Timer/Timer.h"
-#include "Uart/Uart1.h"
 #include "Usb/UsbCdc.h"
 #include "Ximu3Device/x-IMU3-Device/Ximu3.h"
 
@@ -423,7 +423,7 @@ static void SendDataMessage(const Send * const send, const void* const data, con
         UsbCdcWrite(data, numberOfBytes);
     }
     if (send->settings.serialDataMessagesEnabled) {
-        Uart1Write(data, numberOfBytes);
+        SerialWrite(data, numberOfBytes);
     }
 }
 
@@ -444,7 +444,7 @@ void SendResponseUsb(const Send * const send, const void* const data, const size
  * @param numberOfBytes Number of bytes.
  */
 void SendResponseSerial(const Send * const send, const void* const data, const size_t numberOfBytes) {
-    Uart1Write(data, numberOfBytes); // TODO: prioritise this data
+    SerialWrite(data, numberOfBytes); // TODO: prioritise this data
 }
 
 //------------------------------------------------------------------------------

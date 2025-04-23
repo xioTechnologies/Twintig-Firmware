@@ -9,8 +9,8 @@
 
 #include "Apply.h"
 #include "Send/Send.h"
+#include "Serial/Serial.h"
 #include "Timer/Timer.h"
-#include "Uart/Uart1.h"
 
 //------------------------------------------------------------------------------
 // Function declarations
@@ -68,14 +68,12 @@ void ApplySerial(Context * const context) {
     }
 
     // Apply settings
-    if (Ximu3SettingsGet(context->settings)->serialEnabled) {
-        UartSettings uartSettings = uartSettingsDefault;
-        uartSettings.baudRate = Ximu3SettingsGet(context->settings)->serialBaudRate;
-        uartSettings.rtsCtsEnabled = Ximu3SettingsGet(context->settings)->serialRtsCtsEnabled;
-        Uart1Initialise(&uartSettings);
-    } else {
-        Uart1Deinitialise();
-    }
+    const SerialSettings serialSettings = {
+        .enabled = Ximu3SettingsGet(context->settings)->serialEnabled,
+        .baudRate = Ximu3SettingsGet(context->settings)->serialBaudRate,
+        .rtsCtsEnabled = Ximu3SettingsGet(context->settings)->serialRtsCtsEnabled,
+    };
+    SerialSetSettings(&serialSettings);
 }
 
 /**

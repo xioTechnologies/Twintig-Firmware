@@ -10,7 +10,7 @@
 #include "Context.h"
 #include "Interfaces.h"
 #include "Send/Send.h"
-#include "Uart/Uart1.h"
+#include "Serial/Serial.h"
 #include "Usb/UsbCdc.h"
 
 //------------------------------------------------------------------------------
@@ -46,7 +46,7 @@ void InterfacesUsbWrite(const void* const data, const size_t numberOfBytes, void
  * @return Number of bytes read.
  */
 size_t InterfacesSerialRead(void* const destination, size_t numberOfBytes, void* const context) {
-    return Uart1Read(destination, numberOfBytes); // TODO: use context for MUX
+    return SerialRead(destination, numberOfBytes); // TODO: use context for MUX
 }
 
 /**

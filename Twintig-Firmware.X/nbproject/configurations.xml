@@ -137,6 +137,9 @@
       <logicalFolder name="Send" displayName="Send" projectFiles="true">
         <itemPath>../src/Send/Send.h</itemPath>
       </logicalFolder>
+      <logicalFolder name="Serial" displayName="Serial" projectFiles="true">
+        <itemPath>../src/Serial/Serial.h</itemPath>
+      </logicalFolder>
       <logicalFolder name="x-io-PIC32-Library"
                      displayName="x-io-PIC32-Library"
                      projectFiles="true">
@@ -305,6 +308,9 @@
       </logicalFolder>
       <logicalFolder name="Send" displayName="Send" projectFiles="true">
         <itemPath>../src/Send/Send.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="Serial" displayName="Serial" projectFiles="true">
+        <itemPath>../src/Serial/Serial.c</itemPath>
       </logicalFolder>
       <logicalFolder name="x-io-PIC32-Library"
                      displayName="x-io-PIC32-Library"
