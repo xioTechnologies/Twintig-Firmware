@@ -19,6 +19,8 @@ const I2C i2cBB1 = {
     .repeatedStart = I2CBB1RepeatedStart,
     .stop = I2CBB1Stop,
     .send = I2CBB1Send,
+    .sendAddressRead = I2CBB1SendAddressRead,
+    .sendAddressWrite = I2CBB1SendAddressWrite,
     .receive = I2CBB1Receive,
 };
 static const I2CBB i2cBB = {
@@ -69,6 +71,26 @@ void I2CBB1Stop(void) {
  */
 bool I2CBB1Send(const uint8_t byte) {
     return I2CBBSend(&i2cBB, byte);
+}
+
+/**
+ * @brief Sends a 7-bit client address with appended R/W bit to indicate a
+ * read.
+ * @param address 7-bit client address.
+ * @return True if an ACK was generated.
+ */
+bool I2CBB1SendAddressRead(const uint8_t address) {
+    return I2CBBSendAddressRead(&i2cBB, address);
+}
+
+/**
+ * @brief Sends a 7-bit client address with appended R/W bit to indicate a
+ * write.
+ * @param address 7-bit client address.
+ * @return True if an ACK was generated.
+ */
+bool I2CBB1SendAddressWrite(const uint8_t address) {
+    return I2CBBSendAddressWrite(&i2cBB, address);
 }
 
 /**

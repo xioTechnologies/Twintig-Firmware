@@ -147,7 +147,6 @@
           <itemPath>../src/x-io-PIC32-Library/Eeprom/Eeprom.h</itemPath>
         </logicalFolder>
         <logicalFolder name="I2C" displayName="I2C" projectFiles="true">
-          <itemPath>../src/x-io-PIC32-Library/I2C/I2CClientAddress.h</itemPath>
           <itemPath>../src/x-io-PIC32-Library/I2C/I2C.h</itemPath>
           <itemPath>../src/x-io-PIC32-Library/I2C/I2C1.h</itemPath>
           <itemPath>../src/x-io-PIC32-Library/I2C/I2C2.h</itemPath>
@@ -319,7 +318,6 @@
           <itemPath>../src/x-io-PIC32-Library/Eeprom/Eeprom.c</itemPath>
         </logicalFolder>
         <logicalFolder name="I2C" displayName="I2C" projectFiles="true">
-          <itemPath>../src/x-io-PIC32-Library/I2C/I2CClientAddress.c</itemPath>
           <itemPath>../src/x-io-PIC32-Library/I2C/I2C.c</itemPath>
           <itemPath>../src/x-io-PIC32-Library/I2C/I2C1.c</itemPath>
           <itemPath>../src/x-io-PIC32-Library/I2C/I2C2.c</itemPath>

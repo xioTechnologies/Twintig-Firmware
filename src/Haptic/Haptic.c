@@ -9,7 +9,6 @@
 
 #include "Haptic.h"
 #include "I2C/I2CBB2.h"
-#include "I2C/I2CClientAddress.h"
 #include "I2C/I2CStartSequence.h"
 #include <stdint.h>
 #include "Timer/Timer.h"
@@ -109,10 +108,10 @@ HapticResult HapticPlay(const int effect) {
  */
 static uint8_t ReadRegister(const uint8_t address) {
     I2CBB2Start();
-    I2CBB2Send(I2CClientAddressWrite(I2C_CLIENT_ADDRESS));
+    I2CBB2SendAddressWrite(I2C_CLIENT_ADDRESS);
     I2CBB2Send(address);
     I2CBB2RepeatedStart();
-    I2CBB2Send(I2CClientAddressRead(I2C_CLIENT_ADDRESS));
+    I2CBB2SendAddressRead(I2C_CLIENT_ADDRESS);
     const uint8_t byte = I2CBB2Receive(false);
     I2CBB2Stop();
     return byte;
@@ -125,7 +124,7 @@ static uint8_t ReadRegister(const uint8_t address) {
  */
 static void WriteRegister(const uint8_t address, const uint8_t value) {
     I2CBB2Start();
-    I2CBB2Send(I2CClientAddressWrite(I2C_CLIENT_ADDRESS));
+    I2CBB2SendAddressWrite(I2C_CLIENT_ADDRESS);
     I2CBB2Send(address);
     I2CBB2Send(value);
     I2CBB2Stop();

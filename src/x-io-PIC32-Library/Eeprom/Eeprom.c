@@ -8,7 +8,6 @@
 // Includes
 
 #include "Eeprom.h"
-#include "I2C/I2CClientAddress.h"
 #include "I2C/I2CStartSequence.h"
 #include <stdio.h>
 #include <string.h>
@@ -55,7 +54,7 @@ static void PrintLine(const I2C * const i2c, const uint16_t address, const uint8
 void EepromRead(const I2C * const i2c, const uint16_t address, void* const destination, const size_t numberOfBytes) {
     StartSequence(i2c, address);
     i2c->repeatedStart();
-    i2c->send(I2CClientAddressRead(I2C_CLIENT_ADDRESS));
+    i2c->sendAddressRead(I2C_CLIENT_ADDRESS);
     const size_t endIndex = numberOfBytes - 1;
     size_t destinationIndex = 0;
     while (destinationIndex < numberOfBytes) {

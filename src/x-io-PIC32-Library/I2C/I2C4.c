@@ -25,6 +25,8 @@ const I2C i2c4 = {
     .repeatedStart = I2C4RepeatedStart,
     .stop = I2C4Stop,
     .send = I2C4Send,
+    .sendAddressRead = I2C4SendAddressRead,
+    .sendAddressWrite = I2C4SendAddressWrite,
     .receive = I2C4Receive,
 };
 static I2CMessage* message;
@@ -102,6 +104,26 @@ bool I2C4Send(const uint8_t byte) {
     I2C4TRN = byte;
     WaitForInterruptOrTimeout();
     return I2C4STATbits.ACKSTAT == 0;
+}
+
+/**
+ * @brief Sends a 7-bit client address with appended R/W bit to indicate a
+ * read.
+ * @param address 7-bit client address.
+ * @return True if an ACK was generated.
+ */
+bool I2C4SendAddressRead(const uint8_t address) {
+    return I2C4Send(I2CAddressRead(address));
+}
+
+/**
+ * @brief Sends a 7-bit client address with appended R/W bit to indicate a
+ * write.
+ * @param address 7-bit client address.
+ * @return True if an ACK was generated.
+ */
+bool I2C4SendAddressWrite(const uint8_t address) {
+    return I2C4Send(I2CAddressWrite(address));
 }
 
 /**
