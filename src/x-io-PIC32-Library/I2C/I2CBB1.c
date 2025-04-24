@@ -10,7 +10,6 @@
 #include "I2CBB.h"
 #include "I2CBB1.h"
 #include "I2CBBConfig.h"
-#include "I2CPrint.h"
 
 //------------------------------------------------------------------------------
 // Definitions

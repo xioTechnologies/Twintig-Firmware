@@ -9,7 +9,6 @@
 
 #include "definitions.h"
 #include "I2C1.h"
-#include "I2CPrint.h"
 #include <stddef.h>
 #include "Timer/Timer.h"
 
