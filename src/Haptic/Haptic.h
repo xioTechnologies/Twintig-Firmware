@@ -18,9 +18,6 @@ typedef enum {
     HapticResultError,
 } HapticResult;
 
-//------------------------------------------------------------------------------
-// Definitions
-
 /**
  * @brief Test result.
  */
