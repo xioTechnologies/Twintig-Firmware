@@ -123,7 +123,7 @@ void EepromUpdate(const I2C * const i2c, uint16_t address, const void* const dat
  * @param address Address.
  */
 static void StartSequence(const I2C * const i2c, const uint16_t address) {
-    I2CStartSequence(i2c->start, i2c->send, I2C_CLIENT_ADDRESS, 5); // 5 ms
+    I2CStartSequence(i2c, I2C_CLIENT_ADDRESS, 5); // 5 ms
     i2c->send(address >> 8);
     i2c->send(address & 0xFF);
 }
@@ -223,7 +223,7 @@ static void PrintLine(const I2C * const i2c, const uint16_t address, const uint8
 EepromTestResult EepromTest(const I2C * const i2c) {
 
     // Test client ACK
-    const bool ack = I2CStartSequence(i2c->start, i2c->send, I2C_CLIENT_ADDRESS, 5); // 5 ms
+    const bool ack = I2CStartSequence(i2c, I2C_CLIENT_ADDRESS, 5); // 5 ms
     i2c->stop();
     if (ack == false) {
         return EepromTestResultAckFailed;

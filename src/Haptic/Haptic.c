@@ -137,7 +137,7 @@ static void WriteRegister(const uint8_t address, const uint8_t value) {
 HapticTestResult HapticTest(void) {
 
     // Test client ACK
-    const bool ack = I2CStartSequence(I2CBB2Start, I2CBB2Send, I2C_CLIENT_ADDRESS, 5); // 5 ms
+    const bool ack = I2CStartSequence(&i2cBB2, I2C_CLIENT_ADDRESS, 5); // 5 ms
     I2CBB2Stop();
     if (ack == false) {
         return HapticTestResultAckFailed;

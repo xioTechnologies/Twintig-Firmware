@@ -1,23 +1,28 @@
 /**
- * @file I2CStartSequence.h
+ * @file I2CPrint.h
  * @author Seb Madgwick
- * @brief I2C start sequence with acknowledge polling and timeout.
+ * @brief I2C driver for PIC32 devices.
  */
 
-#ifndef I2C_START_SEQUENCE_H
-#define I2C_START_SEQUENCE_H
+#ifndef I2C_PRINT_H
+#define I2C_PRINT_H
 
 //------------------------------------------------------------------------------
 // Includes
 
-#include "I2C.h"
 #include <stdbool.h>
 #include <stdint.h>
 
 //------------------------------------------------------------------------------
 // Function declarations
 
-bool I2CStartSequence(const I2C * const i2c, const uint8_t address, const uint32_t timeout_);
+void I2CPrintStart(void);
+void I2CPrintRepeatedStart(void);
+void I2CPrintStop(void);
+void I2CPrintByte(const uint8_t byte);
+void I2CPrintReadAddress(const uint8_t address);
+void I2CPrintWriteAddress(const uint8_t address);
+void I2CPrintAckNack(const bool ack);
 
 #endif
 

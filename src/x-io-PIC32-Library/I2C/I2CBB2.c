@@ -10,6 +10,15 @@
 #include "I2CBB.h"
 #include "I2CBB2.h"
 #include "I2CBBConfig.h"
+#include "I2CPrint.h"
+
+//------------------------------------------------------------------------------
+// Definitions
+
+/**
+ * @brief Uncomment this line to enable printing of messages.
+ */
+//#define PRINT_MESSAGES
 
 //------------------------------------------------------------------------------
 // Variables
@@ -48,6 +57,9 @@ void I2CBB2BusClear(void) {
  */
 void I2CBB2Start(void) {
     I2CBBStart(&i2cBB);
+#ifdef PRINT_MESSAGES
+    I2CPrintStart();
+#endif
 }
 
 /**
@@ -55,6 +67,9 @@ void I2CBB2Start(void) {
  */
 void I2CBB2RepeatedStart(void) {
     I2CBBRepeatedStart(&i2cBB);
+#ifdef PRINT_MESSAGES
+    I2CPrintRepeatedStart();
+#endif
 }
 
 /**
@@ -62,6 +77,9 @@ void I2CBB2RepeatedStart(void) {
  */
 void I2CBB2Stop(void) {
     I2CBBStop(&i2cBB);
+#ifdef PRINT_MESSAGES
+    I2CPrintStop();
+#endif
 }
 
 /**
@@ -70,7 +88,12 @@ void I2CBB2Stop(void) {
  * @return True if an ACK was generated.
  */
 bool I2CBB2Send(const uint8_t byte) {
-    return I2CBBSend(&i2cBB, byte);
+    const bool ack = I2CBBSend(&i2cBB, byte);
+#ifdef PRINT_MESSAGES
+    I2CPrintByte(byte);
+    I2CPrintAckNack(ack);
+#endif
+    return ack;
 }
 
 /**
@@ -80,7 +103,12 @@ bool I2CBB2Send(const uint8_t byte) {
  * @return True if an ACK was generated.
  */
 bool I2CBB2SendAddressRead(const uint8_t address) {
-    return I2CBBSendAddressRead(&i2cBB, address);
+    const bool ack = I2CBBSendAddressRead(&i2cBB, address);
+#ifdef PRINT_MESSAGES
+    I2CPrintReadAddress(address);
+    I2CPrintAckNack(ack);
+#endif
+    return ack;
 }
 
 /**
@@ -90,7 +118,12 @@ bool I2CBB2SendAddressRead(const uint8_t address) {
  * @return True if an ACK was generated.
  */
 bool I2CBB2SendAddressWrite(const uint8_t address) {
-    return I2CBBSendAddressWrite(&i2cBB, address);
+    const bool ack = I2CBBSendAddressWrite(&i2cBB, address);
+#ifdef PRINT_MESSAGES
+    I2CPrintWriteAddress(address);
+    I2CPrintAckNack(ack);
+#endif
+    return ack;
 }
 
 /**
@@ -99,7 +132,12 @@ bool I2CBB2SendAddressWrite(const uint8_t address) {
  * @return Byte.
  */
 uint8_t I2CBB2Receive(const bool ack) {
-    return I2CBBReceive(&i2cBB, ack);
+    const uint8_t byte = I2CBBReceive(&i2cBB, ack);
+#ifdef PRINT_MESSAGES
+    I2CPrintByte(byte);
+    I2CPrintAckNack(ack);
+#endif
+    return byte;
 }
 
 //------------------------------------------------------------------------------
