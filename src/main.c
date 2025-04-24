@@ -52,22 +52,22 @@ int main(void) {
 
     // Initialise modules
     TimerInitialise();
-    LedsInitialise();
-    HapticInitialise();
-    Ximu3DeviceInitialise();
-
     I2C1Initialise(I2CClockFrequency100kHz);
     I2C2Initialise(I2CClockFrequency100kHz);
     I2C3Initialise(I2CClockFrequency100kHz);
     I2C4Initialise(I2CClockFrequency100kHz);
     I2C5Initialise(I2CClockFrequency100kHz);
+    LedsInitialise();
+    HapticInitialise();
+    Ximu3DeviceInitialise();
 
-    printf("%s\n", EepromTestResultToString(EepromTest(&i2cBB1)));
-    printf("%s\n", EepromTestResultToString(EepromTest(&i2c1)));
-    printf("%s\n", EepromTestResultToString(EepromTest(&i2c2)));
-    printf("%s\n", EepromTestResultToString(EepromTest(&i2c3)));
-    printf("%s\n", EepromTestResultToString(EepromTest(&i2c4)));
-    printf("%s\n", EepromTestResultToString(EepromTest(&i2c5)));
+    printf("Haptic          %s\n", HapticTestResultToString(HapticTest()));
+    printf("Carpus EEPROM   %s\n", EepromTestResultToString(EepromTest(&i2cBB1)));
+    printf("CH1 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c3)));
+    printf("CH2 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c2)));
+    printf("CH3 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c5)));
+    printf("CH4 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c1)));
+    printf("CH5 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c4)));
 
     // Main program loop
     while (true) {

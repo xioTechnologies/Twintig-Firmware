@@ -10,6 +10,7 @@
 //------------------------------------------------------------------------------
 // Includes
 
+#include "I2C/I2C.h"
 #include "Imu/Imu.h"
 #include "Send/Send.h"
 #include <stdbool.h>
@@ -27,6 +28,8 @@ typedef struct {
     bool nvmBlank;
     bool factoryMode;
     uint64_t applyTimeout;
+    const I2C * const i2c;
+    const uint16_t address;
     Imu * const imu;
     Send * const send;
 } Context;

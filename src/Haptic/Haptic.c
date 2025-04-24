@@ -10,6 +10,7 @@
 #include "Haptic.h"
 #include "I2C/I2CBB2.h"
 #include "I2C/I2CClientAddress.h"
+#include "I2C/I2CStartSequence.h"
 #include <stdint.h>
 #include "Timer/Timer.h"
 
@@ -20,6 +21,11 @@
  * @brief DRV2605L I2C client address.
  */
 #define I2C_CLIENT_ADDRESS (0x5A)
+
+/**
+ * @brief Status register address.
+ */
+#define STATUS_REGISTER_ADDRESS (0x00)
 
 /**
  * @brief Mode register address.
@@ -46,9 +52,26 @@
  */
 #define FEEDBACK_CONTROL_REGISTER_ADDRESS (0x1A)
 
+/**
+ * @brief Status register.
+ */
+typedef union {
+
+    struct {
+        unsigned ocDetect : 1;
+        unsigned overTemp : 1;
+        unsigned : 1;
+        unsigned diagResult : 1;
+        unsigned : 1;
+        unsigned deviceID : 3;
+    } __attribute__((__packed__));
+    uint8_t value;
+} StatusRegister;
+
 //------------------------------------------------------------------------------
 // Function prototypes
 
+static uint8_t ReadRegister(const uint8_t address);
 static void WriteRegister(const uint8_t address, const uint8_t byte);
 
 //------------------------------------------------------------------------------
@@ -80,16 +103,98 @@ HapticResult HapticPlay(const int effect) {
 }
 
 /**
- * @brief Write register.
+ * @brief Reads register value.
  * @param address Address.
- * @param byte Byte.
+ * @return Value.
  */
-static void WriteRegister(const uint8_t address, const uint8_t byte) {
+static uint8_t ReadRegister(const uint8_t address) {
     I2CBB2Start();
     I2CBB2Send(I2CClientAddressWrite(I2C_CLIENT_ADDRESS));
     I2CBB2Send(address);
-    I2CBB2Send(byte);
+    I2CBB2RepeatedStart();
+    I2CBB2Send(I2CClientAddressRead(I2C_CLIENT_ADDRESS));
+    const uint8_t byte = I2CBB2Receive(false);
     I2CBB2Stop();
+    return byte;
+}
+
+/**
+ * @brief Writes register value.
+ * @param address Address.
+ * @param value Value.
+ */
+static void WriteRegister(const uint8_t address, const uint8_t value) {
+    I2CBB2Start();
+    I2CBB2Send(I2CClientAddressWrite(I2C_CLIENT_ADDRESS));
+    I2CBB2Send(address);
+    I2CBB2Send(value);
+    I2CBB2Stop();
+}
+
+/**
+ * @brief Performs self-test.
+ * @return Test result
+ */
+HapticTestResult HapticTest(void) {
+
+    // Test client ACK
+    const bool ack = I2CStartSequence(I2CBB2Start, I2CBB2Send, I2C_CLIENT_ADDRESS, 5); // 5 ms
+    I2CBB2Stop();
+    if (ack == false) {
+        return HapticTestResultAckFailed;
+    }
+
+    // Check device ID
+    StatusRegister status = {.value = ReadRegister(STATUS_REGISTER_ADDRESS)};
+    if (status.deviceID != 7) {
+        return HapticTestResultInvalidID;
+    }
+
+    // Perform a diagnostic test
+    WriteRegister(MODE_REGISTER_ADDRESS, 0x06); // diagnostics mode
+    WriteRegister(GO_REGISTER_ADDRESS, 0x01);
+    do {
+        TimerDelayMilliseconds(100);
+    } while (ReadRegister(GO_REGISTER_ADDRESS) == 0x01);
+    WriteRegister(MODE_REGISTER_ADDRESS, 0x00); // internal trigger mode
+
+    // Check diagnostic result
+    status.value = ReadRegister(STATUS_REGISTER_ADDRESS);
+    if (status.diagResult == 1) {
+        return HapticTestResultDiagnosticsFailed;
+    }
+    if (status.overTemp == 1) {
+        return HapticTestResultOverTemperature;
+    }
+    if (status.ocDetect == 1) {
+        return HapticTestResultOverCurrent;
+    }
+
+    // Self-test passed
+    return HapticTestResultPassed;
+}
+
+/**
+ * @brief Returns the test result message.
+ * @param result Test result.
+ * @return Test result message.
+ */
+const char* HapticTestResultToString(const HapticTestResult result) {
+    switch (result) {
+        case HapticTestResultPassed:
+            return "Passed";
+        case HapticTestResultAckFailed:
+            return "ACK failed";
+        case HapticTestResultInvalidID:
+            return "Invalid ID";
+        case HapticTestResultDiagnosticsFailed:
+            return "Diagnostic failed";
+        case HapticTestResultOverTemperature:
+            return "Over temperature";
+        case HapticTestResultOverCurrent:
+            return "Over current";
+    }
+    return ""; // avoid compiler warning
 }
 
 //------------------------------------------------------------------------------

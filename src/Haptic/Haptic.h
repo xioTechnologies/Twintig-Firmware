@@ -19,10 +19,27 @@ typedef enum {
 } HapticResult;
 
 //------------------------------------------------------------------------------
+// Definitions
+
+/**
+ * @brief Test result.
+ */
+typedef enum {
+    HapticTestResultPassed,
+    HapticTestResultAckFailed,
+    HapticTestResultInvalidID,
+    HapticTestResultDiagnosticsFailed,
+    HapticTestResultOverTemperature,
+    HapticTestResultOverCurrent,
+} HapticTestResult;
+
+//------------------------------------------------------------------------------
 // Function prototypes
 
 void HapticInitialise(void);
 HapticResult HapticPlay(const int effect);
+HapticTestResult HapticTest(void);
+const char* HapticTestResultToString(const HapticTestResult result);
 
 #endif
 

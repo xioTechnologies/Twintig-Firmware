@@ -7,6 +7,8 @@
 //------------------------------------------------------------------------------
 // Includes
 
+#include "Context.h"
+#include "Eeprom/Eeprom.h"
 #include "Nvm.h"
 
 //------------------------------------------------------------------------------
@@ -19,6 +21,8 @@
  * @param context Context.
  */
 void NvmRead(void* const destination, size_t numberOfBytes, void* const context) {
+    const Context * const context_ = context;
+    EepromRead(context_->i2c, context_->address, destination, numberOfBytes);
 }
 
 /**
@@ -28,6 +32,8 @@ void NvmRead(void* const destination, size_t numberOfBytes, void* const context)
  * @param context Context.
  */
 void NvmWrite(const void* const data, const size_t numberOfBytes, void* const context) {
+    const Context * const context_ = context;
+    EepromWrite(context_->i2c, context_->address, data, numberOfBytes);
 }
 
 //------------------------------------------------------------------------------

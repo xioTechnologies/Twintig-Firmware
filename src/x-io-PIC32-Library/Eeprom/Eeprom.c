@@ -242,7 +242,7 @@ EepromTestResult EepromTest(const I2C * const i2c) {
     // Read modified data
     EepromRead(i2c, address, &readData, sizeof (readData));
 
-    // Fail if read data does not match write data
+    // Check that read data matches write data
     if (readData != writeData) {
         return EepromTestResultDataMismatch;
     }
