@@ -222,14 +222,6 @@ typedef struct {
 } __attribute__((__packed__)) IcmFifoPacket;
 
 /**
- * @brief Result.
- */
-typedef enum {
-    IcmResultOK,
-    IcmResultError,
-} IcmResult;
-
-/**
  * @brief ODR.
  */
 typedef enum {
@@ -246,6 +238,14 @@ typedef enum {
     IcmOdr12Hz = 0b1011,
     IcmOdr500Hz = 0b1111,
 } IcmOdr;
+
+/**
+ * @brief Result.
+ */
+typedef enum {
+    IcmResultOK,
+    IcmResultError,
+} IcmResult;
 
 /**
  * @brief Data.
