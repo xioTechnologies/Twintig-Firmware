@@ -85,6 +85,25 @@ typedef struct {
 // Variable declarations
 
 extern Imu imu1;
+extern Imu imu2;
+extern Imu imu3;
+extern Imu imu4;
+extern Imu imu5;
+extern Imu imu6;
+extern Imu imu7;
+extern Imu imu8;
+extern Imu imu9;
+extern Imu imu10;
+extern Imu imu11;
+extern Imu imu12;
+extern Imu imu13;
+extern Imu imu14;
+extern Imu imu15;
+extern Imu imu16;
+extern Imu imu17;
+extern Imu imu18;
+extern Imu imu19;
+extern Imu imu20;
 
 //------------------------------------------------------------------------------
 // Function declarations

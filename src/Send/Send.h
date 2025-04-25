@@ -61,6 +61,25 @@ typedef struct {
 // Variable declarations
 
 extern Send send1;
+extern Send send2;
+extern Send send3;
+extern Send send4;
+extern Send send5;
+extern Send send6;
+extern Send send7;
+extern Send send8;
+extern Send send9;
+extern Send send10;
+extern Send send11;
+extern Send send12;
+extern Send send13;
+extern Send send14;
+extern Send send15;
+extern Send send16;
+extern Send send17;
+extern Send send18;
+extern Send send19;
+extern Send send20;
 
 //------------------------------------------------------------------------------
 // Function declarations

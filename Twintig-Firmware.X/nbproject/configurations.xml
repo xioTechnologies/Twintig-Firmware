@@ -123,6 +123,7 @@
         </logicalFolder>
         <logicalFolder name="Icm" displayName="Icm" projectFiles="true">
           <itemPath>../src/Imu/Icm/Icm.h</itemPath>
+          <itemPath>../src/Imu/Icm/Icm1.h</itemPath>
         </logicalFolder>
         <itemPath>../src/Imu/Imu.h</itemPath>
       </logicalFolder>
@@ -293,6 +294,7 @@
         </logicalFolder>
         <logicalFolder name="Icm" displayName="Icm" projectFiles="true">
           <itemPath>../src/Imu/Icm/Icm.c</itemPath>
+          <itemPath>../src/Imu/Icm/Icm1.c</itemPath>
         </logicalFolder>
         <itemPath>../src/Imu/Imu.c</itemPath>
       </logicalFolder>
@@ -699,6 +701,8 @@
         <property key="memories.programmemory" value="true"/>
         <property key="memories.programmemory.ranges" value="1d000000-1d1fffff"/>
         <property key="poweroptions.powerenable" value="false"/>
+        <property key="programmerToGoFilePath"
+                  value="C:/MyFiles/x-io/Services/MICA Lab/Twintig/Twintig-Firmware/Twintig-Firmware.X/debug/default/Twintig-Firmware_ptg"/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>
         <property key="programoptions.ledbrightness" value="5"/>

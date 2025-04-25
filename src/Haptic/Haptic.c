@@ -132,7 +132,7 @@ static void WriteRegister(const uint8_t address, const uint8_t value) {
 
 /**
  * @brief Performs self-test.
- * @return Test result
+ * @return Test result.
  */
 HapticTestResult HapticTest(void) {
 

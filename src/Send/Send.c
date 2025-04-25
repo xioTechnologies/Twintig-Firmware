@@ -35,6 +35,25 @@ static void SendDataMessage(const Send * const send, const void* const data, con
 // Variables
 
 Send send1 = {.imu = &imu1};
+Send send2 = {.imu = &imu1};
+Send send3 = {.imu = &imu1};
+Send send4 = {.imu = &imu1};
+Send send5 = {.imu = &imu1};
+Send send6 = {.imu = &imu1};
+Send send7 = {.imu = &imu1};
+Send send8 = {.imu = &imu1};
+Send send9 = {.imu = &imu1};
+Send send10 = {.imu = &imu1};
+Send send11 = {.imu = &imu1};
+Send send12 = {.imu = &imu1};
+Send send13 = {.imu = &imu1};
+Send send14 = {.imu = &imu1};
+Send send15 = {.imu = &imu1};
+Send send16 = {.imu = &imu1};
+Send send17 = {.imu = &imu1};
+Send send18 = {.imu = &imu1};
+Send send19 = {.imu = &imu1};
+Send send20 = {.imu = &imu1};
 
 //------------------------------------------------------------------------------
 // Functions

@@ -218,7 +218,7 @@ static void PrintLine(const I2C * const i2c, const uint16_t address, const uint8
 /**
  * @brief Performs self-test.
  * @param i2c I2C interface.
- * @return Test result
+ * @return Test result.
  */
 EepromTestResult EepromTest(const I2C * const i2c) {
 

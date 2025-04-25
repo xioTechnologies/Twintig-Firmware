@@ -23,6 +23,7 @@
 #include "I2C/I2C4.h"
 #include "I2C/I2C5.h"
 #include "I2C/I2CBB1.h"
+#include "Imu/Icm/Icm1.h"
 #include "Imu/Imu.h"
 #include "Leds/Leds.h"
 #include "Notification/Notification.h"
@@ -58,9 +59,7 @@ int main(void) {
     I2C3Initialise(I2CClockFrequency100kHz);
     I2C4Initialise(I2CClockFrequency100kHz);
     I2C5Initialise(I2CClockFrequency100kHz);
-    SpiSettings settings = spiSettingsDefault;
-    settings.clockFrequency = 16000000;
-    Spi4DmaInitialise(&settings);
+    Spi4DmaInitialise(&icmSpiSettings);
     LedsInitialise();
     HapticInitialise();
     Ximu3DeviceInitialise();
@@ -72,7 +71,7 @@ int main(void) {
     printf("CH3 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c5)));
     printf("CH4 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c1)));
     printf("CH5 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c4)));
-    printf("CH1 IMU4        %s\n", IcmTestResultToString(IcmTest()));
+    printf("CH1 IMU4        %s\n", IcmTestResultToString(Icm1Test()));
 
     // Main program loop
     while (true) {
@@ -80,6 +79,25 @@ int main(void) {
 
         // Application tasks
         ImuTasks(&imu1);
+        // ImuTasks(&imu2);
+        // ImuTasks(&imu3);
+        // ImuTasks(&imu4);
+        // ImuTasks(&imu5);
+        // ImuTasks(&imu6);
+        // ImuTasks(&imu7);
+        // ImuTasks(&imu8);
+        // ImuTasks(&imu9);
+        // ImuTasks(&imu10);
+        // ImuTasks(&imu11);
+        // ImuTasks(&imu12);
+        // ImuTasks(&imu13);
+        // ImuTasks(&imu14);
+        // ImuTasks(&imu15);
+        // ImuTasks(&imu16);
+        // ImuTasks(&imu17);
+        // ImuTasks(&imu18);
+        // ImuTasks(&imu19);
+        // ImuTasks(&imu20);
         NotificationTasks();
         UsbCdcTasks();
         Ximu3DeviceTasks();

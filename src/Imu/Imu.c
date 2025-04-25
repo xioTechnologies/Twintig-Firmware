@@ -8,6 +8,7 @@
 // Includes
 
 #include "Imu.h"
+#include "Imu/Icm/Icm1.h"
 #include <stddef.h>
 #include "Timer/Timer.h"
 
@@ -15,6 +16,25 @@
 // Variables
 
 Imu imu1 = {.icm = &icm1};
+Imu imu2 = {.icm = &icm1};
+Imu imu3 = {.icm = &icm1};
+Imu imu4 = {.icm = &icm1};
+Imu imu5 = {.icm = &icm1};
+Imu imu6 = {.icm = &icm1};
+Imu imu7 = {.icm = &icm1};
+Imu imu8 = {.icm = &icm1};
+Imu imu9 = {.icm = &icm1};
+Imu imu10 = {.icm = &icm1};
+Imu imu11 = {.icm = &icm1};
+Imu imu12 = {.icm = &icm1};
+Imu imu13 = {.icm = &icm1};
+Imu imu14 = {.icm = &icm1};
+Imu imu15 = {.icm = &icm1};
+Imu imu16 = {.icm = &icm1};
+Imu imu17 = {.icm = &icm1};
+Imu imu18 = {.icm = &icm1};
+Imu imu19 = {.icm = &icm1};
+Imu imu20 = {.icm = &icm1};
 
 //------------------------------------------------------------------------------
 // Functions
