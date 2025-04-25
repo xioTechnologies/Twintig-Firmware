@@ -105,7 +105,7 @@ void Spi1DmaTXDeinitialise(void) {
  * @param numberOfBytes Number of bytes.
  * @param transferComplete_ Transfer complete callback function.
  */
-void Spi1DmaTXTransfer(const GPIO_PIN csPin_, void* const data, const size_t numberOfBytes, void (*transferComplete_)(void)) {
+void Spi1DmaTXTransfer(const GPIO_PIN csPin_, const void* const data, const size_t numberOfBytes, void (*transferComplete_)(void)) {
 
     // Set CS pin and callback
     csPin = csPin_;

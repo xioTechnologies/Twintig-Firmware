@@ -254,22 +254,11 @@ static uint32_t bufferOverflow;
 /**
  * @brief Initialises the module.
  * @param odr ODR.
- * @return Result.
  */
-IcmResult IcmInitialise(const IcmOdr odr) {
+void IcmInitialise(const IcmOdr odr) {
 
     // Ensure default states
     IcmDeinitialise();
-
-    // Initialise SPI
-    SpiSettings settings = spiSettingsDefault;
-    settings.clockFrequency = 16000000;
-    Spi4DmaInitialise(&settings);
-
-    // Verify identity of the device
-    if (ReadRegister(WHO_AM_I) != 0x47) {
-        return IcmResultError;
-    }
 
     // Software reset
     DeviceConfigRegister deviceConfigRegister = {.value = ReadRegister(DEVICE_CONFIG_ADDRESS)};
@@ -319,7 +308,6 @@ IcmResult IcmInitialise(const IcmOdr odr) {
     // Configure interrupt
     GPIO_PinInterruptCallbackRegister(INT4_CH1_PIN, ExternalInterrupt, (uintptr_t) NULL);
     GPIO_PinIntEnable(INT4_CH1_PIN, GPIO_INTERRUPT_ON_BOTH_EDGES); // only both edges supported
-    return IcmResultOK;
 }
 
 /**
@@ -327,7 +315,6 @@ IcmResult IcmInitialise(const IcmOdr odr) {
  */
 void IcmDeinitialise(void) {
     while (Spi4DmaTransferInProgress());
-    Spi4DmaDeinitialise();
     GPIO_PinIntDisable(INT4_CH1_PIN);
     FifoClear(&fifo);
 }
@@ -454,6 +441,38 @@ float IcmOdrToFloat(const IcmOdr odr) {
             return 500.0f;
     }
     return 0.0f; // avoid compiler warning
+}
+
+/**
+ * @brief Performs self-test.
+ * @return Test result
+ */
+IcmTestResult IcmTest(void) {
+
+    // Check device ID
+    if (ReadRegister(WHO_AM_I) != 0x47) {
+        return IcmTestResultInvalidID;
+    }
+
+    // TODO: use built-in self-test functionality
+
+    // Self-test passed
+    return IcmTestResultPassed;
+}
+
+/**
+ * @brief Returns the test result message.
+ * @param result Test result.
+ * @return Test result message.
+ */
+const char* IcmTestResultToString(const IcmTestResult result) {
+    switch (result) {
+        case IcmTestResultPassed:
+            return "Passed";
+        case IcmTestResultInvalidID:
+            return "Invalid ID";
+    }
+    return ""; // avoid compiler warning
 }
 
 //------------------------------------------------------------------------------

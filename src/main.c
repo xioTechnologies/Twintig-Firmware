@@ -27,6 +27,7 @@
 #include "Leds/Leds.h"
 #include "Notification/Notification.h"
 #include "ResetCause/ResetCause.h"
+#include "Spi/Spi4Dma.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -57,6 +58,9 @@ int main(void) {
     I2C3Initialise(I2CClockFrequency100kHz);
     I2C4Initialise(I2CClockFrequency100kHz);
     I2C5Initialise(I2CClockFrequency100kHz);
+    SpiSettings settings = spiSettingsDefault;
+    settings.clockFrequency = 16000000;
+    Spi4DmaInitialise(&settings);
     LedsInitialise();
     HapticInitialise();
     Ximu3DeviceInitialise();
@@ -68,6 +72,7 @@ int main(void) {
     printf("CH3 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c5)));
     printf("CH4 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c1)));
     printf("CH5 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c4)));
+    printf("CH1 IMU4        %s\n", IcmTestResultToString(IcmTest()));
 
     // Main program loop
     while (true) {

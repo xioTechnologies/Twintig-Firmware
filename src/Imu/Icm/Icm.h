@@ -56,10 +56,18 @@ typedef struct {
 } IcmData;
 
 /**
+ * @brief Test result.
+ */
+typedef enum {
+    IcmTestResultPassed,
+    IcmTestResultInvalidID,
+} IcmTestResult;
+
+/**
  * @brief Interface.
  */
 typedef struct {
-    const IcmResult(*initialise)(const IcmOdr odr);
+    const void(*initialise)(const IcmOdr odr);
     const void (*deinitialise)(void);
     const IcmResult(*getData)(IcmData * const data);
     const uint32_t(*bufferOverflow)(void);
@@ -73,11 +81,13 @@ extern const Icm icm1;
 //------------------------------------------------------------------------------
 // Function declaration
 
-IcmResult IcmInitialise(const IcmOdr odr);
+void IcmInitialise(const IcmOdr odr);
 void IcmDeinitialise(void);
 IcmResult IcmGetData(IcmData * const data);
 uint32_t IcmBufferOverflow(void);
 float IcmOdrToFloat(const IcmOdr odr);
+IcmTestResult IcmTest(void);
+const char* IcmTestResultToString(const IcmTestResult result);
 
 //------------------------------------------------------------------------------
 // End of file
