@@ -67,6 +67,8 @@ const char* IcmTestResultToString(const IcmTestResult result) {
             return "Passed";
         case IcmTestResultInvalidID:
             return "Invalid ID";
+        case IcmTestResultInterruptFailed:
+            return "Interrupt failed";
     }
     return ""; // avoid compiler warning
 }

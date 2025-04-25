@@ -267,6 +267,7 @@ typedef struct {
 typedef enum {
     IcmTestResultPassed,
     IcmTestResultInvalidID,
+    IcmTestResultInterruptFailed,
 } IcmTestResult;
 
 /**

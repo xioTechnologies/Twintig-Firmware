@@ -42,7 +42,7 @@ void NotificationTasks(void) {
     // IMU buffer overrun
     const uint32_t bufferOverflow = imu1.icm->bufferOverflow();
     if (bufferOverflow > 0) {
-        SendError(&send1, "IMU buffer overflow. %u samples discarded.", bufferOverflow);
+        SendError(&send1, "IMU buffer overflow. %u samples lost.", bufferOverflow);
     }
 }
 

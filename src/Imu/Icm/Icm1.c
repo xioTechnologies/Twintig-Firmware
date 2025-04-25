@@ -33,6 +33,7 @@ const Icm icm1 = {
     .getData = Icm1GetData,
     .bufferOverflow = Icm1BufferOverflow,
 };
+static uint8_t deviceID;
 static __attribute__((coherent)) IcmSpiPacket spiPacket;
 static uint64_t timestamp;
 static bool lock;
@@ -51,6 +52,9 @@ void Icm1Initialise(const IcmOdr odr) {
 
     // Ensure default states
     Icm1Deinitialise();
+
+    // Read device ID
+    deviceID = ReadRegister(ICM_WHO_AM_I_ADDRESS);
 
     // Software reset
     IcmDeviceConfigRegister deviceConfigRegister = {.value = ReadRegister(ICM_DEVICE_CONFIG_ADDRESS)};
@@ -193,9 +197,9 @@ IcmResult Icm1GetData(IcmData * const data) {
 }
 
 /**
- * @brief Returns the number of samples discarded due to buffer overflow.
- * Calling this function will reset the value.
- * @return Number of samples discarded due to buffer overflow.
+ * @brief Returns the number of samples lost due to buffer overflow. Calling
+ * this function will reset the value.
+ * @return Number of samples lost due to buffer overflow.
  */
 uint32_t Icm1BufferOverflow(void) {
     return __sync_lock_test_and_set(&bufferOverflow, 0);
@@ -207,14 +211,22 @@ uint32_t Icm1BufferOverflow(void) {
  */
 IcmTestResult Icm1Test(void) {
 
-    // TODO: deinitialise to prevent interrupts
-
     // Check device ID
-    if (ReadRegister(ICM_WHO_AM_I_ADDRESS) != 0x47) {
+    if (deviceID != 0x47) {
         return IcmTestResultInvalidID;
     }
 
-    // TODO: use built-in self-test functionality
+    // Check interrupt
+    const uint32_t timeout = TimerGetTicks64() + (TIMER_TICKS_PER_SECOND / 10);
+    while (true) {
+        IcmData data;
+        if (Icm1GetData(&data) == IcmResultOK) {
+            break;
+        }
+        if (TimerGetTicks64() > timeout) {
+            return IcmTestResultInterruptFailed;
+        }
+    }
 
     // Self-test passed
     return IcmTestResultPassed;
