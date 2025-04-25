@@ -47,24 +47,24 @@ static Ximu3CommandInterface interfaces[] = {
     { .name = "USB", .read = InterfacesUsbRead, .write = InterfacesUsbWrite},
     { .name = "Serial", .read = InterfacesSerialRead, .write = InterfacesSerialWrite},
 };
-static Ximu3Settings settings = {
+static Ximu3Settings settings1 = {
     .nvmRead = NvmRead,
     .nvmWrite = NvmWrite,
     .initialiseEpilogue = InitialiseEpilogue,
     .defaultsEpilogue = DefaultsEpilogue,
 };
-static Ximu3CommandBridge bridge = {
+static Ximu3CommandBridge bridge1 = {
     .interfaces = interfaces,
     .numberOfInterfaces = sizeof (interfaces) / sizeof (Ximu3CommandInterface),
     .commands = commands,
-    .settings = &settings,
+    .settings = &settings1,
     .numberOfCommands = sizeof (commands) / sizeof (Ximu3CommandMap),
     .overrideReadOnly = CommandsOverrideReadOnly,
     .writeEpilogue = WriteEpilogue,
     .error = Error,
 };
-static Context context = {
-    .settings = &settings,
+static Context context1 = {
+    .settings = &settings1,
     .i2c = &i2c3,
     .address = 0,
     .imu = &imu1,
@@ -79,10 +79,10 @@ static Context context = {
  * system startup.
  */
 void Ximu3DeviceInitialise(void) {
-    settings.context = &context;
-    bridge.context = &context;
-    Ximu3SettingsInitialise(&settings);
-    ApplyNow(&context);
+    settings1.context = &context1;
+    bridge1.context = &context1;
+    Ximu3SettingsInitialise(&settings1);
+    ApplyNow(&context1);
 }
 
 /**
@@ -90,8 +90,8 @@ void Ximu3DeviceInitialise(void) {
  * main program loop.
  */
 void Ximu3DeviceTasks(void) {
-    Ximu3CommandTasks(&bridge);
-    ApplyTasks(&context);
+    Ximu3CommandTasks(&bridge1);
+    ApplyTasks(&context1);
 }
 
 /**
@@ -99,15 +99,16 @@ void Ximu3DeviceTasks(void) {
  * @param context Context.
  */
 static void InitialiseEpilogue(void* const context) {
-    const char* const firmwareVersion = Ximu3SettingsGet(&settings)->firmwareVersion;
+    Context * const context_ = context;
+    const char* const firmwareVersion = Ximu3SettingsGet(context_->settings)->firmwareVersion;
     if (strspn(firmwareVersion, "?") == strlen(firmwareVersion)) { // if NVM blank
-        Ximu3SettingsDefaults(&settings, true);
+        Ximu3SettingsDefaults(context_->settings, true);
         Context * const context_ = context;
         context_->nvmBlank = true;
         return;
     }
     if (strncmp(firmwareVersion, FIRMWARE_VERSION, sizeof (FIRMWARE_VERSION)) != 0) { // if firmware changed
-        Ximu3SettingsDefaults(&settings, false);
+        Ximu3SettingsDefaults(context_->settings, false);
     }
 }
 
@@ -116,7 +117,8 @@ static void InitialiseEpilogue(void* const context) {
  * @param context Context.
  */
 static void DefaultsEpilogue(void* const context) {
-    Ximu3SettingsSet(&settings, Ximu3SettingsIndexFirmwareVersion, FIRMWARE_VERSION, true);
+    Context * const context_ = context;
+    Ximu3SettingsSet(context_->settings, Ximu3SettingsIndexFirmwareVersion, FIRMWARE_VERSION, true);
 }
 
 /**
@@ -125,7 +127,8 @@ static void DefaultsEpilogue(void* const context) {
  * @param context Context.
  */
 static void WriteEpilogue(const Ximu3SettingsIndex index, void* const context) {
-    ApplyAfterDelay((Context * const) context);
+    Context * const context_ = context;
+    ApplyAfterDelay(context_);
 }
 
 /**
