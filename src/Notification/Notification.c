@@ -25,10 +25,10 @@ void NotificationTasks(void) {
     // USB host
     switch (ON_CHANGE_POLL_DEBOUNCE(UsbCdcHostConnected())) {
         case OnChangeEdgeLowToHigh:
-            SendNotification(&send1, "USB host connected.");
+            SendNotification(&send1, "USB host connected");
             break;
         case OnChangeEdgeHighToLow:
-            SendNotification(&send1, "USB host disconnected.");
+            SendNotification(&send1, "USB host disconnected");
             break;
         default:
             break;
