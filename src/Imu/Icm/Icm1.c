@@ -114,6 +114,7 @@ void Icm1Deinitialise(void) {
     while (Spi4DmaTransferInProgress());
     while (lock);
     FifoClear(&fifo);
+    bufferOverflow = 0;
 }
 
 /**

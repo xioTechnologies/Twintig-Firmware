@@ -30,6 +30,7 @@ static void SendLinearAcceleration(const Send * const send, const ImuAhrsData * 
 static void SendEarthAcceleration(const Send * const send, const ImuAhrsData * const imuData);
 static void TemperatureDataReady(const ImuTemperatureData * const data, void* const context);
 static void SendDataMessage(const Send * const send, const void* const data, const size_t numberOfBytes);
+static void SendDataMessagePriority(const Send * const send, const void* const data, const size_t numberOfBytes);
 
 //------------------------------------------------------------------------------
 // Variables
@@ -396,7 +397,7 @@ void SendNotification(const Send * const send, const char* format, ...) {
     } else {
         messageSize = Ximu3DataNotificationAscii(message, sizeof (message), &ximu3Data);
     }
-    SendDataMessage(send, message, messageSize); // TODO: prioritise this data
+    SendDataMessagePriority(send, message, messageSize);
 }
 
 /**
@@ -426,7 +427,7 @@ void SendError(const Send * const send, const char* format, ...) {
     } else {
         messageSize = Ximu3DataErrorAscii(message, sizeof (message), &ximu3Data);
     }
-    SendDataMessage(send, message, messageSize); // TODO: prioritise this data
+    SendDataMessagePriority(send, message, messageSize);
 
     // Blink LED
     // TODO: blink LED
@@ -438,6 +439,24 @@ void SendError(const Send * const send, const char* format, ...) {
  * @param numberOfBytes Number of bytes.
  */
 static void SendDataMessage(const Send * const send, const void* const data, const size_t numberOfBytes) {
+    if (send->settings.usbDataMessagesEnabled) {
+        if (UsbCdcGetWriteAvailable() >= (numberOfBytes + 1024)) {
+            UsbCdcWrite(data, numberOfBytes);
+        }
+    }
+    if (send->settings.serialDataMessagesEnabled) {
+        if (SerialGetWriteAvailable() >= (numberOfBytes + 1024)) {
+            SerialWrite(data, numberOfBytes);
+        }
+    }
+}
+
+/**
+ * @brief Sends data message as a priority.
+ * @param data Data.
+ * @param numberOfBytes Number of bytes.
+ */
+static void SendDataMessagePriority(const Send * const send, const void* const data, const size_t numberOfBytes) {
     if (send->settings.usbDataMessagesEnabled) {
         UsbCdcWrite(data, numberOfBytes);
     }
