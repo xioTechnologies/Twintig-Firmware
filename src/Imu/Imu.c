@@ -51,92 +51,97 @@ void ImuTasks(Imu * const imu) {
         return;
     }
 
-    // Get data
-    IcmData imuData;
-    if (imu->icm->getData(&imuData) != IcmResultOK) {
-        return;
-    }
+    // Process available data
+    int numberOfSamples = 0;
+    while (numberOfSamples++ < 8) {
 
-    // Apply calibration
-    FusionVector gyroscope = {
-        .axis.x = imuData.gyroscopeX,
-        .axis.y = imuData.gyroscopeY,
-        .axis.z = imuData.gyroscopeZ,
-    };
-    FusionVector accelerometer = {
-        .axis.x = imuData.accelerometerX,
-        .axis.y = imuData.accelerometerY,
-        .axis.z = imuData.accelerometerZ,
-    };
-    gyroscope = FusionCalibrationInertial(gyroscope, imu->settings.gyroscopeMisalignment, imu->settings.gyroscopeSensitivity, imu->settings.gyroscopeOffset);
-    accelerometer = FusionCalibrationInertial(accelerometer, imu->settings.accelerometerMisalignment, imu->settings.accelerometerSensitivity, imu->settings.accelerometerOffset);
-
-    // Update offset
-    if (imu->settings.gyroscopeOffsetEnabled) {
-        gyroscope = FusionOffsetUpdate(&imu->offset, gyroscope);
-    }
-
-    // Axis alignment
-    gyroscope = FusionAxesSwap(gyroscope, imu->settings.axisAlignment);
-    accelerometer = FusionAxesSwap(accelerometer, imu->settings.axisAlignment);
-
-    // Inertial callback
-    if (imu->inertialDataReady != NULL) {
-        ImuInertialData inertialData = {
-            .timestamp = imuData.timestamp,
-            .gyroscope = gyroscope,
-            .accelerometer = accelerometer,
-        };
-        imu->inertialDataReady(&inertialData, imu->context);
-    }
-
-    // Temperature callback
-    if (imu->temperatureDataReady != NULL) {
-        ImuTemperatureData temperatureData = {
-            .timestamp = imuData.timestamp,
-            .temperature = imuData.temperature,
-        };
-        imu->temperatureDataReady(&temperatureData, imu->context);
-    }
-
-    // Downsampling
-    if (imu->settings.ahrsUpdateRateDivisor == 0) {
-        return;
-    }
-    if (imu->settings.ahrsUpdateRateDivisor > 1) {
-        if (imu->downsampledCount == 0) {
-            imu->downsampledGyroscope = FUSION_VECTOR_ZERO;
-            imu->downsampledAccelerometer = FUSION_VECTOR_ZERO;
+        // Get data
+        IcmData imuData;
+        if (imu->icm->getData(&imuData) != IcmResultOK) {
+            break;
         }
-        imu->downsampledGyroscope = FusionVectorAdd(imu->downsampledGyroscope, gyroscope);
-        imu->downsampledAccelerometer = FusionVectorAdd(imu->downsampledAccelerometer, accelerometer);
-        if (++imu->downsampledCount < imu->settings.ahrsUpdateRateDivisor) {
-            return;
-        }
-        const float reciprocal = 1.0f / (float) imu->downsampledCount;
-        gyroscope = FusionVectorMultiplyScalar(imu->downsampledGyroscope, reciprocal);
-        accelerometer = FusionVectorMultiplyScalar(imu->downsampledAccelerometer, reciprocal);
-    }
-    imu->downsampledCount = 0;
 
-    // Calculate delta time
-    const bool invalid = imu->previousTimestamp == 0;
-    const float deltaTime = (float) ((double) (imuData.timestamp - imu->previousTimestamp) * (1.0 / (double) TIMER_TICKS_PER_SECOND));
-    imu->previousTimestamp = imuData.timestamp;
-    if (invalid) {
-        return;
-    }
-
-    // Update AHRS
-    FusionAhrsUpdateNoMagnetometer(&imu->ahrs, gyroscope, accelerometer, deltaTime);
-
-    // AHRS callback
-    if (imu->ahrsDataReady != NULL) {
-        ImuAhrsData ahrsData = {
-            .timestamp = imuData.timestamp,
-            .ahrs = &imu->ahrs,
+        // Apply calibration
+        FusionVector gyroscope = {
+            .axis.x = imuData.gyroscopeX,
+            .axis.y = imuData.gyroscopeY,
+            .axis.z = imuData.gyroscopeZ,
         };
-        imu->ahrsDataReady(&ahrsData, imu->context);
+        FusionVector accelerometer = {
+            .axis.x = imuData.accelerometerX,
+            .axis.y = imuData.accelerometerY,
+            .axis.z = imuData.accelerometerZ,
+        };
+        gyroscope = FusionCalibrationInertial(gyroscope, imu->settings.gyroscopeMisalignment, imu->settings.gyroscopeSensitivity, imu->settings.gyroscopeOffset);
+        accelerometer = FusionCalibrationInertial(accelerometer, imu->settings.accelerometerMisalignment, imu->settings.accelerometerSensitivity, imu->settings.accelerometerOffset);
+
+        // Update offset
+        if (imu->settings.gyroscopeOffsetEnabled) {
+            gyroscope = FusionOffsetUpdate(&imu->offset, gyroscope);
+        }
+
+        // Axis alignment
+        gyroscope = FusionAxesSwap(gyroscope, imu->settings.axisAlignment);
+        accelerometer = FusionAxesSwap(accelerometer, imu->settings.axisAlignment);
+
+        // Inertial callback
+        if (imu->inertialDataReady != NULL) {
+            ImuInertialData inertialData = {
+                .timestamp = imuData.timestamp,
+                .gyroscope = gyroscope,
+                .accelerometer = accelerometer,
+            };
+            imu->inertialDataReady(&inertialData, imu->context);
+        }
+
+        // Temperature callback
+        if (imu->temperatureDataReady != NULL) {
+            ImuTemperatureData temperatureData = {
+                .timestamp = imuData.timestamp,
+                .temperature = imuData.temperature,
+            };
+            imu->temperatureDataReady(&temperatureData, imu->context);
+        }
+
+        // Downsampling
+        if (imu->settings.ahrsUpdateRateDivisor == 0) {
+            continue;
+        }
+        if (imu->settings.ahrsUpdateRateDivisor > 1) {
+            if (imu->downsampledCount == 0) {
+                imu->downsampledGyroscope = FUSION_VECTOR_ZERO;
+                imu->downsampledAccelerometer = FUSION_VECTOR_ZERO;
+            }
+            imu->downsampledGyroscope = FusionVectorAdd(imu->downsampledGyroscope, gyroscope);
+            imu->downsampledAccelerometer = FusionVectorAdd(imu->downsampledAccelerometer, accelerometer);
+            if (++imu->downsampledCount < imu->settings.ahrsUpdateRateDivisor) {
+                continue;
+            }
+            const float reciprocal = 1.0f / (float) imu->downsampledCount;
+            gyroscope = FusionVectorMultiplyScalar(imu->downsampledGyroscope, reciprocal);
+            accelerometer = FusionVectorMultiplyScalar(imu->downsampledAccelerometer, reciprocal);
+        }
+        imu->downsampledCount = 0;
+
+        // Calculate delta time
+        const bool invalid = imu->previousTimestamp == 0;
+        const float deltaTime = (float) ((double) (imuData.timestamp - imu->previousTimestamp) * (1.0 / (double) TIMER_TICKS_PER_SECOND));
+        imu->previousTimestamp = imuData.timestamp;
+        if (invalid) {
+            continue;
+        }
+
+        // Update AHRS
+        FusionAhrsUpdateNoMagnetometer(&imu->ahrs, gyroscope, accelerometer, deltaTime);
+
+        // AHRS callback
+        if (imu->ahrsDataReady != NULL) {
+            ImuAhrsData ahrsData = {
+                .timestamp = imuData.timestamp,
+                .ahrs = &imu->ahrs,
+            };
+            imu->ahrsDataReady(&ahrsData, imu->context);
+        }
     }
 }
 

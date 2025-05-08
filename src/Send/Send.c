@@ -22,15 +22,20 @@
 
 static void InertialDataReady(const ImuInertialData * const data, void* const context);
 static void AhrsDataReady(const ImuAhrsData * const data, void* const context);
-static void SendAhrsStatus(const Send * const send, const uint64_t timestamp, const FusionAhrsFlags * const flags);
-static void SendQuaternion(const Send * const send, const ImuAhrsData * const imuData);
-static void SendRotationMatrix(const Send * const send, const ImuAhrsData * const imuData);
-static void SendEulerAngles(const Send * const send, const ImuAhrsData * const imuData);
-static void SendLinearAcceleration(const Send * const send, const ImuAhrsData * const imuData);
-static void SendEarthAcceleration(const Send * const send, const ImuAhrsData * const imuData);
+static void SendAhrsStatus(Send * const send, const uint64_t timestamp, const FusionAhrsFlags * const flags);
+static void SendQuaternion(Send * const send, const ImuAhrsData * const imuData);
+static void SendRotationMatrix(Send * const send, const ImuAhrsData * const imuData);
+static void SendEulerAngles(Send * const send, const ImuAhrsData * const imuData);
+static void SendLinearAcceleration(Send * const send, const ImuAhrsData * const imuData);
+static void SendEarthAcceleration(Send * const send, const ImuAhrsData * const imuData);
 static void TemperatureDataReady(const ImuTemperatureData * const data, void* const context);
-static void SendDataMessage(const Send * const send, const void* const data, const size_t numberOfBytes);
-static void SendDataMessagePriority(const Send * const send, const void* const data, const size_t numberOfBytes);
+static void SendDataMessage(Send * const send, const void* const data, const size_t numberOfBytes);
+static void SendDataMessagePriority(Send * const send, const void* const data, const size_t numberOfBytes);
+static inline __attribute__((always_inline)) size_t Write(const bool enabled,
+                                                          const size_t(*getWriteAvailable)(void),
+                                                          const FifoResult(*write)(const void* const data, const size_t numberOfBytes),
+                                                          const void* const data, const size_t numberOfBytes,
+                                                          const bool priority);
 
 //------------------------------------------------------------------------------
 // Variables
@@ -183,7 +188,7 @@ static void AhrsDataReady(const ImuAhrsData * const imuData, void* const context
  * @param timestamp Timestamp.
  * @param flags Flags.
  */
-static void SendAhrsStatus(const Send * const send, const uint64_t timestamp, const FusionAhrsFlags * const flags) {
+static void SendAhrsStatus(Send * const send, const uint64_t timestamp, const FusionAhrsFlags * const flags) {
     const Ximu3DataAhrsStatus ximu3Data = {
         .timestamp = timestamp / TIMER_TICKS_PER_MICROSECOND,
         .initialising = flags->initialising,
@@ -206,7 +211,7 @@ static void SendAhrsStatus(const Send * const send, const uint64_t timestamp, co
  * @param send Send structure.
  * @param ahrsData AHRS data.
  */
-static void SendQuaternion(const Send * const send, const ImuAhrsData * const imuData) {
+static void SendQuaternion(Send * const send, const ImuAhrsData * const imuData) {
     const FusionQuaternion quaternion = FusionAhrsGetQuaternion(imuData->ahrs);
     const Ximu3DataQuaternion ximu3Data = {
         .timestamp = imuData->timestamp / TIMER_TICKS_PER_MICROSECOND,
@@ -230,7 +235,7 @@ static void SendQuaternion(const Send * const send, const ImuAhrsData * const im
  * @param send Send structure.
  * @param ahrsData AHRS data.
  */
-static void SendRotationMatrix(const Send * const send, const ImuAhrsData * const imuData) {
+static void SendRotationMatrix(Send * const send, const ImuAhrsData * const imuData) {
     const FusionMatrix matrix = FusionQuaternionToMatrix(FusionAhrsGetQuaternion(imuData->ahrs));
     const Ximu3DataRotationMatrix ximu3Data = {
         .timestamp = imuData->timestamp / TIMER_TICKS_PER_MICROSECOND,
@@ -259,7 +264,7 @@ static void SendRotationMatrix(const Send * const send, const ImuAhrsData * cons
  * @param send Send structure.
  * @param ahrsData AHRS data.
  */
-static void SendEulerAngles(const Send * const send, const ImuAhrsData * const imuData) {
+static void SendEulerAngles(Send * const send, const ImuAhrsData * const imuData) {
     const FusionEuler euler = FusionQuaternionToEuler(FusionAhrsGetQuaternion(imuData->ahrs));
     const Ximu3DataEulerAngles ximu3Data = {
         .timestamp = imuData->timestamp / TIMER_TICKS_PER_MICROSECOND,
@@ -282,7 +287,7 @@ static void SendEulerAngles(const Send * const send, const ImuAhrsData * const i
  * @param send Send structure.
  * @param ahrsData AHRS data.
  */
-static void SendLinearAcceleration(const Send * const send, const ImuAhrsData * const imuData) {
+static void SendLinearAcceleration(Send * const send, const ImuAhrsData * const imuData) {
     const FusionQuaternion quaternion = FusionAhrsGetQuaternion(imuData->ahrs);
     const FusionVector linearAcceleration = FusionAhrsGetLinearAcceleration(imuData->ahrs);
     const Ximu3DataLinearAcceleration ximu3Data = {
@@ -310,7 +315,7 @@ static void SendLinearAcceleration(const Send * const send, const ImuAhrsData * 
  * @param send Send structure.
  * @param ahrsData AHRS data.
  */
-static void SendEarthAcceleration(const Send * const send, const ImuAhrsData * const imuData) {
+static void SendEarthAcceleration(Send * const send, const ImuAhrsData * const imuData) {
     const FusionQuaternion quaternion = FusionAhrsGetQuaternion(imuData->ahrs);
     const FusionVector earthAcceleration = FusionAhrsGetEarthAcceleration(imuData->ahrs);
     const Ximu3DataEarthAcceleration ximu3Data = {
@@ -376,7 +381,7 @@ static void TemperatureDataReady(const ImuTemperatureData * const imuData, void*
  * @param format Format.
  * @param ... Arguments.
  */
-void SendNotification(const Send * const send, const char* format, ...) {
+void SendNotification(Send * const send, const char* format, ...) {
 
     // Create string
     char string[256];
@@ -406,7 +411,7 @@ void SendNotification(const Send * const send, const char* format, ...) {
  * @param format Format.
  * @param ... Arguments.
  */
-void SendError(const Send * const send, const char* format, ...) {
+void SendError(Send * const send, const char* format, ...) {
 
     // Create string
     char string[256];
@@ -438,30 +443,26 @@ void SendError(const Send * const send, const char* format, ...) {
  * @param data Data.
  * @param numberOfBytes Number of bytes.
  */
-static void SendDataMessage(const Send * const send, const void* const data, const size_t numberOfBytes) {
+static void SendDataMessage(Send * const send, const void* const data, const size_t numberOfBytes) {
     if (send->settings.usbDataMessagesEnabled) {
-        if (UsbCdcGetWriteAvailable() >= (numberOfBytes + 1024)) {
-            UsbCdcWrite(data, numberOfBytes);
-        }
+        send->usbBufferOverflow += Write(UsbCdcPortOpen(), UsbCdcGetWriteAvailable, UsbCdcWrite, data, numberOfBytes, false);
     }
     if (send->settings.serialDataMessagesEnabled) {
-        if (SerialGetWriteAvailable() >= (numberOfBytes + 1024)) {
-            SerialWrite(data, numberOfBytes);
-        }
+        send->serialBufferOverflow += Write(SerialEnabled(), SerialGetWriteAvailable, SerialWrite, data, numberOfBytes, false);
     }
 }
 
 /**
- * @brief Sends data message as a priority.
+ * @brief Sends data message with priority.
  * @param data Data.
  * @param numberOfBytes Number of bytes.
  */
-static void SendDataMessagePriority(const Send * const send, const void* const data, const size_t numberOfBytes) {
+static void SendDataMessagePriority(Send * const send, const void* const data, const size_t numberOfBytes) {
     if (send->settings.usbDataMessagesEnabled) {
-        UsbCdcWrite(data, numberOfBytes);
+        send->usbBufferOverflow += Write(UsbCdcPortOpen(), UsbCdcGetWriteAvailable, UsbCdcWrite, data, numberOfBytes, true);
     }
     if (send->settings.serialDataMessagesEnabled) {
-        SerialWrite(data, numberOfBytes);
+        send->serialBufferOverflow += Write(SerialEnabled(), SerialGetWriteAvailable, SerialWrite, data, numberOfBytes, true);
     }
 }
 
@@ -471,8 +472,8 @@ static void SendDataMessagePriority(const Send * const send, const void* const d
  * @param data Data.
  * @param numberOfBytes Number of bytes.
  */
-void SendResponseUsb(const Send * const send, const void* const data, const size_t numberOfBytes) {
-    UsbCdcWrite(data, numberOfBytes); // TODO: prioritise this data
+void SendResponseUsb(Send * const send, const void* const data, const size_t numberOfBytes) {
+    send->usbBufferOverflow += Write(UsbCdcPortOpen(), UsbCdcGetWriteAvailable, UsbCdcWrite, data, numberOfBytes, true);
 }
 
 /**
@@ -481,8 +482,57 @@ void SendResponseUsb(const Send * const send, const void* const data, const size
  * @param data Data.
  * @param numberOfBytes Number of bytes.
  */
-void SendResponseSerial(const Send * const send, const void* const data, const size_t numberOfBytes) {
-    SerialWrite(data, numberOfBytes); // TODO: prioritise this data
+void SendResponseSerial(Send * const send, const void* const data, const size_t numberOfBytes) {
+    send->serialBufferOverflow += Write(SerialEnabled(), SerialGetWriteAvailable, SerialWrite, data, numberOfBytes, true);
+}
+
+/**
+ * @brief Writes data and returns number of bytes lost due to buffer overflow.
+ * @param enabled True if the interface is enabled.
+ * @param getWriteAvailable Get write available callback function.
+ * @param write Write callback function.
+ * @param data Data.
+ * @param numberOfBytes Number of bytes.
+ * @param priority True to write with priority.
+ * @return Number of samples lost due to buffer overflow.
+ */
+static inline __attribute__((always_inline)) size_t Write(const bool enabled,
+                                                          const size_t(*getWriteAvailable)(void),
+                                                          const FifoResult(*write)(const void* const data, const size_t numberOfBytes),
+                                                          const void* const data, const size_t numberOfBytes,
+                                                          const bool priority) {
+    if (enabled == false) {
+        return 0;
+    }
+    if ((priority == false) && (getWriteAvailable() < (numberOfBytes + 1024))) {
+        return numberOfBytes;
+    }
+    if (write(data, numberOfBytes) != FifoResultOK) {
+        return numberOfBytes;
+    }
+    return 0;
+}
+
+/**
+ * @brief Returns the number of bytes lost due to buffer overflow. Calling
+ * this function will reset the value.
+ * @return Number of samples lost due to buffer overflow.
+ */
+size_t SendUsbBufferOverflow(Send * const send) {
+    const size_t bufferOverflow = send->usbBufferOverflow;
+    send->usbBufferOverflow = 0;
+    return bufferOverflow;
+}
+
+/**
+ * @brief Returns the number of bytes lost due to buffer overflow. Calling
+ * this function will reset the value.
+ * @return Number of samples lost due to buffer overflow.
+ */
+size_t SendSerialBufferOverflow(Send * const send) {
+    const size_t bufferOverflow = send->serialBufferOverflow;
+    send->serialBufferOverflow = 0;
+    return bufferOverflow;
 }
 
 //------------------------------------------------------------------------------

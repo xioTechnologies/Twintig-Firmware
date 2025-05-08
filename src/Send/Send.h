@@ -55,6 +55,8 @@ typedef struct {
     uint32_t downsampledAhrsCount; // private
     float downsampledTemperature; // private
     uint32_t downsampledTemperatureCount; // private
+    size_t usbBufferOverflow; // private
+    size_t serialBufferOverflow; // private
 } Send;
 
 //------------------------------------------------------------------------------
@@ -85,10 +87,12 @@ extern Send send20;
 // Function declarations
 
 void SendSetSettings(Send * const send, const SendSettings * const settings);
-void SendNotification(const Send * const send, const char* format, ...);
-void SendError(const Send * const send, const char* format, ...);
-void SendResponseUsb(const Send * const send, const void* const data, const size_t numberOfBytes);
-void SendResponseSerial(const Send * const send, const void* const data, const size_t numberOfBytes);
+void SendNotification(Send * const send, const char* format, ...);
+void SendError(Send * const send, const char* format, ...);
+void SendResponseUsb(Send * const send, const void* const data, const size_t numberOfBytes);
+void SendResponseSerial(Send * const send, const void* const data, const size_t numberOfBytes);
+size_t SendUsbBufferOverflow(Send * const send);
+size_t SendSerialBufferOverflow(Send * const send);
 
 #endif
 

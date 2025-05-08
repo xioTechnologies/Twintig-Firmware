@@ -10,6 +10,7 @@
 #include "Imu/Imu.h"
 #include "OnChange.h"
 #include "Send/Send.h"
+#include "Send/Send.h"
 #include "Timer/TimerScheduler.h"
 #include "Usb/UsbCdc.h"
 
@@ -39,10 +40,20 @@ void NotificationTasks(void) {
         return;
     }
 
-    // IMU buffer overrun
+    // IMU buffer overflow
     const uint32_t bufferOverflow = imu1.icm->bufferOverflow();
     if (bufferOverflow > 0) {
         SendError(&send1, "IMU buffer overflow. %u samples lost.", bufferOverflow);
+    }
+
+    // Send buffer overflow
+    const uint32_t usbBufferOverflow = SendUsbBufferOverflow(&send1);
+    if (usbBufferOverflow > 0) {
+        SendError(&send1, "USB buffer overflow. %u bytes lost.", usbBufferOverflow);
+    }
+    const uint32_t serialBufferOverflow = SendSerialBufferOverflow(&send1);
+    if (serialBufferOverflow > 0) {
+        SendError(&send1, "Serial buffer overflow. %u bytes lost.", serialBufferOverflow);
     }
 }
 

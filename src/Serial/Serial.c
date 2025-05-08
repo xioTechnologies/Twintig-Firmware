@@ -35,6 +35,14 @@ void SerialSetSettings(const SerialSettings * const settings_) {
 }
 
 /**
+ * @brief Returns true if enabled.
+ * @return True if enabled.
+ */
+bool SerialEnabled(void) {
+    return settings.enabled;
+}
+
+/**
  * @brief Reads data from the read buffer.
  * @param destination Destination.
  * @param numberOfBytes Number of bytes.
@@ -59,6 +67,9 @@ size_t SerialGetWriteAvailable(void) {
  * @return Result.
  */
 FifoResult SerialWrite(const void* const data, const size_t numberOfBytes) {
+    if (settings.enabled == false) {
+        return FifoResultOK;
+    }
     return Uart1Write(data, numberOfBytes);
 }
 
