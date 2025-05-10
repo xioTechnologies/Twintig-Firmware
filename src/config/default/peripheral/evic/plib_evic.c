@@ -59,7 +59,12 @@ void EVIC_Initialize( void )
     IPC3SET = 0x1c0000U | 0x0U;  /* TIMER_3:  Priority 7 / Subpriority 0 */
     IPC28SET = 0x400U | 0x0U;  /* UART1_RX:  Priority 1 / Subpriority 0 */
     IPC28SET = 0x40000U | 0x0U;  /* UART1_TX:  Priority 1 / Subpriority 0 */
-    IPC31SET = 0x400U | 0x0U;  /* CHANGE_NOTICE_H:  Priority 1 / Subpriority 0 */
+    IPC29SET = 0x140000U | 0x0U;  /* CHANGE_NOTICE_A:  Priority 5 / Subpriority 0 */
+    IPC29SET = 0x14000000U | 0x0U;  /* CHANGE_NOTICE_B:  Priority 5 / Subpriority 0 */
+    IPC30SET = 0x1400U | 0x0U;  /* CHANGE_NOTICE_D:  Priority 5 / Subpriority 0 */
+    IPC30SET = 0x14000000U | 0x0U;  /* CHANGE_NOTICE_F:  Priority 5 / Subpriority 0 */
+    IPC31SET = 0x1400U | 0x0U;  /* CHANGE_NOTICE_H:  Priority 5 / Subpriority 0 */
+    IPC31SET = 0x140000U | 0x0U;  /* CHANGE_NOTICE_J:  Priority 5 / Subpriority 0 */
     IPC33SET = 0x4U | 0x0U;  /* USB:  Priority 1 / Subpriority 0 */
     IPC33SET = 0x400U | 0x0U;  /* USB_DMA:  Priority 1 / Subpriority 0 */
     IPC34SET = 0x400U | 0x0U;  /* DMA3:  Priority 1 / Subpriority 0 */

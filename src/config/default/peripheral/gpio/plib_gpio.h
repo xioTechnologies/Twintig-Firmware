@@ -171,6 +171,8 @@
 #define INT1_CH5_Get()               ((PORTB >> 4) & 0x1U)
 #define INT1_CH5_GetLatch()          ((LATB >> 4) & 0x1U)
 #define INT1_CH5_PIN                  GPIO_PIN_RB4
+#define INT1_CH5_InterruptEnable()   (CNENBSET = (1U<<4))
+#define INT1_CH5_InterruptDisable()  (CNENBCLR = (1U<<4))
 
 /*** Macros for INT2_CH5 pin ***/
 #define INT2_CH5_Set()               (LATJSET = (1U<<11))
@@ -181,6 +183,8 @@
 #define INT2_CH5_Get()               ((PORTJ >> 11) & 0x1U)
 #define INT2_CH5_GetLatch()          ((LATJ >> 11) & 0x1U)
 #define INT2_CH5_PIN                  GPIO_PIN_RJ11
+#define INT2_CH5_InterruptEnable()   (CNENJSET = (1U<<11))
+#define INT2_CH5_InterruptDisable()  (CNENJCLR = (1U<<11))
 
 /*** Macros for INT3_CH5 pin ***/
 #define INT3_CH5_Set()               (LATJSET = (1U<<13))
@@ -191,6 +195,8 @@
 #define INT3_CH5_Get()               ((PORTJ >> 13) & 0x1U)
 #define INT3_CH5_GetLatch()          ((LATJ >> 13) & 0x1U)
 #define INT3_CH5_PIN                  GPIO_PIN_RJ13
+#define INT3_CH5_InterruptEnable()   (CNENJSET = (1U<<13))
+#define INT3_CH5_InterruptDisable()  (CNENJCLR = (1U<<13))
 
 /*** Macros for INT4_CH5 pin ***/
 #define INT4_CH5_Set()               (LATJSET = (1U<<14))
@@ -201,6 +207,8 @@
 #define INT4_CH5_Get()               ((PORTJ >> 14) & 0x1U)
 #define INT4_CH5_GetLatch()          ((LATJ >> 14) & 0x1U)
 #define INT4_CH5_PIN                  GPIO_PIN_RJ14
+#define INT4_CH5_InterruptEnable()   (CNENJSET = (1U<<14))
+#define INT4_CH5_InterruptDisable()  (CNENJCLR = (1U<<14))
 
 /*** Macros for CS2_CH4 pin ***/
 #define CS2_CH4_Set()               (LATJSET = (1U<<15))
@@ -251,6 +259,8 @@
 #define INT1_CH4_Get()               ((PORTA >> 9) & 0x1U)
 #define INT1_CH4_GetLatch()          ((LATA >> 9) & 0x1U)
 #define INT1_CH4_PIN                  GPIO_PIN_RA9
+#define INT1_CH4_InterruptEnable()   (CNENASET = (1U<<9))
+#define INT1_CH4_InterruptDisable()  (CNENACLR = (1U<<9))
 
 /*** Macros for ENABLE_CH3 pin ***/
 #define ENABLE_CH3_Set()               (LATASET = (1U<<10))
@@ -271,6 +281,8 @@
 #define INT2_CH4_Get()               ((PORTH >> 0) & 0x1U)
 #define INT2_CH4_GetLatch()          ((LATH >> 0) & 0x1U)
 #define INT2_CH4_PIN                  GPIO_PIN_RH0
+#define INT2_CH4_InterruptEnable()   (CNENHSET = (1U<<0))
+#define INT2_CH4_InterruptDisable()  (CNENHCLR = (1U<<0))
 
 /*** Macros for INT3_CH4 pin ***/
 #define INT3_CH4_Set()               (LATHSET = (1U<<1))
@@ -281,6 +293,8 @@
 #define INT3_CH4_Get()               ((PORTH >> 1) & 0x1U)
 #define INT3_CH4_GetLatch()          ((LATH >> 1) & 0x1U)
 #define INT3_CH4_PIN                  GPIO_PIN_RH1
+#define INT3_CH4_InterruptEnable()   (CNENHSET = (1U<<1))
+#define INT3_CH4_InterruptDisable()  (CNENHCLR = (1U<<1))
 
 /*** Macros for INT4_CH4 pin ***/
 #define INT4_CH4_Set()               (LATHSET = (1U<<2))
@@ -291,6 +305,8 @@
 #define INT4_CH4_Get()               ((PORTH >> 2) & 0x1U)
 #define INT4_CH4_GetLatch()          ((LATH >> 2) & 0x1U)
 #define INT4_CH4_PIN                  GPIO_PIN_RH2
+#define INT4_CH4_InterruptEnable()   (CNENHSET = (1U<<2))
+#define INT4_CH4_InterruptDisable()  (CNENHCLR = (1U<<2))
 
 /*** Macros for CS4_CH4 pin ***/
 #define CS4_CH4_Set()               (LATHSET = (1U<<3))
@@ -371,6 +387,8 @@
 #define INT1_CH3_Get()               ((PORTA >> 1) & 0x1U)
 #define INT1_CH3_GetLatch()          ((LATA >> 1) & 0x1U)
 #define INT1_CH3_PIN                  GPIO_PIN_RA1
+#define INT1_CH3_InterruptEnable()   (CNENASET = (1U<<1))
+#define INT1_CH3_InterruptDisable()  (CNENACLR = (1U<<1))
 
 /*** Macros for SCK_CH4 pin ***/
 #define SCK_CH4_Get()               ((PORTF >> 13) & 0x1U)
@@ -386,6 +404,8 @@
 #define INT2_CH3_Get()               ((PORTF >> 12) & 0x1U)
 #define INT2_CH3_GetLatch()          ((LATF >> 12) & 0x1U)
 #define INT2_CH3_PIN                  GPIO_PIN_RF12
+#define INT2_CH3_InterruptEnable()   (CNENFSET = (1U<<12))
+#define INT2_CH3_InterruptDisable()  (CNENFCLR = (1U<<12))
 
 /*** Macros for INT3_CH3 pin ***/
 #define INT3_CH3_Set()               (LATBSET = (1U<<12))
@@ -396,6 +416,8 @@
 #define INT3_CH3_Get()               ((PORTB >> 12) & 0x1U)
 #define INT3_CH3_GetLatch()          ((LATB >> 12) & 0x1U)
 #define INT3_CH3_PIN                  GPIO_PIN_RB12
+#define INT3_CH3_InterruptEnable()   (CNENBSET = (1U<<12))
+#define INT3_CH3_InterruptDisable()  (CNENBCLR = (1U<<12))
 
 /*** Macros for INT4_CH3 pin ***/
 #define INT4_CH3_Set()               (LATBSET = (1U<<13))
@@ -406,6 +428,8 @@
 #define INT4_CH3_Get()               ((PORTB >> 13) & 0x1U)
 #define INT4_CH3_GetLatch()          ((LATB >> 13) & 0x1U)
 #define INT4_CH3_PIN                  GPIO_PIN_RB13
+#define INT4_CH3_InterruptEnable()   (CNENBSET = (1U<<13))
+#define INT4_CH3_InterruptDisable()  (CNENBCLR = (1U<<13))
 
 /*** Macros for SCK_CH3 pin ***/
 #define SCK_CH3_Get()               ((PORTB >> 14) & 0x1U)
@@ -501,6 +525,8 @@
 #define INT4_CH2_Get()               ((PORTH >> 8) & 0x1U)
 #define INT4_CH2_GetLatch()          ((LATH >> 8) & 0x1U)
 #define INT4_CH2_PIN                  GPIO_PIN_RH8
+#define INT4_CH2_InterruptEnable()   (CNENHSET = (1U<<8))
+#define INT4_CH2_InterruptDisable()  (CNENHCLR = (1U<<8))
 
 /*** Macros for INT3_CH2 pin ***/
 #define INT3_CH2_Set()               (LATHSET = (1U<<9))
@@ -511,6 +537,8 @@
 #define INT3_CH2_Get()               ((PORTH >> 9) & 0x1U)
 #define INT3_CH2_GetLatch()          ((LATH >> 9) & 0x1U)
 #define INT3_CH2_PIN                  GPIO_PIN_RH9
+#define INT3_CH2_InterruptEnable()   (CNENHSET = (1U<<9))
+#define INT3_CH2_InterruptDisable()  (CNENHCLR = (1U<<9))
 
 /*** Macros for INT2_CH2 pin ***/
 #define INT2_CH2_Set()               (LATHSET = (1U<<10))
@@ -521,6 +549,8 @@
 #define INT2_CH2_Get()               ((PORTH >> 10) & 0x1U)
 #define INT2_CH2_GetLatch()          ((LATH >> 10) & 0x1U)
 #define INT2_CH2_PIN                  GPIO_PIN_RH10
+#define INT2_CH2_InterruptEnable()   (CNENHSET = (1U<<10))
+#define INT2_CH2_InterruptDisable()  (CNENHCLR = (1U<<10))
 
 /*** Macros for INT1_CH2 pin ***/
 #define INT1_CH2_Set()               (LATHSET = (1U<<11))
@@ -531,6 +561,8 @@
 #define INT1_CH2_Get()               ((PORTH >> 11) & 0x1U)
 #define INT1_CH2_GetLatch()          ((LATH >> 11) & 0x1U)
 #define INT1_CH2_PIN                  GPIO_PIN_RH11
+#define INT1_CH2_InterruptEnable()   (CNENHSET = (1U<<11))
+#define INT1_CH2_InterruptDisable()  (CNENHCLR = (1U<<11))
 
 /*** Macros for SCL_CH2 pin ***/
 #define SCL_CH2_Get()               ((PORTA >> 2) & 0x1U)
@@ -611,6 +643,8 @@
 #define INT1_CH1_Get()               ((PORTD >> 9) & 0x1U)
 #define INT1_CH1_GetLatch()          ((LATD >> 9) & 0x1U)
 #define INT1_CH1_PIN                  GPIO_PIN_RD9
+#define INT1_CH1_InterruptEnable()   (CNENDSET = (1U<<9))
+#define INT1_CH1_InterruptDisable()  (CNENDCLR = (1U<<9))
 
 /*** Macros for SCK_CH1 pin ***/
 #define SCK_CH1_Get()               ((PORTD >> 10) & 0x1U)
@@ -631,6 +665,8 @@
 #define INT2_CH1_Get()               ((PORTH >> 12) & 0x1U)
 #define INT2_CH1_GetLatch()          ((LATH >> 12) & 0x1U)
 #define INT2_CH1_PIN                  GPIO_PIN_RH12
+#define INT2_CH1_InterruptEnable()   (CNENHSET = (1U<<12))
+#define INT2_CH1_InterruptDisable()  (CNENHCLR = (1U<<12))
 
 /*** Macros for INT4_CH1 pin ***/
 #define INT4_CH1_Set()               (LATHSET = (1U<<13))
@@ -653,6 +689,8 @@
 #define INT3_CH1_Get()               ((PORTH >> 14) & 0x1U)
 #define INT3_CH1_GetLatch()          ((LATH >> 14) & 0x1U)
 #define INT3_CH1_PIN                  GPIO_PIN_RH14
+#define INT3_CH1_InterruptEnable()   (CNENHSET = (1U<<14))
+#define INT3_CH1_InterruptDisable()  (CNENHCLR = (1U<<14))
 
 /*** Macros for SDO_CH1 pin ***/
 #define SDO_CH1_Get()               ((PORTD >> 0) & 0x1U)

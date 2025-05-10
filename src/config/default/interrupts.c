@@ -71,7 +71,12 @@
 void TIMER_3_Handler (void);
 void UART1_RX_Handler (void);
 void UART1_TX_Handler (void);
+void CHANGE_NOTICE_A_Handler (void);
+void CHANGE_NOTICE_B_Handler (void);
+void CHANGE_NOTICE_D_Handler (void);
+void CHANGE_NOTICE_F_Handler (void);
 void CHANGE_NOTICE_H_Handler (void);
+void CHANGE_NOTICE_J_Handler (void);
 void USB_Handler (void);
 void USB_DMA_Handler (void);
 void DMA3_Handler (void);
@@ -101,9 +106,34 @@ void __attribute__((used)) __ISR(_UART1_TX_VECTOR, ipl1SRS) UART1_TX_Handler (vo
     Uart1TXInterruptHandler();
 }
 
-void __attribute__((used)) __ISR(_CHANGE_NOTICE_H_VECTOR, ipl1SRS) CHANGE_NOTICE_H_Handler (void)
+void __attribute__((used)) __ISR(_CHANGE_NOTICE_A_VECTOR, ipl5SRS) CHANGE_NOTICE_A_Handler (void)
+{
+    CHANGE_NOTICE_A_InterruptHandler();
+}
+
+void __attribute__((used)) __ISR(_CHANGE_NOTICE_B_VECTOR, ipl5SRS) CHANGE_NOTICE_B_Handler (void)
+{
+    CHANGE_NOTICE_B_InterruptHandler();
+}
+
+void __attribute__((used)) __ISR(_CHANGE_NOTICE_D_VECTOR, ipl5SRS) CHANGE_NOTICE_D_Handler (void)
+{
+    CHANGE_NOTICE_D_InterruptHandler();
+}
+
+void __attribute__((used)) __ISR(_CHANGE_NOTICE_F_VECTOR, ipl5SRS) CHANGE_NOTICE_F_Handler (void)
+{
+    CHANGE_NOTICE_F_InterruptHandler();
+}
+
+void __attribute__((used)) __ISR(_CHANGE_NOTICE_H_VECTOR, ipl5SRS) CHANGE_NOTICE_H_Handler (void)
 {
     CHANGE_NOTICE_H_InterruptHandler();
+}
+
+void __attribute__((used)) __ISR(_CHANGE_NOTICE_J_VECTOR, ipl5SRS) CHANGE_NOTICE_J_Handler (void)
+{
+    CHANGE_NOTICE_J_InterruptHandler();
 }
 
 void __attribute__((used)) __ISR(_USB_VECTOR, ipl1SRS) USB_Handler (void)

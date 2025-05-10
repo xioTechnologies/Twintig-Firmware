@@ -56,7 +56,12 @@
 // Section: Handler Routines
 // *****************************************************************************
 // *****************************************************************************
+void CHANGE_NOTICE_A_InterruptHandler( void );
+void CHANGE_NOTICE_B_InterruptHandler( void );
+void CHANGE_NOTICE_D_InterruptHandler( void );
+void CHANGE_NOTICE_F_InterruptHandler( void );
 void CHANGE_NOTICE_H_InterruptHandler( void );
+void CHANGE_NOTICE_J_InterruptHandler( void );
 void DRV_USBHS_InterruptHandler( void );
 void DRV_USBHS_DMAInterruptHandler( void );
 
