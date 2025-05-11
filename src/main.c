@@ -26,12 +26,16 @@
 #include "Imu/Icm/Icm1.h"
 #include "Imu/Icm/Icm2.h"
 #include "Imu/Icm/Icm3.h"
+#include "Imu/Icm/Icm4.h"
+#include "Imu/Icm/Icm5.h"
 #include "Imu/Imu.h"
 #include "Leds/Leds.h"
 #include "Notification/Notification.h"
 #include "ResetCause/ResetCause.h"
+#include "Spi/Spi2.h"
 #include "Spi/Spi3Dma.h"
 #include "Spi/Spi4Dma.h"
+#include "Spi/Spi5.h"
 #include "Spi/Spi6Dma.h"
 #include <stdbool.h>
 #include <stddef.h>
@@ -63,15 +67,19 @@ int main(void) {
     I2C3Initialise(I2CClockFrequency100kHz);
     I2C4Initialise(I2CClockFrequency100kHz);
     I2C5Initialise(I2CClockFrequency100kHz);
+    Spi2Initialise(&icmSpiSettings);
     Spi3DmaInitialise(&icmSpiSettings);
     Spi4DmaInitialise(&icmSpiSettings);
+    Spi5Initialise(&icmSpiSettings);
     Spi6DmaInitialise(&icmSpiSettings);
     LedsInitialise();
     HapticInitialise();
+    Icm1Initialise(IcmOdr100Hz);
+    Icm2Initialise(IcmOdr100Hz);
+    Icm3Initialise(IcmOdr100Hz);
+    Icm4Initialise(IcmOdr100Hz);
+    Icm5Initialise(IcmOdr100Hz);
     Ximu3DeviceInitialise();
-
-    Icm2Initialise(IcmOdr16kHz);
-    Icm3Initialise(IcmOdr16kHz);
 
     printf("Haptic          %s\n", HapticTestResultToString(HapticTest()));
     printf("Carpus EEPROM   %s\n", EepromTestResultToString(EepromTest(&i2cBB1)));
@@ -83,6 +91,8 @@ int main(void) {
     printf("CH1 IMU4        %s\n", IcmTestResultToString(Icm1Test()));
     printf("CH2 IMU4        %s\n", IcmTestResultToString(Icm2Test()));
     printf("CH3 IMU4        %s\n", IcmTestResultToString(Icm3Test()));
+    printf("CH4 IMU4        %s\n", IcmTestResultToString(Icm4Test()));
+    printf("CH5 IMU4        %s\n", IcmTestResultToString(Icm5Test()));
 
     // Main program loop
     while (true) {

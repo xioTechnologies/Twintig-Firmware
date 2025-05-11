@@ -11,6 +11,8 @@
 #include "Imu/Icm/Icm1.h"
 #include "Imu/Icm/Icm2.h"
 #include "Imu/Icm/Icm3.h"
+#include "Imu/Icm/Icm4.h"
+#include "Imu/Icm/Icm5.h"
 #include <stddef.h>
 #include "Timer/Timer.h"
 
@@ -20,8 +22,8 @@
 Imu imu1 = {.icm = &icm1};
 Imu imu2 = {.icm = &icm2};
 Imu imu3 = {.icm = &icm3};
-Imu imu4 = {.icm = &icm1};
-Imu imu5 = {.icm = &icm1};
+Imu imu4 = {.icm = &icm4};
+Imu imu5 = {.icm = &icm5};
 Imu imu6 = {.icm = &icm1};
 Imu imu7 = {.icm = &icm1};
 Imu imu8 = {.icm = &icm1};

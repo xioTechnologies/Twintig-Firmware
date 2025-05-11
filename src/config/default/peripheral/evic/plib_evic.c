@@ -70,8 +70,10 @@ void EVIC_Initialize( void )
     IPC34SET = 0x400U | 0x0U;  /* DMA3:  Priority 1 / Subpriority 0 */
     IPC34SET = 0x4000000U | 0x0U;  /* DMA5:  Priority 1 / Subpriority 0 */
     IPC35SET = 0x400U | 0x0U;  /* DMA7:  Priority 1 / Subpriority 0 */
+    IPC35SET = 0x4000000U | 0x0U;  /* SPI2_RX:  Priority 1 / Subpriority 0 */
     IPC39SET = 0x40000U | 0x0U;  /* UART3_RX:  Priority 1 / Subpriority 0 */
     IPC39SET = 0x4000000U | 0x0U;  /* UART3_TX:  Priority 1 / Subpriority 0 */
+    IPC44SET = 0x400U | 0x0U;  /* SPI5_RX:  Priority 1 / Subpriority 0 */
 
 
 

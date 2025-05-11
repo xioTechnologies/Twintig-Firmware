@@ -208,7 +208,7 @@ typedef struct {
     unsigned int rw : 1;
 
     union {
-        uint8_t data[32];
+        uint8_t data[15];
         uint8_t value;
     };
 } __attribute__((__packed__)) IcmSpiPacket;
