@@ -13,7 +13,7 @@
 // Variables
 
 const SpiSettings icmSpiSettings = {
-    .clockFrequency = 16000000,
+    .clockFrequency = 14000000,
     .clockPolarity = SpiClockPolarityIdleHigh,
     .clockPhase = SpiClockPhaseIdleToActive,
 };

@@ -1,5 +1,5 @@
 /**
- * @file Icm1.c
+ * @file Icm2.c
  * @author Seb Madgwick
  * @brief ICM-42688-P driver.
  */
@@ -9,7 +9,7 @@
 
 #include "definitions.h"
 #include "Fifo.h"
-#include "Icm1.h"
+#include "Icm2.h"
 #include "IcmConfig.h"
 #include <stdbool.h>
 #include <stddef.h>
@@ -27,11 +27,11 @@ static void TransferComplete(void);
 //------------------------------------------------------------------------------
 // Variables
 
-const Icm icm1 = {
-    .initialise = Icm1Initialise,
-    .deinitialise = Icm1Deinitialise,
-    .getData = Icm1GetData,
-    .bufferOverflow = Icm1BufferOverflow,
+const Icm icm2 = {
+    .initialise = Icm2Initialise,
+    .deinitialise = Icm2Deinitialise,
+    .getData = Icm2GetData,
+    .bufferOverflow = Icm2BufferOverflow,
 };
 static uint8_t deviceID;
 static __attribute__((coherent)) IcmSpiPacket spiPacket;
@@ -48,10 +48,10 @@ static uint32_t bufferOverflow;
  * @brief Initialises the module.
  * @param odr ODR.
  */
-void Icm1Initialise(const IcmOdr odr) {
+void Icm2Initialise(const IcmOdr odr) {
 
     // Ensure default states
-    Icm1Deinitialise();
+    Icm2Deinitialise();
 
     // Read device ID
     deviceID = ReadRegister(ICM_WHO_AM_I_ADDRESS);
@@ -102,16 +102,16 @@ void Icm1Initialise(const IcmOdr odr) {
     TimerDelayMilliseconds(45);
 
     // Configure interrupt
-    GPIO_PinInterruptCallbackRegister(ICM1_INT_PIN, ExternalInterrupt, 0);
-    GPIO_PinIntEnable(ICM1_INT_PIN, GPIO_INTERRUPT_ON_BOTH_EDGES); // only both edges supported
+    GPIO_PinInterruptCallbackRegister(ICM2_INT_PIN, ExternalInterrupt, 0);
+    GPIO_PinIntEnable(ICM2_INT_PIN, GPIO_INTERRUPT_ON_BOTH_EDGES); // only both edges supported
 }
 
 /**
  * @brief Deinitialises the module.
  */
-void Icm1Deinitialise(void) {
-    GPIO_PinIntDisable(ICM1_INT_PIN);
-    while (ICM1_SPI_TRANSFER_IN_PROGRESS());
+void Icm2Deinitialise(void) {
+    GPIO_PinIntDisable(ICM2_INT_PIN);
+    while (ICM2_SPI_TRANSFER_IN_PROGRESS());
     while (lock);
     FifoClear(&fifo);
     bufferOverflow = 0;
@@ -124,8 +124,8 @@ void Icm1Deinitialise(void) {
  */
 static uint8_t ReadRegister(const uint8_t address) {
     spiPacket = (IcmSpiPacket){.rw = 1, .address = address};
-    ICM1_SPI_TRANSFER(ICM1_CS_PIN, &spiPacket, 2, NULL);
-    while (ICM1_SPI_TRANSFER_IN_PROGRESS());
+    ICM2_SPI_TRANSFER(ICM2_CS_PIN, &spiPacket, 2, NULL);
+    while (ICM2_SPI_TRANSFER_IN_PROGRESS());
     return spiPacket.data[0];
 }
 
@@ -136,8 +136,8 @@ static uint8_t ReadRegister(const uint8_t address) {
  */
 static void WriteRegister(const uint8_t address, const uint8_t value) {
     spiPacket = (IcmSpiPacket){.rw = 0, .address = address, .value = value};
-    ICM1_SPI_TRANSFER(ICM1_CS_PIN, &spiPacket, 2, NULL);
-    while (ICM1_SPI_TRANSFER_IN_PROGRESS());
+    ICM2_SPI_TRANSFER(ICM2_CS_PIN, &spiPacket, 2, NULL);
+    while (ICM2_SPI_TRANSFER_IN_PROGRESS());
 }
 
 /**
@@ -149,7 +149,7 @@ static void ExternalInterrupt(GPIO_PIN pin, uintptr_t context) {
     if (GPIO_PinRead(pin) == true) { // ignore rising edges
         return;
     }
-    if (ICM1_SPI_TRANSFER_IN_PROGRESS()) {
+    if (ICM2_SPI_TRANSFER_IN_PROGRESS()) {
         return;
     }
     if (lock) {
@@ -159,7 +159,7 @@ static void ExternalInterrupt(GPIO_PIN pin, uintptr_t context) {
     timestamp = TimerGetTicks64();
     spiPacket.rw = 1;
     spiPacket.address = ICM_TEMP_DATA1_ADDRESS;
-    ICM1_SPI_TRANSFER(ICM1_CS_PIN, (void *const) &spiPacket, sizeof (IcmSensorRegisters) + 1, TransferComplete);
+    ICM2_SPI_TRANSFER(ICM2_CS_PIN, (void *const) &spiPacket, sizeof (IcmSensorRegisters) + 1, TransferComplete);
 }
 
 /**
@@ -181,7 +181,7 @@ static void TransferComplete(void) {
  * @param data Data.
  * @return Result.
  */
-IcmResult Icm1GetData(IcmData * const data) {
+IcmResult Icm2GetData(IcmData * const data) {
     IcmFifoPacket fifoPacket;
     if (FifoRead(&fifo, &fifoPacket, sizeof (fifoPacket)) == 0) {
         return IcmResultError;
@@ -202,7 +202,7 @@ IcmResult Icm1GetData(IcmData * const data) {
  * this function will reset the value.
  * @return Number of samples lost due to buffer overflow.
  */
-uint32_t Icm1BufferOverflow(void) {
+uint32_t Icm2BufferOverflow(void) {
     return __sync_lock_test_and_set(&bufferOverflow, 0);
 }
 
@@ -210,7 +210,7 @@ uint32_t Icm1BufferOverflow(void) {
  * @brief Performs self-test.
  * @return Test result.
  */
-IcmTestResult Icm1Test(void) {
+IcmTestResult Icm2Test(void) {
 
     // Check device ID
     if (deviceID != 0x47) {
@@ -221,7 +221,7 @@ IcmTestResult Icm1Test(void) {
     const uint32_t timeout = TimerGetTicks64() + (TIMER_TICKS_PER_SECOND / 10);
     while (true) {
         IcmData data;
-        if (Icm1GetData(&data) == IcmResultOK) {
+        if (Icm2GetData(&data) == IcmResultOK) {
             break;
         }
         if (TimerGetTicks64() > timeout) {

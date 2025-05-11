@@ -124,6 +124,9 @@
         <logicalFolder name="Icm" displayName="Icm" projectFiles="true">
           <itemPath>../src/Imu/Icm/Icm.h</itemPath>
           <itemPath>../src/Imu/Icm/Icm1.h</itemPath>
+          <itemPath>../src/Imu/Icm/IcmConfig.h</itemPath>
+          <itemPath>../src/Imu/Icm/Icm2.h</itemPath>
+          <itemPath>../src/Imu/Icm/Icm3.h</itemPath>
         </logicalFolder>
         <itemPath>../src/Imu/Imu.h</itemPath>
       </logicalFolder>
@@ -174,7 +177,6 @@
           <itemPath>../src/x-io-PIC32-Library/Spi/Spi4Dma.h</itemPath>
           <itemPath>../src/x-io-PIC32-Library/Spi/Spi3Dma.h</itemPath>
           <itemPath>../src/x-io-PIC32-Library/Spi/Spi6Dma.h</itemPath>
-          <itemPath>../src/x-io-PIC32-Library/Spi/SpiBus4.h</itemPath>
         </logicalFolder>
         <logicalFolder name="Timer" displayName="Timer" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Timer/Timer.h</itemPath>
@@ -296,6 +298,8 @@
         <logicalFolder name="Icm" displayName="Icm" projectFiles="true">
           <itemPath>../src/Imu/Icm/Icm.c</itemPath>
           <itemPath>../src/Imu/Icm/Icm1.c</itemPath>
+          <itemPath>../src/Imu/Icm/Icm2.c</itemPath>
+          <itemPath>../src/Imu/Icm/Icm3.c</itemPath>
         </logicalFolder>
         <itemPath>../src/Imu/Imu.c</itemPath>
       </logicalFolder>
@@ -342,7 +346,6 @@
           <itemPath>../src/x-io-PIC32-Library/Spi/Spi4Dma.c</itemPath>
           <itemPath>../src/x-io-PIC32-Library/Spi/Spi3Dma.c</itemPath>
           <itemPath>../src/x-io-PIC32-Library/Spi/Spi6Dma.c</itemPath>
-          <itemPath>../src/x-io-PIC32-Library/Spi/SpiBus4.c</itemPath>
         </logicalFolder>
         <logicalFolder name="Timer" displayName="Timer" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Timer/Timer.c</itemPath>

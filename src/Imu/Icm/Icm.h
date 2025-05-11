@@ -291,7 +291,7 @@ extern const SpiSettings icmSpiSettings;
 float IcmOdrToFloat(const IcmOdr odr);
 const char* IcmTestResultToString(const IcmTestResult result);
 
+#endif
+
 //------------------------------------------------------------------------------
 // End of file
-
-#endif
