@@ -15,12 +15,12 @@
 // Definitions
 
 /**
- * @brief Value used for UxBRG calculation.
+ * @brief I2C peripheral clock frequency.
  */
 #if (defined __PIC32MX__) || (defined __PIC32MM__)
-#define PBCLK (PERIPHERAL_BUS_CLOCK_FREQUENCY)
+#define I2C_PERIPHERAL_CLOCK (PERIPHERAL_BUS_CLOCK_FREQUENCY)
 #elif defined __PIC32MZ__
-#define PBCLK (PERIPHERAL_BUS_CLOCK_2_FREQUENCY)
+#define I2C_PERIPHERAL_CLOCK (PERIPHERAL_BUS_CLOCK_2_FREQUENCY)
 #else
 #error "Unsupported device."
 #endif
@@ -35,7 +35,7 @@
  * @return I2CXBRG value.
  */
 uint32_t I2CCalculateI2Cxbrg(const uint32_t fsk) {
-    return (uint32_t) ((((1.0f / (2.0f * (float) fsk)) - 0.000000104f) * (float) PBCLK - 2.0f) + 0.5f);
+    return (uint32_t) ((((1.0f / (2.0f * (float) fsk)) - 0.000000104f) * (float) I2C_PERIPHERAL_CLOCK - 2.0f) + 0.5f);
 }
 
 /**
