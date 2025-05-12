@@ -489,8 +489,8 @@ void SendResponseSerial(Send * const send, const void* const data, const size_t 
 /**
  * @brief Writes data and returns number of bytes lost due to buffer overflow.
  * @param enabled True if the interface is enabled.
- * @param getWriteAvailable Get write available callback function.
- * @param write Write callback function.
+ * @param getWriteAvailable Get write available callback.
+ * @param write Write callback.
  * @param data Data.
  * @param numberOfBytes Number of bytes.
  * @param priority True to write with priority.

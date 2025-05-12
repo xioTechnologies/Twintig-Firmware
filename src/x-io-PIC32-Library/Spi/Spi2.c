@@ -50,7 +50,7 @@ void Spi2Initialise(const SpiSettings * const settings) {
     SPI2BRG = SpiCalculateSpixbrg(settings->clockFrequency);
     SPI2CONbits.ON = 1;
 
-    // Configure interrupt
+    // Enable interrupts
     EVIC_SourceEnable(INT_SOURCE_SPI2_RX);
 }
 

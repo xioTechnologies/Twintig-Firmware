@@ -64,7 +64,7 @@ void Spi1DmaTXInitialise(const SpiSettings * const settings) {
     DCH0CSIZ = 1; // transfers per event
     DCH0INTbits.CHBCIE = 1; // channel Block Transfer Complete Interrupt Enable bit
 
-    // Configure TX DMA channel interrupt
+    // Enable interrupts
     EVIC_SourceEnable(INT_SOURCE_DMA0);
 }
 

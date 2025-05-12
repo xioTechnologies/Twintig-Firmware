@@ -43,7 +43,7 @@ const SpiSettings spiSettingsDefault = {
 // Functions
 
 /**
- * @brief Calculates a SPIxBRG value for a target clock frequency.
+ * @brief Calculates the SPIxBRG value for a target clock frequency.
  * See page 29 of Section 23. Serial Peripheral Interface (SPI).
  * @param clockFrequency Clock frequency in Hz.
  * @return SPIxBRG value.
@@ -54,7 +54,7 @@ uint32_t SpiCalculateSpixbrg(const uint32_t clockFrequency) {
 }
 
 /**
- * @brief Calculates the clock frequency for a SPIxBRG value.
+ * @brief Calculates the actual clock frequency for a SPIxBRG value.
  * See page 29 of Section 23. Serial Peripheral Interface (SPI).
  * @param spixbrg SPIxBRG value.
  * @return Clock frequency in Hz.

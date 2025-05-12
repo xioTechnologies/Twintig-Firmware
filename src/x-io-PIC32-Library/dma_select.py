@@ -1,24 +1,37 @@
-def replace(path, keywords, old_ids, new_ids):
-    with open(path) as file:
-        contents = file.read()
+import re
 
-    for old_id, new_id in zip(old_ids, new_ids):
-        old_keywords = [k.replace("?", str(old_id)) for k in keywords]
-        new_keywords = [k.replace("?", str(new_id)) for k in keywords]
+
+def dma_Select(path, new_channels):
+    with open(path) as file:
+        code = file.read()
+
+    keywords = ("DCH?", "Dma?", "DMA?")
+
+    pattern = "|".join(k.replace("?", r"([0-7])") for k in keywords)
+
+    matches = re.findall(pattern, code)
+
+    old_channels = sorted({c for m in matches for c in m if c})
+
+    for old_channel, new_channel in zip(old_channels, new_channels):
+        old_keywords = [k.replace("?", old_channel) for k in keywords]
+        new_keywords = [k.replace("?", f"${new_channel}$") for k in keywords]
 
         for old_keyword, new_keyword in zip(old_keywords, new_keywords):
-            contents = contents.replace(old_keyword, new_keyword)
+            code = code.replace(old_keyword, new_keyword)
+
+    code = code.replace("$", "")
 
     with open(path, "w") as file:
-        file.write(contents)
+        file.write(code)
 
 
-keywords = ("DCH?", "Dma?", "DMA?")
+dma_Select("Spi/Spi1DmaTX.c", (0,))
 
-replace("Spi/Spi1DmaTX.c", keywords, (0,), (0,))
+dma_Select("Spi/Spi3Dma.c", (2, 3))
 
-replace("Spi/Spi3Dma.c", keywords, (0, 1), (2, 3))
+dma_Select("Spi/Spi4Dma.c", (4, 5))
 
-replace("Spi/Spi4Dma.c", keywords, (0, 1), (4, 5))
+dma_Select("Spi/Spi6Dma.c", (6, 7))
 
-replace("Spi/Spi6Dma.c", keywords, (0, 1), (6, 7))
+dma_Select("Uart/Uart1DmaTX.c", (1,))

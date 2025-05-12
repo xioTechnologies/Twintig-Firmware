@@ -39,7 +39,7 @@ const UartSettings uartSettingsDefault = {
 // Functions
 
 /**
- * @brief Calculates a UxBRG value for a target baud rate.
+ * @brief Calculates the UxBRG value for a target baud rate.
  * See page 13 of Section 21. UART.
  * @param baudRate Baud rate.
  * @return UxBRG value.
@@ -50,7 +50,7 @@ uint32_t UartCalculateUxbrg(const uint32_t baudRate) {
 }
 
 /**
- * @brief Calculates the baud rate for a UxBRG value.
+ * @brief Calculates the actual baud rate for a UxBRG value.
  * See page 13 of Section 21. UART.
  * @param uxbrg UxBRG value.
  * @return Baud rate.

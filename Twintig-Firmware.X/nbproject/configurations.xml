@@ -189,7 +189,7 @@
         <logicalFolder name="Uart" displayName="Uart" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Uart/Uart.h</itemPath>
           <itemPath>../src/x-io-PIC32-Library/Uart/Uart3.h</itemPath>
-          <itemPath>../src/x-io-PIC32-Library/Uart/Uart1.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Uart/Uart1DmaTX.h</itemPath>
         </logicalFolder>
         <logicalFolder name="Usb" displayName="Usb" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Usb/UsbCdc.h</itemPath>
@@ -361,7 +361,7 @@
         <logicalFolder name="Uart" displayName="Uart" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Uart/Uart.c</itemPath>
           <itemPath>../src/x-io-PIC32-Library/Uart/Uart3.c</itemPath>
-          <itemPath>../src/x-io-PIC32-Library/Uart/Uart1.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Uart/Uart1DmaTX.c</itemPath>
         </logicalFolder>
         <logicalFolder name="Usb" displayName="Usb" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Usb/UsbCdc.c</itemPath>

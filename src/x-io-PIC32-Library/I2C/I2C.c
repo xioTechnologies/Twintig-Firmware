@@ -29,7 +29,7 @@
 // Functions
 
 /**
- * @brief Calculates a I2CXBRG value for a specified clock frequency.
+ * @brief Calculates the I2CXBRG value for a target clock frequency.
  * See page 19 of Section 24. Inter-Integrated Circuit.
  * @param fsk Clock frequency in Hz.
  * @return I2CXBRG value.

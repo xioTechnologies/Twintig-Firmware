@@ -141,7 +141,7 @@ static void WriteRegister(const uint8_t address, const uint8_t value) {
 }
 
 /**
- * @brief External interrupt callback function.
+ * @brief External interrupt callback.
  * @param pin Pin.
  * @param context COntext.
  */
@@ -163,7 +163,7 @@ static void ExternalInterrupt(GPIO_PIN pin, uintptr_t context) {
 }
 
 /**
- * @brief Transfer complete callback function.
+ * @brief Transfer complete callback.
  */
 static void TransferComplete(void) {
     const IcmFifoPacket fifoPacket = {
