@@ -11,7 +11,6 @@
 #include "Commands.h"
 #include "Context.h"
 #include "FirmwareVersion.h"
-#include "I2C/I2C3.h"
 #include "Imu/Imu.h"
 #include "Interfaces.h"
 #include "Nvm.h"
@@ -65,8 +64,7 @@ static Ximu3CommandBridge bridge1 = {
 };
 static Context context1 = {
     .settings = &settings1,
-    .i2c = &i2c3,
-    .address = 0,
+    .nvm = &nvm1,
     .imu = &imu1,
     .send = &send1,
 };

@@ -12,6 +12,7 @@
 
 #include "I2C/I2C.h"
 #include "Imu/Imu.h"
+#include "Nvm.h"
 #include "Send/Send.h"
 #include <stdbool.h>
 #include <stdint.h>
@@ -28,8 +29,7 @@ typedef struct {
     bool nvmBlank;
     bool factoryMode;
     uint64_t applyTimeout;
-    const I2C * const i2c;
-    const uint16_t address;
+    const Nvm * const nvm;
     Imu * const imu;
     Send * const send;
 } Context;
