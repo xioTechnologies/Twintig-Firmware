@@ -138,7 +138,7 @@ const void* const defaults[] = {
     (void*) (&(bool) {false}),
     (void*) (&(IcmOdr) {IcmOdr50Hz}),
     (void*) (&(FusionAxesAlignment) {FusionAxesAlignmentPXPYPZ}),
-    (void*) (&(bool) {true}),
+    (void*) (&(bool) {false}),
     (void*) (&(uint32_t) {1}),
     (void*) (&(FusionConvention) {FusionConventionNwu}),
     (void*) (&(float) {0.5f}),

@@ -94,7 +94,7 @@
         {
             "name": "Gyroscope offset correction enabled",
             "declaration": "bool name",
-            "default": "{true}"
+            "default": "{false}"
         },
         {
             "name": "AHRS update rate divisor",
