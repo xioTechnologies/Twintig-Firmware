@@ -27,6 +27,7 @@ typedef struct {
 //------------------------------------------------------------------------------
 // Variable declarations
 
+extern const Nvm nvm0;
 extern const Nvm nvm1;
 extern const Nvm nvm1;
 extern const Nvm nvm2;
