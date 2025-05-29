@@ -25,6 +25,7 @@
  * @brief Context.
  */
 typedef struct {
+    const char* const defaultName;
     Ximu3Settings * const settings;
     bool nvmBlank;
     bool factoryMode;

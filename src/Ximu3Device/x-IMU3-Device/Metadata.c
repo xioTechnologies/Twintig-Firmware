@@ -132,7 +132,7 @@ const void* const defaults[] = {
     (void*) (&(FusionVector) {{1.0f, 1.0f, 1.0f}}),
     (void*) (&(FusionVector) {{0.0f, 0.0f, 0.0f}}),
     (void*) (&(char[32]) {"Unknown"}),
-    (void*) (&(char[32]) {"Twintig"}),
+    (void*) (&(char[32]) {"Unknown"}),
     (void*) (&(bool) {true}),
     (void*) (&(uint32_t) {3000000}),
     (void*) (&(bool) {false}),

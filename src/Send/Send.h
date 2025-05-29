@@ -10,6 +10,7 @@
 //------------------------------------------------------------------------------
 // Includes
 
+#include "Fifo.h"
 #include "Imu/Imu.h"
 #include <stdbool.h>
 #include <stddef.h>
@@ -43,11 +44,20 @@ typedef struct {
 } SendSettings;
 
 /**
+ * @brief Send interface.
+ */
+typedef struct {
+    const bool(*enabled)(void);
+    const size_t(*getWriteAvailable)(void);
+    const FifoResult(*write)(const void* const data, const size_t numberOfBytes);
+} SendInterface;
+
+/**
  * @brief Send structure.
  */
 typedef struct {
-    Imu * const imu;
     SendSettings settings; // private
+    Imu * const imu; // private
     FusionAhrsFlags flags; // private
     FusionVector downsampledGyroscope; // private
     FusionVector downsampledAccelerometer; // private
@@ -55,6 +65,8 @@ typedef struct {
     uint32_t downsampledAhrsCount; // private
     float downsampledTemperature; // private
     uint32_t downsampledTemperatureCount; // private
+    SendInterface usb; // private
+    SendInterface serial; // private
     size_t usbBufferOverflow; // private
     size_t serialBufferOverflow; // private
 } Send;
@@ -62,6 +74,7 @@ typedef struct {
 //------------------------------------------------------------------------------
 // Variable declarations
 
+extern Send send0;
 extern Send send1;
 extern Send send2;
 extern Send send3;

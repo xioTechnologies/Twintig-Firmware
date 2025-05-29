@@ -30,6 +30,13 @@ static void Error(const char* const error, void* const context);
 //------------------------------------------------------------------------------
 // Variables
 
+static Ximu3CommandInterface interfaces[] = {
+    { .name = "USB", .read = InterfacesUsbRead, .write = InterfacesUsbWrite},
+    { .name = "Serial", .read = InterfacesSerialRead, .write = InterfacesSerialWrite},
+};
+
+static const int numberOfInterfaces = sizeof (interfaces) / sizeof (Ximu3CommandInterface);
+
 static const Ximu3CommandMap commands[] = {
     {"default", CommandsDefault},
     {"apply", CommandsApply},
@@ -42,32 +49,37 @@ static const Ximu3CommandMap commands[] = {
     {"note", CommandsNote},
     {"factory", CommandsFactory},
 };
-static Ximu3CommandInterface interfaces[] = {
-    { .name = "USB", .read = InterfacesUsbRead, .write = InterfacesUsbWrite},
-    { .name = "Serial", .read = InterfacesSerialRead, .write = InterfacesSerialWrite},
+
+static const int numberOfCommands = sizeof (commands) / sizeof (Ximu3CommandMap);
+
+static Ximu3Settings settingsArray[] = {
+    {.nvmRead = NvmRead, .nvmWrite = NvmWrite, .initialiseEpilogue = InitialiseEpilogue, .defaultsEpilogue = DefaultsEpilogue},
+    //    {.nvmRead = NvmRead, .nvmWrite = NvmWrite, .initialiseEpilogue = InitialiseEpilogue, .defaultsEpilogue = DefaultsEpilogue},
+    //    {.nvmRead = NvmRead, .nvmWrite = NvmWrite, .initialiseEpilogue = InitialiseEpilogue, .defaultsEpilogue = DefaultsEpilogue},
+    //    {.nvmRead = NvmRead, .nvmWrite = NvmWrite, .initialiseEpilogue = InitialiseEpilogue, .defaultsEpilogue = DefaultsEpilogue},
+    //    {.nvmRead = NvmRead, .nvmWrite = NvmWrite, .initialiseEpilogue = InitialiseEpilogue, .defaultsEpilogue = DefaultsEpilogue},
+    //    {.nvmRead = NvmRead, .nvmWrite = NvmWrite, .initialiseEpilogue = InitialiseEpilogue, .defaultsEpilogue = DefaultsEpilogue},
 };
-static Ximu3Settings settings1 = {
-    .nvmRead = NvmRead,
-    .nvmWrite = NvmWrite,
-    .initialiseEpilogue = InitialiseEpilogue,
-    .defaultsEpilogue = DefaultsEpilogue,
+
+static Ximu3CommandBridge bridges[] = {
+    {.interfaces = interfaces, .numberOfInterfaces = numberOfInterfaces, .commands = commands, .settings = &settingsArray[0], .numberOfCommands = numberOfCommands, .overrideReadOnly = CommandsOverrideReadOnly, .writeEpilogue = WriteEpilogue, .error = Error},
+    //    {.interfaces = interfaces, .numberOfInterfaces = numberOfInterfaces, .commands = commands, .settings = &settingsArray[1], .numberOfCommands = numberOfCommands, .overrideReadOnly = CommandsOverrideReadOnly, .writeEpilogue = WriteEpilogue, .error = Error},
+    //    {.interfaces = interfaces, .numberOfInterfaces = numberOfInterfaces, .commands = commands, .settings = &settingsArray[2], .numberOfCommands = numberOfCommands, .overrideReadOnly = CommandsOverrideReadOnly, .writeEpilogue = WriteEpilogue, .error = Error},
+    //    {.interfaces = interfaces, .numberOfInterfaces = numberOfInterfaces, .commands = commands, .settings = &settingsArray[3], .numberOfCommands = numberOfCommands, .overrideReadOnly = CommandsOverrideReadOnly, .writeEpilogue = WriteEpilogue, .error = Error},
+    //    {.interfaces = interfaces, .numberOfInterfaces = numberOfInterfaces, .commands = commands, .settings = &settingsArray[4], .numberOfCommands = numberOfCommands, .overrideReadOnly = CommandsOverrideReadOnly, .writeEpilogue = WriteEpilogue, .error = Error},
+    //    {.interfaces = interfaces, .numberOfInterfaces = numberOfInterfaces, .commands = commands, .settings = &settingsArray[5], .numberOfCommands = numberOfCommands, .overrideReadOnly = CommandsOverrideReadOnly, .writeEpilogue = WriteEpilogue, .error = Error},
 };
-static Ximu3CommandBridge bridge1 = {
-    .interfaces = interfaces,
-    .numberOfInterfaces = sizeof (interfaces) / sizeof (Ximu3CommandInterface),
-    .commands = commands,
-    .settings = &settings1,
-    .numberOfCommands = sizeof (commands) / sizeof (Ximu3CommandMap),
-    .overrideReadOnly = CommandsOverrideReadOnly,
-    .writeEpilogue = WriteEpilogue,
-    .error = Error,
+
+static Context contexts[] = {
+    {.defaultName = "Twintig Carpus", .settings = &settingsArray[0], .nvm = &nvm0, .imu = &imu1, .send = &send0},
+    //    {.defaultName = "Twintig CH1 IMU4", .settings = &settingsArray[1], .nvm = &nvm1, .imu = &imu1, .send = &send1},
+    //    {.defaultName = "Twintig CH2 IMU4", .settings = &settingsArray[2], .nvm = &nvm2, .imu = &imu2, .send = &send2},
+    //    {.defaultName = "Twintig CH3 IMU4", .settings = &settingsArray[3], .nvm = &nvm3, .imu = &imu3, .send = &send3},
+    //    {.defaultName = "Twintig CH4 IMU4", .settings = &settingsArray[4], .nvm = &nvm4, .imu = &imu4, .send = &send4},
+    //    {.defaultName = "Twintig CH5 IMU4", .settings = &settingsArray[5], .nvm = &nvm5, .imu = &imu5, .send = &send5},
 };
-static Context context1 = {
-    .settings = &settings1,
-    .nvm = &nvm1,
-    .imu = &imu1,
-    .send = &send1,
-};
+
+static const int numberOfDevices = sizeof (bridges) / sizeof (Ximu3CommandBridge);
 
 //------------------------------------------------------------------------------
 // Functions
@@ -77,10 +89,16 @@ static Context context1 = {
  * system startup.
  */
 void Ximu3DeviceInitialise(void) {
-    settings1.context = &context1;
-    bridge1.context = &context1;
-    Ximu3SettingsInitialise(&settings1);
-    ApplyNow(&context1);
+    for (int index = 0; index < numberOfDevices; index++) {
+
+        // Set context
+        settingsArray[index].context = &contexts[index];
+        bridges[index].context = &contexts[index];
+
+        // Initialise settings
+        Ximu3SettingsInitialise(&settingsArray[index]);
+        ApplyNow(&contexts[index]);
+    }
 }
 
 /**
@@ -88,8 +106,10 @@ void Ximu3DeviceInitialise(void) {
  * main program loop.
  */
 void Ximu3DeviceTasks(void) {
-    Ximu3CommandTasks(&bridge1);
-    ApplyTasks(&context1);
+    for (int index = 0; index < numberOfDevices; index++) {
+        Ximu3CommandTasks(&bridges[index]);
+        ApplyTasks(&contexts[index]);
+    }
 }
 
 /**
@@ -117,6 +137,7 @@ static void InitialiseEpilogue(void* const context) {
 static void DefaultsEpilogue(void* const context) {
     Context * const context_ = context;
     Ximu3SettingsSet(context_->settings, Ximu3SettingsIndexFirmwareVersion, FIRMWARE_VERSION, true);
+    Ximu3SettingsSet(context_->settings, Ximu3SettingsIndexDeviceName, context_->defaultName, true);
 }
 
 /**

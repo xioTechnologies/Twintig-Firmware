@@ -31,35 +31,46 @@ static void SendEarthAcceleration(Send * const send, const ImuAhrsData * const i
 static void TemperatureDataReady(const ImuTemperatureData * const data, void* const context);
 static void SendDataMessage(Send * const send, const void* const data, const size_t numberOfBytes);
 static void SendDataMessagePriority(Send * const send, const void* const data, const size_t numberOfBytes);
-static inline __attribute__((always_inline)) size_t Write(const bool enabled,
-                                                          const size_t(*getWriteAvailable)(void),
-                                                          const FifoResult(*write)(const void* const data, const size_t numberOfBytes),
-                                                          const void* const data, const size_t numberOfBytes,
-                                                          const bool priority);
+static inline __attribute__((always_inline)) size_t Write(const SendInterface * const interface, const void* const data, const size_t numberOfBytes, const bool priority);
 
 //------------------------------------------------------------------------------
 // Variables
 
-Send send1 = {.imu = &imu1};
-Send send2 = {.imu = &imu1};
-Send send3 = {.imu = &imu1};
-Send send4 = {.imu = &imu1};
-Send send5 = {.imu = &imu1};
-Send send6 = {.imu = &imu1};
-Send send7 = {.imu = &imu1};
-Send send8 = {.imu = &imu1};
-Send send9 = {.imu = &imu1};
-Send send10 = {.imu = &imu1};
-Send send11 = {.imu = &imu1};
-Send send12 = {.imu = &imu1};
-Send send13 = {.imu = &imu1};
-Send send14 = {.imu = &imu1};
-Send send15 = {.imu = &imu1};
-Send send16 = {.imu = &imu1};
-Send send17 = {.imu = &imu1};
-Send send18 = {.imu = &imu1};
-Send send19 = {.imu = &imu1};
-Send send20 = {.imu = &imu1};
+const SendInterface usb0 = {.enabled = UsbCdcPortOpen, .getWriteAvailable = UsbCdcGetWriteAvailable, .write = UsbCdcWrite};
+//const SendInterface usb1 = {.enabled = UsbCdcPortOpen, .getWriteAvailable = MuxUsbGetWriteAvailable, .write = Mux1UsbWrite};
+//const SendInterface usb2 = {.enabled = UsbCdcPortOpen, .getWriteAvailable = MuxUsbGetWriteAvailable, .write = Mux2UsbWrite};
+//const SendInterface usb3 = {.enabled = UsbCdcPortOpen, .getWriteAvailable = MuxUsbGetWriteAvailable, .write = Mux3UsbWrite};
+//const SendInterface usb4 = {.enabled = UsbCdcPortOpen, .getWriteAvailable = MuxUsbGetWriteAvailable, .write = Mux4UsbWrite};
+//const SendInterface usb5 = {.enabled = UsbCdcPortOpen, .getWriteAvailable = MuxUsbGetWriteAvailable, .write = Mux5UsbWrite};
+
+const SendInterface serial0 = {.enabled = SerialEnabled, .getWriteAvailable = SerialGetWriteAvailable, .write = SerialWrite};
+//const SendInterface serial1 = {.enabled = SerialEnabled, .getWriteAvailable = MuxSerialGetWriteAvailable, .write = Mux1SerialWrite};
+//const SendInterface serial2 = {.enabled = SerialEnabled, .getWriteAvailable = MuxSerialGetWriteAvailable, .write = Mux2SerialWrite};
+//const SendInterface serial3 = {.enabled = SerialEnabled, .getWriteAvailable = MuxSerialGetWriteAvailable, .write = Mux3SerialWrite};
+//const SendInterface serial4 = {.enabled = SerialEnabled, .getWriteAvailable = MuxSerialGetWriteAvailable, .write = Mux4SerialWrite};
+//const SendInterface serial5 = {.enabled = SerialEnabled, .getWriteAvailable = MuxSerialGetWriteAvailable, .write = Mux5SerialWrite};
+
+Send send0 = {.imu = &imu1, .usb = usb0, .serial = serial0};
+//Send send1 = {.imu = &imu1, .usb = usb1, .serial = serial1};
+//Send send2 = {.imu = &imu2, .usb = usb2, .serial = serial2};
+//Send send3 = {.imu = &imu3, .usb = usb3, .serial = serial3};
+//Send send4 = {.imu = &imu4, .usb = usb4, .serial = serial4};
+//Send send5 = {.imu = &imu5, .usb = usb5, .serial = serial5};
+//Send send6 = {.imu = &imu1};
+//Send send7 = {.imu = &imu1};
+//Send send8 = {.imu = &imu1};
+//Send send9 = {.imu = &imu1};
+//Send send10 = {.imu = &imu1};
+//Send send11 = {.imu = &imu1};
+//Send send12 = {.imu = &imu1};
+//Send send13 = {.imu = &imu1};
+//Send send14 = {.imu = &imu1};
+//Send send15 = {.imu = &imu1};
+//Send send16 = {.imu = &imu1};
+//Send send17 = {.imu = &imu1};
+//Send send18 = {.imu = &imu1};
+//Send send19 = {.imu = &imu1};
+//Send send20 = {.imu = &imu1};
 
 //------------------------------------------------------------------------------
 // Functions
@@ -445,10 +456,10 @@ void SendError(Send * const send, const char* format, ...) {
  */
 static void SendDataMessage(Send * const send, const void* const data, const size_t numberOfBytes) {
     if (send->settings.usbDataMessagesEnabled) {
-        send->usbBufferOverflow += Write(UsbCdcPortOpen(), UsbCdcGetWriteAvailable, UsbCdcWrite, data, numberOfBytes, false);
+        send->usbBufferOverflow += Write(&send->usb, data, numberOfBytes, false);
     }
     if (send->settings.serialDataMessagesEnabled) {
-        send->serialBufferOverflow += Write(SerialEnabled(), SerialGetWriteAvailable, SerialWrite, data, numberOfBytes, false);
+        send->serialBufferOverflow += Write(&send->serial, data, numberOfBytes, false);
     }
 }
 
@@ -459,10 +470,10 @@ static void SendDataMessage(Send * const send, const void* const data, const siz
  */
 static void SendDataMessagePriority(Send * const send, const void* const data, const size_t numberOfBytes) {
     if (send->settings.usbDataMessagesEnabled) {
-        send->usbBufferOverflow += Write(UsbCdcPortOpen(), UsbCdcGetWriteAvailable, UsbCdcWrite, data, numberOfBytes, true);
+        send->usbBufferOverflow += Write(&send->usb, data, numberOfBytes, true);
     }
     if (send->settings.serialDataMessagesEnabled) {
-        send->serialBufferOverflow += Write(SerialEnabled(), SerialGetWriteAvailable, SerialWrite, data, numberOfBytes, true);
+        send->serialBufferOverflow += Write(&send->serial, data, numberOfBytes, true);
     }
 }
 
@@ -473,7 +484,7 @@ static void SendDataMessagePriority(Send * const send, const void* const data, c
  * @param numberOfBytes Number of bytes.
  */
 void SendResponseUsb(Send * const send, const void* const data, const size_t numberOfBytes) {
-    send->usbBufferOverflow += Write(UsbCdcPortOpen(), UsbCdcGetWriteAvailable, UsbCdcWrite, data, numberOfBytes, true);
+    send->usbBufferOverflow += Write(&send->usb, data, numberOfBytes, true);
 }
 
 /**
@@ -483,31 +494,25 @@ void SendResponseUsb(Send * const send, const void* const data, const size_t num
  * @param numberOfBytes Number of bytes.
  */
 void SendResponseSerial(Send * const send, const void* const data, const size_t numberOfBytes) {
-    send->serialBufferOverflow += Write(SerialEnabled(), SerialGetWriteAvailable, SerialWrite, data, numberOfBytes, true);
+    send->serialBufferOverflow += Write(&send->serial, data, numberOfBytes, true);
 }
 
 /**
  * @brief Writes data and returns number of bytes lost due to buffer overflow.
- * @param enabled True if the interface is enabled.
- * @param getWriteAvailable Get write available callback.
- * @param write Write callback.
+ * @param interface Interface.
  * @param data Data.
  * @param numberOfBytes Number of bytes.
  * @param priority True to write with priority.
  * @return Number of samples lost due to buffer overflow.
  */
-static inline __attribute__((always_inline)) size_t Write(const bool enabled,
-                                                          const size_t(*getWriteAvailable)(void),
-                                                          const FifoResult(*write)(const void* const data, const size_t numberOfBytes),
-                                                          const void* const data, const size_t numberOfBytes,
-                                                          const bool priority) {
-    if (enabled == false) {
+static inline __attribute__((always_inline)) size_t Write(const SendInterface * const interface, const void* const data, const size_t numberOfBytes, const bool priority) {
+    if (interface->enabled() == false) {
         return 0;
     }
-    if ((priority == false) && (getWriteAvailable() < (numberOfBytes + 1024))) {
+    if ((priority == false) && (interface->getWriteAvailable() < (numberOfBytes + 1024))) {
         return numberOfBytes;
     }
-    if (write(data, numberOfBytes) != FifoResultOK) {
+    if (interface->write(data, numberOfBytes) != FifoResultOK) {
         return numberOfBytes;
     }
     return 0;

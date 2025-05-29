@@ -28,8 +28,8 @@
  * @endcode
  */
 typedef struct {
-    uint8_t* data;
-    size_t dataSize;
+    uint8_t * const data;
+    const size_t dataSize;
     size_t writeIndex;
     size_t readIndex;
 } Fifo;
