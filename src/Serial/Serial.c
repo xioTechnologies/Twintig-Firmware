@@ -65,8 +65,8 @@ size_t SerialRead(void* const destination, size_t numberOfBytes) {
  * @brief Returns the space available in the write buffer.
  * @return Space available in the write buffer.
  */
-size_t SerialGetWriteAvailable(void) {
-    return FifoGetWriteAvailable(&fifo);
+size_t SerialAvailableWrite(void) {
+    return FifoAvailableWrite(&fifo);
 }
 
 /**

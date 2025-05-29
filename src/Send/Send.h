@@ -48,7 +48,7 @@ typedef struct {
  */
 typedef struct {
     const bool(*enabled)(void);
-    const size_t(*getWriteAvailable)(void);
+    const size_t(*availableWrite)(void);
     const FifoResult(*write)(const void* const data, const size_t numberOfBytes);
 } SendInterface;
 

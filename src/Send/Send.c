@@ -36,19 +36,19 @@ static inline __attribute__((always_inline)) size_t Write(const SendInterface * 
 //------------------------------------------------------------------------------
 // Variables
 
-const SendInterface usb0 = {.enabled = UsbCdcPortOpen, .getWriteAvailable = UsbCdcGetWriteAvailable, .write = UsbCdcWrite};
-//const SendInterface usb1 = {.enabled = UsbCdcPortOpen, .getWriteAvailable = MuxUsbGetWriteAvailable, .write = Mux1UsbWrite};
-//const SendInterface usb2 = {.enabled = UsbCdcPortOpen, .getWriteAvailable = MuxUsbGetWriteAvailable, .write = Mux2UsbWrite};
-//const SendInterface usb3 = {.enabled = UsbCdcPortOpen, .getWriteAvailable = MuxUsbGetWriteAvailable, .write = Mux3UsbWrite};
-//const SendInterface usb4 = {.enabled = UsbCdcPortOpen, .getWriteAvailable = MuxUsbGetWriteAvailable, .write = Mux4UsbWrite};
-//const SendInterface usb5 = {.enabled = UsbCdcPortOpen, .getWriteAvailable = MuxUsbGetWriteAvailable, .write = Mux5UsbWrite};
+const SendInterface usb0 = {.enabled = UsbCdcPortOpen, .availableWrite = UsbCdcAvailableWrite, .write = UsbCdcWrite};
+//const SendInterface usb1 = {.enabled = UsbCdcPortOpen, .AvailableWrite = MuxUsbAvailableWrite, .write = Mux1UsbWrite};
+//const SendInterface usb2 = {.enabled = UsbCdcPortOpen, .AvailableWrite = MuxUsbAvailableWrite, .write = Mux2UsbWrite};
+//const SendInterface usb3 = {.enabled = UsbCdcPortOpen, .AvailableWrite = MuxUsbAvailableWrite, .write = Mux3UsbWrite};
+//const SendInterface usb4 = {.enabled = UsbCdcPortOpen, .AvailableWrite = MuxUsbAvailableWrite, .write = Mux4UsbWrite};
+//const SendInterface usb5 = {.enabled = UsbCdcPortOpen, .AvailableWrite = MuxUsbAvailableWrite, .write = Mux5UsbWrite};
 
-const SendInterface serial0 = {.enabled = SerialEnabled, .getWriteAvailable = SerialGetWriteAvailable, .write = SerialWrite};
-//const SendInterface serial1 = {.enabled = SerialEnabled, .getWriteAvailable = MuxSerialGetWriteAvailable, .write = Mux1SerialWrite};
-//const SendInterface serial2 = {.enabled = SerialEnabled, .getWriteAvailable = MuxSerialGetWriteAvailable, .write = Mux2SerialWrite};
-//const SendInterface serial3 = {.enabled = SerialEnabled, .getWriteAvailable = MuxSerialGetWriteAvailable, .write = Mux3SerialWrite};
-//const SendInterface serial4 = {.enabled = SerialEnabled, .getWriteAvailable = MuxSerialGetWriteAvailable, .write = Mux4SerialWrite};
-//const SendInterface serial5 = {.enabled = SerialEnabled, .getWriteAvailable = MuxSerialGetWriteAvailable, .write = Mux5SerialWrite};
+const SendInterface serial0 = {.enabled = SerialEnabled, .availableWrite = SerialAvailableWrite, .write = SerialWrite};
+//const SendInterface serial1 = {.enabled = SerialEnabled, .AvailableWrite = MuxSerialAvailableWrite, .write = Mux1SerialWrite};
+//const SendInterface serial2 = {.enabled = SerialEnabled, .AvailableWrite = MuxSerialAvailableWrite, .write = Mux2SerialWrite};
+//const SendInterface serial3 = {.enabled = SerialEnabled, .AvailableWrite = MuxSerialAvailableWrite, .write = Mux3SerialWrite};
+//const SendInterface serial4 = {.enabled = SerialEnabled, .AvailableWrite = MuxSerialAvailableWrite, .write = Mux4SerialWrite};
+//const SendInterface serial5 = {.enabled = SerialEnabled, .AvailableWrite = MuxSerialAvailableWrite, .write = Mux5SerialWrite};
 
 Send send0 = {.imu = &imu1, .usb = usb0, .serial = serial0};
 //Send send1 = {.imu = &imu1, .usb = usb1, .serial = serial1};
@@ -509,7 +509,7 @@ static inline __attribute__((always_inline)) size_t Write(const SendInterface * 
     if (interface->enabled() == false) {
         return 0;
     }
-    if ((priority == false) && (interface->getWriteAvailable() < (numberOfBytes + 1024))) {
+    if ((priority == false) && (interface->availableWrite() < (numberOfBytes + 1024))) {
         return numberOfBytes;
     }
     if (interface->write(data, numberOfBytes) != FifoResultOK) {
