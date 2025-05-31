@@ -14,7 +14,7 @@
  * @brief Result.
  */
 typedef enum {
-    HapticResultOK,
+    HapticResultOk,
     HapticResultError,
 } HapticResult;
 

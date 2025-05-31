@@ -98,7 +98,7 @@ HapticResult HapticPlay(const int effect) {
     }
     WriteRegister(WAVEFORM_SEQUENCER_REGISTER_ADDRESS, (uint8_t) effect);
     WriteRegister(GO_REGISTER_ADDRESS, 0x01);
-    return HapticResultOK;
+    return HapticResultOk;
 }
 
 /**

@@ -88,7 +88,7 @@ void CommandsHaptic(const char* * const value, Ximu3CommandResponse * const resp
     if (Ximu3CommandParseNumber(value, response, &id) != 0) {
         return;
     }
-    if (HapticPlay((int) id) != HapticResultOK) {
+    if (HapticPlay((int) id) != HapticResultOk) {
         Ximu3CommandRespondError(response, "Invalid ID");
         return;
     }

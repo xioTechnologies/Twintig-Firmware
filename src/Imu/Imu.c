@@ -61,7 +61,7 @@ void ImuTasks(Imu * const imu) {
 
         // Get data
         IcmData imuData;
-        if (imu->icm->getData(&imuData) != IcmResultOK) {
+        if (imu->icm->getData(&imuData) != IcmResultOk) {
             break;
         }
 

@@ -243,7 +243,7 @@ typedef enum {
  * @brief Result.
  */
 typedef enum {
-    IcmResultOK,
+    IcmResultOk,
     IcmResultError,
 } IcmResult;
 

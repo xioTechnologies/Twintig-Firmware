@@ -194,7 +194,7 @@ IcmResult Icm5GetData(IcmData * const data) {
     data->accelerometerY = (float) fifoPacket.registers.accelDataY * (1.0f / 2048.0f);
     data->accelerometerZ = (float) fifoPacket.registers.accelDataZ * (1.0f / 2048.0f);
     data->temperature = (float) fifoPacket.registers.tempData * (1.0f / 132.48f) + 25.0f;
-    return IcmResultOK;
+    return IcmResultOk;
 }
 
 /**
@@ -221,7 +221,7 @@ IcmTestResult Icm5Test(void) {
     const uint32_t timeout = TimerGetTicks64() + (TIMER_TICKS_PER_SECOND / 10);
     while (true) {
         IcmData data;
-        if (Icm5GetData(&data) == IcmResultOK) {
+        if (Icm5GetData(&data) == IcmResultOk) {
             break;
         }
         if (TimerGetTicks64() > timeout) {
