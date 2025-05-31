@@ -175,7 +175,7 @@
         </logicalFolder>
         <logicalFolder name="Spi" displayName="Spi" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Spi/Spi.h</itemPath>
-          <itemPath>../src/x-io-PIC32-Library/Spi/Spi1DmaTX.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Spi/Spi1DmaTx.h</itemPath>
           <itemPath>../src/x-io-PIC32-Library/Spi/Spi4Dma.h</itemPath>
           <itemPath>../src/x-io-PIC32-Library/Spi/Spi3Dma.h</itemPath>
           <itemPath>../src/x-io-PIC32-Library/Spi/Spi6Dma.h</itemPath>
@@ -189,7 +189,7 @@
         <logicalFolder name="Uart" displayName="Uart" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Uart/Uart.h</itemPath>
           <itemPath>../src/x-io-PIC32-Library/Uart/Uart3.h</itemPath>
-          <itemPath>../src/x-io-PIC32-Library/Uart/Uart1DmaTX.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Uart/Uart1DmaTx.h</itemPath>
         </logicalFolder>
         <logicalFolder name="Usb" displayName="Usb" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Usb/UsbCdc.h</itemPath>
@@ -348,7 +348,7 @@
         </logicalFolder>
         <logicalFolder name="Spi" displayName="Spi" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Spi/Spi.c</itemPath>
-          <itemPath>../src/x-io-PIC32-Library/Spi/Spi1DmaTX.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Spi/Spi1DmaTx.c</itemPath>
           <itemPath>../src/x-io-PIC32-Library/Spi/Spi4Dma.c</itemPath>
           <itemPath>../src/x-io-PIC32-Library/Spi/Spi3Dma.c</itemPath>
           <itemPath>../src/x-io-PIC32-Library/Spi/Spi6Dma.c</itemPath>
@@ -361,7 +361,7 @@
         <logicalFolder name="Uart" displayName="Uart" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Uart/Uart.c</itemPath>
           <itemPath>../src/x-io-PIC32-Library/Uart/Uart3.c</itemPath>
-          <itemPath>../src/x-io-PIC32-Library/Uart/Uart1DmaTX.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Uart/Uart1DmaTx.c</itemPath>
         </logicalFolder>
         <logicalFolder name="Usb" displayName="Usb" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Usb/UsbCdc.c</itemPath>
