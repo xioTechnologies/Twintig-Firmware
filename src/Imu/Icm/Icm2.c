@@ -171,7 +171,7 @@ static void TransferComplete(void) {
         .registers = *((IcmSensorRegisters*) spiPacket.data),
     };
     lock = false;
-    if (FifoWrite(&fifo, &fifoPacket, sizeof (fifoPacket)) != FifoResultOK) {
+    if (FifoWrite(&fifo, &fifoPacket, sizeof (fifoPacket)) != FifoResultOk) {
         bufferOverflow++;
     }
 }

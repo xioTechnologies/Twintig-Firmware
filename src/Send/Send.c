@@ -512,7 +512,7 @@ static inline __attribute__((always_inline)) size_t Write(const SendInterface * 
     if ((priority == false) && (interface->availableWrite() < (numberOfBytes + 1024))) {
         return numberOfBytes;
     }
-    if (interface->write(data, numberOfBytes) != FifoResultOK) {
+    if (interface->write(data, numberOfBytes) != FifoResultOk) {
         return numberOfBytes;
     }
     return 0;

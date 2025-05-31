@@ -9,7 +9,7 @@
 
 #include "Fifo.h"
 #include "Serial.h"
-#include "Uart/Uart1DmaTX.h"
+#include "Uart/Uart1DmaTx.h"
 
 //------------------------------------------------------------------------------
 // Function declarations
@@ -36,9 +36,9 @@ void SerialSetSettings(const SerialSettings * const settings_) {
         UartSettings uartSettings = uartSettingsDefault;
         uartSettings.baudRate = settings.baudRate;
         uartSettings.rtsCtsEnabled = settings.rtsCtsEnabled;
-        Uart1DmaTXInitialise(&uartSettings);
+        Uart1DmaTxInitialise(&uartSettings);
     } else {
-        Uart1DmaTXDeinitialise();
+        Uart1DmaTxDeinitialise();
         FifoClear(&fifo);
     }
 }
@@ -58,7 +58,7 @@ bool SerialEnabled(void) {
  * @return Number of bytes read.
  */
 size_t SerialRead(void* const destination, size_t numberOfBytes) {
-    return Uart1DmaTXRead(destination, numberOfBytes);
+    return Uart1DmaTxRead(destination, numberOfBytes);
 }
 
 /**
@@ -77,10 +77,10 @@ size_t SerialAvailableWrite(void) {
  */
 FifoResult SerialWrite(const void* const data, const size_t numberOfBytes) {
     if (settings.enabled == false) {
-        return FifoResultOK;
+        return FifoResultOk;
     }
     const FifoResult result = FifoWrite(&fifo, data, numberOfBytes);
-    if (Uart1DmaTXWriteInProgress() == false) {
+    if (Uart1DmaTxWriteInProgress() == false) {
         WriteComplete();
     }
     return result;
@@ -93,7 +93,7 @@ static void WriteComplete(void) {
     static __attribute__((coherent)) uint8_t data[2048];
     const size_t numberOfBytes = FifoRead(&fifo, data, sizeof (data));
     if (numberOfBytes > 0) {
-        Uart1DmaTXWrite(data, numberOfBytes, WriteComplete);
+        Uart1DmaTxWrite(data, numberOfBytes, WriteComplete);
     }
 }
 
