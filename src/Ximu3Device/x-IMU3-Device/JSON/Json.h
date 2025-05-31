@@ -21,30 +21,30 @@ extern "C" {
 // Definitions
 
 /**
- * @brief JSON error.
+ * @brief JSON result.
  */
 typedef enum {
-    JsonErrorOK,
-    JsonErrorInvalidSyntax,
-    JsonErrorUnexpectedType,
-    JsonErrorMissingObjectEnd,
-    JsonErrorMissingArrayEnd,
-    JsonErrorMissingComma,
-    JsonErrorMissingKey,
-    JsonErrorMissingColon,
-    JsonErrorMissingStringEnd,
-    JsonErrorStringTooLong,
-    JsonErrorInvalidStringCharacter,
-    JsonErrorInvalidStringEscapeSequence,
-    JsonErrorInvalidStringHexEscapeSequence,
-    JsonErrorUnableToParseStringHexEscapeSequence,
-    JsonErrorInvalidNumberFormat,
-    JsonErrorNumberTooLong,
-    JsonErrorUnableToParseNumber,
-} JsonError;
+    JsonResultOk,
+    JsonResultInvalidSyntax,
+    JsonResultUnexpectedType,
+    JsonResultMissingObjectEnd,
+    JsonResultMissingArrayEnd,
+    JsonResultMissingComma,
+    JsonResultMissingKey,
+    JsonResultMissingColon,
+    JsonResultMissingStringEnd,
+    JsonResultStringTooLong,
+    JsonResultInvalidStringCharacter,
+    JsonResultInvalidStringEscapeSequence,
+    JsonResultInvalidStringHexEscapeSequence,
+    JsonResultUnableToParseStringHexEscapeSequence,
+    JsonResultInvalidNumberFormat,
+    JsonResultNumberTooLong,
+    JsonResultUnableToParseNumber,
+} JsonResult;
 
 /**
- * @brief JSON types.
+ * @brief JSON type.
  */
 typedef enum {
     JsonTypeString,
@@ -58,33 +58,33 @@ typedef enum {
 //------------------------------------------------------------------------------
 // Function declarations
 
-JsonError JsonParseType(const char **const json, JsonType *const type);
+JsonResult JsonParseType(const char **const json, JsonType *const type);
 
-JsonError JsonParseObjectStart(const char **const json);
+JsonResult JsonParseObjectStart(const char **const json);
 
-JsonError JsonParseObjectEnd(const char **const json);
+JsonResult JsonParseObjectEnd(const char **const json);
 
-JsonError JsonParseArrayStart(const char **const json);
+JsonResult JsonParseArrayStart(const char **const json);
 
-JsonError JsonParseArrayEnd(const char **const json);
+JsonResult JsonParseArrayEnd(const char **const json);
 
-JsonError JsonParseComma(const char **const json);
+JsonResult JsonParseComma(const char **const json);
 
-JsonError JsonParseKey(const char **const json, char *const destination, const size_t destinationSize);
+JsonResult JsonParseKey(const char **const json, char *const destination, const size_t destinationSize);
 
-JsonError JsonParseString(const char **const json, char *const destination, const size_t destinationSize, size_t *const numberOfBytes);
+JsonResult JsonParseString(const char **const json, char *const destination, const size_t destinationSize, size_t *const numberOfBytes);
 
-JsonError JsonParseNumber(const char **const json, float *const number);
+JsonResult JsonParseNumber(const char **const json, float *const number);
 
-JsonError JsonParseBoolean(const char **const json, bool *const boolean);
+JsonResult JsonParseBoolean(const char **const json, bool *const boolean);
 
-JsonError JsonParseNull(const char **const json);
+JsonResult JsonParseNull(const char **const json);
 
-JsonError JsonParse(const char **const json);
+JsonResult JsonParse(const char **const json);
 
 void JsonPrint(const char *json);
 
-const char *JsonErrorToString(const JsonError error);
+const char *JsonResultToString(const JsonResult result);
 
 #ifdef __cplusplus
 }

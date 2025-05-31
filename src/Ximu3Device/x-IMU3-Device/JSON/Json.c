@@ -17,19 +17,19 @@
 
 static void SkipWhiteSpace(const char **const json);
 
-static JsonError CheckType(const char **const json, const JsonType expectedType);
+static JsonResult CheckType(const char **const json, const JsonType expectedType);
 
-static JsonError ParseEscapeSequence(const char **const json, char *const destination, size_t *const index);
+static JsonResult ParseEscapeSequence(const char **const json, char *const destination, size_t *const index);
 
-static JsonError ParseHexEscapeSequence(const char **const json, char *const destination, size_t *const index);
+static JsonResult ParseHexEscapeSequence(const char **const json, char *const destination, size_t *const index);
 
 static void WriteToDestination(char *const destination, size_t *const index, const char character);
 
-static JsonError ParseValue(const char **const json, const bool print, int *const indent);
+static JsonResult ParseValue(const char **const json, const bool print, int *const indent);
 
-static JsonError ParseObject(const char **const json, const bool print, int *const indent);
+static JsonResult ParseObject(const char **const json, const bool print, int *const indent);
 
-static JsonError ParseArray(const char **const json, const bool print, int *const indent);
+static JsonResult ParseArray(const char **const json, const bool print, int *const indent);
 
 //------------------------------------------------------------------------------
 // Functions
@@ -38,14 +38,14 @@ static JsonError ParseArray(const char **const json, const bool print, int *cons
  * @brief Parses value type. The JSON pointer is not modified.
  * @param json JSON pointer.
  * @param type Type.
- * @return JSON error.
+ * @return Result.
  */
-JsonError JsonParseType(const char **const json, JsonType *const type) {
+JsonResult JsonParseType(const char **const json, JsonType *const type) {
     SkipWhiteSpace(json);
     switch (**json) {
         case '"':
             *type = JsonTypeString;
-            return JsonErrorOK;
+            return JsonResultOk;
         case '-':
         case '0':
         case '1':
@@ -58,22 +58,22 @@ JsonError JsonParseType(const char **const json, JsonType *const type) {
         case '8':
         case '9':
             *type = JsonTypeNumber;
-            return JsonErrorOK;
+            return JsonResultOk;
         case '{':
             *type = JsonTypeObject;
-            return JsonErrorOK;
+            return JsonResultOk;
         case '[':
             *type = JsonTypeArray;
-            return JsonErrorOK;
+            return JsonResultOk;
         case 't':
         case 'f':
             *type = JsonTypeBoolean;
-            return JsonErrorOK;
+            return JsonResultOk;
         case 'n':
             *type = JsonTypeNull;
-            return JsonErrorOK;
+            return JsonResultOk;
         default:
-            return JsonErrorInvalidSyntax;
+            return JsonResultInvalidSyntax;
     }
 }
 
@@ -101,95 +101,95 @@ static void SkipWhiteSpace(const char **const json) {
  * not modified.
  * @param json JSON pointer.
  * @param expectedType Expected type.
- * @return JSON error.
+ * @return Result.
  */
-static JsonError CheckType(const char **const json, const JsonType expectedType) {
+static JsonResult CheckType(const char **const json, const JsonType expectedType) {
     JsonType type;
-    const JsonError error = JsonParseType(json, &type);
-    if (error != JsonErrorOK) {
-        return error;
+    const JsonResult result = JsonParseType(json, &type);
+    if (result != JsonResultOk) {
+        return result;
     }
     if (type != expectedType) {
-        return JsonErrorUnexpectedType;
+        return JsonResultUnexpectedType;
     }
-    return JsonErrorOK;
+    return JsonResultOk;
 }
 
 /**
  * @brief Parses an object start. The JSON pointer is advanced to the first
  * non-whitespace character after the object start.
  * @param json JSON pointer.
- * @return JSON error.
+ * @return Result.
  */
-JsonError JsonParseObjectStart(const char **const json) {
-    const JsonError error = CheckType(json, JsonTypeObject);
-    if (error != JsonErrorOK) {
-        return error;
+JsonResult JsonParseObjectStart(const char **const json) {
+    const JsonResult result = CheckType(json, JsonTypeObject);
+    if (result != JsonResultOk) {
+        return result;
     }
     (*json)++;
     SkipWhiteSpace(json);
-    return JsonErrorOK;
+    return JsonResultOk;
 }
 
 /**
  * @brief Parses an object end. The JSON pointer is advanced to the first
  * character after the object end.
  * @param json JSON pointer.
- * @return JSON error.
+ * @return Result.
  */
-JsonError JsonParseObjectEnd(const char **const json) {
+JsonResult JsonParseObjectEnd(const char **const json) {
     SkipWhiteSpace(json);
     if (**json != '}') {
-        return JsonErrorMissingObjectEnd;
+        return JsonResultMissingObjectEnd;
     }
     (*json)++;
-    return JsonErrorOK;
+    return JsonResultOk;
 }
 
 /**
  * @brief Parses an array start. The JSON pointer is advanced to the first
  * non-whitespace character after the object start.
  * @param json JSON pointer.
- * @return JSON error.
+ * @return Result.
  */
-JsonError JsonParseArrayStart(const char **const json) {
-    const JsonError error = CheckType(json, JsonTypeArray);
-    if (error != JsonErrorOK) {
-        return error;
+JsonResult JsonParseArrayStart(const char **const json) {
+    const JsonResult result = CheckType(json, JsonTypeArray);
+    if (result != JsonResultOk) {
+        return result;
     }
     (*json)++;
     SkipWhiteSpace(json);
-    return JsonErrorOK;
+    return JsonResultOk;
 }
 
 /**
  * @brief Parses an array end. The JSON pointer is advanced to the first
  * character after the array end.
  * @param json JSON pointer.
- * @return JSON error.
+ * @return Result.
  */
-JsonError JsonParseArrayEnd(const char **const json) {
+JsonResult JsonParseArrayEnd(const char **const json) {
     SkipWhiteSpace(json);
     if (**json != ']') {
-        return JsonErrorMissingArrayEnd;
+        return JsonResultMissingArrayEnd;
     }
     (*json)++;
-    return JsonErrorOK;
+    return JsonResultOk;
 }
 
 /**
  * @brief Parses a comma. The JSON pointer is advanced to the first character
  * after the comma.
  * @param json JSON pointer.
- * @return JSON error.
+ * @return Result.
  */
-JsonError JsonParseComma(const char **const json) {
+JsonResult JsonParseComma(const char **const json) {
     SkipWhiteSpace(json);
     if (**json != ',') {
-        return JsonErrorMissingComma;
+        return JsonResultMissingComma;
     }
     (*json)++;
-    return JsonErrorOK;
+    return JsonResultOk;
 }
 
 /**
@@ -198,27 +198,27 @@ JsonError JsonParseComma(const char **const json) {
  * @param json JSON pointer.
  * @param destination Destination. NULL if not required.
  * @param destinationSize Destination size.
- * @return JSON error.
+ * @return Result.
  */
-JsonError JsonParseKey(const char **const json, char *const destination, const size_t destinationSize) {
+JsonResult JsonParseKey(const char **const json, char *const destination, const size_t destinationSize) {
     // Check type
-    if (CheckType(json, JsonTypeString) != JsonErrorOK) {
-        return JsonErrorMissingKey;
+    if (CheckType(json, JsonTypeString) != JsonResultOk) {
+        return JsonResultMissingKey;
     }
 
     // Parse key
-    const JsonError error = JsonParseString(json, destination, destinationSize, NULL);
-    if (error != JsonErrorOK) {
-        return error;
+    const JsonResult result = JsonParseString(json, destination, destinationSize, NULL);
+    if (result != JsonResultOk) {
+        return result;
     }
 
     // Parse colon
     SkipWhiteSpace(json);
     if (**json != ':') {
-        return JsonErrorMissingColon;
+        return JsonResultMissingColon;
     }
     (*json)++;
-    return JsonErrorOK;
+    return JsonResultOk;
 }
 
 /**
@@ -228,13 +228,13 @@ JsonError JsonParseKey(const char **const json, char *const destination, const s
  * @param destination Destination. NULL if not required.
  * @param destinationSize Destination size.
  * @param numberOfBytes Number of bytes in string. NULL if not required.
- * @return JSON error.
+ * @return Result.
  */
-JsonError JsonParseString(const char **const json, char *const destination, const size_t destinationSize, size_t *const numberOfBytes) {
+JsonResult JsonParseString(const char **const json, char *const destination, const size_t destinationSize, size_t *const numberOfBytes) {
     // Check type
-    JsonError error = CheckType(json, JsonTypeString);
-    if (error != JsonErrorOK) {
-        return error;
+    JsonResult result = CheckType(json, JsonTypeString);
+    if (result != JsonResultOk) {
+        return result;
     }
     (*json)++;
 
@@ -242,18 +242,18 @@ JsonError JsonParseString(const char **const json, char *const destination, cons
     size_t index = 0;
     while (true) {
         if ((destination != NULL) && (index >= destinationSize)) {
-            return JsonErrorStringTooLong;
+            return JsonResultStringTooLong;
         }
         if (**json == '\0') {
-            return JsonErrorMissingStringEnd;
+            return JsonResultMissingStringEnd;
         }
         if ((**json >= 0) && (**json < 0x20)) {
-            return JsonErrorInvalidStringCharacter; // control charcaters must be escaped
+            return JsonResultInvalidStringCharacter; // control charcaters must be escaped
         }
         if (**json == '\\') {
-            error = ParseEscapeSequence(json, destination, &index);
-            if (error != JsonErrorOK) {
-                return error;
+            result = ParseEscapeSequence(json, destination, &index);
+            if (result != JsonResultOk) {
+                return result;
             }
             continue;
         }
@@ -263,7 +263,7 @@ JsonError JsonParseString(const char **const json, char *const destination, cons
             if (numberOfBytes != NULL) {
                 *numberOfBytes = index;
             }
-            return JsonErrorOK;
+            return JsonResultOk;
         }
         WriteToDestination(destination, &index, *(*json)++);
     }
@@ -275,9 +275,9 @@ JsonError JsonParseString(const char **const json, char *const destination, cons
  * @param json JSON pointer.
  * @param destination Destination.
  * @param index Index.
- * @return JSON error.
+ * @return Result.
  */
-static JsonError ParseEscapeSequence(const char **const json, char *const destination, size_t *const index) {
+static JsonResult ParseEscapeSequence(const char **const json, char *const destination, size_t *const index) {
     switch (*(*json + 1)) {
         case '\"':
             WriteToDestination(destination, index, '"');
@@ -306,10 +306,10 @@ static JsonError ParseEscapeSequence(const char **const json, char *const destin
         case 'u':
             return ParseHexEscapeSequence(json, destination, index);
         default:
-            return JsonErrorInvalidStringEscapeSequence;
+            return JsonResultInvalidStringEscapeSequence;
     }
     (*json) += 2;
-    return JsonErrorOK;
+    return JsonResultOk;
 }
 
 /**
@@ -318,30 +318,30 @@ static JsonError ParseEscapeSequence(const char **const json, char *const destin
  * @param json JSON pointer.
  * @param destination Destination.
  * @param index Index.
- * @return JSON error.
+ * @return Result.
  */
-static JsonError ParseHexEscapeSequence(const char **const json, char *const destination, size_t *const index) {
+static JsonResult ParseHexEscapeSequence(const char **const json, char *const destination, size_t *const index) {
     if (isxdigit((int) *(*json + 2)) == 0) {
-        return JsonErrorInvalidStringHexEscapeSequence;
+        return JsonResultInvalidStringHexEscapeSequence;
     }
     if (isxdigit((int) *(*json + 3)) == 0) {
-        return JsonErrorInvalidStringHexEscapeSequence;
+        return JsonResultInvalidStringHexEscapeSequence;
     }
     if (isxdigit((int) *(*json + 4)) == 0) {
-        return JsonErrorInvalidStringHexEscapeSequence;
+        return JsonResultInvalidStringHexEscapeSequence;
     }
     if (isxdigit((int) *(*json + 5)) == 0) {
-        return JsonErrorInvalidStringHexEscapeSequence;
+        return JsonResultInvalidStringHexEscapeSequence;
     }
     char string[5];
     snprintf(string, sizeof(string), "%s", *json + 2);
     unsigned int value;
     if (sscanf(string, "%x", &value) != 1) {
-        return JsonErrorUnableToParseStringHexEscapeSequence;
+        return JsonResultUnableToParseStringHexEscapeSequence;
     }
     WriteToDestination(destination, index, (char) value);
     (*json) += 6;
-    return JsonErrorOK;
+    return JsonResultOk;
 }
 
 /**
@@ -362,13 +362,13 @@ static void WriteToDestination(char *const destination, size_t *const index, con
  * after the number.
  * @param json JSON pointer.
  * @param number Number. NULL if not required.
- * @return JSON error.
+ * @return Result.
  */
-JsonError JsonParseNumber(const char **const json, float *const number) {
+JsonResult JsonParseNumber(const char **const json, float *const number) {
     // Check type
-    const JsonError error = CheckType(json, JsonTypeNumber);
-    if (error != JsonErrorOK) {
-        return error;
+    const JsonResult result = CheckType(json, JsonTypeNumber);
+    if (result != JsonResultOk) {
+        return result;
     }
 
     // Parse sign
@@ -376,7 +376,7 @@ JsonError JsonParseNumber(const char **const json, float *const number) {
     if (*jsonCopy == '-') {
         jsonCopy++;
         if (isdigit((int) *jsonCopy) == 0) {
-            return JsonErrorInvalidNumberFormat; // minus sign must be followed by digit
+            return JsonResultInvalidNumberFormat; // minus sign must be followed by digit
         }
     }
 
@@ -384,7 +384,7 @@ JsonError JsonParseNumber(const char **const json, float *const number) {
     if (*jsonCopy == '0') {
         jsonCopy++;
         if (*jsonCopy == '0') {
-            return JsonErrorInvalidNumberFormat; // leading zeros are invalid
+            return JsonResultInvalidNumberFormat; // leading zeros are invalid
         }
     }
 
@@ -397,7 +397,7 @@ JsonError JsonParseNumber(const char **const json, float *const number) {
     if (*jsonCopy == '.') {
         jsonCopy++;
         if (isdigit((int) *jsonCopy) == 0) {
-            return JsonErrorInvalidNumberFormat; // decimal point must be followed by digit
+            return JsonResultInvalidNumberFormat; // decimal point must be followed by digit
         }
     }
     while (isdigit((int) *jsonCopy) != 0) {
@@ -411,7 +411,7 @@ JsonError JsonParseNumber(const char **const json, float *const number) {
             jsonCopy++;
         }
         if (isdigit((int) *jsonCopy) == 0) {
-            return JsonErrorInvalidNumberFormat; // exponent must be followed by digit
+            return JsonResultInvalidNumberFormat; // exponent must be followed by digit
         }
     }
     while (isdigit((int) *jsonCopy) != 0) {
@@ -423,15 +423,15 @@ JsonError JsonParseNumber(const char **const json, float *const number) {
         char string[32];
         const size_t numberOfBytes = jsonCopy - *json;
         if (numberOfBytes >= sizeof(string)) {
-            return JsonErrorNumberTooLong;
+            return JsonResultNumberTooLong;
         }
         snprintf(string, sizeof(string), "%s", *json);
         if (sscanf(string, "%f", number) != 1) {
-            return JsonErrorUnableToParseNumber;
+            return JsonResultUnableToParseNumber;
         }
     }
     *json = jsonCopy;
-    return JsonErrorOK;
+    return JsonResultOk;
 }
 
 /**
@@ -439,13 +439,13 @@ JsonError JsonParseNumber(const char **const json, float *const number) {
  * after the boolean.
  * @param json JSON pointer.
  * @param boolean Boolean. NULL if not required.
- * @return JSON error.
+ * @return Result.
  */
-JsonError JsonParseBoolean(const char **const json, bool *const boolean) {
+JsonResult JsonParseBoolean(const char **const json, bool *const boolean) {
     // Check type
-    const JsonError error = CheckType(json, JsonTypeBoolean);
-    if (error != JsonErrorOK) {
-        return error;
+    const JsonResult result = CheckType(json, JsonTypeBoolean);
+    if (result != JsonResultOk) {
+        return result;
     }
 
     // Parse true
@@ -455,7 +455,7 @@ JsonError JsonParseBoolean(const char **const json, bool *const boolean) {
         if (boolean != NULL) {
             *boolean = true;
         }
-        return JsonErrorOK;
+        return JsonResultOk;
     }
 
     // Parse false
@@ -465,53 +465,53 @@ JsonError JsonParseBoolean(const char **const json, bool *const boolean) {
         if (boolean != NULL) {
             *boolean = false;
         }
-        return JsonErrorOK;
+        return JsonResultOk;
     }
-    return JsonErrorInvalidSyntax;
+    return JsonResultInvalidSyntax;
 }
 
 /**
  * @brief Parses null. The JSON pointer is advanced to the first character
  * after the null.
  * @param json JSON pointer.
- * @return JSON error.
+ * @return Result.
  */
-JsonError JsonParseNull(const char **const json) {
+JsonResult JsonParseNull(const char **const json) {
     // Check type
-    const JsonError error = CheckType(json, JsonTypeNull);
-    if (error != JsonErrorOK) {
-        return error;
+    const JsonResult result = CheckType(json, JsonTypeNull);
+    if (result != JsonResultOk) {
+        return result;
     }
 
     // Parse null
     const char nullString[] = "null";
     if (strncmp(*json, nullString, sizeof(nullString) - 1) == 0) {
         (*json) += sizeof(nullString) - 1;
-        return JsonErrorOK;
+        return JsonResultOk;
     }
-    return JsonErrorInvalidSyntax;
+    return JsonResultInvalidSyntax;
 }
 
 /**
  * @brief Parses any JSON and discards data. The JSON pointer is advanced to
  * the first character after the JSON.
  * @param json JSON pointer.
- * @return JSON error.
+ * @return Result.
  */
-JsonError JsonParse(const char **const json) {
+JsonResult JsonParse(const char **const json) {
     int indent = 0;
     return ParseValue(json, false, &indent);
 }
 
 /**
- * @brief Prints the JSON structure and error message.
+ * @brief Prints the JSON structure and result message.
  * @param json_ JSON pointer.
  */
 void JsonPrint(const char *json_) {
     int indent = 0;
     const char **const json = &json_;
-    const JsonError error = ParseValue(json, true, &indent);
-    printf("%s\n", JsonErrorToString(error));
+    const JsonResult result = ParseValue(json, true, &indent);
+    printf("%s\n", JsonResultToString(result));
 }
 
 /**
@@ -520,14 +520,14 @@ void JsonPrint(const char *json_) {
  * @param json JSON pointer.
  * @param print True to print.
  * @param indent Indent.
- * @return JSON error.
+ * @return Result.
  */
-static JsonError ParseValue(const char **const json, const bool print, int *const indent) {
+static JsonResult ParseValue(const char **const json, const bool print, int *const indent) {
     // Parse value type
     JsonType type;
-    const JsonError error = JsonParseType(json, &type);
-    if (error != JsonErrorOK) {
-        return error;
+    const JsonResult result = JsonParseType(json, &type);
+    if (result != JsonResultOk) {
+        return result;
     }
 
     // Print value type
@@ -570,7 +570,7 @@ static JsonError ParseValue(const char **const json, const bool print, int *cons
         case JsonTypeNull:
             return JsonParseNull(json);
     }
-    return JsonErrorOK;
+    return JsonResultOk;
 }
 
 /**
@@ -579,19 +579,19 @@ static JsonError ParseValue(const char **const json, const bool print, int *cons
  * @param json JSON pointer.
  * @param print True to print.
  * @param indent Indent.
- * @return JSON error.
+ * @return Result.
  */
-static JsonError ParseObject(const char **const json, const bool print, int *const indent) {
+static JsonResult ParseObject(const char **const json, const bool print, int *const indent) {
     // Parse object start
-    JsonError error = JsonParseObjectStart(json);
-    if (error != JsonErrorOK) {
-        return error;
+    JsonResult result = JsonParseObjectStart(json);
+    if (result != JsonResultOk) {
+        return result;
     }
 
     // Parse object end
-    error = JsonParseObjectEnd(json);
-    if (error == JsonErrorOK) {
-        return JsonErrorOK;
+    result = JsonParseObjectEnd(json);
+    if (result == JsonResultOk) {
+        return JsonResultOk;
     }
 
     // Loop through each key/value pair
@@ -599,32 +599,32 @@ static JsonError ParseObject(const char **const json, const bool print, int *con
     while (true) {
         // Parse key
         char key[64];
-        error = JsonParseKey(json, key, sizeof(key));
-        if (error != JsonErrorOK) {
-            return error;
+        result = JsonParseKey(json, key, sizeof(key));
+        if (result != JsonResultOk) {
+            return result;
         }
 
         // Parse value
-        error = ParseValue(json, print, indent);
-        if (error != JsonErrorOK) {
-            return error;
+        result = ParseValue(json, print, indent);
+        if (result != JsonResultOk) {
+            return result;
         }
 
         // Parse comma
-        error = JsonParseComma(json);
-        if (error == JsonErrorOK) {
+        result = JsonParseComma(json);
+        if (result == JsonResultOk) {
             continue;
         }
 
         // Parse object end
-        error = JsonParseObjectEnd(json);
-        if (error != JsonErrorOK) {
-            return error;
+        result = JsonParseObjectEnd(json);
+        if (result != JsonResultOk) {
+            return result;
         }
         break;
     }
     (*indent)--;
-    return JsonErrorOK;
+    return JsonResultOk;
 }
 
 /**
@@ -633,87 +633,87 @@ static JsonError ParseObject(const char **const json, const bool print, int *con
  * @param json JSON pointer.
  * @param print True to print.
  * @param indent Indent.
- * @return JSON error.
+ * @return Result.
  */
-static JsonError ParseArray(const char **const json, const bool print, int *const indent) {
+static JsonResult ParseArray(const char **const json, const bool print, int *const indent) {
     // Parse array start
-    JsonError error = JsonParseArrayStart(json);
-    if (error != JsonErrorOK) {
-        return error;
+    JsonResult result = JsonParseArrayStart(json);
+    if (result != JsonResultOk) {
+        return result;
     }
 
     // Parse array end
-    error = JsonParseArrayEnd(json);
-    if (error == JsonErrorOK) {
-        return JsonErrorOK;
+    result = JsonParseArrayEnd(json);
+    if (result == JsonResultOk) {
+        return JsonResultOk;
     }
 
     // Loop through each value
     (*indent)++;
     while (true) {
         // Parse value
-        error = ParseValue(json, print, indent);
-        if (error != JsonErrorOK) {
-            return error;
+        result = ParseValue(json, print, indent);
+        if (result != JsonResultOk) {
+            return result;
         }
 
         // Parse comma
-        error = JsonParseComma(json);
-        if (error == JsonErrorOK) {
+        result = JsonParseComma(json);
+        if (result == JsonResultOk) {
             continue;
         }
 
         // Parse array end
-        error = JsonParseArrayEnd(json);
-        if (error != JsonErrorOK) {
-            return error;
+        result = JsonParseArrayEnd(json);
+        if (result != JsonResultOk) {
+            return result;
         }
         break;
     }
     (*indent)--;
-    return JsonErrorOK;
+    return JsonResultOk;
 }
 
 /**
- * @brief Returns the JSON error message.
- * @param error JSON error.
- * @return JSON error message.
+ * @brief Returns the result message.
+ * @param result Result.
+ * @return Result message.
  */
-const char *JsonErrorToString(const JsonError error) {
-    switch (error) {
-        case JsonErrorOK:
+const char *JsonResultToString(const JsonResult result) {
+    switch (result) {
+        case JsonResultOk:
             return "OK";
-        case JsonErrorInvalidSyntax:
+        case JsonResultInvalidSyntax:
             return "Invalid syntax";
-        case JsonErrorUnexpectedType:
+        case JsonResultUnexpectedType:
             return "Unexpected type";
-        case JsonErrorMissingObjectEnd:
+        case JsonResultMissingObjectEnd:
             return "Missing object end";
-        case JsonErrorMissingArrayEnd:
+        case JsonResultMissingArrayEnd:
             return "Missing array end";
-        case JsonErrorMissingComma:
+        case JsonResultMissingComma:
             return "Missing comma";
-        case JsonErrorMissingKey:
+        case JsonResultMissingKey:
             return "Missing key";
-        case JsonErrorMissingColon:
+        case JsonResultMissingColon:
             return "Missing colon";
-        case JsonErrorMissingStringEnd:
+        case JsonResultMissingStringEnd:
             return "Missing string end";
-        case JsonErrorStringTooLong:
+        case JsonResultStringTooLong:
             return "String too long";
-        case JsonErrorInvalidStringCharacter:
+        case JsonResultInvalidStringCharacter:
             return "Invalid string character";
-        case JsonErrorInvalidStringEscapeSequence:
+        case JsonResultInvalidStringEscapeSequence:
             return "Invalid string escape sequence";
-        case JsonErrorInvalidStringHexEscapeSequence:
+        case JsonResultInvalidStringHexEscapeSequence:
             return "Invalid string hex escape sequence";
-        case JsonErrorUnableToParseStringHexEscapeSequence:
+        case JsonResultUnableToParseStringHexEscapeSequence:
             return "Unable to parse string hex escape sequence";
-        case JsonErrorInvalidNumberFormat:
+        case JsonResultInvalidNumberFormat:
             return "Invalid number format";
-        case JsonErrorNumberTooLong:
+        case JsonResultNumberTooLong:
             return "Number too long";
-        case JsonErrorUnableToParseNumber:
+        case JsonResultUnableToParseNumber:
             return "Unable to parse number";
     }
     return ""; // avoid compiler warning

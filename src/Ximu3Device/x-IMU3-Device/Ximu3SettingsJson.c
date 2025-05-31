@@ -18,14 +18,14 @@
 // Function declarations
 
 static void Append(char* const destination, const size_t destinationSize, const char* const string);
-static JsonError ParseBool(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
-static JsonError ParseCharArray(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
-static JsonError ParseFloat(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
-static JsonError ParseFusionMatrix(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
-static JsonError ParseFusionVector(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
-static JsonError ParseFloatArray(float* const destination, const char* * const value);
-static JsonError ParseInt32(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
-static JsonError ParseUint32(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
+static JsonResult ParseBool(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
+static JsonResult ParseCharArray(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
+static JsonResult ParseFloat(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
+static JsonResult ParseFusionMatrix(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
+static JsonResult ParseFusionVector(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
+static JsonResult ParseFloatArray(float* const destination, const char* * const value);
+static JsonResult ParseInt32(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
+static JsonResult ParseUint32(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
 
 //------------------------------------------------------------------------------
 // Functions
@@ -185,14 +185,14 @@ static void Append(char* const destination, const size_t destinationSize, const 
  * @param key Key.
  * @param value Value.
  * @param overrideReadOnly True to override read-only.
- * @return JSON error.
+ * @return Result.
  */
-JsonError Ximu3SettingsJsonSetKeyValue(Ximu3Settings * const settings, const char* const key, const char* * const value, const bool overrideReadOnly) {
+JsonResult Ximu3SettingsJsonSetKeyValue(Ximu3Settings * const settings, const char* const key, const char* * const value, const bool overrideReadOnly) {
 
     // Get index
     Ximu3SettingsIndex index;
     if (Ximu3SettingsJsonGetIndex(settings, &index, key) != 0) {
-        return JsonErrorOK;
+        return JsonResultOk;
     }
 
     // Get metadata
@@ -218,7 +218,7 @@ JsonError Ximu3SettingsJsonSetKeyValue(Ximu3Settings * const settings, const cha
         case MetadataTypeUint32:
             return ParseUint32(settings, index, value, overrideReadOnly);
     }
-    return JsonErrorOK; // avoid compiler warning
+    return JsonResultOk; // avoid compiler warning
 }
 
 /**
@@ -227,16 +227,16 @@ JsonError Ximu3SettingsJsonSetKeyValue(Ximu3Settings * const settings, const cha
  * @param index Index.
  * @param value Value.
  * @param overrideReadOnly True to override read-only.
- * @return JSON error.
+ * @return Result.
  */
-static JsonError ParseBool(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly) {
+static JsonResult ParseBool(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly) {
     bool boolean;
-    const JsonError error = JsonParseBoolean(value, &boolean);
-    if (error != JsonErrorOK) {
-        return error;
+    const JsonResult result = JsonParseBoolean(value, &boolean);
+    if (result != JsonResultOk) {
+        return result;
     }
     Ximu3SettingsSet(settings, index, &boolean, overrideReadOnly);
-    return JsonErrorOK;
+    return JsonResultOk;
 }
 
 /**
@@ -245,16 +245,16 @@ static JsonError ParseBool(Ximu3Settings * const settings, const Ximu3SettingsIn
  * @param index Index.
  * @param value Value.
  * @param overrideReadOnly True to override read-only.
- * @return JSON error.
+ * @return Result.
  */
-static JsonError ParseCharArray(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly) {
+static JsonResult ParseCharArray(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly) {
     char string[XIMU3_VALUE_SIZE];
-    const JsonError error = JsonParseString(value, string, sizeof (string), NULL);
-    if (error != JsonErrorOK) {
-        return error;
+    const JsonResult result = JsonParseString(value, string, sizeof (string), NULL);
+    if (result != JsonResultOk) {
+        return result;
     }
     Ximu3SettingsSet(settings, index, string, overrideReadOnly);
-    return JsonErrorOK;
+    return JsonResultOk;
 }
 
 /**
@@ -263,16 +263,16 @@ static JsonError ParseCharArray(Ximu3Settings * const settings, const Ximu3Setti
  * @param index Index.
  * @param value Value.
  * @param overrideReadOnly True to override read-only.
- * @return JSON error.
+ * @return Result.
  */
-static JsonError ParseFloat(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly) {
+static JsonResult ParseFloat(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly) {
     float number;
-    const JsonError error = JsonParseNumber(value, &number);
-    if (error != JsonErrorOK) {
-        return error;
+    const JsonResult result = JsonParseNumber(value, &number);
+    if (result != JsonResultOk) {
+        return result;
     }
     Ximu3SettingsSet(settings, index, &number, overrideReadOnly);
-    return JsonErrorOK;
+    return JsonResultOk;
 }
 
 /**
@@ -281,55 +281,55 @@ static JsonError ParseFloat(Ximu3Settings * const settings, const Ximu3SettingsI
  * @param index Index.
  * @param value Value.
  * @param overrideReadOnly True to override read-only.
- * @return JSON error.
+ * @return Result.
  */
-static JsonError ParseFusionMatrix(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly) {
+static JsonResult ParseFusionMatrix(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly) {
 
     // Parse array start
-    JsonError error = JsonParseArrayStart(value);
-    if (error != JsonErrorOK) {
-        return error;
+    JsonResult result = JsonParseArrayStart(value);
+    if (result != JsonResultOk) {
+        return result;
     }
 
     // Parse first row
     FusionMatrix matrix;
-    error = ParseFloatArray(matrix.array[0], value);
-    if (error != JsonErrorOK) {
-        return error;
+    result = ParseFloatArray(matrix.array[0], value);
+    if (result != JsonResultOk) {
+        return result;
     }
 
     // Parse comma
-    error = JsonParseComma(value);
-    if (error != JsonErrorOK) {
-        return error;
+    result = JsonParseComma(value);
+    if (result != JsonResultOk) {
+        return result;
     }
 
     // Parse second row
-    error = ParseFloatArray(matrix.array[1], value);
-    if (error != JsonErrorOK) {
-        return error;
+    result = ParseFloatArray(matrix.array[1], value);
+    if (result != JsonResultOk) {
+        return result;
     }
 
     // Parse comma
-    error = JsonParseComma(value);
-    if (error != JsonErrorOK) {
-        return error;
+    result = JsonParseComma(value);
+    if (result != JsonResultOk) {
+        return result;
     }
 
     // Parse third row
-    error = ParseFloatArray(matrix.array[2], value);
-    if (error != JsonErrorOK) {
-        return error;
+    result = ParseFloatArray(matrix.array[2], value);
+    if (result != JsonResultOk) {
+        return result;
     }
 
     // Parse array end
-    error = JsonParseArrayEnd(value);
-    if (error != JsonErrorOK) {
-        return error;
+    result = JsonParseArrayEnd(value);
+    if (result != JsonResultOk) {
+        return result;
     }
 
     Ximu3SettingsSet(settings, index, &matrix, overrideReadOnly);
-    return JsonErrorOK;
+    return JsonResultOk;
 }
 
 /**
@@ -338,16 +338,16 @@ static JsonError ParseFusionMatrix(Ximu3Settings * const settings, const Ximu3Se
  * @param index Index.
  * @param value Value.
  * @param overrideReadOnly True to override read-only.
- * @return JSON error.
+ * @return Result.
  */
-static JsonError ParseFusionVector(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly) {
+static JsonResult ParseFusionVector(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly) {
     FusionVector vector;
-    const JsonError error = ParseFloatArray(vector.array, value);
-    if (error != JsonErrorOK) {
-        return error;
+    const JsonResult result = ParseFloatArray(vector.array, value);
+    if (result != JsonResultOk) {
+        return result;
     }
     Ximu3SettingsSet(settings, index, &vector, overrideReadOnly);
-    return JsonErrorOK;
+    return JsonResultOk;
 }
 
 /**
@@ -355,52 +355,52 @@ static JsonError ParseFusionVector(Ximu3Settings * const settings, const Ximu3Se
  * @param destination Destination.
  * @param destinationLength Destination length.
  * @param value Value.
- * @return JSON error.
+ * @return Result.
  */
-static JsonError ParseFloatArray(float* const destination, const char* * const value) {
+static JsonResult ParseFloatArray(float* const destination, const char* * const value) {
 
     // Parse array start
-    JsonError error = JsonParseArrayStart(value);
-    if (error != JsonErrorOK) {
-        return error;
+    JsonResult result = JsonParseArrayStart(value);
+    if (result != JsonResultOk) {
+        return result;
     }
 
     // Parse first element
-    error = JsonParseNumber(value, &destination[0]);
-    if (error != JsonErrorOK) {
-        return error;
+    result = JsonParseNumber(value, &destination[0]);
+    if (result != JsonResultOk) {
+        return result;
     }
 
     // Parse comma
-    error = JsonParseComma(value);
-    if (error != JsonErrorOK) {
-        return error;
+    result = JsonParseComma(value);
+    if (result != JsonResultOk) {
+        return result;
     }
 
     // Parse second element
-    error = JsonParseNumber(value, &destination[1]);
-    if (error != JsonErrorOK) {
-        return error;
+    result = JsonParseNumber(value, &destination[1]);
+    if (result != JsonResultOk) {
+        return result;
     }
 
     // Parse comma
-    error = JsonParseComma(value);
-    if (error != JsonErrorOK) {
-        return error;
+    result = JsonParseComma(value);
+    if (result != JsonResultOk) {
+        return result;
     }
 
     // Parse third element
-    error = JsonParseNumber(value, &destination[2]);
-    if (error != JsonErrorOK) {
-        return error;
+    result = JsonParseNumber(value, &destination[2]);
+    if (result != JsonResultOk) {
+        return result;
     }
 
     // Parse array end
-    error = JsonParseArrayEnd(value);
-    if (error != JsonErrorOK) {
-        return error;
+    result = JsonParseArrayEnd(value);
+    if (result != JsonResultOk) {
+        return result;
     }
-    return JsonErrorOK;
+    return JsonResultOk;
 }
 
 /**
@@ -409,17 +409,17 @@ static JsonError ParseFloatArray(float* const destination, const char* * const v
  * @param index Index.
  * @param value Value.
  * @param overrideReadOnly True to override read-only.
- * @return JSON error.
+ * @return Result.
  */
-static JsonError ParseInt32(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly) {
+static JsonResult ParseInt32(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly) {
     float numberFloat;
-    const JsonError error = JsonParseNumber(value, &numberFloat);
-    if (error != JsonErrorOK) {
-        return error;
+    const JsonResult result = JsonParseNumber(value, &numberFloat);
+    if (result != JsonResultOk) {
+        return result;
     }
     const int32_t numberInt = (int32_t) numberFloat;
     Ximu3SettingsSet(settings, index, &numberInt, overrideReadOnly);
-    return JsonErrorOK;
+    return JsonResultOk;
 }
 
 /**
@@ -428,17 +428,17 @@ static JsonError ParseInt32(Ximu3Settings * const settings, const Ximu3SettingsI
  * @param index Index.
  * @param value Value.
  * @param overrideReadOnly True to override read-only.
- * @return JSON error.
+ * @return Result.
  */
-static JsonError ParseUint32(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly) {
+static JsonResult ParseUint32(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly) {
     float numberFloat;
-    const JsonError error = JsonParseNumber(value, &numberFloat);
-    if (error != JsonErrorOK) {
-        return error;
+    const JsonResult result = JsonParseNumber(value, &numberFloat);
+    if (result != JsonResultOk) {
+        return result;
     }
     const uint32_t numberUint32 = (uint32_t) numberFloat;
     Ximu3SettingsSet(settings, index, &numberUint32, overrideReadOnly);
-    return JsonErrorOK;
+    return JsonResultOk;
 }
 
 /**
@@ -446,21 +446,21 @@ static JsonError ParseUint32(Ximu3Settings * const settings, const Ximu3Settings
  * @param settings Settings.
  * @param object_ Object.
  * @param overrideReadOnly True to override read-only.
- * @return JSON error.
+ * @return Result.
  */
-JsonError Ximu3SettingsJsonSetObject(Ximu3Settings * const settings, const char* object_, const bool overrideReadOnly) {
+JsonResult Ximu3SettingsJsonSetObject(Ximu3Settings * const settings, const char* object_, const bool overrideReadOnly) {
 
     // Parse object start
     const char* * const object = &object_;
-    JsonError error = JsonParseObjectStart(object);
-    if (error != JsonErrorOK) {
-        return error;
+    JsonResult result = JsonParseObjectStart(object);
+    if (result != JsonResultOk) {
+        return result;
     }
 
     // Parse object end
-    error = JsonParseObjectEnd(object);
-    if (error == JsonErrorOK) {
-        return JsonErrorOK;
+    result = JsonParseObjectEnd(object);
+    if (result == JsonResultOk) {
+        return JsonResultOk;
     }
 
     // Loop through each key/value pair
@@ -468,31 +468,31 @@ JsonError Ximu3SettingsJsonSetObject(Ximu3Settings * const settings, const char*
 
         // Parse key
         char key[XIMU3_KEY_SIZE];
-        error = JsonParseKey(object, key, sizeof (key));
-        if (error != JsonErrorOK) {
-            return error;
+        result = JsonParseKey(object, key, sizeof (key));
+        if (result != JsonResultOk) {
+            return result;
         }
 
         // Parse value
-        error = Ximu3SettingsJsonSetKeyValue(settings, key, object, overrideReadOnly);
-        if (error != JsonErrorOK) {
-            return error;
+        result = Ximu3SettingsJsonSetKeyValue(settings, key, object, overrideReadOnly);
+        if (result != JsonResultOk) {
+            return result;
         }
 
         // Parse comma
-        error = JsonParseComma(object);
-        if (error == JsonErrorOK) {
+        result = JsonParseComma(object);
+        if (result == JsonResultOk) {
             continue;
         }
 
         // Parse object end
-        error = JsonParseObjectEnd(object);
-        if (error != JsonErrorOK) {
-            return error;
+        result = JsonParseObjectEnd(object);
+        if (result != JsonResultOk) {
+            return result;
         }
         break;
     }
-    return JsonErrorOK;
+    return JsonResultOk;
 }
 
 //------------------------------------------------------------------------------
