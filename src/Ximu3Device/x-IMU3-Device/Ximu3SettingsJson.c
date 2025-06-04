@@ -35,16 +35,16 @@ static JsonResult ParseUint32(Ximu3Settings * const settings, const Ximu3Setting
  * @param settings Settings.
  * @param index_ Index.
  * @param key Key.
- * @return 0 if successful.
+ * @return Result.
  */
-int Ximu3SettingsJsonGetIndex(Ximu3Settings * const settings, Ximu3SettingsIndex * const index_, const char* const key) {
+Ximu3Result Ximu3SettingsJsonGetIndex(Ximu3Settings * const settings, Ximu3SettingsIndex * const index_, const char* const key) {
     for (int index = 0; index < XIMU3_NUMBER_OF_SETTINGS; index++) {
         if (KeyCompare(key, MetadataGet(settings, index).key)) {
             *index_ = index;
-            return 0;
+            return Ximu3ResultOk;
         }
     }
-    return 1;
+    return Ximu3ResultError;
 }
 
 /**

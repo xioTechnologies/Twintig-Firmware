@@ -57,6 +57,11 @@ contents = f"""\
 
 #define XIMU3_NUMBER_OF_SETTINGS {len(settings)}
 
+typedef enum {{
+    Ximu3ResultOk,
+    Ximu3ResultError,
+}} Ximu3Result;
+
 typedef struct {{
 {values}
 }} Ximu3SettingsValues;

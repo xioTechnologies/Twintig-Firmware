@@ -19,6 +19,11 @@
 
 #define XIMU3_NUMBER_OF_SETTINGS 27
 
+typedef enum {
+    Ximu3ResultOk,
+    Ximu3ResultError,
+} Ximu3Result;
+
 typedef struct {
     char serialNumber[16];
     char calibrationDate[32];

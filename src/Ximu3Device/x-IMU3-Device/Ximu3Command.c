@@ -192,15 +192,15 @@ static void Parse(const Ximu3CommandBridge * const bridge, const Ximu3CommandInt
  * @param destination Destination.
  * @param destinationSize Destination size.
  * @param numberOfBytes Number of bytes in string. NULL if not required.
- * @return 0 if successful.
+ * @return Result.
  */
-int Ximu3CommandParseString(const char* * const value, Ximu3CommandResponse * const response, char* const destination, const size_t destinationSize, size_t * const numberOfBytes) {
+Ximu3Result Ximu3CommandParseString(const char* * const value, Ximu3CommandResponse * const response, char* const destination, const size_t destinationSize, size_t * const numberOfBytes) {
     const JsonResult result = JsonParseString(value, destination, destinationSize, numberOfBytes);
     if (result != JsonResultOk) {
         Ximu3CommandRespondError(response, JsonResultToString(result));
-        return 1;
+        return Ximu3ResultError;
     }
-    return 0;
+    return Ximu3ResultOk;
 }
 
 /**
@@ -208,15 +208,15 @@ int Ximu3CommandParseString(const char* * const value, Ximu3CommandResponse * co
  * @param value Value.
  * @param response Response.
  * @param number Number.
- * @return 0 if successful.
+ * @return Result.
  */
-int Ximu3CommandParseNumber(const char* * const value, Ximu3CommandResponse * const response, float *const number) {
+Ximu3Result Ximu3CommandParseNumber(const char* * const value, Ximu3CommandResponse * const response, float *const number) {
     const JsonResult result = JsonParseNumber(value, number);
     if (result != JsonResultOk) {
         Ximu3CommandRespondError(response, JsonResultToString(result));
-        return 1;
+        return Ximu3ResultError;
     }
-    return 0;
+    return Ximu3ResultOk;
 }
 
 /**
@@ -224,30 +224,30 @@ int Ximu3CommandParseNumber(const char* * const value, Ximu3CommandResponse * co
  * @param value Value.
  * @param response Response.
  * @param boolean Boolean.
- * @return 0 if successful.
+ * @return Result.
  */
-int Ximu3CommandParseBoolean(const char* * const value, Ximu3CommandResponse * const response, bool * const boolean) {
+Ximu3Result Ximu3CommandParseBoolean(const char* * const value, Ximu3CommandResponse * const response, bool * const boolean) {
     const JsonResult result = JsonParseBoolean(value, boolean);
     if (result != JsonResultOk) {
         Ximu3CommandRespondError(response, JsonResultToString(result));
-        return 1;
+        return Ximu3ResultError;
     }
-    return 0;
+    return Ximu3ResultOk;
 }
 
 /**
  * @brief Parses null and responds with error if unsuccessful.
  * @param value Value.
  * @param response Response.
- * @return 0 if successful.
+ * @return Result.
  */
-int Ximu3CommandParseNull(const char* * const value, Ximu3CommandResponse * const response) {
+Ximu3Result Ximu3CommandParseNull(const char* * const value, Ximu3CommandResponse * const response) {
     const JsonResult result = JsonParseNull(value);
     if (result != JsonResultOk) {
         Ximu3CommandRespondError(response, JsonResultToString(result));
-        return 1;
+        return Ximu3ResultError;
     }
-    return 0;
+    return Ximu3ResultOk;
 }
 
 /**
