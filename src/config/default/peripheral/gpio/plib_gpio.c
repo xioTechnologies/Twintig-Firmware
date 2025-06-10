@@ -75,8 +75,8 @@ void GPIO_Initialize ( void )
     PORTA;
     IEC3SET = _IEC3_CNAIE_MASK;
     /* PORTB Initialization */
-    LATB = 0x804U; /* Initial Latch Value */
-    TRISBCLR = 0x884U; /* Direction Control */
+    LATB = 0x904U; /* Initial Latch Value */
+    TRISBCLR = 0x984U; /* Direction Control */
     ANSELBCLR = 0xfffcU; /* Digital Mode Enable */
 
     /* Change Notice Enable */
@@ -114,8 +114,8 @@ void GPIO_Initialize ( void )
     TRISGCLR = 0x200U; /* Direction Control */
     ANSELGCLR = 0x3c0U; /* Digital Mode Enable */
     /* PORTH Initialization */
-    LATH = 0xd0U; /* Initial Latch Value */
-    TRISHCLR = 0xf0U; /* Direction Control */
+    LATH = 0xd8U; /* Initial Latch Value */
+    TRISHCLR = 0xf8U; /* Direction Control */
     ANSELHCLR = 0x73U; /* Digital Mode Enable */
 
     /* Change Notice Enable */
