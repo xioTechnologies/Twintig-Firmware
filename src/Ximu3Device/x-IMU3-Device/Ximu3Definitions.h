@@ -84,4 +84,6 @@ typedef enum {
     Ximu3SettingsIndexSerialDataMessagesEnabled,
 } Ximu3SettingsIndex;
 
+Ximu3Result Ximu3SettingsIndexFrom(Ximu3SettingsIndex * const index, const int integer);
+
 #endif

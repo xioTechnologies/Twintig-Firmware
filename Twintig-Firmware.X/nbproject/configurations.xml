@@ -380,6 +380,7 @@
           <itemPath>../src/Ximu3Device/x-IMU3-Device/Ximu3Data.c</itemPath>
           <itemPath>../src/Ximu3Device/x-IMU3-Device/Ximu3Settings.c</itemPath>
           <itemPath>../src/Ximu3Device/x-IMU3-Device/Ximu3SettingsJson.c</itemPath>
+          <itemPath>../src/Ximu3Device/x-IMU3-Device/Ximu3Definitions.c</itemPath>
         </logicalFolder>
         <itemPath>../src/Ximu3Device/Ximu3Device.c</itemPath>
         <itemPath>../src/Ximu3Device/Commands.c</itemPath>

@@ -175,6 +175,23 @@ static void Parse(const Ximu3CommandBridge * const bridge, const Ximu3CommandInt
             Ximu3CommandRespond(&response);
             return;
         }
+
+        // Enumerate
+        const char * keyPointer = key;
+        if (KeyComparePartial(&keyPointer, "enumerate")) {
+            int integer;
+            if (sscanf(keyPointer, "%i", &integer) != 1) {
+                Ximu3CommandRespondError(&response, "Unable to parse index");
+                return;
+            }
+            if (Ximu3SettingsIndexFrom(&index, integer) != Ximu3ResultOk) {
+                Ximu3CommandRespondError(&response, "Invalid index");
+                return;
+            }
+            Ximu3SettingsJsonGetObject(bridge->settings, response.value, sizeof (response.value), integer);
+            Ximu3CommandRespond(&response);
+            return;
+        }
     }
 
     // Unknown command
