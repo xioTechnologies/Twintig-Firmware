@@ -121,7 +121,6 @@ static void InitialiseEpilogue(void* const context) {
     const char* const firmwareVersion = Ximu3SettingsGet(context_->settings)->firmwareVersion;
     if (strspn(firmwareVersion, "?") == strlen(firmwareVersion)) { // if NVM blank
         Ximu3SettingsDefaults(context_->settings, true);
-        Context * const context_ = context;
         context_->nvmBlank = true;
         return;
     }
