@@ -85,7 +85,6 @@ static void Receive(Ximu3CommandBridge * const bridge, Ximu3CommandInterface * c
             if (++interface->index >= sizeof (interface->buffer)) {
                 Error(bridge, "%s receive error. Buffer overrun.", interface->name);
                 interface->index = 0;
-                continue;
             }
         }
     }
