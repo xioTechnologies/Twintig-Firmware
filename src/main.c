@@ -74,25 +74,28 @@ int main(void) {
     Spi6DmaInitialise(&icmSpiSettings);
     LedsInitialise();
     HapticInitialise();
-    Icm1Initialise(IcmOdr100Hz);
-    Icm2Initialise(IcmOdr100Hz);
-    Icm3Initialise(IcmOdr100Hz);
-    Icm4Initialise(IcmOdr100Hz);
-    Icm5Initialise(IcmOdr100Hz);
     Ximu3DeviceInitialise();
 
-    printf("Haptic          %s\n", HapticTestResultToString(HapticTest()));
-    printf("Carpus EEPROM   %s\n", EepromTestResultToString(EepromTest(&i2cBB1)));
-    printf("CH1 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c3)));
-    printf("CH2 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c2)));
-    printf("CH3 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c5)));
-    printf("CH4 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c1)));
-    printf("CH5 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c4)));
-    printf("CH1 IMU4        %s\n", IcmTestResultToString(Icm1Test()));
-    printf("CH2 IMU4        %s\n", IcmTestResultToString(Icm2Test()));
-    printf("CH3 IMU4        %s\n", IcmTestResultToString(Icm3Test()));
-    printf("CH4 IMU4        %s\n", IcmTestResultToString(Icm4Test()));
-    printf("CH5 IMU4        %s\n", IcmTestResultToString(Icm5Test()));
+    {
+        Icm1Initialise(IcmOdr100Hz);
+        Icm2Initialise(IcmOdr100Hz);
+        Icm3Initialise(IcmOdr100Hz);
+        Icm4Initialise(IcmOdr100Hz);
+        Icm5Initialise(IcmOdr100Hz);
+
+        printf("Haptic          %s\n", HapticTestResultToString(HapticTest()));
+        printf("Carpus EEPROM   %s\n", EepromTestResultToString(EepromTest(&i2cBB1)));
+        printf("CH1 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c3)));
+        printf("CH2 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c2)));
+        printf("CH3 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c5)));
+        printf("CH4 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c1)));
+        printf("CH5 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c4)));
+        printf("CH1 IMU4        %s\n", IcmTestResultToString(Icm1Test()));
+        printf("CH2 IMU4        %s\n", IcmTestResultToString(Icm2Test()));
+        printf("CH3 IMU4        %s\n", IcmTestResultToString(Icm3Test()));
+        printf("CH4 IMU4        %s\n", IcmTestResultToString(Icm4Test()));
+        printf("CH5 IMU4        %s\n", IcmTestResultToString(Icm5Test()));
+    }
 
     // Main program loop
     while (true) {

@@ -14,6 +14,12 @@
             "preserved": true
         },
         {
+            "name": "Hardware version",
+            "declaration": "char name[32]",
+            "default": "{\"Unknown\"}",
+            "preserved": true
+        },
+        {
             "name": "Calibration date",
             "declaration": "char name[32]",
             "default": "{\"Unknown\"}",

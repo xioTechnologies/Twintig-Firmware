@@ -60,21 +60,21 @@ void ImuTasks(Imu * const imu) {
     while (numberOfSamples++ < 8) {
 
         // Get data
-        IcmData imuData;
-        if (imu->icm->getData(&imuData) != IcmResultOk) {
+        IcmData icmData;
+        if (imu->icm->getData(&icmData) != IcmResultOk) {
             break;
         }
 
         // Apply calibration
         FusionVector gyroscope = {
-            .axis.x = imuData.gyroscopeX,
-            .axis.y = imuData.gyroscopeY,
-            .axis.z = imuData.gyroscopeZ,
+            .axis.x = icmData.gyroscopeX,
+            .axis.y = icmData.gyroscopeY,
+            .axis.z = icmData.gyroscopeZ,
         };
         FusionVector accelerometer = {
-            .axis.x = imuData.accelerometerX,
-            .axis.y = imuData.accelerometerY,
-            .axis.z = imuData.accelerometerZ,
+            .axis.x = icmData.accelerometerX,
+            .axis.y = icmData.accelerometerY,
+            .axis.z = icmData.accelerometerZ,
         };
         gyroscope = FusionCalibrationInertial(gyroscope, imu->settings.gyroscopeMisalignment, imu->settings.gyroscopeSensitivity, imu->settings.gyroscopeOffset);
         accelerometer = FusionCalibrationInertial(accelerometer, imu->settings.accelerometerMisalignment, imu->settings.accelerometerSensitivity, imu->settings.accelerometerOffset);
@@ -91,7 +91,7 @@ void ImuTasks(Imu * const imu) {
         // Inertial callback
         if (imu->inertialDataReady != NULL) {
             ImuInertialData inertialData = {
-                .timestamp = imuData.timestamp,
+                .timestamp = icmData.timestamp,
                 .gyroscope = gyroscope,
                 .accelerometer = accelerometer,
             };
@@ -101,8 +101,8 @@ void ImuTasks(Imu * const imu) {
         // Temperature callback
         if (imu->temperatureDataReady != NULL) {
             ImuTemperatureData temperatureData = {
-                .timestamp = imuData.timestamp,
-                .temperature = imuData.temperature,
+                .timestamp = icmData.timestamp,
+                .temperature = icmData.temperature,
             };
             imu->temperatureDataReady(&temperatureData, imu->context);
         }
@@ -129,8 +129,8 @@ void ImuTasks(Imu * const imu) {
 
         // Calculate delta time
         const bool invalid = imu->previousTimestamp == 0;
-        const float deltaTime = (float) ((double) (imuData.timestamp - imu->previousTimestamp) * (1.0 / (double) TIMER_TICKS_PER_SECOND));
-        imu->previousTimestamp = imuData.timestamp;
+        const float deltaTime = (float) ((double) (icmData.timestamp - imu->previousTimestamp) * (1.0 / (double) TIMER_TICKS_PER_SECOND));
+        imu->previousTimestamp = icmData.timestamp;
         if (invalid) {
             continue;
         }
@@ -141,7 +141,7 @@ void ImuTasks(Imu * const imu) {
         // AHRS callback
         if (imu->ahrsDataReady != NULL) {
             ImuAhrsData ahrsData = {
-                .timestamp = imuData.timestamp,
+                .timestamp = icmData.timestamp,
                 .ahrs = &imu->ahrs,
             };
             imu->ahrsDataReady(&ahrsData, imu->context);
