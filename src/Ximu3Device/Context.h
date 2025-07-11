@@ -10,10 +10,12 @@
 //------------------------------------------------------------------------------
 // Includes
 
+#include "Haptic/Haptic.h"
 #include "I2C/I2C.h"
 #include "Imu/Imu.h"
 #include "Nvm.h"
 #include "Send/Send.h"
+#include "Serial/Serial.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include "x-IMU3-Device/Ximu3.h"
@@ -31,8 +33,10 @@ typedef struct {
     bool factoryMode;
     uint64_t applyTimeout;
     const Nvm * const nvm;
-    Imu * const imu;
     Send * const send;
+    void(*serialSetSettings)(const SerialSettings * const settings); // NULL if unused
+    HapticResult(*hapticPlay)(const int effect); // NULL if unused
+    Imu * const imu; // NULL if unused
 } Context;
 
 #endif

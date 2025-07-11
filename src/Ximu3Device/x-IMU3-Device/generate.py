@@ -57,6 +57,8 @@ contents = f"""\
 
 #define XIMU3_NUMBER_OF_SETTINGS {len(settings)}
 
+#define XIMU3_MUX_HEADER_SIZE 2
+
 typedef enum {{
     Ximu3ResultOk,
     Ximu3ResultError,

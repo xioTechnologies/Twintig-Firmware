@@ -12,6 +12,7 @@
 
 #include "Fifo.h"
 #include "Imu/Imu.h"
+#include "Mux/Mux.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -44,20 +45,12 @@ typedef struct {
 } SendSettings;
 
 /**
- * @brief Send interface.
- */
-typedef struct {
-    const bool(*enabled)(void);
-    const size_t(*availableWrite)(void);
-    const FifoResult(*write)(const void* const data, const size_t numberOfBytes);
-} SendInterface;
-
-/**
  * @brief Send structure.
  */
 typedef struct {
     SendSettings settings; // private
-    Imu * const imu; // private
+    MuxChannel channel; // private
+    Imu * const imu; // private (NULL if unused))
     FusionAhrsFlags flags; // private
     FusionVector downsampledGyroscope; // private
     FusionVector downsampledAccelerometer; // private
@@ -65,8 +58,6 @@ typedef struct {
     uint32_t downsampledAhrsCount; // private
     float downsampledTemperature; // private
     uint32_t downsampledTemperatureCount; // private
-    SendInterface usb; // private
-    SendInterface serial; // private
     size_t usbBufferOverflow; // private
     size_t serialBufferOverflow; // private
 } Send;

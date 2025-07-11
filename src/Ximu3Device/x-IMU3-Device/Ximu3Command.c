@@ -12,7 +12,6 @@
 #include "Metadata.h"
 #include <stdarg.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include "Ximu3Command.h"
@@ -30,7 +29,9 @@
 // Function declarations
 
 static void Receive(Ximu3CommandBridge * const bridge, Ximu3CommandInterface * const interface);
-static void Parse(const Ximu3CommandBridge * const bridge, const Ximu3CommandInterface * const interface, const char* * const json);
+static void ParseMessage(const Ximu3CommandBridge * const bridge, const Ximu3CommandInterface * const interface, uint8_t * const message, const size_t messageSize);
+static void ParseMux(const Ximu3CommandBridge * const bridge, const Ximu3CommandInterface * const interface, const uint8_t * const message, const size_t messageSize);
+static void ParseCommand(const Ximu3CommandBridge * const bridge, const Ximu3CommandInterface * const interface, uint8_t * const message, const size_t messageSize);
 static void Error(const Ximu3CommandBridge * const bridge, const char* format, ...);
 
 //------------------------------------------------------------------------------
@@ -48,7 +49,7 @@ void Ximu3CommandTasks(Ximu3CommandBridge * const bridge) {
 }
 
 /**
- * @brief Receive data.
+ * @brief Receive data using the interface read callback.
  * @param bridge Bridge.
  * @param interface Interface.
  */
@@ -70,13 +71,7 @@ static void Receive(Ximu3CommandBridge * const bridge, Ximu3CommandInterface * c
 
             // Parse if termination detected
             if (interface->buffer[interface->index] == '\n') {
-
-                // Terminate string
-                interface->buffer[interface->index] = '\0';
-
-                // Parse command
-                const char* json = interface->buffer;
-                Parse(bridge, interface, &json);
+                ParseMessage(bridge, interface, interface->buffer, interface->index + 1);
                 interface->index = 0;
                 continue;
             }
@@ -91,15 +86,97 @@ static void Receive(Ximu3CommandBridge * const bridge, Ximu3CommandInterface * c
 }
 
 /**
- * @brief Parse JSON as command.
+ * @brief Receive data as a single, complete message.
  * @param bridge Bridge.
  * @param interface Interface.
- * @param json JSON.
+ * @param data Data.
+ * @param numberOfBytes Number of bytes.
  */
-static void Parse(const Ximu3CommandBridge * const bridge, const Ximu3CommandInterface * const interface, const char* * const json) {
+void Ximu3CommandReceive(const Ximu3CommandBridge * const bridge, const Ximu3CommandInterface * const interface, const void* const data, const size_t numberOfBytes) {
+
+    // Copy data
+    uint8_t message[XIMU3_OBJECT_SIZE];
+    if (numberOfBytes > sizeof (message)) {
+        Error(bridge, "%s receive error. Buffer overrun.", interface->name);
+        return;
+    }
+    memcpy(message, data, numberOfBytes);
+
+    // Validate termination
+    for (int index = 0; index < (numberOfBytes - 1); index++) {
+        if (message[index] == '\n') {
+            Error(bridge, "%s receive error. Unexpected termination.", interface->name);
+            return;
+        }
+    }
+    if (message[numberOfBytes - 1] != '\n') {
+        Error(bridge, "%s receive error. Missing termination.", interface->name);
+        return;
+    }
+
+    // Parse
+    ParseMessage(bridge, interface, message, numberOfBytes);
+}
+
+/**
+ * @brief Parse message.
+ * @param bridge Bridge.
+ * @param interface Interface.
+ * @param message Message.
+ * @param messageSize Message size.
+ */
+static void ParseMessage(const Ximu3CommandBridge * const bridge, const Ximu3CommandInterface * const interface, uint8_t * const message, const size_t messageSize) {
+    if (message[0] == '^') {
+        ParseMux(bridge, interface, message, messageSize);
+    } else {
+        ParseCommand(bridge, interface, message, messageSize);
+    }
+}
+
+/**
+ * @brief Parse mux message.
+ * @param bridge Bridge.
+ * @param interface Interface.
+ * @param message Message.
+ * @param messageSize Message size.
+ */
+static void ParseMux(const Ximu3CommandBridge * const bridge, const Ximu3CommandInterface * const interface, const uint8_t * const message, const size_t messageSize) {
+    if (messageSize < (XIMU3_MUX_HEADER_SIZE + 1)) { // include termination
+        Error(bridge, "%s receive error. Invalid mux message length.", interface->name);
+        return;
+    }
+    const uint8_t channel = message[1];
 #ifdef PRINT_MESSAGES
-    printf("%s RX %s\n", interface->name, interface->buffer);
+    printf("%s RX ^%02X %u bytes\n", interface->name, channel, messageSize - XIMU3_MUX_HEADER_SIZE);
 #endif
+    if (bridge->mux == NULL) {
+        Error(bridge, "%s receive error. Mux not supported.", interface->name);
+        return;
+    }
+    if (bridge->mux(interface, channel, &message[XIMU3_MUX_HEADER_SIZE], messageSize - XIMU3_MUX_HEADER_SIZE) != Ximu3ResultOk) {
+        Error(bridge, "%s receive error. Invalid mux channel.", interface->name);
+        return;
+    }
+}
+
+/**
+ * @brief Parse command message.
+ * @param bridge Bridge.
+ * @param interface Interface.
+ * @param message Message.
+ * @param messageSize Message size.
+ */
+static void ParseCommand(const Ximu3CommandBridge * const bridge, const Ximu3CommandInterface * const interface, uint8_t * const message, const size_t messageSize) {
+
+    // Terminate string
+    message[messageSize - 1] = '\0';
+#ifdef PRINT_MESSAGES
+    printf("%s RX %s\n", interface->name, (char*) message);
+#endif
+
+    // Create JSON pointer
+    const char* buffer = (char*) message;
+    const char* * const json = &buffer;
 
     // Parse object start
     JsonResult result = JsonParseObjectStart(json);
@@ -236,7 +313,7 @@ Ximu3Result Ximu3CommandParseNumber(const char* * const value, Ximu3CommandRespo
 }
 
 /**
- * @brief Parses boolean and responds with error if unsuccessful.
+ * @brief Parses Boolean and responds with error if unsuccessful.
  * @param value Value.
  * @param response Response.
  * @param boolean Boolean.
@@ -316,6 +393,9 @@ static void Error(const Ximu3CommandBridge * const bridge, const char* format, .
     vsnprintf(string, sizeof (string), format, arguments);
     va_end(arguments);
     bridge->error(string, bridge->context);
+#ifdef PRINT_MESSAGES
+    printf("%s\n", string);
+#endif
 }
 
 //------------------------------------------------------------------------------

@@ -135,6 +135,9 @@
       <logicalFolder name="Leds" displayName="Leds" projectFiles="true">
         <itemPath>../src/Leds/Leds.h</itemPath>
       </logicalFolder>
+      <logicalFolder name="Mux" displayName="Mux" projectFiles="true">
+        <itemPath>../src/Mux/Mux.h</itemPath>
+      </logicalFolder>
       <logicalFolder name="Notification"
                      displayName="Notification"
                      projectFiles="true">
@@ -311,6 +314,9 @@
       </logicalFolder>
       <logicalFolder name="Leds" displayName="Leds" projectFiles="true">
         <itemPath>../src/Leds/Leds.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="Mux" displayName="Mux" projectFiles="true">
+        <itemPath>../src/Mux/Mux.c</itemPath>
       </logicalFolder>
       <logicalFolder name="Notification"
                      displayName="Notification"

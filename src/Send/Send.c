@@ -18,6 +18,18 @@
 #include "Ximu3Device/x-IMU3-Device/Ximu3.h"
 
 //------------------------------------------------------------------------------
+// Definitions
+
+/**
+ * @brief Interface.
+ */
+typedef struct {
+    bool(*enabled)(void);
+    size_t(*availableWrite)(const MuxChannel channel);
+    FifoResult(*write)(const MuxChannel channel, const void* const data, const size_t numberOfBytes);
+} Interface;
+
+//------------------------------------------------------------------------------
 // Function declarations
 
 static void InertialDataReady(const ImuInertialData * const data, void* const context);
@@ -31,46 +43,35 @@ static void SendEarthAcceleration(Send * const send, const ImuAhrsData * const i
 static void TemperatureDataReady(const ImuTemperatureData * const data, void* const context);
 static void SendDataMessage(Send * const send, const void* const data, const size_t numberOfBytes);
 static void SendDataMessagePriority(Send * const send, const void* const data, const size_t numberOfBytes);
-static inline __attribute__((always_inline)) size_t Write(const SendInterface * const interface, const void* const data, const size_t numberOfBytes, const bool priority);
+static inline __attribute__((always_inline)) size_t Write(const MuxChannel channel, const Interface * const interface, const void* const data, const size_t numberOfBytes, const bool priority);
 
 //------------------------------------------------------------------------------
 // Variables
 
-const SendInterface usb0 = {.enabled = UsbCdcPortOpen, .availableWrite = UsbCdcAvailableWrite, .write = UsbCdcWrite};
-//const SendInterface usb1 = {.enabled = UsbCdcPortOpen, .AvailableWrite = MuxUsbAvailableWrite, .write = Mux1UsbWrite};
-//const SendInterface usb2 = {.enabled = UsbCdcPortOpen, .AvailableWrite = MuxUsbAvailableWrite, .write = Mux2UsbWrite};
-//const SendInterface usb3 = {.enabled = UsbCdcPortOpen, .AvailableWrite = MuxUsbAvailableWrite, .write = Mux3UsbWrite};
-//const SendInterface usb4 = {.enabled = UsbCdcPortOpen, .AvailableWrite = MuxUsbAvailableWrite, .write = Mux4UsbWrite};
-//const SendInterface usb5 = {.enabled = UsbCdcPortOpen, .AvailableWrite = MuxUsbAvailableWrite, .write = Mux5UsbWrite};
+const Interface usb = {.enabled = UsbCdcPortOpen, .availableWrite = MuxUsbAvailableWrite, .write = MuxUsbWrite};
+const Interface serial = {.enabled = SerialEnabled, .availableWrite = MuxSerialAvailableWrite, .write = MuxSerialWrite};
 
-const SendInterface serial0 = {.enabled = SerialEnabled, .availableWrite = SerialAvailableWrite, .write = SerialWrite};
-//const SendInterface serial1 = {.enabled = SerialEnabled, .AvailableWrite = MuxSerialAvailableWrite, .write = Mux1SerialWrite};
-//const SendInterface serial2 = {.enabled = SerialEnabled, .AvailableWrite = MuxSerialAvailableWrite, .write = Mux2SerialWrite};
-//const SendInterface serial3 = {.enabled = SerialEnabled, .AvailableWrite = MuxSerialAvailableWrite, .write = Mux3SerialWrite};
-//const SendInterface serial4 = {.enabled = SerialEnabled, .AvailableWrite = MuxSerialAvailableWrite, .write = Mux4SerialWrite};
-//const SendInterface serial5 = {.enabled = SerialEnabled, .AvailableWrite = MuxSerialAvailableWrite, .write = Mux5SerialWrite};
-
-Send send0 = {.imu = &imu1, .usb = usb0, .serial = serial0};
-//Send send1 = {.imu = &imu1, .usb = usb1, .serial = serial1};
-//Send send2 = {.imu = &imu2, .usb = usb2, .serial = serial2};
-//Send send3 = {.imu = &imu3, .usb = usb3, .serial = serial3};
-//Send send4 = {.imu = &imu4, .usb = usb4, .serial = serial4};
-//Send send5 = {.imu = &imu5, .usb = usb5, .serial = serial5};
-//Send send6 = {.imu = &imu1};
-//Send send7 = {.imu = &imu1};
-//Send send8 = {.imu = &imu1};
-//Send send9 = {.imu = &imu1};
-//Send send10 = {.imu = &imu1};
-//Send send11 = {.imu = &imu1};
-//Send send12 = {.imu = &imu1};
-//Send send13 = {.imu = &imu1};
-//Send send14 = {.imu = &imu1};
-//Send send15 = {.imu = &imu1};
-//Send send16 = {.imu = &imu1};
-//Send send17 = {.imu = &imu1};
-//Send send18 = {.imu = &imu1};
-//Send send19 = {.imu = &imu1};
-//Send send20 = {.imu = &imu1};
+Send send0 = {.channel = MuxChannelNone};
+Send send1 = {.channel = MuxChannel1, .imu = &imu1,};
+Send send2 = {.channel = MuxChannel2, .imu = &imu2,};
+Send send3 = {.channel = MuxChannel3, .imu = &imu3,};
+Send send4 = {.channel = MuxChannel4, .imu = &imu4,};
+Send send5 = {.channel = MuxChannel5, .imu = &imu5,};
+//Send send6 = {.channel = MuxChannel6, .imu = &imu6,};
+//Send send7 = {.channel = MuxChannel7, .imu = &imu7,};
+//Send send8 = {.channel = MuxChannel8, .imu = &imu8,};
+//Send send9 = {.channel = MuxChannel9, .imu = &imu9,};
+//Send send10 = {.channel = MuxChannel10, .imu = &imu10,};
+//Send send11 = {.channel = MuxChannel11, .imu = &imu11,};
+//Send send12 = {.channel = MuxChannel12, .imu = &imu12,};
+//Send send13 = {.channel = MuxChannel13, .imu = &imu13,};
+//Send send14 = {.channel = MuxChannel14, .imu = &imu14,};
+//Send send15 = {.channel = MuxChannel15, .imu = &imu15,};
+//Send send16 = {.channel = MuxChannel16, .imu = &imu16,};
+//Send send17 = {.channel = MuxChannel17, .imu = &imu17,};
+//Send send18 = {.channel = MuxChannel18, .imu = &imu18,};
+//Send send19 = {.channel = MuxChannel19, .imu = &imu19,};
+//Send send20 = {.channel = MuxChannel20, .imu = &imu20,};
 
 //------------------------------------------------------------------------------
 // Functions
@@ -86,6 +87,9 @@ void SendSetSettings(Send * const send, const SendSettings * const settings) {
     send->settings = *settings;
 
     // Set callbacks
+    if (send->imu == NULL) {
+        return;
+    }
     if (send->settings.inertialMessageRateDivisor > 0) {
         send->imu->inertialDataReady = InertialDataReady;
     } else {
@@ -456,10 +460,10 @@ void SendError(Send * const send, const char* format, ...) {
  */
 static void SendDataMessage(Send * const send, const void* const data, const size_t numberOfBytes) {
     if (send->settings.usbDataMessagesEnabled) {
-        send->usbBufferOverflow += Write(&send->usb, data, numberOfBytes, false);
+        send->usbBufferOverflow += Write(send->channel, &usb, data, numberOfBytes, false);
     }
     if (send->settings.serialDataMessagesEnabled) {
-        send->serialBufferOverflow += Write(&send->serial, data, numberOfBytes, false);
+        send->serialBufferOverflow += Write(send->channel, &serial, data, numberOfBytes, false);
     }
 }
 
@@ -470,10 +474,10 @@ static void SendDataMessage(Send * const send, const void* const data, const siz
  */
 static void SendDataMessagePriority(Send * const send, const void* const data, const size_t numberOfBytes) {
     if (send->settings.usbDataMessagesEnabled) {
-        send->usbBufferOverflow += Write(&send->usb, data, numberOfBytes, true);
+        send->usbBufferOverflow += Write(send->channel, &usb, data, numberOfBytes, true);
     }
     if (send->settings.serialDataMessagesEnabled) {
-        send->serialBufferOverflow += Write(&send->serial, data, numberOfBytes, true);
+        send->serialBufferOverflow += Write(send->channel, &serial, data, numberOfBytes, true);
     }
 }
 
@@ -484,7 +488,7 @@ static void SendDataMessagePriority(Send * const send, const void* const data, c
  * @param numberOfBytes Number of bytes.
  */
 void SendResponseUsb(Send * const send, const void* const data, const size_t numberOfBytes) {
-    send->usbBufferOverflow += Write(&send->usb, data, numberOfBytes, true);
+    send->usbBufferOverflow += Write(send->channel, &usb, data, numberOfBytes, true);
 }
 
 /**
@@ -494,25 +498,26 @@ void SendResponseUsb(Send * const send, const void* const data, const size_t num
  * @param numberOfBytes Number of bytes.
  */
 void SendResponseSerial(Send * const send, const void* const data, const size_t numberOfBytes) {
-    send->serialBufferOverflow += Write(&send->serial, data, numberOfBytes, true);
+    send->serialBufferOverflow += Write(send->channel, &serial, data, numberOfBytes, true);
 }
 
 /**
  * @brief Writes data and returns number of bytes lost due to buffer overflow.
+ * @param channel Channel.
  * @param interface Interface.
  * @param data Data.
  * @param numberOfBytes Number of bytes.
  * @param priority True to write with priority.
  * @return Number of samples lost due to buffer overflow.
  */
-static inline __attribute__((always_inline)) size_t Write(const SendInterface * const interface, const void* const data, const size_t numberOfBytes, const bool priority) {
-    if (interface->enabled() == false) {
+static inline __attribute__((always_inline)) size_t Write(const MuxChannel channel, const Interface * const interface, const void* const data, const size_t numberOfBytes, const bool priority) {
+    if (interface->enabled == false) {
         return 0;
     }
-    if ((priority == false) && (interface->availableWrite() < (numberOfBytes + 1024))) {
+    if ((priority == false) && (interface->availableWrite(channel) < (numberOfBytes + 1024))) {
         return numberOfBytes;
     }
-    if (interface->write(data, numberOfBytes) != FifoResultOk) {
+    if (interface->write(channel, data, numberOfBytes) != FifoResultOk) {
         return numberOfBytes;
     }
     return 0;

@@ -24,7 +24,7 @@
  * @return Number of bytes read.
  */
 size_t InterfacesUsbRead(void* const destination, size_t numberOfBytes, void* const context) {
-    return UsbCdcRead(destination, numberOfBytes); // TODO: use context for MUX
+    return UsbCdcRead(destination, numberOfBytes);
 }
 
 /**
@@ -46,7 +46,7 @@ void InterfacesUsbWrite(const void* const data, const size_t numberOfBytes, void
  * @return Number of bytes read.
  */
 size_t InterfacesSerialRead(void* const destination, size_t numberOfBytes, void* const context) {
-    return SerialRead(destination, numberOfBytes); // TODO: use context for MUX
+    return SerialRead(destination, numberOfBytes);
 }
 
 /**

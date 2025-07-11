@@ -8,6 +8,7 @@
 // Includes
 
 #include "Apply.h"
+#include "Imu/Imu.h"
 #include "Send/Send.h"
 #include "Serial/Serial.h"
 #include "Timer/Timer.h"
@@ -68,12 +69,15 @@ void ApplySerial(Context * const context) {
     }
 
     // Apply settings
+    if (context->serialSetSettings == NULL) {
+        return;
+    }
     const SerialSettings serialSettings = {
         .enabled = Ximu3SettingsGet(context->settings)->serialEnabled,
         .baudRate = Ximu3SettingsGet(context->settings)->serialBaudRate,
         .rtsCtsEnabled = Ximu3SettingsGet(context->settings)->serialRtsCtsEnabled,
     };
-    SerialSetSettings(&serialSettings);
+    context->serialSetSettings(&serialSettings);
 }
 
 /**
@@ -102,6 +106,9 @@ static void ApplyImu(Context * const context) {
     }
 
     // Apply settings
+    if (context->imu == NULL) {
+        return;
+    }
     const ImuSettings imuSettings = {
         .sampleRate = Ximu3SettingsGet(context->settings)->sampleRate,
         .gyroscopeMisalignment = Ximu3SettingsGet(context->settings)->gyroscopeMisalignment,

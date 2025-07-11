@@ -19,6 +19,8 @@
 
 #define XIMU3_NUMBER_OF_SETTINGS 27
 
+#define XIMU3_MUX_HEADER_SIZE 2
+
 typedef enum {
     Ximu3ResultOk,
     Ximu3ResultError,

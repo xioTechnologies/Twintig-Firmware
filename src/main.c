@@ -103,10 +103,10 @@ int main(void) {
 
         // Application tasks
         ImuTasks(&imu1);
-        // ImuTasks(&imu2);
-        // ImuTasks(&imu3);
-        // ImuTasks(&imu4);
-        // ImuTasks(&imu5);
+        ImuTasks(&imu2);
+        ImuTasks(&imu3);
+        ImuTasks(&imu4);
+        ImuTasks(&imu5);
         // ImuTasks(&imu6);
         // ImuTasks(&imu7);
         // ImuTasks(&imu8);

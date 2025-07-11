@@ -11,6 +11,7 @@
 #include "Commands.h"
 #include "Context.h"
 #include "Haptic/Haptic.h"
+#include "Imu/Imu.h"
 #include "x-IMU3-Device/Ximu3.h"
 
 //------------------------------------------------------------------------------
@@ -88,9 +89,12 @@ void CommandsHaptic(const char* * const value, Ximu3CommandResponse * const resp
     if (Ximu3CommandParseNumber(value, response, &id) != 0) {
         return;
     }
-    if (HapticPlay((int) id) != HapticResultOk) {
-        Ximu3CommandRespondError(response, "Invalid ID");
-        return;
+    const Context * const context_ = context;
+    if (context_->hapticPlay != NULL) {
+        if (context_->hapticPlay((int) id) != HapticResultOk) {
+            Ximu3CommandRespondError(response, "Invalid ID");
+            return;
+        }
     }
     Ximu3CommandRespond(response);
 }
@@ -105,7 +109,9 @@ void CommandsInitialise(const char* * const value, Ximu3CommandResponse * const 
         return;
     }
     const Context * const context_ = context;
-    ImuReset(context_->imu);
+    if (context_->imu != NULL) {
+        ImuReset(context_->imu);
+    }
     Ximu3CommandRespond(response);
 }
 
@@ -120,7 +126,9 @@ void CommandsHeading(const char* * const value, Ximu3CommandResponse * const res
         return;
     }
     const Context * const context_ = context;
-    ImuSetHeading(context_->imu, heading);
+    if (context_->imu != NULL) {
+        ImuSetHeading(context_->imu, heading);
+    }
     Ximu3CommandRespond(response);
 }
 
