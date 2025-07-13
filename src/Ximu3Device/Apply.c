@@ -156,7 +156,7 @@ static void ApplySend(Context * const context) {
         .usbDataMessagesEnabled = Ximu3SettingsGet(context->settings)->usbDataMessagesEnabled,
         .serialDataMessagesEnabled = Ximu3SettingsGet(context->settings)->serialDataMessagesEnabled,
     };
-    SendSetSettings(context->send, &sendSettings);
+    SendSetSettings(context->send, &sendSettings, context->imu);
 }
 
 //------------------------------------------------------------------------------

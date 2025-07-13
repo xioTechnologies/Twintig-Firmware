@@ -52,26 +52,26 @@ const Interface usb = {.enabled = UsbCdcPortOpen, .availableWrite = MuxUsbAvaila
 const Interface serial = {.enabled = SerialEnabled, .availableWrite = MuxSerialAvailableWrite, .write = MuxSerialWrite};
 
 Send send0 = {.channel = MuxChannelNone};
-Send send1 = {.channel = MuxChannel1, .imu = &imu1,};
-Send send2 = {.channel = MuxChannel2, .imu = &imu2,};
-Send send3 = {.channel = MuxChannel3, .imu = &imu3,};
-Send send4 = {.channel = MuxChannel4, .imu = &imu4,};
-Send send5 = {.channel = MuxChannel5, .imu = &imu5,};
-//Send send6 = {.channel = MuxChannel6, .imu = &imu6,};
-//Send send7 = {.channel = MuxChannel7, .imu = &imu7,};
-//Send send8 = {.channel = MuxChannel8, .imu = &imu8,};
-//Send send9 = {.channel = MuxChannel9, .imu = &imu9,};
-//Send send10 = {.channel = MuxChannel10, .imu = &imu10,};
-//Send send11 = {.channel = MuxChannel11, .imu = &imu11,};
-//Send send12 = {.channel = MuxChannel12, .imu = &imu12,};
-//Send send13 = {.channel = MuxChannel13, .imu = &imu13,};
-//Send send14 = {.channel = MuxChannel14, .imu = &imu14,};
-//Send send15 = {.channel = MuxChannel15, .imu = &imu15,};
-//Send send16 = {.channel = MuxChannel16, .imu = &imu16,};
-//Send send17 = {.channel = MuxChannel17, .imu = &imu17,};
-//Send send18 = {.channel = MuxChannel18, .imu = &imu18,};
-//Send send19 = {.channel = MuxChannel19, .imu = &imu19,};
-//Send send20 = {.channel = MuxChannel20, .imu = &imu20,};
+Send send1 = {.channel = MuxChannel1};
+Send send2 = {.channel = MuxChannel2};
+Send send3 = {.channel = MuxChannel3};
+Send send4 = {.channel = MuxChannel4};
+Send send5 = {.channel = MuxChannel5};
+//Send send6 = {.channel = MuxChannel6};
+//Send send7 = {.channel = MuxChannel7};
+//Send send8 = {.channel = MuxChannel8};
+//Send send9 = {.channel = MuxChannel9};
+//Send send10 = {.channel = MuxChannel10};
+//Send send11 = {.channel = MuxChannel11};
+//Send send12 = {.channel = MuxChannel12};
+//Send send13 = {.channel = MuxChannel13};
+//Send send14 = {.channel = MuxChannel14};
+//Send send15 = {.channel = MuxChannel15};
+//Send send16 = {.channel = MuxChannel16};
+//Send send17 = {.channel = MuxChannel17};
+//Send send18 = {.channel = MuxChannel18};
+//Send send19 = {.channel = MuxChannel19};
+//Send send20 = {.channel = MuxChannel20};
 
 //------------------------------------------------------------------------------
 // Functions
@@ -81,34 +81,34 @@ Send send5 = {.channel = MuxChannel5, .imu = &imu5,};
  * @param send Send structure.
  * @param settings Settings.
  */
-void SendSetSettings(Send * const send, const SendSettings * const settings) {
+void SendSetSettings(Send * const send, const SendSettings * const settings, Imu * const imu) {
 
     // Update settings
     send->settings = *settings;
 
     // Set callbacks
-    if (send->imu == NULL) {
+    if (imu == NULL) {
         return;
     }
     if (send->settings.inertialMessageRateDivisor > 0) {
-        send->imu->inertialDataReady = InertialDataReady;
+        imu->inertialDataReady = InertialDataReady;
     } else {
-        send->imu->inertialDataReady = NULL;
+        imu->inertialDataReady = NULL;
         send->downsampledInertialCount = 0;
     }
     if (send->settings.ahrsMessageRateDivisor > 0) {
-        send->imu->ahrsDataReady = AhrsDataReady;
+        imu->ahrsDataReady = AhrsDataReady;
     } else {
-        send->imu->ahrsDataReady = NULL;
+        imu->ahrsDataReady = NULL;
         send->downsampledAhrsCount = 0;
     }
     if (send->settings.temperatureMessageRateDivisor > 0) {
-        send->imu->temperatureDataReady = TemperatureDataReady;
+        imu->temperatureDataReady = TemperatureDataReady;
     } else {
-        send->imu->temperatureDataReady = NULL;
+        imu->temperatureDataReady = NULL;
         send->downsampledTemperatureCount = 0;
     }
-    send->imu->context = send;
+    imu->context = send;
 }
 
 /**

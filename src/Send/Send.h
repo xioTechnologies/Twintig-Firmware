@@ -48,9 +48,8 @@ typedef struct {
  * @brief Send structure.
  */
 typedef struct {
-    SendSettings settings; // private
     MuxChannel channel; // private
-    Imu * const imu; // private (NULL if unused))
+    SendSettings settings; // private
     FusionAhrsFlags flags; // private
     FusionVector downsampledGyroscope; // private
     FusionVector downsampledAccelerometer; // private
@@ -90,7 +89,7 @@ extern Send send20;
 //------------------------------------------------------------------------------
 // Function declarations
 
-void SendSetSettings(Send * const send, const SendSettings * const settings);
+void SendSetSettings(Send * const send, const SendSettings * const settings, Imu * const imu);
 void SendNotification(Send * const send, const char* format, ...);
 void SendError(Send * const send, const char* format, ...);
 void SendResponseUsb(Send * const send, const void* const data, const size_t numberOfBytes);
