@@ -15,6 +15,12 @@
 #include "Usb/UsbCdc.h"
 
 //------------------------------------------------------------------------------
+// Function declarations
+
+static inline __attribute__((always_inline)) void ImuBufferOverflow(Send * const send, Imu * const imu);
+static inline __attribute__((always_inline)) void SendBufferOverflow(Send * const send);
+
+//------------------------------------------------------------------------------
 // Functions
 
 /**
@@ -41,15 +47,41 @@ void NotificationTasks(void) {
     }
 
     // IMU buffer overflow
-    const uint32_t bufferOverflow = imu1.icm->bufferOverflow();
-    if (bufferOverflow > 0) {
-        SendError(&send0, "IMU buffer overflow. %u samples lost.", bufferOverflow);
-    }
+    ImuBufferOverflow(&send1, &imu1);
+    ImuBufferOverflow(&send2, &imu2);
+    ImuBufferOverflow(&send3, &imu3);
+    ImuBufferOverflow(&send4, &imu4);
+    ImuBufferOverflow(&send5, &imu5);
 
     // Send buffer overflow
-    const uint32_t usbBufferOverflow = SendUsbBufferOverflow(&send0);
+    SendBufferOverflow(&send0);
+    SendBufferOverflow(&send1);
+    SendBufferOverflow(&send2);
+    SendBufferOverflow(&send3);
+    SendBufferOverflow(&send4);
+    SendBufferOverflow(&send5);
+}
+
+/**
+ * @brief IMU buffer overflow.
+ * @param send Send structure.
+ * @param imu IMU structure.
+ */
+static inline __attribute__((always_inline)) void ImuBufferOverflow(Send * const send, Imu * const imu) {
+    const uint32_t numberOfSamples = imu->icm->bufferOverflow();
+    if (numberOfSamples > 0) {
+        SendError(send, "IMU buffer overflow. %u samples lost.", numberOfSamples);
+    }
+}
+
+/**
+ * @brief Send buffer overflow.
+ * @param send Send structure.
+ */
+static inline __attribute__((always_inline)) void SendBufferOverflow(Send * const send) {
+    const uint32_t usbBufferOverflow = SendUsbBufferOverflow(send);
     if (usbBufferOverflow > 0) {
-        SendError(&send0, "USB buffer overflow. %u bytes lost.", usbBufferOverflow);
+        SendError(send, "USB buffer overflow. %u bytes lost.", usbBufferOverflow);
     }
     const uint32_t serialBufferOverflow = SendSerialBufferOverflow(&send0);
     if (serialBufferOverflow > 0) {
