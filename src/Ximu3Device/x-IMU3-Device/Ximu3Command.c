@@ -103,7 +103,7 @@ void Ximu3CommandReceive(const Ximu3CommandBridge * const bridge, const Ximu3Com
     memcpy(message, data, numberOfBytes);
 
     // Validate termination
-    for (int index = 0; index < (numberOfBytes - 1); index++) {
+    for (size_t index = 0; index < (numberOfBytes - 1); index++) {
         if (message[index] == '\n') {
             Error(bridge, "%s receive error. Unexpected termination.", interface->name);
             return;
