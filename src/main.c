@@ -72,17 +72,18 @@ int main(void) {
     Spi4DmaInitialise(&icmSpiSettings);
     Spi5Initialise(&icmSpiSettings);
     Spi6DmaInitialise(&icmSpiSettings);
-    LedsInitialise();
-    HapticInitialise();
-    Ximu3DeviceInitialise();
-
     {
         Icm1Initialise(IcmOdr100Hz);
         Icm2Initialise(IcmOdr100Hz);
         Icm3Initialise(IcmOdr100Hz);
         Icm4Initialise(IcmOdr100Hz);
         Icm5Initialise(IcmOdr100Hz);
+    } // temporary code
+    LedsInitialise();
+    HapticInitialise();
+    Ximu3DeviceInitialise();
 
+    {
         printf("Haptic          %s\n", HapticTestResultToString(HapticTest()));
         printf("Carpus EEPROM   %s\n", EepromTestResultToString(EepromTest(&i2cBB1)));
         printf("CH1 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c3)));
@@ -95,7 +96,7 @@ int main(void) {
         printf("CH3 IMU4        %s\n", IcmTestResultToString(Icm3Test()));
         printf("CH4 IMU4        %s\n", IcmTestResultToString(Icm4Test()));
         printf("CH5 IMU4        %s\n", IcmTestResultToString(Icm5Test()));
-    }
+    } // temporary code
 
     // Main program loop
     while (true) {
