@@ -57,45 +57,45 @@ void Icm2Initialise(const IcmOdr odr) {
     deviceID = ReadRegister(ICM_WHO_AM_I_ADDRESS);
 
     // Software reset
-    IcmDeviceConfigRegister deviceConfigRegister = {.value = ReadRegister(ICM_DEVICE_CONFIG_ADDRESS)};
+    IcmDeviceConfigRegister deviceConfigRegister = {.value = ICM_DEVICE_CONFIG_RESET_VALUE};
     deviceConfigRegister.softResetConfig = 1;
     WriteRegister(ICM_DEVICE_CONFIG_ADDRESS, deviceConfigRegister.value);
     TimerDelayMilliseconds(1);
 
     // Configure endianness
-    IcmIntfConfig0Register intfConfig0Register = {.value = ReadRegister(ICM_INTF_CONFIG0_ADDRESS)};
+    IcmIntfConfig0Register intfConfig0Register = {.value = ICM_INTF_CONFIG0_RESET_VALUE};
     intfConfig0Register.sensorDataEndian = 0; // sensor data is reported in Little Endian format
     WriteRegister(ICM_INTF_CONFIG0_ADDRESS, intfConfig0Register.value);
 
     // Configure interrupt pin
-    IcmIntConfigRegister intConfigRegister = {.value = ReadRegister(ICM_INT_CONFIG_ADDRESS)};
+    IcmIntConfigRegister intConfigRegister = {.value = ICM_INT_CONFIG_RESET_VALUE};
     intConfigRegister.int1DriveCircuit = 1; // push pull
     WriteRegister(ICM_INT_CONFIG_ADDRESS, intConfigRegister.value);
 
     // Configure interrupt pulse
-    IcmIntConfig1Register intConfig1Register = {.value = ReadRegister(ICM_INT_CONFIG1_ADDRESS)};
+    IcmIntConfig1Register intConfig1Register = {.value = ICM_INT_CONFIG1_RESET_VALUE};
     intConfig1Register.IntTpulseDuration = 1; // interrupt pulse duration is 8 us. Required if ODR > 4kHz, optional for ODR < 4kHz.
     intConfig1Register.IntTdeassertDisable = 1; // disables de-assert duration. Required if ODR > 4kHz, optional for ODR < 4kHz
     intConfig1Register.IntAysncReset = 1; // user should change setting to 0 from default setting of 1, for proper INT1 and INT2 pin operation
     WriteRegister(ICM_INT_CONFIG1_ADDRESS, intConfig1Register.value);
 
     // Configure interrupt source
-    IcmIntSource0Register intSource0Register = {.value = ReadRegister(ICM_INT_SOURCE0_ADDRESS)};
+    IcmIntSource0Register intSource0Register = {.value = ICM_INT_SOURCE0_RESET_VALUE};
     intSource0Register.UIDrdyInt1EN = 1; // UI data ready interrupt routed to INT1
     WriteRegister(ICM_INT_SOURCE0_ADDRESS, intSource0Register.value);
 
     // Configure gyroscope
-    IcmGyroConfig0Register gyroConfig0Register = {.value = ReadRegister(ICM_GYRO_CONFIG0_ADDRESS)};
+    IcmGyroConfig0Register gyroConfig0Register = {.value = ICM_GYRO_CONFIG0_RESET_VALUE};
     gyroConfig0Register.gyroOdr = odr;
     WriteRegister(ICM_GYRO_CONFIG0_ADDRESS, gyroConfig0Register.value);
 
     // Configure accelerometer
-    IcmAccelConfig0Register accelConfig0Register = {.value = ReadRegister(ICM_ACCEL_CONFIG0_ADDRESS)};
+    IcmAccelConfig0Register accelConfig0Register = {.value = ICM_ACCEL_CONFIG0_RESET_VALUE};
     accelConfig0Register.accelOdr = odr;
     WriteRegister(ICM_ACCEL_CONFIG0_ADDRESS, accelConfig0Register.value);
 
     // Turn on gyroscope and accelerometer
-    IcmPwrMgmt0Register pwrMgmt0Register = {.value = ReadRegister(ICM_PWR_MGMT0_ADDRESS)};
+    IcmPwrMgmt0Register pwrMgmt0Register = {.value = ICM_PWR_MGMT0_RESET_VALUE};
     pwrMgmt0Register.gyroMode = 0b11;
     pwrMgmt0Register.accelMode = 0b11;
     WriteRegister(ICM_PWR_MGMT0_ADDRESS, pwrMgmt0Register.value);

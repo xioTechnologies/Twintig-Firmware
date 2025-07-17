@@ -67,6 +67,46 @@
 #define ICM_WHO_AM_I_ADDRESS (0x75)
 
 /**
+ * @brief DEVICE_CONFIG reset value.
+ */
+#define  ICM_DEVICE_CONFIG_RESET_VALUE (0x00)
+
+/**
+ * @brief INTF_CONFIG0 reset value.
+ */
+#define ICM_INTF_CONFIG0_RESET_VALUE (0x30)
+
+/**
+ * @brief INT_CONFIG reset value.
+ */
+#define ICM_INT_CONFIG_RESET_VALUE (0x00)
+
+/**
+ * @brief INT_CONFIG1 reset value.
+ */
+#define  ICM_INT_CONFIG1_RESET_VALUE (0x10)
+
+/**
+ * @brief INT_SOURCE0 reset value.
+ */
+#define  ICM_INT_SOURCE0_RESET_VALUE (0x10)
+
+/**
+ * @brief GYRO_CONFIG0 reset value.
+ */
+#define ICM_GYRO_CONFIG0_RESET_VALUE (0x06)
+
+/**
+ * @brief ACCEL_CONFIG0 reset value.
+ */
+#define  ICM_ACCEL_CONFIG0_RESET_VALUE (0x06)
+
+/**
+ * @brief PWR_MGMT0 reset value.
+ */
+#define ICM_PWR_MGMT0_RESET_VALUE (0x00)
+
+/**
  * @brief DEVICE_CONFIG register.
  */
 typedef union {
