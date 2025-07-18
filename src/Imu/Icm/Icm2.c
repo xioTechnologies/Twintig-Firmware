@@ -99,7 +99,7 @@ void Icm2Initialise(const IcmOdr odr) {
     pwrMgmt0Register.gyroMode = 0b11;
     pwrMgmt0Register.accelMode = 0b11;
     WriteRegister(ICM_PWR_MGMT0_ADDRESS, pwrMgmt0Register.value);
-    TimerDelayMicroseconds(200);
+    TimerDelayMilliseconds(45);
 
     // Configure interrupt
     GPIO_PinInterruptCallbackRegister(ICM2_INT_PIN, ExternalInterrupt, 0);
