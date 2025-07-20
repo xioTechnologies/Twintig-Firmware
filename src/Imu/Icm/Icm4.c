@@ -213,7 +213,7 @@ uint32_t Icm4BufferOverflow(void) {
 IcmTestResult Icm4Test(void) {
 
     // Check device ID
-    if (deviceID != 0x47) {
+    if (deviceID != ICM_WHO_AM_I_RESET_VALUE) {
         return IcmTestResultInvalidID;
     }
 
