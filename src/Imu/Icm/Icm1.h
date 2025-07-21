@@ -12,6 +12,7 @@
 
 #include "Icm.h"
 #include "Icm1.h"
+#include <stdint.h>
 
 //------------------------------------------------------------------------------
 // Variable declarations
