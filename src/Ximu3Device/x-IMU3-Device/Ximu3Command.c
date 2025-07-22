@@ -147,14 +147,14 @@ static void ParseMux(const Ximu3CommandBridge * const bridge, const Ximu3Command
     }
     const uint8_t channel = message[1];
 #ifdef PRINT_MESSAGES
-    printf("%s RX ^%02X %u bytes\n", interface->name, channel, messageSize - XIMU3_MUX_HEADER_SIZE);
+    printf("%s RX 0x%02X %u bytes\n", interface->name, channel, messageSize - XIMU3_MUX_HEADER_SIZE);
 #endif
     if (bridge->mux == NULL) {
         Error(bridge, "%s receive error. Mux not supported.", interface->name);
         return;
     }
     if (bridge->mux(interface, channel, &message[XIMU3_MUX_HEADER_SIZE], messageSize - XIMU3_MUX_HEADER_SIZE) != Ximu3ResultOk) {
-        Error(bridge, "%s receive error. Invalid mux channel.", interface->name);
+        Error(bridge, "%s receive error. Invalid mux channel 0x%02X.", interface->name, channel);
         return;
     }
 }
