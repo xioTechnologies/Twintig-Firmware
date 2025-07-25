@@ -1,11 +1,11 @@
 /**
- * @file LibraryConfig.h
+ * @file SpiBusConfig.h
  * @author Seb Madgwick
- * @brief Library configuration.
+ * @brief Manages access to the SPI bus.
  */
 
-#ifndef LIBRARY_CONFIG_H
-#define LIBRARY_CONFIG_H
+#ifndef SPI_BUS_CONFIG_H
+#define SPI_BUS_CONFIG_H
 
 //------------------------------------------------------------------------------
 // Includes

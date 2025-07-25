@@ -206,6 +206,7 @@
           <itemPath>../src/x-io-PIC32-Library/Spi/SpiBus3.h</itemPath>
           <itemPath>../src/x-io-PIC32-Library/Spi/SpiBus5.h</itemPath>
           <itemPath>../src/x-io-PIC32-Library/Spi/SpiBus6.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Spi/SpiBusConfig.h</itemPath>
         </logicalFolder>
         <logicalFolder name="Timer" displayName="Timer" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Timer/Timer.h</itemPath>
@@ -222,7 +223,6 @@
         <itemPath>../src/x-io-PIC32-Library/Fifo.h</itemPath>
         <itemPath>../src/x-io-PIC32-Library/PeripheralBusClockFrequency.h</itemPath>
         <itemPath>../src/x-io-PIC32-Library/OnChange.h</itemPath>
-        <itemPath>../src/x-io-PIC32-Library/LibraryConfig.h</itemPath>
       </logicalFolder>
       <logicalFolder name="Ximu3Device" displayName="Ximu3Device" projectFiles="true">
         <logicalFolder name="x-IMU3-Device"

@@ -19,8 +19,7 @@
 // Definitions
 
 /**
- * @brief Scheduler structure. Structure members are used internally and must
- * not be accessed by the application.
+ * @brief Scheduler structure. All structure members are private.
  */
 typedef struct {
     bool enabled;

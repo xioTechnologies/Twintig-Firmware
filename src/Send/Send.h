@@ -48,7 +48,7 @@ typedef struct {
  * @brief Send structure.
  */
 typedef struct {
-    MuxChannel channel; // private
+    MuxChannel channel;
     SendSettings settings; // private
     FusionAhrsFlags flags; // private
     FusionVector downsampledGyroscope; // private
