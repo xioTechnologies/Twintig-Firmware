@@ -33,7 +33,7 @@ static void TransferComplete(void);
 // Variables
 
 static int numberOfClients;
-static Client clients[SPI_BUS_1_MAX_NUMBER_OF_CLIENTS];
+static Client clients[SPI_BUS_5_MAX_NUMBER_OF_CLIENTS];
 static Client* activeClient;
 
 //------------------------------------------------------------------------------
@@ -45,7 +45,7 @@ static Client* activeClient;
  * @return Client.
  */
 SpiBusClient SpiBus5AddClient(const GPIO_PIN csPin) {
-    if (numberOfClients >= SPI_BUS_1_MAX_NUMBER_OF_CLIENTS) {
+    if (numberOfClients >= SPI_BUS_5_MAX_NUMBER_OF_CLIENTS) {
         return NULL;
     }
     Client * const client = &clients[numberOfClients++];
