@@ -18,9 +18,9 @@
 //------------------------------------------------------------------------------
 // Function declarations
 
-SpiBusClient SpiBus1AddClient(const GPIO_PIN csPin);
-void SpiBus1Transfer(const SpiBusClient client, void* const data, const size_t numberOfBytes, void (*transferComplete)(void));
-bool SpiBus1TransferInProgress(const SpiBusClient client);
+SpiBusClient * const SpiBus1AddClient(const GPIO_PIN csPin);
+void SpiBus1Transfer(SpiBusClient * const client, void* const data, const size_t numberOfBytes, void (*transferComplete)(void));
+bool SpiBus1TransferInProgress(const SpiBusClient * const client);
 
 #endif
 

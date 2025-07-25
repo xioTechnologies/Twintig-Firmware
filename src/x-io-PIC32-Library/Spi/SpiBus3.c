@@ -11,46 +11,33 @@
 #include "SpiBusConfig.h"
 
 //------------------------------------------------------------------------------
-// Definitions
-
-/**
- * @brief SPI bus client.
- */
-typedef struct {
-    GPIO_PIN csPin;
-    void (*transferComplete)(void);
-    void* data;
-    size_t numberOfBytes;
-} Client;
-
-//------------------------------------------------------------------------------
 // Function declarations
 
-static void BeginTrasnfer(Client * const client);
+static void BeginTrasnfer(SpiBusClient * const client);
 static void TransferComplete(void);
 
 //------------------------------------------------------------------------------
 // Variables
 
 static int numberOfClients;
-static Client clients[SPI_BUS_3_MAX_NUMBER_OF_CLIENTS];
-static Client* activeClient;
+static SpiBusClient clients[SPI_BUS_3_MAX_NUMBER_OF_CLIENTS];
+static SpiBusClient* activeClient;
 
 //------------------------------------------------------------------------------
 // Functions
 
 /**
- * @brief Adds client to the SPI bus.
+ * @brief Adds a client to the SPI bus.
  * @param csPin CS pin.
  * @return Client.
  */
-SpiBusClient SpiBus3AddClient(const GPIO_PIN csPin) {
+SpiBusClient * const SpiBus3AddClient(const GPIO_PIN csPin) {
     if (numberOfClients >= SPI_BUS_3_MAX_NUMBER_OF_CLIENTS) {
         return NULL;
     }
-    Client * const client = &clients[numberOfClients++];
+    SpiBusClient * const client = &clients[numberOfClients++];
     client->csPin = csPin;
-    return (SpiBusClient) client;
+    return client;
 }
 
 /**
@@ -64,14 +51,14 @@ SpiBusClient SpiBus3AddClient(const GPIO_PIN csPin) {
  * @param numberOfBytes Number of bytes.
  * @param transferComplete Transfer complete callback function.
  */
-void SpiBus3Transfer(const SpiBusClient client, void* const data, const size_t numberOfBytes, void (*transferComplete)(void)) {
+void SpiBus3Transfer(SpiBusClient * const client, void* const data, const size_t numberOfBytes, void (*transferComplete)(void)) {
     if (client == NULL) {
         return;
     }
-    ((Client * const) client)->transferComplete = transferComplete;
-    ((Client * const) client)->data = data;
-    ((Client * const) client)->numberOfBytes = numberOfBytes; // set this member last else interrupt may use invalid structure
-    BeginTrasnfer((Client * const) client);
+    client->transferComplete = transferComplete;
+    client->data = data;
+    client->numberOfBytes = numberOfBytes; // set this member last else interrupt may use invalid structure
+    BeginTrasnfer(client);
 }
 
 /**
@@ -79,18 +66,18 @@ void SpiBus3Transfer(const SpiBusClient client, void* const data, const size_t n
  * @param client Client.
  * @return True if a transfer is in progress.
  */
-bool SpiBus3TransferInProgress(const SpiBusClient client) {
+bool SpiBus3TransferInProgress(const SpiBusClient * const client) {
     if (client == NULL) {
         return false;
     }
-    return ((Client * const) client)->numberOfBytes > 0;
+    return client->numberOfBytes > 0;
 }
 
 /**
  * @brief Begins transfer.
  * @param client Client.
  */
-static void BeginTrasnfer(Client * const client) {
+static void BeginTrasnfer(SpiBusClient * const client) {
     static int lock;
     if (__sync_lock_test_and_set(&lock, 1) == 1) {
         return;

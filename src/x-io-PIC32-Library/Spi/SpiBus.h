@@ -11,9 +11,14 @@
 // Definitions
 
 /**
- * @brief SPI bus client.
+ * @brief SPI bus client. All structure members are private.
  */
-typedef void* SpiBusClient;
+typedef struct {
+    GPIO_PIN csPin;
+    void (*transferComplete)(void);
+    void* data;
+    size_t numberOfBytes;
+} SpiBusClient;
 
 #endif
 

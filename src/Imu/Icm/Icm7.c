@@ -33,7 +33,7 @@ const Icm icm7 = {
     .getData = Icm7GetData,
     .bufferOverflow = Icm7BufferOverflow,
 };
-static SpiBusClient client;
+static SpiBusClient* spiBusClient;
 static uint8_t deviceId;
 static __attribute__((coherent)) IcmSpiPacket spiPacket;
 static uint64_t timestamp;
@@ -50,9 +50,9 @@ static uint32_t bufferOverflow;
  */
 void Icm7Initialise(const IcmOdr odr) {
 
-    // Add client
-    if (client == NULL) {
-        client = ICM7_SPI_BUS_ADD_CLIENT(ICM7_CS_PIN);
+    // Add SPI bus client
+    if (spiBusClient == NULL) {
+        spiBusClient = ICM7_SPI_BUS_ADD_CLIENT(ICM7_CS_PIN);
     }
 
     // Ensure default states
@@ -116,7 +116,7 @@ void Icm7Initialise(const IcmOdr odr) {
  */
 void Icm7Deinitialise(void) {
     GPIO_PinIntDisable(ICM7_INT_PIN);
-    while (ICM7_SPI_BUS_TRANSFER_IN_PROGRESS(client));
+    while (ICM7_SPI_BUS_TRANSFER_IN_PROGRESS(spiBusClient));
     FifoClear(&fifo);
     bufferOverflow = 0;
 }
@@ -128,8 +128,8 @@ void Icm7Deinitialise(void) {
  */
 static uint8_t ReadRegister(const uint8_t address) {
     spiPacket = (IcmSpiPacket){.rw = 1, .address = address};
-    ICM7_SPI_BUS_TRANSFER(client, &spiPacket, 2, NULL);
-    while (ICM7_SPI_BUS_TRANSFER_IN_PROGRESS(client));
+    ICM7_SPI_BUS_TRANSFER(spiBusClient, &spiPacket, 2, NULL);
+    while (ICM7_SPI_BUS_TRANSFER_IN_PROGRESS(spiBusClient));
     return spiPacket.data[0];
 }
 
@@ -140,8 +140,8 @@ static uint8_t ReadRegister(const uint8_t address) {
  */
 static void WriteRegister(const uint8_t address, const uint8_t value) {
     spiPacket = (IcmSpiPacket){.rw = 0, .address = address, .value = value};
-    ICM7_SPI_BUS_TRANSFER(client, &spiPacket, 2, NULL);
-    while (ICM7_SPI_BUS_TRANSFER_IN_PROGRESS(client));
+    ICM7_SPI_BUS_TRANSFER(spiBusClient, &spiPacket, 2, NULL);
+    while (ICM7_SPI_BUS_TRANSFER_IN_PROGRESS(spiBusClient));
 }
 
 /**
@@ -153,13 +153,13 @@ static void ExternalInterrupt(GPIO_PIN pin, uintptr_t context) {
     if (GPIO_PinRead(pin) == true) { // ignore rising edges
         return;
     }
-    if (ICM7_SPI_BUS_TRANSFER_IN_PROGRESS(client)) {
+    if (ICM7_SPI_BUS_TRANSFER_IN_PROGRESS(spiBusClient)) {
         return;
     }
     timestamp = TimerGetTicks64();
     spiPacket.rw = 1;
     spiPacket.address = ICM_TEMP_DATA1_ADDRESS;
-    ICM7_SPI_BUS_TRANSFER(client, (void *const) &spiPacket, sizeof (IcmSensorRegisters) + 1, TransferComplete);
+    ICM7_SPI_BUS_TRANSFER(spiBusClient, (void *const) &spiPacket, sizeof (IcmSensorRegisters) + 1, TransferComplete);
 }
 
 /**
