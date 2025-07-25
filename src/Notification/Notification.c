@@ -10,7 +10,6 @@
 #include "Imu/Imu.h"
 #include "OnChange.h"
 #include "Send/Send.h"
-#include "Send/Send.h"
 #include "Timer/TimerScheduler.h"
 #include "Usb/UsbCdc.h"
 
@@ -52,6 +51,21 @@ void NotificationTasks(void) {
     ImuBufferOverflow(&send3, &imu3);
     ImuBufferOverflow(&send4, &imu4);
     ImuBufferOverflow(&send5, &imu5);
+    ImuBufferOverflow(&send6, &imu6);
+    ImuBufferOverflow(&send7, &imu7);
+    ImuBufferOverflow(&send8, &imu8);
+    ImuBufferOverflow(&send9, &imu9);
+    ImuBufferOverflow(&send10, &imu10);
+    ImuBufferOverflow(&send11, &imu11);
+    ImuBufferOverflow(&send12, &imu12);
+    ImuBufferOverflow(&send13, &imu13);
+    ImuBufferOverflow(&send14, &imu14);
+    ImuBufferOverflow(&send15, &imu15);
+    ImuBufferOverflow(&send16, &imu16);
+    ImuBufferOverflow(&send17, &imu17);
+    ImuBufferOverflow(&send18, &imu18);
+    ImuBufferOverflow(&send19, &imu19);
+    ImuBufferOverflow(&send20, &imu20);
 
     // Send buffer overflow
     SendBufferOverflow(&send0);
@@ -60,6 +74,21 @@ void NotificationTasks(void) {
     SendBufferOverflow(&send3);
     SendBufferOverflow(&send4);
     SendBufferOverflow(&send5);
+    SendBufferOverflow(&send6);
+    SendBufferOverflow(&send7);
+    SendBufferOverflow(&send8);
+    SendBufferOverflow(&send9);
+    SendBufferOverflow(&send10);
+    SendBufferOverflow(&send11);
+    SendBufferOverflow(&send12);
+    SendBufferOverflow(&send13);
+    SendBufferOverflow(&send14);
+    SendBufferOverflow(&send15);
+    SendBufferOverflow(&send16);
+    SendBufferOverflow(&send17);
+    SendBufferOverflow(&send18);
+    SendBufferOverflow(&send19);
+    SendBufferOverflow(&send20);
 }
 
 /**

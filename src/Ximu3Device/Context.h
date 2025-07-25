@@ -11,7 +11,6 @@
 // Includes
 
 #include "Haptic/Haptic.h"
-#include "I2C/I2C.h"
 #include "Imu/Imu.h"
 #include "Nvm.h"
 #include "Send/Send.h"
