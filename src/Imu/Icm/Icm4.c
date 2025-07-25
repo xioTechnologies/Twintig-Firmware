@@ -33,11 +33,11 @@ const Icm icm4 = {
     .getData = Icm4GetData,
     .bufferOverflow = Icm4BufferOverflow,
 };
-static uint8_t deviceID;
+static SpiBusClient client;
+static uint8_t deviceId;
 static __attribute__((coherent)) IcmSpiPacket spiPacket;
 static uint64_t timestamp;
-static bool lock;
-static uint8_t fifoData[1000 * sizeof (IcmFifoPacket)];
+static uint8_t fifoData[ICM4_BUFFER_LENGTH * sizeof (IcmFifoPacket)];
 static Fifo fifo = {.data = fifoData, .dataSize = sizeof (fifoData)};
 static uint32_t bufferOverflow;
 
@@ -50,11 +50,16 @@ static uint32_t bufferOverflow;
  */
 void Icm4Initialise(const IcmOdr odr) {
 
+    // Add client
+    if (client == NULL) {
+        client = ICM4_SPI_BUS_ADD_CLIENT(ICM4_CS_PIN);
+    }
+
     // Ensure default states
     Icm4Deinitialise();
 
     // Read device ID
-    deviceID = ReadRegister(ICM_WHO_AM_I_ADDRESS);
+    deviceId = ReadRegister(ICM_WHO_AM_I_ADDRESS);
 
     // Software reset
     IcmDeviceConfigRegister deviceConfigRegister = {.value = ICM_DEVICE_CONFIG_RESET_VALUE};
@@ -111,8 +116,7 @@ void Icm4Initialise(const IcmOdr odr) {
  */
 void Icm4Deinitialise(void) {
     GPIO_PinIntDisable(ICM4_INT_PIN);
-    while (ICM4_SPI_TRANSFER_IN_PROGRESS());
-    while (lock);
+    while (ICM4_SPI_BUS_TRANSFER_IN_PROGRESS(client));
     FifoClear(&fifo);
     bufferOverflow = 0;
 }
@@ -124,8 +128,8 @@ void Icm4Deinitialise(void) {
  */
 static uint8_t ReadRegister(const uint8_t address) {
     spiPacket = (IcmSpiPacket){.rw = 1, .address = address};
-    ICM4_SPI_TRANSFER(ICM4_CS_PIN, &spiPacket, 2, NULL);
-    while (ICM4_SPI_TRANSFER_IN_PROGRESS());
+    ICM4_SPI_BUS_TRANSFER(client, &spiPacket, 2, NULL);
+    while (ICM4_SPI_BUS_TRANSFER_IN_PROGRESS(client));
     return spiPacket.data[0];
 }
 
@@ -136,8 +140,8 @@ static uint8_t ReadRegister(const uint8_t address) {
  */
 static void WriteRegister(const uint8_t address, const uint8_t value) {
     spiPacket = (IcmSpiPacket){.rw = 0, .address = address, .value = value};
-    ICM4_SPI_TRANSFER(ICM4_CS_PIN, &spiPacket, 2, NULL);
-    while (ICM4_SPI_TRANSFER_IN_PROGRESS());
+    ICM4_SPI_BUS_TRANSFER(client, &spiPacket, 2, NULL);
+    while (ICM4_SPI_BUS_TRANSFER_IN_PROGRESS(client));
 }
 
 /**
@@ -149,17 +153,13 @@ static void ExternalInterrupt(GPIO_PIN pin, uintptr_t context) {
     if (GPIO_PinRead(pin) == true) { // ignore rising edges
         return;
     }
-    if (ICM4_SPI_TRANSFER_IN_PROGRESS()) {
+    if (ICM4_SPI_BUS_TRANSFER_IN_PROGRESS(client)) {
         return;
     }
-    if (lock) {
-        return;
-    }
-    lock = true;
     timestamp = TimerGetTicks64();
     spiPacket.rw = 1;
     spiPacket.address = ICM_TEMP_DATA1_ADDRESS;
-    ICM4_SPI_TRANSFER(ICM4_CS_PIN, (void *const) &spiPacket, sizeof (IcmSensorRegisters) + 1, TransferComplete);
+    ICM4_SPI_BUS_TRANSFER(client, (void *const) &spiPacket, sizeof (IcmSensorRegisters) + 1, TransferComplete);
 }
 
 /**
@@ -170,7 +170,6 @@ static void TransferComplete(void) {
         .timestamp = timestamp,
         .registers = *((IcmSensorRegisters*) spiPacket.data),
     };
-    lock = false;
     if (FifoWrite(&fifo, &fifoPacket, sizeof (fifoPacket)) != FifoResultOk) {
         bufferOverflow++;
     }
@@ -213,7 +212,7 @@ uint32_t Icm4BufferOverflow(void) {
 IcmTestResult Icm4Test(void) {
 
     // Check device ID
-    if (deviceID != ICM_WHO_AM_I_RESET_VALUE) {
+    if (deviceId != ICM_WHO_AM_I_RESET_VALUE) {
         return IcmTestResultInvalidID;
     }
 

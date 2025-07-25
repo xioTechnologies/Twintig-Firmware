@@ -24,10 +24,25 @@
 #include "I2C/I2C5.h"
 #include "I2C/I2CBB1.h"
 #include "Imu/Icm/Icm1.h"
+#include "Imu/Icm/Icm10.h"
+#include "Imu/Icm/Icm11.h"
+#include "Imu/Icm/Icm12.h"
+#include "Imu/Icm/Icm13.h"
+#include "Imu/Icm/Icm14.h"
+#include "Imu/Icm/Icm15.h"
+#include "Imu/Icm/Icm16.h"
+#include "Imu/Icm/Icm17.h"
+#include "Imu/Icm/Icm18.h"
+#include "Imu/Icm/Icm19.h"
 #include "Imu/Icm/Icm2.h"
+#include "Imu/Icm/Icm20.h"
 #include "Imu/Icm/Icm3.h"
 #include "Imu/Icm/Icm4.h"
 #include "Imu/Icm/Icm5.h"
+#include "Imu/Icm/Icm6.h"
+#include "Imu/Icm/Icm7.h"
+#include "Imu/Icm/Icm8.h"
+#include "Imu/Icm/Icm9.h"
 #include "Imu/Imu.h"
 #include "Leds/Leds.h"
 #include "Notification/Notification.h"
@@ -72,31 +87,38 @@ int main(void) {
     Spi4DmaInitialise(&icmSpiSettings);
     Spi5Initialise(&icmSpiSettings);
     Spi6DmaInitialise(&icmSpiSettings);
-    {
-        Icm1Initialise(IcmOdr100Hz);
-        Icm2Initialise(IcmOdr100Hz);
-        Icm3Initialise(IcmOdr100Hz);
-        Icm4Initialise(IcmOdr100Hz);
-        Icm5Initialise(IcmOdr100Hz);
-    } // temporary code
     LedsInitialise();
     HapticInitialise();
     Ximu3DeviceInitialise();
 
-    {
-        printf("Haptic          %s\n", HapticTestResultToString(HapticTest()));
-        printf("Carpus EEPROM   %s\n", EepromTestResultToString(EepromTest(&i2cBB1)));
-        printf("CH1 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c3)));
-        printf("CH2 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c2)));
-        printf("CH3 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c5)));
-        printf("CH4 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c1)));
-        printf("CH5 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c4)));
-        printf("CH1 IMU4        %s\n", IcmTestResultToString(Icm1Test()));
-        printf("CH2 IMU4        %s\n", IcmTestResultToString(Icm2Test()));
-        printf("CH3 IMU4        %s\n", IcmTestResultToString(Icm3Test()));
-        printf("CH4 IMU4        %s\n", IcmTestResultToString(Icm4Test()));
-        printf("CH5 IMU4        %s\n", IcmTestResultToString(Icm5Test()));
-    } // temporary code
+    // Print self-test results
+    printf("Haptic          %s\n", HapticTestResultToString(HapticTest()));
+    printf("Carpus EEPROM   %s\n", EepromTestResultToString(EepromTest(&i2cBB1)));
+    printf("CH1 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c3)));
+    printf("CH2 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c2)));
+    printf("CH3 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c5)));
+    printf("CH4 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c1)));
+    printf("CH5 EEPROM      %s\n", EepromTestResultToString(EepromTest(&i2c4)));
+    printf("CH1 IMU1        %s\n", IcmTestResultToString(Icm1Test()));
+    printf("CH1 IMU2        %s\n", IcmTestResultToString(Icm2Test()));
+    printf("CH1 IMU3        %s\n", IcmTestResultToString(Icm3Test()));
+    printf("CH1 IMU4        %s\n", IcmTestResultToString(Icm4Test()));
+    printf("CH2 IMU1        %s\n", IcmTestResultToString(Icm5Test()));
+    printf("CH2 IMU2        %s\n", IcmTestResultToString(Icm6Test()));
+    printf("CH2 IMU3        %s\n", IcmTestResultToString(Icm7Test()));
+    printf("CH2 IMU4        %s\n", IcmTestResultToString(Icm8Test()));
+    printf("CH3 IMU1        %s\n", IcmTestResultToString(Icm9Test()));
+    printf("CH3 IMU2        %s\n", IcmTestResultToString(Icm10Test()));
+    printf("CH3 IMU3        %s\n", IcmTestResultToString(Icm11Test()));
+    printf("CH3 IMU4        %s\n", IcmTestResultToString(Icm12Test()));
+    printf("CH4 IMU1        %s\n", IcmTestResultToString(Icm13Test()));
+    printf("CH4 IMU2        %s\n", IcmTestResultToString(Icm14Test()));
+    printf("CH4 IMU3        %s\n", IcmTestResultToString(Icm15Test()));
+    printf("CH4 IMU4        %s\n", IcmTestResultToString(Icm16Test()));
+    printf("CH5 IMU1        %s\n", IcmTestResultToString(Icm17Test()));
+    printf("CH5 IMU2        %s\n", IcmTestResultToString(Icm18Test()));
+    printf("CH5 IMU3        %s\n", IcmTestResultToString(Icm19Test()));
+    printf("CH5 IMU4        %s\n", IcmTestResultToString(Icm20Test()));
 
     // Main program loop
     while (true) {
@@ -108,21 +130,21 @@ int main(void) {
         ImuTasks(&imu3);
         ImuTasks(&imu4);
         ImuTasks(&imu5);
-        // ImuTasks(&imu6);
-        // ImuTasks(&imu7);
-        // ImuTasks(&imu8);
-        // ImuTasks(&imu9);
-        // ImuTasks(&imu10);
-        // ImuTasks(&imu11);
-        // ImuTasks(&imu12);
-        // ImuTasks(&imu13);
-        // ImuTasks(&imu14);
-        // ImuTasks(&imu15);
-        // ImuTasks(&imu16);
-        // ImuTasks(&imu17);
-        // ImuTasks(&imu18);
-        // ImuTasks(&imu19);
-        // ImuTasks(&imu20);
+        ImuTasks(&imu6);
+        ImuTasks(&imu7);
+        ImuTasks(&imu8);
+        ImuTasks(&imu9);
+        ImuTasks(&imu10);
+        ImuTasks(&imu11);
+        ImuTasks(&imu12);
+        ImuTasks(&imu13);
+        ImuTasks(&imu14);
+        ImuTasks(&imu15);
+        ImuTasks(&imu16);
+        ImuTasks(&imu17);
+        ImuTasks(&imu18);
+        ImuTasks(&imu19);
+        ImuTasks(&imu20);
         NotificationTasks();
         UsbCdcTasks();
         Ximu3DeviceTasks();

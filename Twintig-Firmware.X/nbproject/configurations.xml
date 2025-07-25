@@ -129,6 +129,21 @@
           <itemPath>../src/Imu/Icm/Icm3.h</itemPath>
           <itemPath>../src/Imu/Icm/Icm4.h</itemPath>
           <itemPath>../src/Imu/Icm/Icm5.h</itemPath>
+          <itemPath>../src/Imu/Icm/Icm10.h</itemPath>
+          <itemPath>../src/Imu/Icm/Icm11.h</itemPath>
+          <itemPath>../src/Imu/Icm/Icm12.h</itemPath>
+          <itemPath>../src/Imu/Icm/Icm13.h</itemPath>
+          <itemPath>../src/Imu/Icm/Icm14.h</itemPath>
+          <itemPath>../src/Imu/Icm/Icm15.h</itemPath>
+          <itemPath>../src/Imu/Icm/Icm16.h</itemPath>
+          <itemPath>../src/Imu/Icm/Icm17.h</itemPath>
+          <itemPath>../src/Imu/Icm/Icm18.h</itemPath>
+          <itemPath>../src/Imu/Icm/Icm19.h</itemPath>
+          <itemPath>../src/Imu/Icm/Icm20.h</itemPath>
+          <itemPath>../src/Imu/Icm/Icm6.h</itemPath>
+          <itemPath>../src/Imu/Icm/Icm7.h</itemPath>
+          <itemPath>../src/Imu/Icm/Icm8.h</itemPath>
+          <itemPath>../src/Imu/Icm/Icm9.h</itemPath>
         </logicalFolder>
         <itemPath>../src/Imu/Imu.h</itemPath>
       </logicalFolder>
@@ -184,6 +199,13 @@
           <itemPath>../src/x-io-PIC32-Library/Spi/Spi6Dma.h</itemPath>
           <itemPath>../src/x-io-PIC32-Library/Spi/Spi2.h</itemPath>
           <itemPath>../src/x-io-PIC32-Library/Spi/Spi5.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Spi/SpiBus4.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Spi/SpiBus.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Spi/SpiBus1.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Spi/SpiBus2.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Spi/SpiBus3.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Spi/SpiBus5.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Spi/SpiBus6.h</itemPath>
         </logicalFolder>
         <logicalFolder name="Timer" displayName="Timer" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Timer/Timer.h</itemPath>
@@ -200,6 +222,7 @@
         <itemPath>../src/x-io-PIC32-Library/Fifo.h</itemPath>
         <itemPath>../src/x-io-PIC32-Library/PeripheralBusClockFrequency.h</itemPath>
         <itemPath>../src/x-io-PIC32-Library/OnChange.h</itemPath>
+        <itemPath>../src/x-io-PIC32-Library/LibraryConfig.h</itemPath>
       </logicalFolder>
       <logicalFolder name="Ximu3Device" displayName="Ximu3Device" projectFiles="true">
         <logicalFolder name="x-IMU3-Device"
@@ -309,6 +332,21 @@
           <itemPath>../src/Imu/Icm/Icm3.c</itemPath>
           <itemPath>../src/Imu/Icm/Icm4.c</itemPath>
           <itemPath>../src/Imu/Icm/Icm5.c</itemPath>
+          <itemPath>../src/Imu/Icm/Icm10.c</itemPath>
+          <itemPath>../src/Imu/Icm/Icm11.c</itemPath>
+          <itemPath>../src/Imu/Icm/Icm12.c</itemPath>
+          <itemPath>../src/Imu/Icm/Icm13.c</itemPath>
+          <itemPath>../src/Imu/Icm/Icm14.c</itemPath>
+          <itemPath>../src/Imu/Icm/Icm15.c</itemPath>
+          <itemPath>../src/Imu/Icm/Icm16.c</itemPath>
+          <itemPath>../src/Imu/Icm/Icm17.c</itemPath>
+          <itemPath>../src/Imu/Icm/Icm18.c</itemPath>
+          <itemPath>../src/Imu/Icm/Icm19.c</itemPath>
+          <itemPath>../src/Imu/Icm/Icm20.c</itemPath>
+          <itemPath>../src/Imu/Icm/Icm6.c</itemPath>
+          <itemPath>../src/Imu/Icm/Icm7.c</itemPath>
+          <itemPath>../src/Imu/Icm/Icm8.c</itemPath>
+          <itemPath>../src/Imu/Icm/Icm9.c</itemPath>
         </logicalFolder>
         <itemPath>../src/Imu/Imu.c</itemPath>
       </logicalFolder>
@@ -360,6 +398,12 @@
           <itemPath>../src/x-io-PIC32-Library/Spi/Spi6Dma.c</itemPath>
           <itemPath>../src/x-io-PIC32-Library/Spi/Spi2.c</itemPath>
           <itemPath>../src/x-io-PIC32-Library/Spi/Spi5.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Spi/SpiBus4.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Spi/SpiBus1.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Spi/SpiBus2.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Spi/SpiBus3.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Spi/SpiBus5.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/Spi/SpiBus6.c</itemPath>
         </logicalFolder>
         <logicalFolder name="Timer" displayName="Timer" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/Timer/Timer.c</itemPath>

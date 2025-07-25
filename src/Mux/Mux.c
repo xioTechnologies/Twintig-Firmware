@@ -39,6 +39,59 @@ static const Interface serial = {.availableWrite = SerialAvailableWrite, .write 
 // Functions
 
 /**
+ * @brief Returns the byte value of the mux channel.
+ * @param channel Channel.
+ * @return Byte value of the mux channel.
+ */
+uint8_t MuxChannelToByte(const MuxChannel channel) {
+    switch (channel) {
+        case MuxChannelNone:
+            break;
+        case MuxChannel1:
+            return 'A';
+        case MuxChannel2:
+            return 'B';
+        case MuxChannel3:
+            return 'C';
+        case MuxChannel4:
+            return 'D';
+        case MuxChannel5:
+            return 'E';
+        case MuxChannel6:
+            return 'F';
+        case MuxChannel7:
+            return 'G';
+        case MuxChannel8:
+            return 'H';
+        case MuxChannel9:
+            return 'I';
+        case MuxChannel10:
+            return 'J';
+        case MuxChannel11:
+            return 'K';
+        case MuxChannel12:
+            return 'L';
+        case MuxChannel13:
+            return 'M';
+        case MuxChannel14:
+            return 'N';
+        case MuxChannel15:
+            return 'O';
+        case MuxChannel16:
+            return 'P';
+        case MuxChannel17:
+            return 'Q';
+        case MuxChannel18:
+            return 'R';
+        case MuxChannel19:
+            return 'S';
+        case MuxChannel20:
+            return 'T';
+    }
+    return '\n';
+}
+
+/**
  * @brief Returns the space available in the write buffer.
  * @param channel Channel.
  * @return Space available in the write buffer.
@@ -107,56 +160,13 @@ static inline __attribute__((always_inline)) size_t Write(const Interface * cons
     if (channel == MuxChannelNone) {
         return interface->write(data, numberOfBytes);
     }
-    switch (channel) {
-        case MuxChannelNone:
-            return interface->write(data, numberOfBytes);
-        case MuxChannel1:
-        {
-            if (numberOfBytes > interface->availableWrite()) {
-                return FifoResultError;
-            }
-            interface->write("^A", XIMU3_MUX_HEADER_SIZE);
-            interface->write(data, numberOfBytes);
-            return FifoResultOk;
-        }
-        case MuxChannel2:
-        {
-            if (numberOfBytes > interface->availableWrite()) {
-                return FifoResultError;
-            }
-            interface->write("^B", XIMU3_MUX_HEADER_SIZE);
-            interface->write(data, numberOfBytes);
-            return FifoResultOk;
-        }
-        case MuxChannel3:
-        {
-            if (numberOfBytes > interface->availableWrite()) {
-                return FifoResultError;
-            }
-            interface->write("^C", XIMU3_MUX_HEADER_SIZE);
-            interface->write(data, numberOfBytes);
-            return FifoResultOk;
-        }
-        case MuxChannel4:
-        {
-            if (numberOfBytes > interface->availableWrite()) {
-                return FifoResultError;
-            }
-            interface->write("^D", XIMU3_MUX_HEADER_SIZE);
-            interface->write(data, numberOfBytes);
-            return FifoResultOk;
-        }
-        case MuxChannel5:
-        {
-            if (numberOfBytes > interface->availableWrite()) {
-                return FifoResultError;
-            }
-            interface->write("^E", XIMU3_MUX_HEADER_SIZE);
-            interface->write(data, numberOfBytes);
-            return FifoResultOk;
-        }
+    const uint8_t header[] = {'^', MuxChannelToByte(channel)};
+    if (interface->availableWrite() < (sizeof (header) + numberOfBytes)) {
+        return FifoResultError;
     }
-    return FifoResultError; // avoid compiler warning
+    interface->write(header, sizeof (header));
+    interface->write(data, numberOfBytes);
+    return FifoResultOk;
 }
 
 //------------------------------------------------------------------------------

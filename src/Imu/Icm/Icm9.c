@@ -1,5 +1,5 @@
 /**
- * @file Icm3.c
+ * @file Icm9.c
  * @author Seb Madgwick
  * @brief ICM-42688-P driver.
  */
@@ -9,7 +9,7 @@
 
 #include "definitions.h"
 #include "Fifo.h"
-#include "Icm3.h"
+#include "Icm9.h"
 #include "IcmConfig.h"
 #include <stdbool.h>
 #include <stddef.h>
@@ -27,17 +27,17 @@ static void TransferComplete(void);
 //------------------------------------------------------------------------------
 // Variables
 
-const Icm icm3 = {
-    .initialise = Icm3Initialise,
-    .deinitialise = Icm3Deinitialise,
-    .getData = Icm3GetData,
-    .bufferOverflow = Icm3BufferOverflow,
+const Icm icm9 = {
+    .initialise = Icm9Initialise,
+    .deinitialise = Icm9Deinitialise,
+    .getData = Icm9GetData,
+    .bufferOverflow = Icm9BufferOverflow,
 };
 static SpiBusClient client;
 static uint8_t deviceId;
 static __attribute__((coherent)) IcmSpiPacket spiPacket;
 static uint64_t timestamp;
-static uint8_t fifoData[ICM3_BUFFER_LENGTH * sizeof (IcmFifoPacket)];
+static uint8_t fifoData[ICM9_BUFFER_LENGTH * sizeof (IcmFifoPacket)];
 static Fifo fifo = {.data = fifoData, .dataSize = sizeof (fifoData)};
 static uint32_t bufferOverflow;
 
@@ -48,15 +48,15 @@ static uint32_t bufferOverflow;
  * @brief Initialises the module.
  * @param odr ODR.
  */
-void Icm3Initialise(const IcmOdr odr) {
+void Icm9Initialise(const IcmOdr odr) {
 
     // Add client
     if (client == NULL) {
-        client = ICM3_SPI_BUS_ADD_CLIENT(ICM3_CS_PIN);
+        client = ICM9_SPI_BUS_ADD_CLIENT(ICM9_CS_PIN);
     }
 
     // Ensure default states
-    Icm3Deinitialise();
+    Icm9Deinitialise();
 
     // Read device ID
     deviceId = ReadRegister(ICM_WHO_AM_I_ADDRESS);
@@ -107,16 +107,16 @@ void Icm3Initialise(const IcmOdr odr) {
     TimerDelayMilliseconds(45);
 
     // Configure interrupt
-    GPIO_PinInterruptCallbackRegister(ICM3_INT_PIN, ExternalInterrupt, 0);
-    GPIO_PinIntEnable(ICM3_INT_PIN, GPIO_INTERRUPT_ON_BOTH_EDGES); // only both edges supported
+    GPIO_PinInterruptCallbackRegister(ICM9_INT_PIN, ExternalInterrupt, 0);
+    GPIO_PinIntEnable(ICM9_INT_PIN, GPIO_INTERRUPT_ON_BOTH_EDGES); // only both edges supported
 }
 
 /**
  * @brief Deinitialises the module.
  */
-void Icm3Deinitialise(void) {
-    GPIO_PinIntDisable(ICM3_INT_PIN);
-    while (ICM3_SPI_BUS_TRANSFER_IN_PROGRESS(client));
+void Icm9Deinitialise(void) {
+    GPIO_PinIntDisable(ICM9_INT_PIN);
+    while (ICM9_SPI_BUS_TRANSFER_IN_PROGRESS(client));
     FifoClear(&fifo);
     bufferOverflow = 0;
 }
@@ -128,8 +128,8 @@ void Icm3Deinitialise(void) {
  */
 static uint8_t ReadRegister(const uint8_t address) {
     spiPacket = (IcmSpiPacket){.rw = 1, .address = address};
-    ICM3_SPI_BUS_TRANSFER(client, &spiPacket, 2, NULL);
-    while (ICM3_SPI_BUS_TRANSFER_IN_PROGRESS(client));
+    ICM9_SPI_BUS_TRANSFER(client, &spiPacket, 2, NULL);
+    while (ICM9_SPI_BUS_TRANSFER_IN_PROGRESS(client));
     return spiPacket.data[0];
 }
 
@@ -140,8 +140,8 @@ static uint8_t ReadRegister(const uint8_t address) {
  */
 static void WriteRegister(const uint8_t address, const uint8_t value) {
     spiPacket = (IcmSpiPacket){.rw = 0, .address = address, .value = value};
-    ICM3_SPI_BUS_TRANSFER(client, &spiPacket, 2, NULL);
-    while (ICM3_SPI_BUS_TRANSFER_IN_PROGRESS(client));
+    ICM9_SPI_BUS_TRANSFER(client, &spiPacket, 2, NULL);
+    while (ICM9_SPI_BUS_TRANSFER_IN_PROGRESS(client));
 }
 
 /**
@@ -153,13 +153,13 @@ static void ExternalInterrupt(GPIO_PIN pin, uintptr_t context) {
     if (GPIO_PinRead(pin) == true) { // ignore rising edges
         return;
     }
-    if (ICM3_SPI_BUS_TRANSFER_IN_PROGRESS(client)) {
+    if (ICM9_SPI_BUS_TRANSFER_IN_PROGRESS(client)) {
         return;
     }
     timestamp = TimerGetTicks64();
     spiPacket.rw = 1;
     spiPacket.address = ICM_TEMP_DATA1_ADDRESS;
-    ICM3_SPI_BUS_TRANSFER(client, (void *const) &spiPacket, sizeof (IcmSensorRegisters) + 1, TransferComplete);
+    ICM9_SPI_BUS_TRANSFER(client, (void *const) &spiPacket, sizeof (IcmSensorRegisters) + 1, TransferComplete);
 }
 
 /**
@@ -180,7 +180,7 @@ static void TransferComplete(void) {
  * @param data Data.
  * @return Result.
  */
-IcmResult Icm3GetData(IcmData * const data) {
+IcmResult Icm9GetData(IcmData * const data) {
     IcmFifoPacket fifoPacket;
     if (FifoRead(&fifo, &fifoPacket, sizeof (fifoPacket)) == 0) {
         return IcmResultError;
@@ -201,7 +201,7 @@ IcmResult Icm3GetData(IcmData * const data) {
  * this function will reset the value.
  * @return Number of samples lost due to buffer overflow.
  */
-uint32_t Icm3BufferOverflow(void) {
+uint32_t Icm9BufferOverflow(void) {
     return __sync_lock_test_and_set(&bufferOverflow, 0);
 }
 
@@ -209,7 +209,7 @@ uint32_t Icm3BufferOverflow(void) {
  * @brief Performs self-test.
  * @return Test result.
  */
-IcmTestResult Icm3Test(void) {
+IcmTestResult Icm9Test(void) {
 
     // Check device ID
     if (deviceId != ICM_WHO_AM_I_RESET_VALUE) {
@@ -220,7 +220,7 @@ IcmTestResult Icm3Test(void) {
     const uint32_t timeout = TimerGetTicks64() + (TIMER_TICKS_PER_SECOND / 10);
     while (true) {
         IcmData data;
-        if (Icm3GetData(&data) == IcmResultOk) {
+        if (Icm9GetData(&data) == IcmResultOk) {
             break;
         }
         if (TimerGetTicks64() > timeout) {

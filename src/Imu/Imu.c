@@ -9,10 +9,25 @@
 
 #include "Imu.h"
 #include "Imu/Icm/Icm1.h"
+#include "Imu/Icm/Icm10.h"
+#include "Imu/Icm/Icm11.h"
+#include "Imu/Icm/Icm12.h"
+#include "Imu/Icm/Icm13.h"
+#include "Imu/Icm/Icm14.h"
+#include "Imu/Icm/Icm15.h"
+#include "Imu/Icm/Icm16.h"
+#include "Imu/Icm/Icm17.h"
+#include "Imu/Icm/Icm18.h"
+#include "Imu/Icm/Icm19.h"
 #include "Imu/Icm/Icm2.h"
+#include "Imu/Icm/Icm20.h"
 #include "Imu/Icm/Icm3.h"
 #include "Imu/Icm/Icm4.h"
 #include "Imu/Icm/Icm5.h"
+#include "Imu/Icm/Icm6.h"
+#include "Imu/Icm/Icm7.h"
+#include "Imu/Icm/Icm8.h"
+#include "Imu/Icm/Icm9.h"
 #include <stddef.h>
 #include "Timer/Timer.h"
 
@@ -24,21 +39,21 @@ Imu imu2 = {.icm = &icm2};
 Imu imu3 = {.icm = &icm3};
 Imu imu4 = {.icm = &icm4};
 Imu imu5 = {.icm = &icm5};
-Imu imu6 = {.icm = &icm1};
-Imu imu7 = {.icm = &icm1};
-Imu imu8 = {.icm = &icm1};
-Imu imu9 = {.icm = &icm1};
-Imu imu10 = {.icm = &icm1};
-Imu imu11 = {.icm = &icm1};
-Imu imu12 = {.icm = &icm1};
-Imu imu13 = {.icm = &icm1};
-Imu imu14 = {.icm = &icm1};
-Imu imu15 = {.icm = &icm1};
-Imu imu16 = {.icm = &icm1};
-Imu imu17 = {.icm = &icm1};
-Imu imu18 = {.icm = &icm1};
-Imu imu19 = {.icm = &icm1};
-Imu imu20 = {.icm = &icm1};
+Imu imu6 = {.icm = &icm6};
+Imu imu7 = {.icm = &icm7};
+Imu imu8 = {.icm = &icm8};
+Imu imu9 = {.icm = &icm9};
+Imu imu10 = {.icm = &icm10};
+Imu imu11 = {.icm = &icm11};
+Imu imu12 = {.icm = &icm12};
+Imu imu13 = {.icm = &icm13};
+Imu imu14 = {.icm = &icm14};
+Imu imu15 = {.icm = &icm15};
+Imu imu16 = {.icm = &icm16};
+Imu imu17 = {.icm = &icm17};
+Imu imu18 = {.icm = &icm18};
+Imu imu19 = {.icm = &icm19};
+Imu imu20 = {.icm = &icm20};
 
 //------------------------------------------------------------------------------
 // Functions

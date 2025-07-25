@@ -57,21 +57,21 @@ Send send2 = {.channel = MuxChannel2};
 Send send3 = {.channel = MuxChannel3};
 Send send4 = {.channel = MuxChannel4};
 Send send5 = {.channel = MuxChannel5};
-//Send send6 = {.channel = MuxChannel6};
-//Send send7 = {.channel = MuxChannel7};
-//Send send8 = {.channel = MuxChannel8};
-//Send send9 = {.channel = MuxChannel9};
-//Send send10 = {.channel = MuxChannel10};
-//Send send11 = {.channel = MuxChannel11};
-//Send send12 = {.channel = MuxChannel12};
-//Send send13 = {.channel = MuxChannel13};
-//Send send14 = {.channel = MuxChannel14};
-//Send send15 = {.channel = MuxChannel15};
-//Send send16 = {.channel = MuxChannel16};
-//Send send17 = {.channel = MuxChannel17};
-//Send send18 = {.channel = MuxChannel18};
-//Send send19 = {.channel = MuxChannel19};
-//Send send20 = {.channel = MuxChannel20};
+Send send6 = {.channel = MuxChannel6};
+Send send7 = {.channel = MuxChannel7};
+Send send8 = {.channel = MuxChannel8};
+Send send9 = {.channel = MuxChannel9};
+Send send10 = {.channel = MuxChannel10};
+Send send11 = {.channel = MuxChannel11};
+Send send12 = {.channel = MuxChannel12};
+Send send13 = {.channel = MuxChannel13};
+Send send14 = {.channel = MuxChannel14};
+Send send15 = {.channel = MuxChannel15};
+Send send16 = {.channel = MuxChannel16};
+Send send17 = {.channel = MuxChannel17};
+Send send18 = {.channel = MuxChannel18};
+Send send19 = {.channel = MuxChannel19};
+Send send20 = {.channel = MuxChannel20};
 
 //------------------------------------------------------------------------------
 // Functions
