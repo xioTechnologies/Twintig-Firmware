@@ -1,7 +1,7 @@
 /**
  * @file SpiBus3.h
  * @author Seb Madgwick
- * @brief Manages access to the SPI bus.
+ * @brief SPI bus.
  */
 
 #ifndef SPI_BUS_3_H

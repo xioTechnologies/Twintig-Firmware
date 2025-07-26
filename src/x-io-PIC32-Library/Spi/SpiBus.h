@@ -1,11 +1,18 @@
 /**
- * @file SpiBus1.h
+ * @file SpiBus.h
  * @author Seb Madgwick
- * @brief Manages access to the a bus.
+ * @brief SPI bus.
  */
 
 #ifndef SPI_BUS_H
 #define SPI_BUS_H
+
+//------------------------------------------------------------------------------
+// Includes
+
+#include "definitions.h"
+#include <stdbool.h>
+#include <stddef.h>
 
 //------------------------------------------------------------------------------
 // Definitions
@@ -15,9 +22,10 @@
  */
 typedef struct {
     GPIO_PIN csPin;
-    void (*transferComplete)(void);
     void* data;
     size_t numberOfBytes;
+    void (*transferComplete)(void);
+    bool inProgress;
 } SpiBusClient;
 
 #endif
