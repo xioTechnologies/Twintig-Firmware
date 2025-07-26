@@ -10,6 +10,7 @@
 //------------------------------------------------------------------------------
 // Includes
 
+#include "Spi/Spi.h"
 #include <stdint.h>
 
 //------------------------------------------------------------------------------
@@ -30,9 +31,13 @@ typedef union {
 } NeoPixelsPixel;
 
 //------------------------------------------------------------------------------
+// Variable declarations
+
+extern const SpiSettings neoPixelsSpiSettings;
+
+//------------------------------------------------------------------------------
 // Function declarations
 
-void NeoPixelsInitialise(void);
 void NeoPixelsSet(const NeoPixelsPixel * const pixels);
 
 #endif

@@ -45,8 +45,10 @@
 #include "Imu/Icm/Icm9.h"
 #include "Imu/Imu.h"
 #include "Leds/Leds.h"
+#include "NeoPixels/NeoPixels.h"
 #include "Notification/Notification.h"
 #include "ResetCause/ResetCause.h"
+#include "Spi/Spi1DmaTx.h"
 #include "Spi/Spi2.h"
 #include "Spi/Spi3Dma.h"
 #include "Spi/Spi4Dma.h"
@@ -82,6 +84,7 @@ int main(void) {
     I2C3Initialise(I2CClockFrequency100kHz);
     I2C4Initialise(I2CClockFrequency100kHz);
     I2C5Initialise(I2CClockFrequency100kHz);
+    Spi1DmaTxInitialise(&neoPixelsSpiSettings);
     Spi2Initialise(&icmSpiSettings);
     Spi3DmaInitialise(&icmSpiSettings);
     Spi4DmaInitialise(&icmSpiSettings);
@@ -145,6 +148,7 @@ int main(void) {
         ImuTasks(&imu18);
         ImuTasks(&imu19);
         ImuTasks(&imu20);
+        LedsTasks();
         NotificationTasks();
         UsbCdcTasks();
         Ximu3DeviceTasks();

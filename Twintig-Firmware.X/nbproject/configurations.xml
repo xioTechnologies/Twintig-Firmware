@@ -184,9 +184,10 @@
           <itemPath>../src/x-io-PIC32-Library/I2C/I2CBBConfig.h</itemPath>
         </logicalFolder>
         <logicalFolder name="NeoPixels" displayName="NeoPixels" projectFiles="true">
-          <itemPath>../src/x-io-PIC32-Library/NeoPixels/HexToBitPattern.h</itemPath>
           <itemPath>../src/x-io-PIC32-Library/NeoPixels/NeoPixels.h</itemPath>
-          <itemPath>../src/x-io-PIC32-Library/NeoPixels/NeoPixelsHal.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/NeoPixels/NeoPixels1.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/NeoPixels/NeoPixelsConfig.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/NeoPixels/BitPattern.h</itemPath>
         </logicalFolder>
         <logicalFolder name="ResetCause" displayName="ResetCause" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/ResetCause/ResetCause.h</itemPath>
@@ -385,6 +386,7 @@
           <itemPath>../src/x-io-PIC32-Library/I2C/I2CBB2.c</itemPath>
         </logicalFolder>
         <logicalFolder name="NeoPixels" displayName="NeoPixels" projectFiles="true">
+          <itemPath>../src/x-io-PIC32-Library/NeoPixels/NeoPixels1.c</itemPath>
           <itemPath>../src/x-io-PIC32-Library/NeoPixels/NeoPixels.c</itemPath>
         </logicalFolder>
         <logicalFolder name="ResetCause" displayName="ResetCause" projectFiles="true">

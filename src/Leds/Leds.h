@@ -11,6 +11,7 @@
 // Function prototypes
 
 void LedsInitialise(void);
+void LedsTasks(void);
 
 #endif
 
