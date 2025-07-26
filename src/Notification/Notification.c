@@ -40,6 +40,18 @@ void NotificationTasks(void) {
             break;
     }
 
+    // USB port
+    switch (ON_CHANGE_POLL_DEBOUNCE(UsbCdcPortOpen())) {
+        case OnChangeEdgeLowToHigh:
+            SendNotification(&send0, "USB port open");
+            break;
+        case OnChangeEdgeHighToLow:
+            SendNotification(&send0, "USB port closed");
+            break;
+        default:
+            break;
+    }
+
     // Do nothing else until polling period elapsed
     if (TIMER_SCHEDULER_POLL(1.0f) == false) {
         return;
