@@ -513,7 +513,7 @@ static inline __attribute__((always_inline)) size_t Write(const MuxChannel chann
     if (interface->enabled == false) {
         return 0;
     }
-    if ((priority == false) && (interface->availableWrite(channel) < (numberOfBytes + 1024))) {
+    if ((priority == false) && (interface->availableWrite(channel) < (numberOfBytes + (20 * 1024)))) {
         return numberOfBytes;
     }
     if (interface->write(channel, data, numberOfBytes) != FifoResultOk) {

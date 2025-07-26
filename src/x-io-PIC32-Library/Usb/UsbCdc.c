@@ -29,7 +29,7 @@ static bool readInProgress;
 static bool writeInProgress;
 static uint8_t readData[4096];
 static Fifo readFifo = {.data = readData, .dataSize = sizeof (readData)};
-static uint8_t writeData[4096];
+static uint8_t writeData[20 * 4096];
 static Fifo writeFifo = {.data = writeData, .dataSize = sizeof (writeData)};
 
 //------------------------------------------------------------------------------
