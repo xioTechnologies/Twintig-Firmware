@@ -35,11 +35,11 @@ const Icm icm6 = {
 };
 static SpiBusClient* spiBusClient;
 static uint8_t deviceId;
-static __attribute__((coherent)) IcmSpiPacket spiPacket;
-static uint64_t timestamp;
+static volatile __attribute__((coherent)) IcmSpiPacket spiPacket;
+static volatile uint64_t timestamp;
 static uint8_t fifoData[100 * sizeof (IcmFifoPacket)];
 static Fifo fifo = {.data = fifoData, .dataSize = sizeof (fifoData)};
-static uint32_t bufferOverflow;
+static volatile uint32_t bufferOverflow;
 
 //------------------------------------------------------------------------------
 // Functions
@@ -159,7 +159,7 @@ static void ExternalInterrupt(GPIO_PIN pin, uintptr_t context) {
     timestamp = TimerGetTicks64();
     spiPacket.rw = 1;
     spiPacket.address = ICM_TEMP_DATA1_ADDRESS;
-    ICM6_SPI_BUS.transfer(spiBusClient, (void *const) &spiPacket, sizeof (IcmSensorRegisters) + 1, TransferComplete);
+    ICM6_SPI_BUS.transfer(spiBusClient, &spiPacket, sizeof (IcmSensorRegisters) + 1, TransferComplete);
 }
 
 /**
