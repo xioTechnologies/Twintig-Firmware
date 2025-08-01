@@ -76,9 +76,6 @@ size_t SerialAvailableWrite(void) {
  * @return Result.
  */
 FifoResult SerialWrite(const void* const data, const size_t numberOfBytes) {
-    if (settings.enabled == false) {
-        return FifoResultOk;
-    }
     const FifoResult result = FifoWrite(&fifo, data, numberOfBytes);
     if (Uart1DmaTxWriteInProgress() == false) {
         WriteComplete();
