@@ -37,7 +37,7 @@ typedef enum {
 
 static inline __attribute__((always_inline)) void Update(Led * const led, const int counter, const uint64_t ticks);
 static inline __attribute__((always_inline)) void SetPwm(Led * const pixel, const LedColour colour, const Brightness brightness);
-static inline __attribute__((always_inline)) void SpiBusTransfer(SpiBusClient * const client, void* const data, const size_t numberOfBytes);
+static inline __attribute__((always_inline)) void SpiBusTransfer(SpiBusClient * const client, volatile void* const data, const size_t numberOfBytes);
 
 //------------------------------------------------------------------------------
 // Variables
@@ -216,7 +216,7 @@ static inline __attribute__((always_inline)) void SetPwm(Led * const led, const 
  * @param data Data.
  * @param numberOfBytes Number of bytes.
  */
-static inline __attribute__((always_inline)) void SpiBusTransfer(SpiBusClient * const client, void* const data, const size_t numberOfBytes) {
+static inline __attribute__((always_inline)) void SpiBusTransfer(SpiBusClient * const client, volatile void* const data, const size_t numberOfBytes) {
     if (SpiBus1TransferInProgress(client)) {
         return;
     }
