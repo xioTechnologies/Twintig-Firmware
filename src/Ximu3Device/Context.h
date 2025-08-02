@@ -35,8 +35,8 @@ typedef struct {
     const Nvm * const nvm;
     Send * const send;
     Led * const led;
-    void(*serialSetSettings)(const SerialSettings * const settings); // NULL if unused
-    HapticResult(*hapticPlay)(const int effect); // NULL if unused
+    void(*const serialSetSettings) (const SerialSettings * const settings); // NULL if unused
+    HapticResult(*const hapticPlay)(const int effect); // NULL if unused
     Imu * const imu; // NULL if unused
 } Context;
 
