@@ -23,8 +23,8 @@
  */
 typedef struct {
     const char* const name;
-    size_t(*read)(void* const destination, size_t numberOfBytes, void* const context);
-    void(*write)(const void* const data, const size_t numberOfBytes, void* const context);
+    size_t(*const read)(void* const destination, size_t numberOfBytes, void* const context);
+    void (*const write) (const void* const data, const size_t numberOfBytes, void* const context);
     uint8_t buffer[XIMU3_OBJECT_SIZE]; // private
     size_t index; // private
 } Ximu3CommandInterface;
@@ -44,7 +44,7 @@ typedef struct {
  */
 typedef struct {
     const char* const key;
-    void (*callback)(const char* * const value, Ximu3CommandResponse * const response, void* const context);
+    void (*const callback) (const char* * const value, Ximu3CommandResponse * const response, void* const context);
 } Ximu3CommandMap;
 
 /**
@@ -56,11 +56,11 @@ typedef struct {
     const Ximu3CommandMap * const commands;
     const int numberOfCommands;
     Ximu3Settings * const settings; // NULL if unused
-    bool(*overrideReadOnly)(void* const context); // NULL if unused
-    void(*writeEpilogue)(const Ximu3SettingsIndex index, void* const context); // NULL if unused
-    void(*unknown)(const char* const key, const char* * const value, Ximu3CommandResponse * const response, void* const context); // NULL if unused
-    Ximu3Result(*mux)(const Ximu3CommandInterface * const interface, const uint8_t channel, const void* const message, const size_t messageSize); // NULL if unused
-    void(*error)(const char* const error, void* const context); // NULL if unused
+    bool (*const overrideReadOnly) (void* const context); // NULL if unused
+    void (*const writeEpilogue) (const Ximu3SettingsIndex index, void* const context); // NULL if unused
+    void (*const unknown) (const char* const key, const char* * const value, Ximu3CommandResponse * const response, void* const context); // NULL if unused
+    Ximu3Result(*const mux)(const Ximu3CommandInterface * const interface, const uint8_t channel, const void* const message, const size_t messageSize); // NULL if unused
+    void (*const error) (const char* const error, void* const context); // NULL if unused
     void* context;
 } Ximu3CommandBridge;
 

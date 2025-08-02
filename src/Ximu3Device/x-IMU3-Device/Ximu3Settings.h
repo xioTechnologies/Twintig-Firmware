@@ -21,10 +21,10 @@
  * @brief Settings.
  */
 typedef struct {
-    void(*nvmRead)(void* const destination, size_t numberOfBytes, void* const context); // NULL if unused
-    void(*nvmWrite)(const void* const data, const size_t numberOfBytes, void* const context); // NULL if unused
-    void(*initialiseEpilogue)(void* const context); // NULL if unused
-    void(*defaultsEpilogue)(void* const context); // NULL if unused
+    void (*const nvmRead) (void* const destination, size_t numberOfBytes, void* const context); // NULL if unused
+    void (*const nvmWrite) (const void* const data, const size_t numberOfBytes, void* const context); // NULL if unused
+    void (*const initialiseEpilogue) (void* const context); // NULL if unused
+    void (*const defaultsEpilogue) (void* const context); // NULL if unused
     void* context;
     Ximu3SettingsValues values; // private
     bool applied[XIMU3_NUMBER_OF_SETTINGS]; // private
