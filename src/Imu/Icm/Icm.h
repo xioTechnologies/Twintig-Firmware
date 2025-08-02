@@ -316,7 +316,7 @@ typedef enum {
 } IcmTestResult;
 
 /**
- * @brief Interface.
+ * @brief ICM interface.
  */
 typedef struct {
     void(*initialise)(const IcmOdr odr);
