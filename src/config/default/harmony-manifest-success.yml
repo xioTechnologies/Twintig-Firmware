@@ -4,7 +4,7 @@
 
 
 project: Twintig-Firmware
-creation_date: 2025-07-27T16:32:17.922+01:00[Europe/London]    # ISO 8601 format: https://www.w3.org/TR/NOTE-datetime
+creation_date: 2025-08-25T15:43:38.317+01:00[Europe/London]    # ISO 8601 format: https://www.w3.org/TR/NOTE-datetime
 operating_system: Windows 11
 mcc_mode: IDE            # [IDE|Standalone|Headless]
 mcc_version: v5.5.2
@@ -14,9 +14,9 @@ harmony_version: v1.5.4
 compiler: XC32 4.60
 
 modules:
-    - {name: "csp", version: "v3.22.0"}
-    - {name: "core", version: "v3.15.0"}
-    - {name: "usb", version: "v3.15.0"}
+    - {name: "csp", version: "v3.22.7"}
+    - {name: "core", version: "v3.15.4"}
+    - {name: "usb", version: "v3.16.0"}
 
 packs:
     - {name: "PIC32MZ-EF_DFP", version: "1.4.168"}
