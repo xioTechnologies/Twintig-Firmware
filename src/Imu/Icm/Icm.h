@@ -69,7 +69,7 @@
 /**
  * @brief DEVICE_CONFIG register reset value.
  */
-#define  ICM_DEVICE_CONFIG_RESET_VALUE (0x00)
+#define ICM_DEVICE_CONFIG_RESET_VALUE (0x00)
 
 /**
  * @brief INTF_CONFIG0 register reset value.
@@ -84,12 +84,12 @@
 /**
  * @brief INT_CONFIG1 register reset value.
  */
-#define  ICM_INT_CONFIG1_RESET_VALUE (0x10)
+#define ICM_INT_CONFIG1_RESET_VALUE (0x10)
 
 /**
  * @brief INT_SOURCE0 register reset value.
  */
-#define  ICM_INT_SOURCE0_RESET_VALUE (0x10)
+#define ICM_INT_SOURCE0_RESET_VALUE (0x10)
 
 /**
  * @brief GYRO_CONFIG0 register reset value.
@@ -99,7 +99,7 @@
 /**
  * @brief ACCEL_CONFIG0 register reset value.
  */
-#define  ICM_ACCEL_CONFIG0_RESET_VALUE (0x06)
+#define ICM_ACCEL_CONFIG0_RESET_VALUE (0x06)
 
 /**
  * @brief PWR_MGMT0 register reset value.

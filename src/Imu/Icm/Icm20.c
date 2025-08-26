@@ -176,7 +176,7 @@ static void TransferComplete(void) {
 }
 
 /**
- * @brief Get data.
+ * @brief Gets data.
  * @param data Data.
  * @return Result.
  */

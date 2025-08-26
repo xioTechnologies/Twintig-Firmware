@@ -525,6 +525,7 @@ static inline __attribute__((always_inline)) size_t Write(const MuxChannel chann
 /**
  * @brief Returns the number of bytes lost due to buffer overflow. Calling
  * this function will reset the value.
+ * @param send Send structure.
  * @return Number of samples lost due to buffer overflow.
  */
 size_t SendUsbBufferOverflow(Send * const send) {
@@ -536,6 +537,7 @@ size_t SendUsbBufferOverflow(Send * const send) {
 /**
  * @brief Returns the number of bytes lost due to buffer overflow. Calling
  * this function will reset the value.
+ * @param send Send structure.
  * @return Number of samples lost due to buffer overflow.
  */
 size_t SendSerialBufferOverflow(Send * const send) {
