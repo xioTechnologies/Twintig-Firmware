@@ -19,10 +19,28 @@
 // Definitions
 
 /**
+ * @brief Sample rate.
+ */
+typedef enum {
+    ImuSampleRate32kHz = 32000,
+    ImuSampleRate16kHz = 16000,
+    ImuSampleRate8kHz = 8000,
+    ImuSampleRate4kHz = 4000,
+    ImuSampleRate2kHz = 2000,
+    ImuSampleRate1kHz = 1000,
+    ImuSampleRate500Hz = 500,
+    ImuSampleRate200Hz = 200,
+    ImuSampleRate100Hz = 100,
+    ImuSampleRate50Hz = 50,
+    ImuSampleRate25Hz = 25,
+    ImuSampleRate12Hz = 12,
+} ImuSampleRate;
+
+/**
  * @brief Settings.
  */
 typedef struct {
-    IcmOdr sampleRate;
+    ImuSampleRate sampleRate;
     FusionMatrix gyroscopeMisalignment;
     FusionVector gyroscopeSensitivity;
     FusionVector gyroscopeOffset;

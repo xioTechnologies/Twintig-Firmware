@@ -17,7 +17,7 @@ typedef enum {
     MetadataTypeFusionConvention,
     MetadataTypeFusionMatrix,
     MetadataTypeFusionVector,
-    MetadataTypeIcmOdr,
+    MetadataTypeImuSampleRate,
     MetadataTypeSendAhrsMessageType,
     MetadataTypeUint32,
 } MetadataType;

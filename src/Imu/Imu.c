@@ -32,6 +32,11 @@
 #include "Timer/Timer.h"
 
 //------------------------------------------------------------------------------
+// Function declarations
+
+static IcmOdr SampleRateToOdr(const ImuSampleRate sampleRate);
+
+//------------------------------------------------------------------------------
 // Variables
 
 Imu imu1 = {.icm = &icm1};
@@ -173,7 +178,7 @@ void ImuSetSettings(Imu * const imu, const ImuSettings * const settings) {
 
     // Initialise hardware
     if ((imu->initialised == false) || (imu->settings.sampleRate != settings->sampleRate)) {
-        imu->icm->initialise(settings->sampleRate);
+        imu->icm->initialise(SampleRateToOdr(settings->sampleRate));
         FusionOffsetInitialise(&imu->offset, (int) (IcmOdrToFloat(settings->sampleRate) + 0.5f));
     }
 
@@ -205,6 +210,41 @@ void ImuSetSettings(Imu * const imu, const ImuSettings * const settings) {
 
     // Set flag
     imu->initialised = true;
+}
+
+/**
+ * @brief Returns the ODR for a sample rate.
+ * @param sampleRate Sample rate.
+ * @return ODR.
+ */
+static IcmOdr SampleRateToOdr(const ImuSampleRate sampleRate) {
+    switch (sampleRate) {
+        case ImuSampleRate32kHz:
+            return IcmOdr32kHz;
+        case ImuSampleRate16kHz:
+            return IcmOdr16kHz;
+        case ImuSampleRate8kHz:
+            return IcmOdr8kHz;
+        case ImuSampleRate4kHz:
+            return IcmOdr4kHz;
+        case ImuSampleRate2kHz:
+            return IcmOdr2kHz;
+        case ImuSampleRate1kHz:
+            return IcmOdr1kHz;
+        case ImuSampleRate500Hz:
+            return IcmOdr500Hz;
+        case ImuSampleRate200Hz:
+            return IcmOdr200Hz;
+        case ImuSampleRate100Hz:
+            return IcmOdr100Hz;
+        case ImuSampleRate50Hz:
+            return IcmOdr50Hz;
+        case ImuSampleRate25Hz:
+            return IcmOdr25Hz;
+        case ImuSampleRate12Hz:
+            return IcmOdr12Hz;
+    }
+    return IcmOdr1kHz; // avoid compiler warning
 }
 
 /**

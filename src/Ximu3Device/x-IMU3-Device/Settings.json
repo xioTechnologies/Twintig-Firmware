@@ -1,7 +1,7 @@
 {
     "includes": [
         "\"Imu/Fusion/Fusion.h\"",
-        "\"Imu/Icm/Icm.h\"",
+        "\"Imu/Imu.h\"",
         "\"Send/Send.h\"",
         "<stdbool.h>",
         "<stdint.h>"
@@ -89,8 +89,8 @@
         },
         {
             "name": "Sample rate",
-            "declaration": "IcmOdr name",
-            "default": "{IcmOdr100Hz}"
+            "declaration": "ImuSampleRate name",
+            "default": "{ImuSampleRate100Hz}"
         },
         {
             "name": "Axes alignment",

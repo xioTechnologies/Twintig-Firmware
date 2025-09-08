@@ -4,7 +4,7 @@
 #define XIMU3_DEFINITIONS_H
 
 #include "Imu/Fusion/Fusion.h"
-#include "Imu/Icm/Icm.h"
+#include "Imu/Imu.h"
 #include "Send/Send.h"
 #include <stdbool.h>
 #include <stdint.h>
@@ -43,7 +43,7 @@ typedef struct {
     bool serialEnabled;
     uint32_t serialBaudRate;
     bool serialRtsCtsEnabled;
-    IcmOdr sampleRate;
+    ImuSampleRate sampleRate;
     FusionAxesAlignment axesAlignment;
     bool gyroscopeOffsetCorrectionEnabled;
     uint32_t ahrsUpdateRateDivisor;

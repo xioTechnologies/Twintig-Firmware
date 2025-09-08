@@ -186,20 +186,20 @@ static void SetValue(const Metadata * const metadata, const void* const value) {
                     return;
             }
             break;
-        case MetadataTypeIcmOdr:
-            switch (*(IcmOdr*) value) {
-                case IcmOdr32kHz:
-                case IcmOdr16kHz:
-                case IcmOdr8kHz:
-                case IcmOdr4kHz:
-                case IcmOdr2kHz:
-                case IcmOdr1kHz:
-                case IcmOdr200Hz:
-                case IcmOdr100Hz:
-                case IcmOdr50Hz:
-                case IcmOdr25Hz:
-                case IcmOdr12Hz:
-                case IcmOdr500Hz:
+        case MetadataTypeImuSampleRate:
+            switch (*(ImuSampleRate*) value) {
+                case ImuSampleRate32kHz:
+                case ImuSampleRate16kHz:
+                case ImuSampleRate8kHz:
+                case ImuSampleRate4kHz:
+                case ImuSampleRate2kHz:
+                case ImuSampleRate1kHz:
+                case ImuSampleRate500Hz:
+                case ImuSampleRate200Hz:
+                case ImuSampleRate100Hz:
+                case ImuSampleRate50Hz:
+                case ImuSampleRate25Hz:
+                case ImuSampleRate12Hz:
                     memcpy(metadata->value, value, metadata->size);
                     return;
             }
