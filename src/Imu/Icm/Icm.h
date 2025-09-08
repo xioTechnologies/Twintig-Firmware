@@ -333,7 +333,6 @@ extern const SpiSettings icmSpiSettings;
 //------------------------------------------------------------------------------
 // Function declaration
 
-float IcmOdrToFloat(const IcmOdr odr);
 const char* IcmTestResultToString(const IcmTestResult result);
 
 #endif

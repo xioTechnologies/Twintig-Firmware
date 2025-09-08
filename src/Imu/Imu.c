@@ -179,7 +179,7 @@ void ImuSetSettings(Imu * const imu, const ImuSettings * const settings) {
     // Initialise hardware
     if ((imu->initialised == false) || (imu->settings.sampleRate != settings->sampleRate)) {
         imu->icm->initialise(SampleRateToOdr(settings->sampleRate));
-        FusionOffsetInitialise(&imu->offset, (int) (IcmOdrToFloat(settings->sampleRate) + 0.5f));
+        FusionOffsetInitialise(&imu->offset, (unsigned int) settings->sampleRate);
     }
 
     // Initialise AHRS
