@@ -131,6 +131,7 @@ void CommandsColour(const char* * const value, Ximu3CommandResponse * const resp
     const Context * const context_ = context;
     if (JsonParseNull(value) == JsonResultOk) {
         LedDisableOverride(context_->led);
+        Ximu3CommandRespond(response);
         return;
     }
 
