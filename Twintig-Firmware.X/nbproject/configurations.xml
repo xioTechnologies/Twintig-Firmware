@@ -144,6 +144,7 @@
           <itemPath>../src/Imu/Icm/Icm7.h</itemPath>
           <itemPath>../src/Imu/Icm/Icm8.h</itemPath>
           <itemPath>../src/Imu/Icm/Icm9.h</itemPath>
+          <itemPath>../src/Imu/Icm/IcmRegisters.h</itemPath>
         </logicalFolder>
         <itemPath>../src/Imu/Imu.h</itemPath>
       </logicalFolder>

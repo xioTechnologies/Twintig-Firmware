@@ -11,6 +11,7 @@
 #include "Fifo.h"
 #include "Icm5.h"
 #include "IcmConfig.h"
+#include "IcmRegisters.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
