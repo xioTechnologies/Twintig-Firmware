@@ -186,6 +186,76 @@ static void SetValue(const Metadata * const metadata, const void* const value) {
                     return;
             }
             break;
+        case MetadataTypeImuAntiAliasing:
+            switch (*(ImuAntiAliasing*) value) {
+                case ImuAntiAliasingDisabled:
+                case ImuAntiAliasing42Hz:
+                case ImuAntiAliasing84Hz:
+                case ImuAntiAliasing126Hz:
+                case ImuAntiAliasing170Hz:
+                case ImuAntiAliasing213Hz:
+                case ImuAntiAliasing258Hz:
+                case ImuAntiAliasing303Hz:
+                case ImuAntiAliasing348Hz:
+                case ImuAntiAliasing394Hz:
+                case ImuAntiAliasing441Hz:
+                case ImuAntiAliasing488Hz:
+                case ImuAntiAliasing536Hz:
+                case ImuAntiAliasing585Hz:
+                case ImuAntiAliasing634Hz:
+                case ImuAntiAliasing684Hz:
+                case ImuAntiAliasing734Hz:
+                case ImuAntiAliasing785Hz:
+                case ImuAntiAliasing837Hz:
+                case ImuAntiAliasing890Hz:
+                case ImuAntiAliasing943Hz:
+                case ImuAntiAliasing997Hz:
+                case ImuAntiAliasing1051Hz:
+                case ImuAntiAliasing1107Hz:
+                case ImuAntiAliasing1163Hz:
+                case ImuAntiAliasing1220Hz:
+                case ImuAntiAliasing1277Hz:
+                case ImuAntiAliasing1336Hz:
+                case ImuAntiAliasing1395Hz:
+                case ImuAntiAliasing1454Hz:
+                case ImuAntiAliasing1515Hz:
+                case ImuAntiAliasing1577Hz:
+                case ImuAntiAliasing1639Hz:
+                case ImuAntiAliasing1702Hz:
+                case ImuAntiAliasing1766Hz:
+                case ImuAntiAliasing1830Hz:
+                case ImuAntiAliasing1896Hz:
+                case ImuAntiAliasing1962Hz:
+                case ImuAntiAliasing2029Hz:
+                case ImuAntiAliasing2097Hz:
+                case ImuAntiAliasing2166Hz:
+                case ImuAntiAliasing2235Hz:
+                case ImuAntiAliasing2306Hz:
+                case ImuAntiAliasing2377Hz:
+                case ImuAntiAliasing2449Hz:
+                case ImuAntiAliasing2522Hz:
+                case ImuAntiAliasing2596Hz:
+                case ImuAntiAliasing2671Hz:
+                case ImuAntiAliasing2746Hz:
+                case ImuAntiAliasing2823Hz:
+                case ImuAntiAliasing2900Hz:
+                case ImuAntiAliasing2978Hz:
+                case ImuAntiAliasing3057Hz:
+                case ImuAntiAliasing3137Hz:
+                case ImuAntiAliasing3217Hz:
+                case ImuAntiAliasing3299Hz:
+                case ImuAntiAliasing3381Hz:
+                case ImuAntiAliasing3464Hz:
+                case ImuAntiAliasing3548Hz:
+                case ImuAntiAliasing3633Hz:
+                case ImuAntiAliasing3718Hz:
+                case ImuAntiAliasing3805Hz:
+                case ImuAntiAliasing3892Hz:
+                case ImuAntiAliasing3979Hz:
+                    memcpy(metadata->value, value, metadata->size);
+                    return;
+            }
+            break;
         case MetadataTypeImuSampleRate:
             switch (*(ImuSampleRate*) value) {
                 case ImuSampleRate32kHz:

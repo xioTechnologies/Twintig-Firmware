@@ -22,7 +22,7 @@ extern const Icm icm9;
 //------------------------------------------------------------------------------
 // Function declaration
 
-void Icm9Initialise(const IcmOdr odr);
+void Icm9Initialise(const IcmSettings * const settings);
 void Icm9Deinitialise(void);
 IcmResult Icm9GetData(IcmData * const data);
 uint32_t Icm9BufferOverflow(void);

@@ -22,7 +22,7 @@ extern const Icm icm8;
 //------------------------------------------------------------------------------
 // Function declaration
 
-void Icm8Initialise(const IcmOdr odr);
+void Icm8Initialise(const IcmSettings * const settings);
 void Icm8Deinitialise(void);
 IcmResult Icm8GetData(IcmData * const data);
 uint32_t Icm8BufferOverflow(void);

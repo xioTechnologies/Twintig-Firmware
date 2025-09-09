@@ -46,6 +46,9 @@ Ximu3Result Ximu3SettingsIndexFrom(Ximu3SettingsIndex * const index, const int i
         case Ximu3SettingsIndexSerialRtsCtsEnabled:
             *index = Ximu3SettingsIndexSerialRtsCtsEnabled;
             break;
+        case Ximu3SettingsIndexAntiAliasing:
+            *index = Ximu3SettingsIndexAntiAliasing;
+            break;
         case Ximu3SettingsIndexSampleRate:
             *index = Ximu3SettingsIndexSampleRate;
             break;

@@ -22,7 +22,7 @@ extern const Icm icm19;
 //------------------------------------------------------------------------------
 // Function declaration
 
-void Icm19Initialise(const IcmOdr odr);
+void Icm19Initialise(const IcmSettings * const settings);
 void Icm19Deinitialise(void);
 IcmResult Icm19GetData(IcmData * const data);
 uint32_t Icm19BufferOverflow(void);

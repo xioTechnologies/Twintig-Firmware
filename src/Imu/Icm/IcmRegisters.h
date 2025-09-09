@@ -13,7 +13,7 @@
 #include <stdint.h>
 
 //------------------------------------------------------------------------------
-// Definitions
+// Definitions - Register bank 0
 
 #define ICM_DEVICE_CONFIG_ADDRESS       (0x11)
 #define ICM_INT_CONFIG_ADDRESS          (0x14)
@@ -25,6 +25,7 @@
 #define ICM_INT_CONFIG1_ADDRESS         (0x64)
 #define ICM_INT_SOURCE0_ADDRESS         (0x65)
 #define ICM_WHO_AM_I_ADDRESS            (0x75)
+#define ICM_REG_BANK_SEL_ADDRESS        (0x76)
 
 #define ICM_DEVICE_CONFIG_RESET_VALUE   (0x00)
 #define ICM_INTF_CONFIG0_RESET_VALUE    (0x30)
@@ -142,6 +143,93 @@ typedef union {
     } __attribute__((__packed__));
     uint8_t value;
 } IcmIntSource0Register;
+
+//------------------------------------------------------------------------------
+// Definitions - Register bank 1
+
+#define ICM_GYRO_CONFIG_STATIC2_ADDRESS     (0x0B)
+#define ICM_GYRO_CONFIG_STATIC3_ADDRESS     (0x0C)
+#define ICM_GYRO_CONFIG_STATIC4_ADDRESS     (0x0D)
+#define ICM_GYRO_CONFIG_STATIC5_ADDRESS     (0x0E)
+
+#define ICM_GYRO_CONFIG_STATIC2_RESET_VALUE (0xA0)
+#define ICM_GYRO_CONFIG_STATIC3_RESET_VALUE (0x0D)
+#define ICM_GYRO_CONFIG_STATIC4_RESET_VALUE (0xAA)
+#define ICM_GYRO_CONFIG_STATIC5_RESET_VALUE (0x80)
+
+typedef union {
+
+    struct {
+        unsigned gyroNfDis : 1;
+        unsigned gyroAafDis : 1;
+        unsigned : 6;
+    } __attribute__((__packed__));
+    uint8_t value;
+} IcmGyroConfigStatic2Register;
+
+typedef union {
+
+    struct {
+        unsigned gyroAafDelt : 6;
+        unsigned : 2;
+    } __attribute__((__packed__));
+    uint8_t value;
+} IcmGyroConfigStatic3Register;
+
+typedef union {
+
+    struct {
+        unsigned gyroAafDeltsqrLsb : 8;
+    } __attribute__((__packed__));
+    uint8_t value;
+} IcmGyroConfigStatic4Register;
+
+typedef union {
+
+    struct {
+        unsigned gyroAafDeltsqrMsb : 4;
+        unsigned gyroAafBitshift : 4;
+    } __attribute__((__packed__));
+    uint8_t value;
+} IcmGyroConfigStatic5Register;
+
+//------------------------------------------------------------------------------
+// Definitions - Register bank 2
+
+#define ICM_ACCEL_CONFIG_STATIC2_ADDRESS        (0x03)
+#define ICM_ACCEL_CONFIG_STATIC3_ADDRESS        (0x04)
+#define ICM_ACCEL_CONFIG_STATIC4_ADDRESS        (0x05)
+
+#define ICM_ACCEL_CONFIG_STATIC2_RESET_VALUE    (0x30)
+#define ICM_ACCEL_CONFIG_STATIC3_RESET_VALUE    (0x40)
+#define ICM_ACCEL_CONFIG_STATIC4_RESET_VALUE    (0x62)
+
+typedef union {
+
+    struct {
+        unsigned accelAafDis : 1;
+        unsigned accelAafDelt : 6;
+        unsigned : 1;
+    } __attribute__((__packed__));
+    uint8_t value;
+} IcmAccelConfigStatic2Register;
+
+typedef union {
+
+    struct {
+        unsigned accelAafDeltsqrLsb : 8;
+    } __attribute__((__packed__));
+    uint8_t value;
+} IcmAccelConfigStatic3Register;
+
+typedef union {
+
+    struct {
+        unsigned accelAafDeltsqrMsb : 4;
+        unsigned accelAafBitshift : 4;
+    } __attribute__((__packed__));
+    uint8_t value;
+} IcmAccelConfigStatic4Register;
 
 #endif
 

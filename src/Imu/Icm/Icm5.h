@@ -22,7 +22,7 @@ extern const Icm icm5;
 //------------------------------------------------------------------------------
 // Function declaration
 
-void Icm5Initialise(const IcmOdr odr);
+void Icm5Initialise(const IcmSettings * const settings);
 void Icm5Deinitialise(void);
 IcmResult Icm5GetData(IcmData * const data);
 uint32_t Icm5BufferOverflow(void);

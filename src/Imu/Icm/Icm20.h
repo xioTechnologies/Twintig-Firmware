@@ -22,7 +22,7 @@ extern const Icm icm20;
 //------------------------------------------------------------------------------
 // Function declaration
 
-void Icm20Initialise(const IcmOdr odr);
+void Icm20Initialise(const IcmSettings * const settings);
 void Icm20Deinitialise(void);
 IcmResult Icm20GetData(IcmData * const data);
 uint32_t Icm20BufferOverflow(void);

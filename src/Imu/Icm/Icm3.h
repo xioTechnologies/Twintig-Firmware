@@ -22,7 +22,7 @@ extern const Icm icm3;
 //------------------------------------------------------------------------------
 // Function declaration
 
-void Icm3Initialise(const IcmOdr odr);
+void Icm3Initialise(const IcmSettings * const settings);
 void Icm3Deinitialise(void);
 IcmResult Icm3GetData(IcmData * const data);
 uint32_t Icm3BufferOverflow(void);

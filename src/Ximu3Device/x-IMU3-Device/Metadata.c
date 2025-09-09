@@ -17,6 +17,7 @@ static const char* const names[] = {
     "Serial Enabled",
     "Serial Baud Rate",
     "Serial RTS/CTS Enabled",
+    "Anti-aliasing",
     "Sample Rate",
     "Axes Alignment",
     "Gyroscope Offset Correction Enabled",
@@ -48,6 +49,7 @@ static const char* const keys[] = {
     "serial_enabled",
     "serial_baud_rate",
     "serial_rts_cts_enabled",
+    "anti_aliasing",
     "sample_rate",
     "axes_alignment",
     "gyroscope_offset_correction_enabled",
@@ -79,6 +81,7 @@ const MetadataType types[] = {
     MetadataTypeBool,
     MetadataTypeUint32,
     MetadataTypeBool,
+    MetadataTypeImuAntiAliasing,
     MetadataTypeImuSampleRate,
     MetadataTypeFusionAxesAlignment,
     MetadataTypeBool,
@@ -110,6 +113,7 @@ const size_t sizes[] = {
     sizeof (((Ximu3SettingsValues *) 0)->serialEnabled),
     sizeof (((Ximu3SettingsValues *) 0)->serialBaudRate),
     sizeof (((Ximu3SettingsValues *) 0)->serialRtsCtsEnabled),
+    sizeof (((Ximu3SettingsValues *) 0)->antiAliasing),
     sizeof (((Ximu3SettingsValues *) 0)->sampleRate),
     sizeof (((Ximu3SettingsValues *) 0)->axesAlignment),
     sizeof (((Ximu3SettingsValues *) 0)->gyroscopeOffsetCorrectionEnabled),
@@ -138,9 +142,10 @@ const void* const defaults[] = {
     (void*) (&(FusionVector) {{0.0f, 0.0f, 0.0f}}),
     (void*) (&(char[32]) {"Unknown"}),
     (void*) (&(char[32]) {"Unknown"}),
-    (void*) (&(bool) {true}),
+    (void*) (&(bool) {false}),
     (void*) (&(uint32_t) {3000000}),
     (void*) (&(bool) {false}),
+    (void*) (&(ImuAntiAliasing) {ImuAntiAliasing42Hz}),
     (void*) (&(ImuSampleRate) {ImuSampleRate100Hz}),
     (void*) (&(FusionAxesAlignment) {FusionAxesAlignmentPXPYPZ}),
     (void*) (&(bool) {false}),
@@ -167,6 +172,7 @@ const bool preserveds[] = {
     true,
     true,
     true,
+    false,
     false,
     false,
     false,
@@ -217,6 +223,7 @@ const bool readOnlys[] = {
     false,
     false,
     false,
+    false,
 };
 
 static void* GetValue(Ximu3Settings * const settings, const Ximu3SettingsIndex index) {
@@ -249,6 +256,8 @@ static void* GetValue(Ximu3Settings * const settings, const Ximu3SettingsIndex i
             return &settings->values.serialBaudRate;
         case Ximu3SettingsIndexSerialRtsCtsEnabled:
             return &settings->values.serialRtsCtsEnabled;
+        case Ximu3SettingsIndexAntiAliasing:
+            return &settings->values.antiAliasing;
         case Ximu3SettingsIndexSampleRate:
             return &settings->values.sampleRate;
         case Ximu3SettingsIndexAxesAlignment:

@@ -22,7 +22,7 @@ extern const Icm icm10;
 //------------------------------------------------------------------------------
 // Function declaration
 
-void Icm10Initialise(const IcmOdr odr);
+void Icm10Initialise(const IcmSettings * const settings);
 void Icm10Deinitialise(void);
 IcmResult Icm10GetData(IcmData * const data);
 uint32_t Icm10BufferOverflow(void);

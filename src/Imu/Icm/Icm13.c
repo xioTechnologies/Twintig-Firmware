@@ -47,9 +47,9 @@ static volatile uint32_t bufferOverflow;
 
 /**
  * @brief Initialises the module.
- * @param odr ODR.
+ * @param settings Settings.
  */
-void Icm13Initialise(const IcmOdr odr) {
+void Icm13Initialise(const IcmSettings * const settings) {
 
     // Add SPI bus client
     if (spiBusClient == NULL) {
@@ -90,14 +90,55 @@ void Icm13Initialise(const IcmOdr odr) {
     intSource0Register.UiDrdyInt1En = 1; // UI data ready interrupt routed to INT1
     WriteRegister(ICM_INT_SOURCE0_ADDRESS, intSource0Register.value);
 
-    // Configure gyroscope
+    // Select register bank 2
+    WriteRegister(ICM_REG_BANK_SEL_ADDRESS, 1);
+
+    // Configure gyroscope anti-aliasing filter
+    IcmGyroConfigStatic2Register gyroConfigStatic2Register = {.value = ICM_GYRO_CONFIG_STATIC2_RESET_VALUE};
+    gyroConfigStatic2Register.gyroAafDis = settings->aafDisable ? 1 : 0;
+    WriteRegister(ICM_GYRO_CONFIG_STATIC2_ADDRESS, gyroConfigStatic2Register.value);
+
+    IcmGyroConfigStatic3Register gyroConfigStatic3Register = {.value = ICM_GYRO_CONFIG_STATIC3_RESET_VALUE};
+    gyroConfigStatic3Register.gyroAafDelt = settings->aaf.delt;
+    WriteRegister(ICM_GYRO_CONFIG_STATIC3_ADDRESS, gyroConfigStatic3Register.value);
+
+    IcmGyroConfigStatic4Register gyroConfigStatic4Register = {.value = ICM_GYRO_CONFIG_STATIC4_RESET_VALUE};
+    gyroConfigStatic4Register.gyroAafDeltsqrLsb = settings->aaf.deltsqr & 0xFF;
+    WriteRegister(ICM_GYRO_CONFIG_STATIC4_ADDRESS, gyroConfigStatic4Register.value);
+
+    IcmGyroConfigStatic5Register gyroConfigStatic5Register = {.value = ICM_GYRO_CONFIG_STATIC5_RESET_VALUE};
+    gyroConfigStatic5Register.gyroAafDeltsqrMsb = settings->aaf.deltsqr >> 8;
+    gyroConfigStatic5Register.gyroAafBitshift = settings->aaf.bitshift;
+    WriteRegister(ICM_GYRO_CONFIG_STATIC5_ADDRESS, gyroConfigStatic5Register.value);
+
+    // Select register bank 2
+    WriteRegister(ICM_REG_BANK_SEL_ADDRESS, 2);
+
+    // Configure accelerometer anti-aliasing filter
+    IcmAccelConfigStatic2Register accelConfigStatic2Register = {.value = ICM_ACCEL_CONFIG_STATIC2_RESET_VALUE};
+    accelConfigStatic2Register.accelAafDis = settings->aafDisable ? 1 : 0;
+    WriteRegister(ICM_ACCEL_CONFIG_STATIC2_ADDRESS, accelConfigStatic2Register.value);
+
+    IcmAccelConfigStatic3Register accelConfigStatic3Register = {.value = ICM_ACCEL_CONFIG_STATIC3_RESET_VALUE};
+    accelConfigStatic3Register.accelAafDeltsqrLsb = settings->aaf.deltsqr & 0xFF;
+    WriteRegister(ICM_ACCEL_CONFIG_STATIC3_ADDRESS, accelConfigStatic3Register.value);
+
+    IcmAccelConfigStatic4Register accelConfigStatic4Register = {.value = ICM_ACCEL_CONFIG_STATIC4_RESET_VALUE};
+    accelConfigStatic4Register.accelAafDeltsqrMsb = settings->aaf.deltsqr >> 8;
+    accelConfigStatic4Register.accelAafBitshift = settings->aaf.bitshift;
+    WriteRegister(ICM_ACCEL_CONFIG_STATIC4_ADDRESS, accelConfigStatic4Register.value);
+
+    // Select register bank 0
+    WriteRegister(ICM_REG_BANK_SEL_ADDRESS, 0);
+
+    // Configure gyroscope ODR
     IcmGyroConfig0Register gyroConfig0Register = {.value = ICM_GYRO_CONFIG0_RESET_VALUE};
-    gyroConfig0Register.gyroOdr = odr;
+    gyroConfig0Register.gyroOdr = settings->odr;
     WriteRegister(ICM_GYRO_CONFIG0_ADDRESS, gyroConfig0Register.value);
 
-    // Configure accelerometer
+    // Configure accelerometer ODR
     IcmAccelConfig0Register accelConfig0Register = {.value = ICM_ACCEL_CONFIG0_RESET_VALUE};
-    accelConfig0Register.accelOdr = odr;
+    accelConfig0Register.accelOdr = settings->odr;
     WriteRegister(ICM_ACCEL_CONFIG0_ADDRESS, accelConfig0Register.value);
 
     // Turn on gyroscope and accelerometer

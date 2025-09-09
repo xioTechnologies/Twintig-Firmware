@@ -19,7 +19,7 @@
 
 #define XIMU3_MAX_KEY_LENGTH 35
 
-#define XIMU3_NUMBER_OF_SETTINGS 28
+#define XIMU3_NUMBER_OF_SETTINGS 29
 
 #define XIMU3_MUX_HEADER_SIZE 2
 
@@ -43,6 +43,7 @@ typedef struct {
     bool serialEnabled;
     uint32_t serialBaudRate;
     bool serialRtsCtsEnabled;
+    ImuAntiAliasing antiAliasing;
     ImuSampleRate sampleRate;
     FusionAxesAlignment axesAlignment;
     bool gyroscopeOffsetCorrectionEnabled;
@@ -74,6 +75,7 @@ typedef enum {
     Ximu3SettingsIndexSerialEnabled,
     Ximu3SettingsIndexSerialBaudRate,
     Ximu3SettingsIndexSerialRtsCtsEnabled,
+    Ximu3SettingsIndexAntiAliasing,
     Ximu3SettingsIndexSampleRate,
     Ximu3SettingsIndexAxesAlignment,
     Ximu3SettingsIndexGyroscopeOffsetCorrectionEnabled,

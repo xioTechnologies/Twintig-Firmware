@@ -75,7 +75,7 @@
         {
             "name": "Serial enabled",
             "declaration": "bool name",
-            "default": "{true}"
+            "default": "{false}"
         },
         {
             "name": "Serial baud rate",
@@ -86,6 +86,11 @@
             "name": "Serial RTS/CTS enabled",
             "declaration": "bool name",
             "default": "{false}"
+        },
+        {
+            "name": "Anti-aliasing",
+            "declaration": "ImuAntiAliasing name",
+            "default": "{ImuAntiAliasing42Hz}"
         },
         {
             "name": "Sample rate",
