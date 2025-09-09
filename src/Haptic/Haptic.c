@@ -146,7 +146,7 @@ HapticTestResult HapticTest(void) {
     // Check device ID
     StatusRegister status = {.value = ReadRegister(STATUS_REGISTER_ADDRESS)};
     if (status.deviceID != 7) {
-        return HapticTestResultInvalidID;
+        return HapticTestResultInvalidId;
     }
 
     // Perform a diagnostic test
@@ -184,7 +184,7 @@ const char* HapticTestResultToString(const HapticTestResult result) {
             return "Passed";
         case HapticTestResultAckFailed:
             return "ACK failed";
-        case HapticTestResultInvalidID:
+        case HapticTestResultInvalidId:
             return "Invalid ID";
         case HapticTestResultDiagnosticsFailed:
             return "Diagnostic failed";

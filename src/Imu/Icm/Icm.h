@@ -161,12 +161,12 @@ typedef struct {
 typedef union {
 
     struct {
-        unsigned UISifsCfg : 2;
+        unsigned UiSifsCfg : 2;
         unsigned : 2;
         unsigned sensorDataEndian : 1;
         unsigned fifoCountEndian : 1;
         unsigned fifoCountRec : 1;
-        unsigned fifoHoldLastDataEN : 1;
+        unsigned fifoHoldLastDataEn : 1;
     } __attribute__((__packed__));
     uint8_t value;
 } IcmIntfConfig0Register;
@@ -194,7 +194,7 @@ typedef union {
     struct {
         unsigned gyroOdr : 4;
         unsigned : 1;
-        unsigned gyroFSSel : 3;
+        unsigned gyroFsSel : 3;
     } __attribute__((__packed__));
     uint8_t value;
 } IcmGyroConfig0Register;
@@ -207,7 +207,7 @@ typedef union {
     struct {
         unsigned accelOdr : 4;
         unsigned : 1;
-        unsigned accelFSSel : 3;
+        unsigned accelFsSel : 3;
     } __attribute__((__packed__));
     uint8_t value;
 } IcmAccelConfig0Register;
@@ -233,13 +233,13 @@ typedef union {
 typedef union {
 
     struct {
-        unsigned UIAgcRdyInt1EN : 1;
-        unsigned FifoFullInt1EN : 1;
-        unsigned FifoThsInt1EN : 1;
-        unsigned UIDrdyInt1EN : 1;
-        unsigned ResetDoneInt1EN : 1;
-        unsigned PllRdyInt1EN : 1;
-        unsigned UIFsyncInt1EN : 1;
+        unsigned UiAgcRdyInt1En : 1;
+        unsigned FifoFullInt1En : 1;
+        unsigned FifoThsInt1En : 1;
+        unsigned UiDrdyInt1En : 1;
+        unsigned ResetDoneInt1En : 1;
+        unsigned PllRdyInt1En : 1;
+        unsigned UiFsyncInt1En : 1;
         unsigned : 1;
     } __attribute__((__packed__));
     uint8_t value;
@@ -311,7 +311,7 @@ typedef struct {
  */
 typedef enum {
     IcmTestResultPassed,
-    IcmTestResultInvalidID,
+    IcmTestResultInvalidId,
     IcmTestResultInterruptFailed,
 } IcmTestResult;
 

@@ -30,7 +30,7 @@ const char* IcmTestResultToString(const IcmTestResult result) {
     switch (result) {
         case IcmTestResultPassed:
             return "Passed";
-        case IcmTestResultInvalidID:
+        case IcmTestResultInvalidId:
             return "Invalid ID";
         case IcmTestResultInterruptFailed:
             return "Interrupt failed";

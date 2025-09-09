@@ -24,7 +24,7 @@ typedef enum {
 typedef enum {
     HapticTestResultPassed,
     HapticTestResultAckFailed,
-    HapticTestResultInvalidID,
+    HapticTestResultInvalidId,
     HapticTestResultDiagnosticsFailed,
     HapticTestResultOverTemperature,
     HapticTestResultOverCurrent,

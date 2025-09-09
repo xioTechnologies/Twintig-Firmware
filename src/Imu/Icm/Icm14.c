@@ -86,7 +86,7 @@ void Icm14Initialise(const IcmOdr odr) {
 
     // Configure interrupt source
     IcmIntSource0Register intSource0Register = {.value = ICM_INT_SOURCE0_RESET_VALUE};
-    intSource0Register.UIDrdyInt1EN = 1; // UI data ready interrupt routed to INT1
+    intSource0Register.UiDrdyInt1En = 1; // UI data ready interrupt routed to INT1
     WriteRegister(ICM_INT_SOURCE0_ADDRESS, intSource0Register.value);
 
     // Configure gyroscope
@@ -213,7 +213,7 @@ IcmTestResult Icm14Test(void) {
 
     // Check device ID
     if (deviceId != ICM_WHO_AM_I_RESET_VALUE) {
-        return IcmTestResultInvalidID;
+        return IcmTestResultInvalidId;
     }
 
     // Check interrupt
