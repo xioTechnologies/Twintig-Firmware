@@ -26,7 +26,7 @@
  * @param context Context.
  */
 void CommandsDefault(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
-    if (Ximu3CommandParseNull(value, response) != 0) {
+    if (Ximu3CommandParseNull(value, response) != Ximu3ResultOk) {
         return;
     }
     Context * const context_ = context;
@@ -42,7 +42,7 @@ void CommandsDefault(const char* * const value, Ximu3CommandResponse * const res
  * @param context Context.
  */
 void CommandsApply(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
-    if (Ximu3CommandParseNull(value, response) != 0) {
+    if (Ximu3CommandParseNull(value, response) != Ximu3ResultOk) {
         return;
     }
     Context * const context_ = context;
@@ -57,7 +57,7 @@ void CommandsApply(const char* * const value, Ximu3CommandResponse * const respo
  * @param context Context.
  */
 void CommandsSave(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
-    if (Ximu3CommandParseNull(value, response) != 0) {
+    if (Ximu3CommandParseNull(value, response) != Ximu3ResultOk) {
         return;
     }
     const Context * const context_ = context;
@@ -76,7 +76,7 @@ void CommandsSave(const char* * const value, Ximu3CommandResponse * const respon
  * @param context Context.
  */
 void CommandsPing(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
-    if (Ximu3CommandParseNull(value, response) != 0) {
+    if (Ximu3CommandParseNull(value, response) != Ximu3ResultOk) {
         return;
     }
     const Context * const context_ = context;
@@ -90,7 +90,7 @@ void CommandsPing(const char* * const value, Ximu3CommandResponse * const respon
  * @param context Context.
  */
 void CommandsBlink(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
-    if (Ximu3CommandParseNull(value, response) != 0) {
+    if (Ximu3CommandParseNull(value, response) != Ximu3ResultOk) {
         return;
     }
     const Context * const context_ = context;
@@ -108,7 +108,7 @@ void CommandsBlink(const char* * const value, Ximu3CommandResponse * const respo
  * @param context Context.
  */
 void CommandsStrobe(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
-    if (Ximu3CommandParseNull(value, response) != 0) {
+    if (Ximu3CommandParseNull(value, response) != Ximu3ResultOk) {
         return;
     }
     const Context * const context_ = context;
@@ -137,7 +137,7 @@ void CommandsColour(const char* * const value, Ximu3CommandResponse * const resp
 
     // Parse string
     char string[XIMU3_VALUE_SIZE];
-    if (Ximu3CommandParseString(value, response, string, sizeof (string), NULL) != 0) {
+    if (Ximu3CommandParseString(value, response, string, sizeof (string), NULL) != Ximu3ResultOk) {
         return;
     }
 
@@ -162,7 +162,7 @@ void CommandsColour(const char* * const value, Ximu3CommandResponse * const resp
  */
 void CommandsHaptic(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
     float id;
-    if (Ximu3CommandParseNumber(value, response, &id) != 0) {
+    if (Ximu3CommandParseNumber(value, response, &id) != Ximu3ResultOk) {
         return;
     }
     const Context * const context_ = context;
@@ -182,7 +182,7 @@ void CommandsHaptic(const char* * const value, Ximu3CommandResponse * const resp
  * @param context Context.
  */
 void CommandsInitialise(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
-    if (Ximu3CommandParseNull(value, response) != 0) {
+    if (Ximu3CommandParseNull(value, response) != Ximu3ResultOk) {
         return;
     }
     const Context * const context_ = context;
@@ -200,7 +200,7 @@ void CommandsInitialise(const char* * const value, Ximu3CommandResponse * const 
  */
 void CommandsHeading(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
     float heading;
-    if (Ximu3CommandParseNumber(value, response, &heading) != 0) {
+    if (Ximu3CommandParseNumber(value, response, &heading) != Ximu3ResultOk) {
         return;
     }
     const Context * const context_ = context;
@@ -218,7 +218,7 @@ void CommandsHeading(const char* * const value, Ximu3CommandResponse * const res
  */
 void CommandsNote(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
     char string[XIMU3_VALUE_SIZE];
-    if (Ximu3CommandParseString(value, response, string, sizeof (string), NULL) != 0) {
+    if (Ximu3CommandParseString(value, response, string, sizeof (string), NULL) != Ximu3ResultOk) {
         return;
     }
     const Context * const context_ = context;
@@ -233,7 +233,7 @@ void CommandsNote(const char* * const value, Ximu3CommandResponse * const respon
  * @param context Context.
  */
 void CommandsFactory(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
-    if (Ximu3CommandParseNull(value, response) != 0) {
+    if (Ximu3CommandParseNull(value, response) != Ximu3ResultOk) {
         return;
     }
     Context * const context_ = context;
