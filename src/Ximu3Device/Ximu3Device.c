@@ -54,6 +54,7 @@ static const Ximu3CommandMap commands[] = {
     {"initialize", CommandsInitialise},
     {"heading", CommandsHeading},
     {"note", CommandsNote},
+    {"timestamp", CommandsTimestamp},
     {"factory", CommandsFactory},
 };
 

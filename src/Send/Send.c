@@ -12,7 +12,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
-#include "Timer/Timer.h"
+#include "Timestamp/Timestamp.h"
 #include "Usb/UsbCdc.h"
 #include "Ximu3Device/x-IMU3-Device/Ximu3.h"
 
@@ -139,7 +139,7 @@ static void InertialDataReady(const ImuInertialData * const imuData, void* const
 
     // Send message
     const Ximu3DataInertial ximu3Data = {
-        .timestamp = imuData->timestamp / TIMER_TICKS_PER_MICROSECOND,
+        .timestamp = TimestampFrom(imuData->timestamp),
         .gyroscopeX = gyroscope.axis.x,
         .gyroscopeY = gyroscope.axis.y,
         .gyroscopeZ = gyroscope.axis.z,
@@ -204,7 +204,7 @@ static void AhrsDataReady(const ImuAhrsData * const imuData, void* const context
  */
 static void SendAhrsStatus(Send * const send, const uint64_t timestamp, const FusionAhrsFlags * const flags) {
     const Ximu3DataAhrsStatus ximu3Data = {
-        .timestamp = timestamp / TIMER_TICKS_PER_MICROSECOND,
+        .timestamp = TimestampFrom(timestamp),
         .initialising = flags->initialising,
         .angularRateRecovery = flags->angularRateRecovery,
         .accelerationRecovery = flags->accelerationRecovery,
@@ -228,7 +228,7 @@ static void SendAhrsStatus(Send * const send, const uint64_t timestamp, const Fu
 static void SendQuaternion(Send * const send, const ImuAhrsData * const imuData) {
     const FusionQuaternion quaternion = FusionAhrsGetQuaternion(imuData->ahrs);
     const Ximu3DataQuaternion ximu3Data = {
-        .timestamp = imuData->timestamp / TIMER_TICKS_PER_MICROSECOND,
+        .timestamp = TimestampFrom(imuData->timestamp),
         .w = quaternion.element.w,
         .x = quaternion.element.x,
         .y = quaternion.element.y,
@@ -252,7 +252,7 @@ static void SendQuaternion(Send * const send, const ImuAhrsData * const imuData)
 static void SendRotationMatrix(Send * const send, const ImuAhrsData * const imuData) {
     const FusionMatrix matrix = FusionQuaternionToMatrix(FusionAhrsGetQuaternion(imuData->ahrs));
     const Ximu3DataRotationMatrix ximu3Data = {
-        .timestamp = imuData->timestamp / TIMER_TICKS_PER_MICROSECOND,
+        .timestamp = TimestampFrom(imuData->timestamp),
         .xx = matrix.element.xx,
         .xy = matrix.element.xy,
         .xz = matrix.element.xz,
@@ -281,7 +281,7 @@ static void SendRotationMatrix(Send * const send, const ImuAhrsData * const imuD
 static void SendEulerAngles(Send * const send, const ImuAhrsData * const imuData) {
     const FusionEuler euler = FusionQuaternionToEuler(FusionAhrsGetQuaternion(imuData->ahrs));
     const Ximu3DataEulerAngles ximu3Data = {
-        .timestamp = imuData->timestamp / TIMER_TICKS_PER_MICROSECOND,
+        .timestamp = TimestampFrom(imuData->timestamp),
         .roll = euler.angle.roll,
         .pitch = euler.angle.pitch,
         .yaw = euler.angle.yaw,
@@ -305,7 +305,7 @@ static void SendLinearAcceleration(Send * const send, const ImuAhrsData * const 
     const FusionQuaternion quaternion = FusionAhrsGetQuaternion(imuData->ahrs);
     const FusionVector linearAcceleration = FusionAhrsGetLinearAcceleration(imuData->ahrs);
     const Ximu3DataLinearAcceleration ximu3Data = {
-        .timestamp = imuData->timestamp / TIMER_TICKS_PER_MICROSECOND,
+        .timestamp = TimestampFrom(imuData->timestamp),
         .quaternionW = quaternion.element.w,
         .quaternionX = quaternion.element.x,
         .quaternionY = quaternion.element.y,
@@ -333,7 +333,7 @@ static void SendEarthAcceleration(Send * const send, const ImuAhrsData * const i
     const FusionQuaternion quaternion = FusionAhrsGetQuaternion(imuData->ahrs);
     const FusionVector earthAcceleration = FusionAhrsGetEarthAcceleration(imuData->ahrs);
     const Ximu3DataEarthAcceleration ximu3Data = {
-        .timestamp = imuData->timestamp / TIMER_TICKS_PER_MICROSECOND,
+        .timestamp = TimestampFrom(imuData->timestamp),
         .quaternionW = quaternion.element.w,
         .quaternionX = quaternion.element.x,
         .quaternionY = quaternion.element.y,
@@ -376,7 +376,7 @@ static void TemperatureDataReady(const ImuTemperatureData * const imuData, void*
 
     // Send message
     const Ximu3DataTemperature ximu3Data = {
-        .timestamp = imuData->timestamp / TIMER_TICKS_PER_MICROSECOND,
+        .timestamp = TimestampFrom(imuData->timestamp),
         .temperature = temperature,
     };
     uint8_t message[128];
@@ -406,7 +406,7 @@ void SendNotification(Send * const send, const char* format, ...) {
 
     // Send message
     const Ximu3DataNotification ximu3Data = {
-        .timestamp = TimerGetTicks64() / TIMER_TICKS_PER_MICROSECOND,
+        .timestamp = TimestampGet(),
         .string = string
     };
     uint8_t message[128];
@@ -436,7 +436,7 @@ void SendError(Send * const send, const char* format, ...) {
 
     // Send message
     const Ximu3DataError ximu3Data = {
-        .timestamp = TimerGetTicks64() / TIMER_TICKS_PER_MICROSECOND,
+        .timestamp = TimestampGet(),
         .string = string
     };
     uint8_t message[128];

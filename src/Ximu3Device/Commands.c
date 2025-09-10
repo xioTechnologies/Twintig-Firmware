@@ -14,6 +14,7 @@
 #include "Imu/Imu.h"
 #include "Led/Led.h"
 #include <stdio.h>
+#include "Timestamp/Timestamp.h"
 #include "x-IMU3-Device/Ximu3.h"
 
 //------------------------------------------------------------------------------
@@ -223,6 +224,21 @@ void CommandsNote(const char* * const value, Ximu3CommandResponse * const respon
     }
     const Context * const context_ = context;
     SendNotification(context_->send, string);
+    Ximu3CommandRespond(response);
+}
+
+/**
+ * @brief Timestamp command.
+ * @param value Value.
+ * @param response Response.
+ * @param context Context.
+ */
+void CommandsTimestamp(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
+    uint64_t timestamp;
+    if (Ximu3CommandParseNumberU64(value, response, &timestamp) != Ximu3ResultOk) {
+        return;
+    }
+    TimestampSet(timestamp);
     Ximu3CommandRespond(response);
 }
 
