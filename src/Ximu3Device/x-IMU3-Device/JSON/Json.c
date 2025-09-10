@@ -365,6 +365,32 @@ static void WriteChar(char *const destination, size_t *const index, const char c
  * @return Result.
  */
 JsonResult JsonParseNumber(const char **const json, float *const number) {
+    // Parse raw number
+    if (number == NULL) {
+        return JsonParseNumberRaw(json, NULL, 0);
+    }
+    char string[32];
+    const JsonResult result = JsonParseNumberRaw(json, string, sizeof(string));
+    if (result != JsonResultOk) {
+        return result;
+    }
+
+    // Convert raw number to float
+    if (sscanf(string, "%f", number) != 1) {
+        return JsonResultUnableToParseNumber;
+    }
+    return JsonResultOk;
+}
+
+/**
+ * @brief Parses raw number string. The JSON pointer is advanced to the first
+ * character after the number.
+ * @param json JSON pointer.
+ * @param destination Destination. NULL if not required.
+ * @param destinationSize Destination size.
+ * @return Result.
+ */
+JsonResult JsonParseNumberRaw(const char **const json, char *const destination, const size_t destinationSize) {
     // Check type
     const JsonResult result = CheckType(json, JsonTypeNumber);
     if (result != JsonResultOk) {
@@ -418,17 +444,13 @@ JsonResult JsonParseNumber(const char **const json, float *const number) {
         jsonCopy++;
     }
 
-    // Read number string
-    if (number != NULL) {
-        char string[32];
-        const size_t numberOfBytes = jsonCopy - *json;
-        if (numberOfBytes >= sizeof(string)) {
+    // Copy raw number
+    if (destination != NULL) {
+        const size_t numberOfBytes = 1 + jsonCopy - *json;
+        if (numberOfBytes >= destinationSize) {
             return JsonResultNumberTooLong;
         }
-        snprintf(string, sizeof(string), "%s", *json);
-        if (sscanf(string, "%f", number) != 1) {
-            return JsonResultUnableToParseNumber;
-        }
+        snprintf(destination, numberOfBytes, "%s", *json);
     }
     *json = jsonCopy;
     return JsonResultOk;
