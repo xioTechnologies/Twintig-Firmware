@@ -4,13 +4,13 @@
 
 
 project: Twintig-Firmware
-creation_date: 2025-08-25T15:46:55.970+01:00[Europe/London]    # ISO 8601 format: https://www.w3.org/TR/NOTE-datetime
+creation_date: 2025-09-10T07:56:41.158+01:00[Europe/London]    # ISO 8601 format: https://www.w3.org/TR/NOTE-datetime
 operating_system: Windows 11
 mcc_mode: IDE            # [IDE|Standalone|Headless]
-mcc_version: v5.5.2
-mcc_core_version: v5.7.1
+mcc_version: v5.6.2
+mcc_core_version: v5.8.2
 mplabx_version: v6.25        # if MPLAB X plugin only
-harmony_version: v1.5.4
+harmony_version: v5.6.2
 compiler: XC32 4.60
 
 modules:
