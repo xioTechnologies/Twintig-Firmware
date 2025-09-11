@@ -13,6 +13,7 @@
 #include "Haptic/Haptic.h"
 #include "Imu/Imu.h"
 #include "Led/Led.h"
+#include <stdint.h>
 #include <stdio.h>
 #include "Timestamp/Timestamp.h"
 #include "x-IMU3-Device/Ximu3.h"
