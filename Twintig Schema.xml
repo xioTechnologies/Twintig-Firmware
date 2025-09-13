@@ -4,6 +4,7 @@
             <Setting key="device_name" name="Device Name" type="string"/>
             <Setting key="serial_number" name="Serial Number" type="string" readOnly="true"/>
             <Setting key="firmware_version" name="Firmware Version" type="string" readOnly="true"/>
+            <Setting key="hardware_version" name="Hardware Version" type="string" readOnly="true"/>
         </Group>
         <Group name="Serial" expand="true">
             <Setting key="serial_enabled" name="Enabled" type="bool"/>
