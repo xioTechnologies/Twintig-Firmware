@@ -1,0 +1,161 @@
+<DeviceSettings>
+    <Settings>
+        <Group name="Device Information" expand="true">
+            <Setting key="device_name" name="Device Name" type="string"/>
+            <Setting key="serial_number" name="Serial Number" type="string" readOnly="true"/>
+            <Setting key="firmware_version" name="Firmware Version" type="string" readOnly="true"/>
+            <Setting key="hardware_version" name="Hardware Version" type="string" readOnly="true"/>
+        </Group>
+        <Group name="Serial" expand="true">
+            <Setting key="serial_enabled" name="Enabled" type="bool"/>
+            <Setting key="serial_baud_rate" name="Baud Rate" type="number" hideKey="serial_mode" hideValues="0"/>
+            <Setting key="serial_rts_cts_enabled" name="RTS/CTS" type="bool" hideKey="serial_mode" hideValues="0"/>
+        </Group>
+        <Group name="IMU" expand="true">
+            <Setting key="anti_aliasing" name="Anti-Aliasing" type="ImuAntiAliasing"/>
+            <Setting key="sample_rate" name="Sample Rate" type="ImuSampleRate"/>
+            <Setting key="axes_alignment" name="Axes Alignment" type="FusionAxesAlignment"/>
+            <Setting key="gyroscope_offset_correction_enabled" name="Gyroscope Offset Correction" type="bool"/>
+            <Group name="AHRS" expand="true">
+                <Setting key="ahrs_update_rate_divisor" name="Update Rate Divisor" type="number"/>
+                <Setting key="ahrs_axes_convention" name="Axes Convention" type="FusionConvention"/>
+                <Setting key="ahrs_gain" name="Gain" type="number"/>
+                <Setting key="ahrs_acceleration_rejection" name="Acceleration Rejection" type="number"/>
+            </Group>
+        </Group>
+        <Group name="Data Messages" expand="true">
+            <Setting key="binary_mode_enabled" name="Binary Mode" type="bool"/>
+            <Setting key="ahrs_message_type" name="AHRS Message Type" type="SendAhrsMessageType"/>
+            <Group name="Message Rates" expand="true">
+                <Setting key="inertial_message_rate_divisor" name="Inertial" type="number"/>
+                <Setting key="ahrs_message_rate_divisor" name="AHRS" type="number"/>
+                <Setting key="temperature_message_rate_divisor" name="Temperature" type="number"/>
+            </Group>
+            <Group name="Sending" expand="true">
+                <Setting key="usb_data_messages_enabled" name="USB" type="bool"/>
+                <Setting key="serial_data_messages_enabled" name="Serial" type="bool"/>
+            </Group>
+        </Group>
+        <Margin/>
+    </Settings>
+    <Enums>
+        <Enum name="FusionAxesAlignment">
+            <Enumerator name="+X+Y+Z" value="0"/>
+            <Enumerator name="+X-Z+Y" value="1"/>
+            <Enumerator name="+X-Y-Z" value="2"/>
+            <Enumerator name="+X+Z-Y" value="3"/>
+            <Enumerator name="-X+Y-Z" value="4"/>
+            <Enumerator name="-X+Z+Y" value="5"/>
+            <Enumerator name="-X-Y+Z" value="6"/>
+            <Enumerator name="-X-Z-Y" value="7"/>
+            <Enumerator name="+Y-X+Z" value="8"/>
+            <Enumerator name="+Y-Z-X" value="9"/>
+            <Enumerator name="+Y+X-Z" value="10"/>
+            <Enumerator name="+Y+Z+X" value="11"/>
+            <Enumerator name="-Y+X+Z" value="12"/>
+            <Enumerator name="-Y-Z+X" value="13"/>
+            <Enumerator name="-Y-X-Z" value="14"/>
+            <Enumerator name="-Y+Z-X" value="15"/>
+            <Enumerator name="+Z+Y-X" value="16"/>
+            <Enumerator name="+Z+X+Y" value="17"/>
+            <Enumerator name="+Z-Y+X" value="18"/>
+            <Enumerator name="+Z-X-Y" value="19"/>
+            <Enumerator name="-Z+Y+X" value="20"/>
+            <Enumerator name="-Z-X+Y" value="21"/>
+            <Enumerator name="-Z-Y-X" value="22"/>
+            <Enumerator name="-Z+X-Y" value="23"/>
+        </Enum>
+        <Enum name="FusionConvention">
+            <Enumerator name="North-West-Up (NWU)" value="0"/>
+            <Enumerator name="East-North-Up (ENU)" value="1"/>
+            <Enumerator name="North-East-Down (NED)" value="2"/>
+        </Enum>
+        <Enum name="ImuAntiAliasing">
+            <Enumerator name="Disabled" value="0"/>
+            <Enumerator name="42 Hz" value="42"/>
+            <Enumerator name="84 Hz" value="84"/>
+            <Enumerator name="126 Hz" value="126"/>
+            <Enumerator name="170 Hz" value="170"/>
+            <Enumerator name="213 Hz" value="213"/>
+            <Enumerator name="258 Hz" value="258"/>
+            <Enumerator name="303 Hz" value="303"/>
+            <Enumerator name="348 Hz" value="348"/>
+            <Enumerator name="394 Hz" value="394"/>
+            <Enumerator name="441 Hz" value="441"/>
+            <Enumerator name="488 Hz" value="488"/>
+            <Enumerator name="536 Hz" value="536"/>
+            <Enumerator name="585 Hz" value="585"/>
+            <Enumerator name="634 Hz" value="634"/>
+            <Enumerator name="684 Hz" value="684"/>
+            <Enumerator name="734 Hz" value="734"/>
+            <Enumerator name="785 Hz" value="785"/>
+            <Enumerator name="837 Hz" value="837"/>
+            <Enumerator name="890 Hz" value="890"/>
+            <Enumerator name="943 Hz" value="943"/>
+            <Enumerator name="997 Hz" value="997"/>
+            <Enumerator name="1051 Hz" value="1051"/>
+            <Enumerator name="1107 Hz" value="1107"/>
+            <Enumerator name="1163 Hz" value="1163"/>
+            <Enumerator name="1220 Hz" value="1220"/>
+            <Enumerator name="1277 Hz" value="1277"/>
+            <Enumerator name="1336 Hz" value="1336"/>
+            <Enumerator name="1395 Hz" value="1395"/>
+            <Enumerator name="1454 Hz" value="1454"/>
+            <Enumerator name="1515 Hz" value="1515"/>
+            <Enumerator name="1577 Hz" value="1577"/>
+            <Enumerator name="1639 Hz" value="1639"/>
+            <Enumerator name="1702 Hz" value="1702"/>
+            <Enumerator name="1766 Hz" value="1766"/>
+            <Enumerator name="1830 Hz" value="1830"/>
+            <Enumerator name="1896 Hz" value="1896"/>
+            <Enumerator name="1962 Hz" value="1962"/>
+            <Enumerator name="2029 Hz" value="2029"/>
+            <Enumerator name="2097 Hz" value="2097"/>
+            <Enumerator name="2166 Hz" value="2166"/>
+            <Enumerator name="2235 Hz" value="2235"/>
+            <Enumerator name="2306 Hz" value="2306"/>
+            <Enumerator name="2377 Hz" value="2377"/>
+            <Enumerator name="2449 Hz" value="2449"/>
+            <Enumerator name="2522 Hz" value="2522"/>
+            <Enumerator name="2596 Hz" value="2596"/>
+            <Enumerator name="2671 Hz" value="2671"/>
+            <Enumerator name="2746 Hz" value="2746"/>
+            <Enumerator name="2823 Hz" value="2823"/>
+            <Enumerator name="2900 Hz" value="2900"/>
+            <Enumerator name="2978 Hz" value="2978"/>
+            <Enumerator name="3057 Hz" value="3057"/>
+            <Enumerator name="3137 Hz" value="3137"/>
+            <Enumerator name="3217 Hz" value="3217"/>
+            <Enumerator name="3299 Hz" value="3299"/>
+            <Enumerator name="3381 Hz" value="3381"/>
+            <Enumerator name="3464 Hz" value="3464"/>
+            <Enumerator name="3548 Hz" value="3548"/>
+            <Enumerator name="3633 Hz" value="3633"/>
+            <Enumerator name="3718 Hz" value="3718"/>
+            <Enumerator name="3805 Hz" value="3805"/>
+            <Enumerator name="3892 Hz" value="3892"/>
+            <Enumerator name="3979 Hz" value="3979"/>
+        </Enum>
+        <Enum name="ImuSampleRate">
+            <Enumerator name="32kHz" value=" 32000"/>
+            <Enumerator name="16kHz" value=" 16000"/>
+            <Enumerator name="8kHz" value=" 8000"/>
+            <Enumerator name="4kHz" value=" 4000"/>
+            <Enumerator name="2kHz" value=" 2000"/>
+            <Enumerator name="1kHz" value=" 1000"/>
+            <Enumerator name="500Hz" value=" 500"/>
+            <Enumerator name="200Hz" value=" 200"/>
+            <Enumerator name="100Hz" value=" 100"/>
+            <Enumerator name="50Hz" value=" 50"/>
+            <Enumerator name="25Hz" value=" 25"/>
+            <Enumerator name="12Hz" value=" 12"/>
+        </Enum>
+        <Enum name="SendAhrsMessageType">
+            <Enumerator name="Quaternion" value="0"/>
+            <Enumerator name="Rotation Matrix" value="1"/>
+            <Enumerator name="Euler Angles" value="2"/>
+            <Enumerator name="Linear Acceleration" value="3"/>
+            <Enumerator name="Earth Acceleration" value="4"/>
+        </Enum>
+    </Enums>
+</DeviceSettings>

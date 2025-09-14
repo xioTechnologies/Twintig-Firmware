@@ -1,0 +1,166 @@
+{
+    "includes": [
+        "\"Imu/Fusion/Fusion.h\"",
+        "\"Imu/Imu.h\"",
+        "\"Send/Send.h\"",
+        "<stdbool.h>",
+        "<stdint.h>"
+    ],
+    "settings": [
+        {
+            "name": "Serial number",
+            "declaration": "char name[16]",
+            "default": "{\"Unknown\"}",
+            "preserved": true
+        },
+        {
+            "name": "Hardware version",
+            "declaration": "char name[32]",
+            "default": "{\"Unknown\"}",
+            "preserved": true
+        },
+        {
+            "name": "Calibration date",
+            "declaration": "char name[32]",
+            "default": "{\"Unknown\"}",
+            "preserved": true
+        },
+        {
+            "name": "Gyroscope misalignment",
+            "declaration": "FusionMatrix name",
+            "default": "{{{1.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}}}",
+            "preserved": true
+        },
+        {
+            "name": "Gyroscope sensitivity",
+            "declaration": "FusionVector name",
+            "default": "{{1.0f, 1.0f, 1.0f}}",
+            "preserved": true
+        },
+        {
+            "name": "Gyroscope offset",
+            "declaration": "FusionVector name",
+            "default": "{{0.0f, 0.0f, 0.0f}}",
+            "preserved": true
+        },
+        {
+            "name": "Accelerometer misalignment",
+            "declaration": "FusionMatrix name",
+            "default": "{{{1.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}}}",
+            "preserved": true
+        },
+        {
+            "name": "Accelerometer sensitivity",
+            "declaration": "FusionVector name",
+            "default": "{{1.0f, 1.0f, 1.0f}}",
+            "preserved": true
+        },
+        {
+            "name": "Accelerometer offset",
+            "declaration": "FusionVector name",
+            "default": "{{0.0f, 0.0f, 0.0f}}",
+            "preserved": true
+        },
+        {
+            "name": "Firmware version",
+            "declaration": "char name[32]",
+            "default": "{\"Unknown\"}",
+            "read-only": true
+        },
+        {
+            "name": "Device name",
+            "declaration": "char name[32]",
+            "default": "{\"Unknown\"}"
+        },
+        {
+            "name": "Serial enabled",
+            "declaration": "bool name",
+            "default": "{false}"
+        },
+        {
+            "name": "Serial baud rate",
+            "declaration": "uint32_t name",
+            "default": "{3000000}"
+        },
+        {
+            "name": "Serial RTS/CTS enabled",
+            "declaration": "bool name",
+            "default": "{false}"
+        },
+        {
+            "name": "Anti-aliasing",
+            "declaration": "ImuAntiAliasing name",
+            "default": "{ImuAntiAliasing42Hz}"
+        },
+        {
+            "name": "Sample rate",
+            "declaration": "ImuSampleRate name",
+            "default": "{ImuSampleRate100Hz}"
+        },
+        {
+            "name": "Axes alignment",
+            "declaration": "FusionAxesAlignment name",
+            "default": "{FusionAxesAlignmentPXPYPZ}"
+        },
+        {
+            "name": "Gyroscope offset correction enabled",
+            "declaration": "bool name",
+            "default": "{false}"
+        },
+        {
+            "name": "AHRS update rate divisor",
+            "declaration": "uint32_t name",
+            "default": "{0}"
+        },
+        {
+            "name": "AHRS axes convention",
+            "declaration": "FusionConvention name",
+            "default": "{FusionConventionNwu}"
+        },
+        {
+            "name": "AHRS gain",
+            "declaration": "float name",
+            "default": "{0.5f}"
+        },
+        {
+            "name": "AHRS acceleration rejection",
+            "declaration": "float name",
+            "default": "{10.0f}"
+        },
+        {
+            "name": "Binary mode enabled",
+            "declaration": "bool name",
+            "default": "{true}"
+        },
+        {
+            "name": "AHRS message type",
+            "declaration": "SendAhrsMessageType name",
+            "default": "{SendAhrsMessageTypeQuaternion}"
+        },
+        {
+            "name": "Inertial message rate divisor",
+            "declaration": "uint32_t name",
+            "default": "{1}"
+        },
+        {
+            "name": "AHRS message rate divisor",
+            "declaration": "uint32_t name",
+            "default": "{1}"
+        },
+        {
+            "name": "Temperature message rate divisor",
+            "declaration": "uint32_t name",
+            "default": "{0}"
+        },
+        {
+            "name": "USB data messages enabled",
+            "declaration": "bool name",
+            "default": "{true}"
+        },
+        {
+            "name": "Serial data messages enabled",
+            "declaration": "bool name",
+            "default": "{true}"
+        }
+    ]
+}
