@@ -32,7 +32,7 @@ void CommandsDefault(const char* * const value, Ximu3CommandResponse * const res
         return;
     }
     Context * const context_ = context;
-    Ximu3SettingsDefaults(context_->settings, context_->factoryMode);
+    Ximu3SettingsDefaults(context_->settings, false);
     ApplyAfterDelay(context_);
     Ximu3CommandRespond(response);
 }
