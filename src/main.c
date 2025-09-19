@@ -73,8 +73,7 @@ int main(void) {
     Uart3Initialise(&uartSettingsDefault);
 
     // Print start up message
-    const RCON_RESET_CAUSE resetCause = ResetCauseGet();
-    ResetCausePrint(resetCause);
+    ResetCausePrint(ResetCauseGet());
     printf("Twintig " FIRMWARE_VERSION "\n");
 
     // Initialise modules
