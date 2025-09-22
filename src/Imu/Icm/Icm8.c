@@ -38,7 +38,7 @@ static SpiBusClient* spiBusClient;
 static uint8_t deviceId;
 static volatile __attribute__((coherent)) IcmSpiPacket spiPacket;
 static volatile uint64_t timestamp;
-static uint8_t fifoData[100 * sizeof (IcmFifoPacket)];
+static uint8_t fifoData[(100 * sizeof (IcmFifoPacket)) + 1]; // actual FIFO capacity is 1 less than size
 static Fifo fifo = {.data = fifoData, .dataSize = sizeof (fifoData)};
 static volatile uint32_t bufferOverflow;
 
@@ -80,22 +80,23 @@ void Icm8Initialise(const IcmSettings * const settings) {
 
     // Configure interrupt pulse
     IcmIntConfig1Register intConfig1Register = {.value = ICM_INT_CONFIG1_RESET_VALUE};
-    intConfig1Register.IntTpulseDuration = 1; // interrupt pulse duration is 8 us. Required if ODR > 4kHz, optional for ODR < 4kHz.
-    intConfig1Register.IntTdeassertDisable = 1; // disables de-assert duration. Required if ODR > 4kHz, optional for ODR < 4kHz
-    intConfig1Register.IntAysncReset = 1; // user should change setting to 0 from default setting of 1, for proper INT1 and INT2 pin operation
+    intConfig1Register.intTpulseDuration = 1; // interrupt pulse duration is 8 us. Required if ODR > 4kHz, optional for ODR < 4kHz.
+    intConfig1Register.intTdeassertDisable = 1; // disables de-assert duration. Required if ODR > 4kHz, optional for ODR < 4kHz
+    intConfig1Register.intAysncReset = 1; // user should change setting to 0 from default setting of 1, for proper INT1 and INT2 pin operation
     WriteRegister(ICM_INT_CONFIG1_ADDRESS, intConfig1Register.value);
 
     // Configure interrupt source
     IcmIntSource0Register intSource0Register = {.value = ICM_INT_SOURCE0_RESET_VALUE};
-    intSource0Register.UiDrdyInt1En = 1; // UI data ready interrupt routed to INT1
+    intSource0Register.uiDrdyInt1En = 1; // UI data ready interrupt routed to INT1
     WriteRegister(ICM_INT_SOURCE0_ADDRESS, intSource0Register.value);
 
-    // Select register bank 2
+    // Select register bank 1
     WriteRegister(ICM_REG_BANK_SEL_ADDRESS, 1);
 
     // Configure gyroscope anti-aliasing filter
     IcmGyroConfigStatic2Register gyroConfigStatic2Register = {.value = ICM_GYRO_CONFIG_STATIC2_RESET_VALUE};
     gyroConfigStatic2Register.gyroAafDis = settings->aafDisable ? 1 : 0;
+    gyroConfigStatic2Register.gyroNfDis = settings->nfDisable ? 1 : 0;
     WriteRegister(ICM_GYRO_CONFIG_STATIC2_ADDRESS, gyroConfigStatic2Register.value);
 
     IcmGyroConfigStatic3Register gyroConfigStatic3Register = {.value = ICM_GYRO_CONFIG_STATIC3_RESET_VALUE};

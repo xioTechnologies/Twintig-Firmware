@@ -19,6 +19,7 @@
 #define ICM_INT_CONFIG_ADDRESS          (0x14)
 #define ICM_TEMP_DATA1_ADDRESS          (0x1D)
 #define ICM_INTF_CONFIG0_ADDRESS        (0x4C)
+#define ICM_INTF_CONFIG1_ADDRESS        (0x4D)
 #define ICM_PWR_MGMT0_ADDRESS           (0x4E)
 #define ICM_GYRO_CONFIG0_ADDRESS        (0x4F)
 #define ICM_ACCEL_CONFIG0_ADDRESS       (0x50)
@@ -36,6 +37,7 @@
 #define ICM_ACCEL_CONFIG0_RESET_VALUE   (0x06)
 #define ICM_PWR_MGMT0_RESET_VALUE       (0x00)
 #define ICM_WHO_AM_I_RESET_VALUE        (0x47)
+#define ICM_INTF_CONFIG1_RESET_VALUE    (0x91)
 
 typedef union {
 
@@ -88,6 +90,17 @@ typedef union {
 typedef union {
 
     struct {
+        unsigned clksel : 2;
+        unsigned rtcMode : 1;
+        unsigned accelLpClkSel : 1;
+        unsigned : 4;
+    } __attribute__((__packed__));
+    uint8_t value;
+} IcmIntfConfig1Register;
+
+typedef union {
+
+    struct {
         unsigned accelMode : 2;
         unsigned gyroMode : 2;
         unsigned idle : 1;
@@ -121,9 +134,9 @@ typedef union {
 
     struct {
         unsigned : 4;
-        unsigned IntAysncReset : 1;
-        unsigned IntTdeassertDisable : 1;
-        unsigned IntTpulseDuration : 1;
+        unsigned intAysncReset : 1;
+        unsigned intTdeassertDisable : 1;
+        unsigned intTpulseDuration : 1;
         unsigned : 1;
     } __attribute__((__packed__));
     uint8_t value;
@@ -132,13 +145,13 @@ typedef union {
 typedef union {
 
     struct {
-        unsigned UiAgcRdyInt1En : 1;
-        unsigned FifoFullInt1En : 1;
-        unsigned FifoThsInt1En : 1;
-        unsigned UiDrdyInt1En : 1;
-        unsigned ResetDoneInt1En : 1;
-        unsigned PllRdyInt1En : 1;
-        unsigned UiFsyncInt1En : 1;
+        unsigned uiAgcRdyInt1En : 1;
+        unsigned fifoFullInt1En : 1;
+        unsigned fifoThsInt1En : 1;
+        unsigned uiDrdyInt1En : 1;
+        unsigned resetDoneInt1En : 1;
+        unsigned pllRdyInt1En : 1;
+        unsigned uiFsyncInt1En : 1;
         unsigned : 1;
     } __attribute__((__packed__));
     uint8_t value;
@@ -151,11 +164,13 @@ typedef union {
 #define ICM_GYRO_CONFIG_STATIC3_ADDRESS     (0x0C)
 #define ICM_GYRO_CONFIG_STATIC4_ADDRESS     (0x0D)
 #define ICM_GYRO_CONFIG_STATIC5_ADDRESS     (0x0E)
+#define ICM_INTF_CONFIG5_ADDRESS            (0x7B)
 
 #define ICM_GYRO_CONFIG_STATIC2_RESET_VALUE (0xA0)
 #define ICM_GYRO_CONFIG_STATIC3_RESET_VALUE (0x0D)
 #define ICM_GYRO_CONFIG_STATIC4_RESET_VALUE (0xAA)
 #define ICM_GYRO_CONFIG_STATIC5_RESET_VALUE (0x80)
+#define ICM_INTF_CONFIG5_RESET_VALUE        (0x00)
 
 typedef union {
 
@@ -192,6 +207,16 @@ typedef union {
     } __attribute__((__packed__));
     uint8_t value;
 } IcmGyroConfigStatic5Register;
+
+typedef union {
+
+    struct {
+        unsigned : 1;
+        unsigned pin9Function : 2;
+        unsigned : 5;
+    } __attribute__((__packed__));
+    uint8_t value;
+} IcmIntfConfig5Register;
 
 //------------------------------------------------------------------------------
 // Definitions - Register bank 2

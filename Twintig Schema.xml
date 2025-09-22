@@ -12,6 +12,7 @@
             <Setting key="serial_rts_cts_enabled" name="RTS/CTS" type="bool" hideKey="serial_mode" hideValues="0"/>
         </Group>
         <Group name="IMU" expand="true">
+            <Setting key="notch_filter_enabled" name="Notch Filter" type="bool"/>
             <Setting key="anti_aliasing" name="Anti-Aliasing" type="ImuAntiAliasing"/>
             <Setting key="sample_rate" name="Sample Rate" type="ImuSampleRate"/>
             <Setting key="axes_alignment" name="Axes Alignment" type="FusionAxesAlignment"/>

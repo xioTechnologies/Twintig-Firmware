@@ -88,6 +88,11 @@
             "default": "{false}"
         },
         {
+            "name": "Notch filter enabled",
+            "declaration": "bool name",
+            "default": "{true}"
+        },
+        {
             "name": "Anti-aliasing",
             "declaration": "ImuAntiAliasing name",
             "default": "{ImuAntiAliasing42Hz}"

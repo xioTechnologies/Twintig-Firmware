@@ -179,10 +179,12 @@ void ImuSetSettings(Imu * const imu, const ImuSettings * const settings) {
 
     // Initialise hardware
     const bool uninitialised = imu->initialised == false;
+    const bool notchFilterEnabledChanged = imu->settings.notchFilterEnabled != settings->notchFilterEnabled;
     const bool antiAliasingChanged = imu->settings.antiAliasing != settings->antiAliasing;
     const bool sampleRateChanged = imu->settings.sampleRate != settings->sampleRate;
-    if (uninitialised || antiAliasingChanged || sampleRateChanged) {
+    if (uninitialised || notchFilterEnabledChanged || antiAliasingChanged || sampleRateChanged) {
         const IcmSettings icmSettings = {
+            .nfDisable = settings->notchFilterEnabled ? false : true,
             .aaf = AntiAliasingToAaf(settings->antiAliasing),
             .aafDisable = settings->antiAliasing == ImuAntiAliasingDisabled,
             .odr = SampleRateToOdr(settings->sampleRate),

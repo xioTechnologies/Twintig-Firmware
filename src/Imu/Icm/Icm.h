@@ -70,6 +70,7 @@ typedef enum {
  * @brief Settings.
  */
 typedef struct {
+    bool nfDisable;
     IcmAaf aaf;
     bool aafDisable;
     IcmOdr odr;

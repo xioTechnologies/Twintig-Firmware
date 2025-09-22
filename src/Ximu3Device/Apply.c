@@ -88,6 +88,7 @@ static void ApplyImu(Context * const context) {
 
     // Do nothing if settings unchanged
     bool applyPending = false;
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexNotchFilterEnabled);
     applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAntiAliasing);
     applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSampleRate);
     applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeMisalignment);
@@ -111,6 +112,7 @@ static void ApplyImu(Context * const context) {
         return;
     }
     const ImuSettings imuSettings = {
+        .notchFilterEnabled = Ximu3SettingsGet(context->settings)->notchFilterEnabled,
         .antiAliasing = Ximu3SettingsGet(context->settings)->antiAliasing,
         .sampleRate = Ximu3SettingsGet(context->settings)->sampleRate,
         .gyroscopeMisalignment = Ximu3SettingsGet(context->settings)->gyroscopeMisalignment,

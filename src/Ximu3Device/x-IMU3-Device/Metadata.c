@@ -17,6 +17,7 @@ static const char* const names[] = {
     "Serial Enabled",
     "Serial Baud Rate",
     "Serial RTS/CTS Enabled",
+    "Notch Filter Enabled",
     "Anti-aliasing",
     "Sample Rate",
     "Axes Alignment",
@@ -49,6 +50,7 @@ static const char* const keys[] = {
     "serial_enabled",
     "serial_baud_rate",
     "serial_rts_cts_enabled",
+    "notch_filter_enabled",
     "anti_aliasing",
     "sample_rate",
     "axes_alignment",
@@ -80,6 +82,7 @@ const MetadataType types[] = {
     MetadataTypeCharArray,
     MetadataTypeBool,
     MetadataTypeUint32,
+    MetadataTypeBool,
     MetadataTypeBool,
     MetadataTypeImuAntiAliasing,
     MetadataTypeImuSampleRate,
@@ -113,6 +116,7 @@ const size_t sizes[] = {
     sizeof (((Ximu3SettingsValues *) 0)->serialEnabled),
     sizeof (((Ximu3SettingsValues *) 0)->serialBaudRate),
     sizeof (((Ximu3SettingsValues *) 0)->serialRtsCtsEnabled),
+    sizeof (((Ximu3SettingsValues *) 0)->notchFilterEnabled),
     sizeof (((Ximu3SettingsValues *) 0)->antiAliasing),
     sizeof (((Ximu3SettingsValues *) 0)->sampleRate),
     sizeof (((Ximu3SettingsValues *) 0)->axesAlignment),
@@ -145,6 +149,7 @@ const void* const defaults[] = {
     (void*) (&(bool) {false}),
     (void*) (&(uint32_t) {3000000}),
     (void*) (&(bool) {false}),
+    (void*) (&(bool) {true}),
     (void*) (&(ImuAntiAliasing) {ImuAntiAliasing42Hz}),
     (void*) (&(ImuSampleRate) {ImuSampleRate100Hz}),
     (void*) (&(FusionAxesAlignment) {FusionAxesAlignmentPXPYPZ}),
@@ -172,6 +177,7 @@ const bool preserveds[] = {
     true,
     true,
     true,
+    false,
     false,
     false,
     false,
@@ -224,6 +230,7 @@ const bool readOnlys[] = {
     false,
     false,
     false,
+    false,
 };
 
 static void* GetValue(Ximu3Settings * const settings, const Ximu3SettingsIndex index) {
@@ -256,6 +263,8 @@ static void* GetValue(Ximu3Settings * const settings, const Ximu3SettingsIndex i
             return &settings->values.serialBaudRate;
         case Ximu3SettingsIndexSerialRtsCtsEnabled:
             return &settings->values.serialRtsCtsEnabled;
+        case Ximu3SettingsIndexNotchFilterEnabled:
+            return &settings->values.notchFilterEnabled;
         case Ximu3SettingsIndexAntiAliasing:
             return &settings->values.antiAliasing;
         case Ximu3SettingsIndexSampleRate:

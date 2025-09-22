@@ -110,6 +110,7 @@ typedef enum {
  * @brief Settings.
  */
 typedef struct {
+    bool notchFilterEnabled;
     ImuAntiAliasing antiAliasing;
     ImuSampleRate sampleRate;
     FusionMatrix gyroscopeMisalignment;
