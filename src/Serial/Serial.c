@@ -7,7 +7,6 @@
 //------------------------------------------------------------------------------
 // Includes
 
-#include "Fifo.h"
 #include "Serial.h"
 #include "Uart/Uart1DmaTx.h"
 
