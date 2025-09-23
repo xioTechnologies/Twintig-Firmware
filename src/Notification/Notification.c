@@ -43,7 +43,7 @@ void NotificationTasks(void) {
     // USB port
     switch (ON_CHANGE_POLL_DEBOUNCE(UsbCdcPortOpen())) {
         case OnChangeEdgeLowToHigh:
-            SendNotification(&send0, "USB port open");
+            SendNotification(&send0, "USB port opened");
             break;
         case OnChangeEdgeHighToLow:
             SendNotification(&send0, "USB port closed");
