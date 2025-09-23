@@ -197,7 +197,7 @@ static void AhrsDataReady(const ImuAhrsData * const imuData, void* const context
 }
 
 /**
- * @brief Sends AHRS status message.
+ * @brief Sends an AHRS status message.
  * @param send Send structure.
  * @param timestamp Timestamp.
  * @param flags Flags.
@@ -221,7 +221,7 @@ static void SendAhrsStatus(Send * const send, const uint64_t timestamp, const Fu
 }
 
 /**
- * @brief Sends quaternion message.
+ * @brief Sends a quaternion message.
  * @param send Send structure.
  * @param ahrsData AHRS data.
  */
@@ -245,7 +245,7 @@ static void SendQuaternion(Send * const send, const ImuAhrsData * const imuData)
 }
 
 /**
- * @brief Sends rotation matrix message.
+ * @brief Sends a rotation matrix message.
  * @param send Send structure.
  * @param ahrsData AHRS data.
  */
@@ -274,7 +274,7 @@ static void SendRotationMatrix(Send * const send, const ImuAhrsData * const imuD
 }
 
 /**
- * @brief Sends Euler angles message.
+ * @brief Sends an Euler angles message.
  * @param send Send structure.
  * @param ahrsData AHRS data.
  */
@@ -297,7 +297,7 @@ static void SendEulerAngles(Send * const send, const ImuAhrsData * const imuData
 }
 
 /**
- * @brief Sends linear acceleration message.
+ * @brief Sends a linear acceleration message.
  * @param send Send structure.
  * @param ahrsData AHRS data.
  */
@@ -325,7 +325,7 @@ static void SendLinearAcceleration(Send * const send, const ImuAhrsData * const 
 }
 
 /**
- * @brief Sends earth acceleration message.
+ * @brief Sends an earth acceleration message.
  * @param send Send structure.
  * @param ahrsData AHRS data.
  */
@@ -390,7 +390,7 @@ static void TemperatureDataReady(const ImuTemperatureData * const imuData, void*
 }
 
 /**
- * @brief Sends notification message.
+ * @brief Sends a notification message.
  * @param send Send structure.
  * @param format Format.
  * @param ... Arguments.
@@ -420,7 +420,7 @@ void SendNotification(Send * const send, const char* format, ...) {
 }
 
 /**
- * @brief Sends error message.
+ * @brief Sends an error message.
  * @param send Send structure.
  * @param format Format.
  * @param ... Arguments.
@@ -453,7 +453,7 @@ void SendError(Send * const send, const char* format, ...) {
 }
 
 /**
- * @brief Sends data message.
+ * @brief Sends a data message.
  * @param data Data.
  * @param numberOfBytes Number of bytes.
  */
@@ -467,7 +467,7 @@ static void SendDataMessage(Send * const send, const void* const data, const siz
 }
 
 /**
- * @brief Sends data message with priority.
+ * @brief Sends a data message with priority.
  * @param data Data.
  * @param numberOfBytes Number of bytes.
  */
@@ -481,7 +481,7 @@ static void SendDataMessagePriority(Send * const send, const void* const data, c
 }
 
 /**
- * @brief Sends response to USB.
+ * @brief Sends a response to USB.
  * @param send Send structure.
  * @param data Data.
  * @param numberOfBytes Number of bytes.
@@ -491,7 +491,7 @@ void SendResponseUsb(Send * const send, const void* const data, const size_t num
 }
 
 /**
- * @brief Sends response to Serial.
+ * @brief Sends a response to serial.
  * @param send Send structure.
  * @param data Data.
  * @param numberOfBytes Number of bytes.
@@ -501,7 +501,8 @@ void SendResponseSerial(Send * const send, const void* const data, const size_t 
 }
 
 /**
- * @brief Writes data and returns number of bytes lost due to buffer overflow.
+ * @brief Writes data and returns the number of bytes lost due to buffer
+ * overflow.
  * @param channel Channel.
  * @param interface Interface.
  * @param data Data.
