@@ -124,9 +124,9 @@ static inline __attribute__((always_inline)) void SendBufferOverflow(Send * cons
     if (usbBufferOverflow > 0) {
         SendError(send, "USB buffer overflow. %u bytes lost.", usbBufferOverflow);
     }
-    const uint32_t serialBufferOverflow = SendSerialBufferOverflow(&send0);
+    const uint32_t serialBufferOverflow = SendSerialBufferOverflow(send);
     if (serialBufferOverflow > 0) {
-        SendError(&send0, "Serial buffer overflow. %u bytes lost.", serialBufferOverflow);
+        SendError(send, "Serial buffer overflow. %u bytes lost.", serialBufferOverflow);
     }
 }
 
