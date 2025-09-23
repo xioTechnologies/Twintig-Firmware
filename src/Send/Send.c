@@ -47,8 +47,8 @@ static inline __attribute__((always_inline)) size_t Write(const MuxChannel chann
 //------------------------------------------------------------------------------
 // Variables
 
-const Interface usb = {.enabled = UsbCdcPortOpen, .availableWrite = MuxUsbAvailableWrite, .write = MuxUsbWrite};
-const Interface serial = {.enabled = SerialEnabled, .availableWrite = MuxSerialAvailableWrite, .write = MuxSerialWrite};
+static const Interface usb = {.enabled = UsbCdcPortOpen, .availableWrite = MuxUsbAvailableWrite, .write = MuxUsbWrite};
+static const Interface serial = {.enabled = SerialEnabled, .availableWrite = MuxSerialAvailableWrite, .write = MuxSerialWrite};
 
 Send send0 = {.channel = MuxChannelNone, .led = &led0};
 Send send1 = {.channel = MuxChannel1, .led = &led1};
