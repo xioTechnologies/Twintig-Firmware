@@ -88,8 +88,9 @@ static void ApplyImu(Context * const context) {
 
     // Do nothing if settings unchanged
     bool applyPending = false;
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexNotchFilterEnabled);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAntiAliasing);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeNotchFilterEnabled);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeAntiAliasing);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAccelerometerAntiAliasing);
     applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSampleRate);
     applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeMisalignment);
     applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeSensitivity);
@@ -112,8 +113,9 @@ static void ApplyImu(Context * const context) {
         return;
     }
     const ImuSettings imuSettings = {
-        .notchFilterEnabled = Ximu3SettingsGet(context->settings)->notchFilterEnabled,
-        .antiAliasing = Ximu3SettingsGet(context->settings)->antiAliasing,
+        .gyroscopeNotchFilterEnabled = Ximu3SettingsGet(context->settings)->gyroscopeNotchFilterEnabled,
+        .gyroscopeAntiAliasing = Ximu3SettingsGet(context->settings)->gyroscopeAntiAliasing,
+        .accelerometerAntiAliasing = Ximu3SettingsGet(context->settings)->accelerometerAntiAliasing,
         .sampleRate = Ximu3SettingsGet(context->settings)->sampleRate,
         .gyroscopeMisalignment = Ximu3SettingsGet(context->settings)->gyroscopeMisalignment,
         .gyroscopeSensitivity = Ximu3SettingsGet(context->settings)->gyroscopeSensitivity,

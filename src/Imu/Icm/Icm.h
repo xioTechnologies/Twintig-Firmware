@@ -70,9 +70,11 @@ typedef enum {
  * @brief Settings.
  */
 typedef struct {
-    bool nfDisable;
-    IcmAaf aaf;
-    bool aafDisable;
+    bool gyroscopeNfDisable;
+    IcmAaf gyroscopeAaf;
+    bool gyroscopeAafDisable;
+    IcmAaf accelerometerAaf;
+    bool accelerometerAafDisable;
     IcmOdr odr;
 } IcmSettings;
 

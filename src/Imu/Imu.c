@@ -179,14 +179,17 @@ void ImuSetSettings(Imu * const imu, const ImuSettings * const settings) {
 
     // Initialise hardware
     const bool uninitialised = imu->initialised == false;
-    const bool notchFilterEnabledChanged = imu->settings.notchFilterEnabled != settings->notchFilterEnabled;
-    const bool antiAliasingChanged = imu->settings.antiAliasing != settings->antiAliasing;
+    const bool gyroscopeNotchFilterEnabledChanged = imu->settings.gyroscopeNotchFilterEnabled != settings->gyroscopeNotchFilterEnabled;
+    const bool gyroscopeAntiAliasingChanged = imu->settings.gyroscopeAntiAliasing != settings->gyroscopeAntiAliasing;
+    const bool accelerometerAntiAliasingChanged = imu->settings.accelerometerAntiAliasing != settings->accelerometerAntiAliasing;
     const bool sampleRateChanged = imu->settings.sampleRate != settings->sampleRate;
-    if (uninitialised || notchFilterEnabledChanged || antiAliasingChanged || sampleRateChanged) {
+    if (uninitialised || gyroscopeNotchFilterEnabledChanged || gyroscopeAntiAliasingChanged || accelerometerAntiAliasingChanged || sampleRateChanged) {
         const IcmSettings icmSettings = {
-            .nfDisable = settings->notchFilterEnabled ? false : true,
-            .aaf = AntiAliasingToAaf(settings->antiAliasing),
-            .aafDisable = settings->antiAliasing == ImuAntiAliasingDisabled,
+            .gyroscopeNfDisable = settings->gyroscopeNotchFilterEnabled ? false : true,
+            .gyroscopeAaf = AntiAliasingToAaf(settings->gyroscopeAntiAliasing),
+            .gyroscopeAafDisable = settings->gyroscopeAntiAliasing == ImuAntiAliasingDisabled,
+            .accelerometerAaf = AntiAliasingToAaf(settings->accelerometerAntiAliasing),
+            .accelerometerAafDisable = settings->accelerometerAntiAliasing == ImuAntiAliasingDisabled,
             .odr = SampleRateToOdr(settings->sampleRate),
         };
         imu->icm->initialise(&icmSettings);

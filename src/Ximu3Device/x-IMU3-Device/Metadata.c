@@ -17,8 +17,9 @@ static const char* const names[] = {
     "Serial Enabled",
     "Serial Baud Rate",
     "Serial RTS/CTS Enabled",
-    "Notch Filter Enabled",
-    "Anti-aliasing",
+    "Gyroscope Notch Filter Enabled",
+    "Gyroscope Anti-aliasing",
+    "Accelerometer Anti-aliasing",
     "Sample Rate",
     "Axes Alignment",
     "Gyroscope Offset Correction Enabled",
@@ -50,8 +51,9 @@ static const char* const keys[] = {
     "serial_enabled",
     "serial_baud_rate",
     "serial_rts_cts_enabled",
-    "notch_filter_enabled",
-    "anti_aliasing",
+    "gyroscope_notch_filter_enabled",
+    "gyroscope_anti_aliasing",
+    "accelerometer_anti_aliasing",
     "sample_rate",
     "axes_alignment",
     "gyroscope_offset_correction_enabled",
@@ -85,6 +87,7 @@ const MetadataType types[] = {
     MetadataTypeBool,
     MetadataTypeBool,
     MetadataTypeImuAntiAliasing,
+    MetadataTypeImuAntiAliasing,
     MetadataTypeImuSampleRate,
     MetadataTypeFusionAxesAlignment,
     MetadataTypeBool,
@@ -116,8 +119,9 @@ const size_t sizes[] = {
     sizeof (((Ximu3SettingsValues *) 0)->serialEnabled),
     sizeof (((Ximu3SettingsValues *) 0)->serialBaudRate),
     sizeof (((Ximu3SettingsValues *) 0)->serialRtsCtsEnabled),
-    sizeof (((Ximu3SettingsValues *) 0)->notchFilterEnabled),
-    sizeof (((Ximu3SettingsValues *) 0)->antiAliasing),
+    sizeof (((Ximu3SettingsValues *) 0)->gyroscopeNotchFilterEnabled),
+    sizeof (((Ximu3SettingsValues *) 0)->gyroscopeAntiAliasing),
+    sizeof (((Ximu3SettingsValues *) 0)->accelerometerAntiAliasing),
     sizeof (((Ximu3SettingsValues *) 0)->sampleRate),
     sizeof (((Ximu3SettingsValues *) 0)->axesAlignment),
     sizeof (((Ximu3SettingsValues *) 0)->gyroscopeOffsetCorrectionEnabled),
@@ -151,6 +155,7 @@ const void* const defaults[] = {
     (void*) (&(bool) {false}),
     (void*) (&(bool) {true}),
     (void*) (&(ImuAntiAliasing) {ImuAntiAliasing42Hz}),
+    (void*) (&(ImuAntiAliasing) {ImuAntiAliasing42Hz}),
     (void*) (&(ImuSampleRate) {ImuSampleRate100Hz}),
     (void*) (&(FusionAxesAlignment) {FusionAxesAlignmentPXPYPZ}),
     (void*) (&(bool) {false}),
@@ -177,6 +182,7 @@ const bool preserveds[] = {
     true,
     true,
     true,
+    false,
     false,
     false,
     false,
@@ -231,6 +237,7 @@ const bool readOnlys[] = {
     false,
     false,
     false,
+    false,
 };
 
 static void* GetValue(Ximu3Settings * const settings, const Ximu3SettingsIndex index) {
@@ -263,10 +270,12 @@ static void* GetValue(Ximu3Settings * const settings, const Ximu3SettingsIndex i
             return &settings->values.serialBaudRate;
         case Ximu3SettingsIndexSerialRtsCtsEnabled:
             return &settings->values.serialRtsCtsEnabled;
-        case Ximu3SettingsIndexNotchFilterEnabled:
-            return &settings->values.notchFilterEnabled;
-        case Ximu3SettingsIndexAntiAliasing:
-            return &settings->values.antiAliasing;
+        case Ximu3SettingsIndexGyroscopeNotchFilterEnabled:
+            return &settings->values.gyroscopeNotchFilterEnabled;
+        case Ximu3SettingsIndexGyroscopeAntiAliasing:
+            return &settings->values.gyroscopeAntiAliasing;
+        case Ximu3SettingsIndexAccelerometerAntiAliasing:
+            return &settings->values.accelerometerAntiAliasing;
         case Ximu3SettingsIndexSampleRate:
             return &settings->values.sampleRate;
         case Ximu3SettingsIndexAxesAlignment:

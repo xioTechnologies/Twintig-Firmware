@@ -88,12 +88,17 @@
             "default": "{false}"
         },
         {
-            "name": "Notch filter enabled",
+            "name": "Gyroscope notch filter enabled",
             "declaration": "bool name",
             "default": "{true}"
         },
         {
-            "name": "Anti-aliasing",
+            "name": "Gyroscope anti-aliasing",
+            "declaration": "ImuAntiAliasing name",
+            "default": "{ImuAntiAliasing42Hz}"
+        },
+        {
+            "name": "Accelerometer anti-aliasing",
             "declaration": "ImuAntiAliasing name",
             "default": "{ImuAntiAliasing42Hz}"
         },

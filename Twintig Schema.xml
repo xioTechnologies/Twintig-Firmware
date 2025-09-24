@@ -12,9 +12,12 @@
             <Setting key="serial_rts_cts_enabled" name="RTS/CTS" type="bool" hideKey="serial_mode" hideValues="0"/>
         </Group>
         <Group name="IMU" expand="true">
-            <Setting key="notch_filter_enabled" name="Notch Filter" type="bool"/>
-            <Setting key="anti_aliasing" name="Anti-Aliasing" type="ImuAntiAliasing"/>
-            <Setting key="sample_rate" name="Sample Rate" type="ImuSampleRate"/>
+            <Group name="Signal Path" expand="true">
+                <Setting key="gyroscope_notch_filter_enabled" name="Gyroscope Notch Filter" type="bool"/>
+                <Setting key="gyroscope_anti_aliasing" name="Gyroscope Anti-Aliasing" type="ImuAntiAliasing"/>
+                <Setting key="accelerometer_anti_aliasing" name="Accelerometer Anti-Aliasing" type="ImuAntiAliasing"/>
+                <Setting key="sample_rate" name="Sample Rate" type="ImuSampleRate"/>
+            </Group>
             <Setting key="axes_alignment" name="Axes Alignment" type="FusionAxesAlignment"/>
             <Setting key="gyroscope_offset_correction_enabled" name="Gyroscope Offset Correction" type="bool"/>
             <Group name="AHRS" expand="true">

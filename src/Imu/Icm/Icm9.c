@@ -95,21 +95,21 @@ void Icm9Initialise(const IcmSettings * const settings) {
 
     // Configure gyroscope anti-aliasing filter
     IcmGyroConfigStatic2Register gyroConfigStatic2Register = {.value = ICM_GYRO_CONFIG_STATIC2_RESET_VALUE};
-    gyroConfigStatic2Register.gyroAafDis = settings->aafDisable ? 1 : 0;
-    gyroConfigStatic2Register.gyroNfDis = settings->nfDisable ? 1 : 0;
+    gyroConfigStatic2Register.gyroAafDis = settings->gyroscopeAafDisable ? 1 : 0;
+    gyroConfigStatic2Register.gyroNfDis = settings->gyroscopeNfDisable ? 1 : 0;
     WriteRegister(ICM_GYRO_CONFIG_STATIC2_ADDRESS, gyroConfigStatic2Register.value);
 
     IcmGyroConfigStatic3Register gyroConfigStatic3Register = {.value = ICM_GYRO_CONFIG_STATIC3_RESET_VALUE};
-    gyroConfigStatic3Register.gyroAafDelt = settings->aaf.delt;
+    gyroConfigStatic3Register.gyroAafDelt = settings->gyroscopeAaf.delt;
     WriteRegister(ICM_GYRO_CONFIG_STATIC3_ADDRESS, gyroConfigStatic3Register.value);
 
     IcmGyroConfigStatic4Register gyroConfigStatic4Register = {.value = ICM_GYRO_CONFIG_STATIC4_RESET_VALUE};
-    gyroConfigStatic4Register.gyroAafDeltsqrLsb = settings->aaf.deltsqr & 0xFF;
+    gyroConfigStatic4Register.gyroAafDeltsqrLsb = settings->gyroscopeAaf.deltsqr & 0xFF;
     WriteRegister(ICM_GYRO_CONFIG_STATIC4_ADDRESS, gyroConfigStatic4Register.value);
 
     IcmGyroConfigStatic5Register gyroConfigStatic5Register = {.value = ICM_GYRO_CONFIG_STATIC5_RESET_VALUE};
-    gyroConfigStatic5Register.gyroAafDeltsqrMsb = settings->aaf.deltsqr >> 8;
-    gyroConfigStatic5Register.gyroAafBitshift = settings->aaf.bitshift;
+    gyroConfigStatic5Register.gyroAafDeltsqrMsb = settings->gyroscopeAaf.deltsqr >> 8;
+    gyroConfigStatic5Register.gyroAafBitshift = settings->gyroscopeAaf.bitshift;
     WriteRegister(ICM_GYRO_CONFIG_STATIC5_ADDRESS, gyroConfigStatic5Register.value);
 
     // Select register bank 2
@@ -117,16 +117,16 @@ void Icm9Initialise(const IcmSettings * const settings) {
 
     // Configure accelerometer anti-aliasing filter
     IcmAccelConfigStatic2Register accelConfigStatic2Register = {.value = ICM_ACCEL_CONFIG_STATIC2_RESET_VALUE};
-    accelConfigStatic2Register.accelAafDis = settings->aafDisable ? 1 : 0;
+    accelConfigStatic2Register.accelAafDis = settings->accelerometerAafDisable ? 1 : 0;
     WriteRegister(ICM_ACCEL_CONFIG_STATIC2_ADDRESS, accelConfigStatic2Register.value);
 
     IcmAccelConfigStatic3Register accelConfigStatic3Register = {.value = ICM_ACCEL_CONFIG_STATIC3_RESET_VALUE};
-    accelConfigStatic3Register.accelAafDeltsqrLsb = settings->aaf.deltsqr & 0xFF;
+    accelConfigStatic3Register.accelAafDeltsqrLsb = settings->accelerometerAaf.deltsqr & 0xFF;
     WriteRegister(ICM_ACCEL_CONFIG_STATIC3_ADDRESS, accelConfigStatic3Register.value);
 
     IcmAccelConfigStatic4Register accelConfigStatic4Register = {.value = ICM_ACCEL_CONFIG_STATIC4_RESET_VALUE};
-    accelConfigStatic4Register.accelAafDeltsqrMsb = settings->aaf.deltsqr >> 8;
-    accelConfigStatic4Register.accelAafBitshift = settings->aaf.bitshift;
+    accelConfigStatic4Register.accelAafDeltsqrMsb = settings->accelerometerAaf.deltsqr >> 8;
+    accelConfigStatic4Register.accelAafBitshift = settings->accelerometerAaf.bitshift;
     WriteRegister(ICM_ACCEL_CONFIG_STATIC4_ADDRESS, accelConfigStatic4Register.value);
 
     // Select register bank 0
