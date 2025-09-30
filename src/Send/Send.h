@@ -10,7 +10,6 @@
 //------------------------------------------------------------------------------
 // Includes
 
-#include "Fifo.h"
 #include "Imu/Imu.h"
 #include "Led/Led.h"
 #include "Mux/Mux.h"

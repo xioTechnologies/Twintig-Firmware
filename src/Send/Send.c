@@ -7,6 +7,7 @@
 //------------------------------------------------------------------------------
 // Includes
 
+#include "Fifo.h"
 #include "Send.h"
 #include "Serial/Serial.h"
 #include <stdarg.h>
