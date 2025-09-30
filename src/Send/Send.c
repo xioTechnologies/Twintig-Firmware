@@ -79,6 +79,7 @@ Send send20 = {.channel = MuxChannel20, .led = &led20};
  * @brief Sets the settings.
  * @param send Send structure.
  * @param settings Settings.
+ * @param imu IMU structure.
  */
 void SendSetSettings(Send * const send, const SendSettings * const settings, Imu * const imu) {
 
