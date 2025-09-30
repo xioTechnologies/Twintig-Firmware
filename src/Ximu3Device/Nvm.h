@@ -29,7 +29,6 @@ typedef struct {
 
 extern const Nvm nvm0;
 extern const Nvm nvm1;
-extern const Nvm nvm1;
 extern const Nvm nvm2;
 extern const Nvm nvm3;
 extern const Nvm nvm4;
