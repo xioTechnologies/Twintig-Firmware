@@ -5720,7 +5720,7 @@ data:
       - children:
         - attributes:
             id: core
-            value: '17'
+            value: '49181'
           type: Dynamic
         type: Values
       type: Hex
@@ -5731,7 +5731,7 @@ data:
       - children:
         - attributes:
             id: core
-            value: '1041'
+            value: '50205'
           type: Dynamic
         type: Values
       type: Hex
@@ -5984,7 +5984,7 @@ data:
       - children:
         - attributes:
             id: core
-            value: '512'
+            value: '896'
           type: Dynamic
         type: Values
       type: Hex
@@ -7232,6 +7232,372 @@ data:
           type: User
         type: Values
       type: Boolean
+    BSP_PIN_15_DIR:
+      attributes:
+        id: BSP_PIN_15_DIR
+      children:
+      - children:
+        - attributes:
+            value: Out
+          type: User
+        type: Values
+      type: String
+    SYS_PORT_G_LAT:
+      attributes:
+        id: SYS_PORT_G_LAT
+      children:
+      - children:
+        - attributes:
+            id: core
+            value: '384'
+          type: Dynamic
+        type: Values
+      type: Hex
+    BSP_PIN_15_LAT:
+      attributes:
+        id: BSP_PIN_15_LAT
+      children:
+      - children:
+        - attributes:
+            value: High
+          type: User
+        type: Values
+      type: String
+    SYS_PORT_G_ODC:
+      attributes:
+        id: SYS_PORT_G_ODC
+      children:
+      - children:
+        - attributes:
+            id: core
+            value: '384'
+          type: Dynamic
+        type: Values
+      type: Hex
+    BSP_PIN_15_OD:
+      attributes:
+        id: BSP_PIN_15_OD
+      children:
+      - children:
+        - attributes:
+            value: 'True'
+          type: User
+        type: Values
+      type: String
+    BSP_PIN_16_DIR:
+      attributes:
+        id: BSP_PIN_16_DIR
+      children:
+      - children:
+        - attributes:
+            value: Out
+          type: User
+        type: Values
+      type: String
+    BSP_PIN_16_LAT:
+      attributes:
+        id: BSP_PIN_16_LAT
+      children:
+      - children:
+        - attributes:
+            value: High
+          type: User
+        type: Values
+      type: String
+    BSP_PIN_16_OD:
+      attributes:
+        id: BSP_PIN_16_OD
+      children:
+      - children:
+        - attributes:
+            value: 'True'
+          type: User
+        type: Values
+      type: String
+    SYS_PORT_F_TRIS:
+      attributes:
+        id: SYS_PORT_F_TRIS
+      children:
+      - children:
+        - attributes:
+            id: core
+            value: '308'
+          type: Dynamic
+        type: Values
+      type: Hex
+    BSP_PIN_79_DIR:
+      attributes:
+        id: BSP_PIN_79_DIR
+      children:
+      - children:
+        - attributes:
+            value: Out
+          type: User
+        type: Values
+      type: String
+    SYS_PORT_F_LAT:
+      attributes:
+        id: SYS_PORT_F_LAT
+      children:
+      - children:
+        - attributes:
+            id: core
+            value: '308'
+          type: Dynamic
+        type: Values
+      type: Hex
+    BSP_PIN_79_LAT:
+      attributes:
+        id: BSP_PIN_79_LAT
+      children:
+      - children:
+        - attributes:
+            value: High
+          type: User
+        type: Values
+      type: String
+    SYS_PORT_F_ODC:
+      attributes:
+        id: SYS_PORT_F_ODC
+      children:
+      - children:
+        - attributes:
+            id: core
+            value: '308'
+          type: Dynamic
+        type: Values
+      type: Hex
+    BSP_PIN_79_OD:
+      attributes:
+        id: BSP_PIN_79_OD
+      children:
+      - children:
+        - attributes:
+            value: 'True'
+          type: User
+        type: Values
+      type: String
+    BSP_PIN_80_DIR:
+      attributes:
+        id: BSP_PIN_80_DIR
+      children:
+      - children:
+        - attributes:
+            value: Out
+          type: User
+        type: Values
+      type: String
+    BSP_PIN_80_LAT:
+      attributes:
+        id: BSP_PIN_80_LAT
+      children:
+      - children:
+        - attributes:
+            value: High
+          type: User
+        type: Values
+      type: String
+    BSP_PIN_80_OD:
+      attributes:
+        id: BSP_PIN_80_OD
+      children:
+      - children:
+        - attributes:
+            value: 'True'
+          type: User
+        type: Values
+      type: String
+    BSP_PIN_85_DIR:
+      attributes:
+        id: BSP_PIN_85_DIR
+      children:
+      - children:
+        - attributes:
+            value: Out
+          type: User
+        type: Values
+      type: String
+    BSP_PIN_85_LAT:
+      attributes:
+        id: BSP_PIN_85_LAT
+      children:
+      - children:
+        - attributes:
+            value: High
+          type: User
+        type: Values
+      type: String
+    SYS_PORT_A_ODC:
+      attributes:
+        id: SYS_PORT_A_ODC
+      children:
+      - children:
+        - attributes:
+            id: core
+            value: '49164'
+          type: Dynamic
+        type: Values
+      type: Hex
+    BSP_PIN_85_OD:
+      attributes:
+        id: BSP_PIN_85_OD
+      children:
+      - children:
+        - attributes:
+            value: 'True'
+          type: User
+        type: Values
+      type: String
+    BSP_PIN_86_DIR:
+      attributes:
+        id: BSP_PIN_86_DIR
+      children:
+      - children:
+        - attributes:
+            value: Out
+          type: User
+        type: Values
+      type: String
+    BSP_PIN_86_LAT:
+      attributes:
+        id: BSP_PIN_86_LAT
+      children:
+      - children:
+        - attributes:
+            value: High
+          type: User
+        type: Values
+      type: String
+    BSP_PIN_86_OD:
+      attributes:
+        id: BSP_PIN_86_OD
+      children:
+      - children:
+        - attributes:
+            value: 'True'
+          type: User
+        type: Values
+      type: String
+    BSP_PIN_90_DIR:
+      attributes:
+        id: BSP_PIN_90_DIR
+      children:
+      - children:
+        - attributes:
+            value: Out
+          type: User
+        type: Values
+      type: String
+    BSP_PIN_90_LAT:
+      attributes:
+        id: BSP_PIN_90_LAT
+      children:
+      - children:
+        - attributes:
+            value: High
+          type: User
+        type: Values
+      type: String
+    BSP_PIN_90_OD:
+      attributes:
+        id: BSP_PIN_90_OD
+      children:
+      - children:
+        - attributes:
+            value: 'True'
+          type: User
+        type: Values
+      type: String
+    BSP_PIN_91_DIR:
+      attributes:
+        id: BSP_PIN_91_DIR
+      children:
+      - children:
+        - attributes:
+            value: Out
+          type: User
+        type: Values
+      type: String
+    BSP_PIN_91_LAT:
+      attributes:
+        id: BSP_PIN_91_LAT
+      children:
+      - children:
+        - attributes:
+            value: High
+          type: User
+        type: Values
+      type: String
+    BSP_PIN_91_OD:
+      attributes:
+        id: BSP_PIN_91_OD
+      children:
+      - children:
+        - attributes:
+            value: 'True'
+          type: User
+        type: Values
+      type: String
+    BSP_PIN_95_DIR:
+      attributes:
+        id: BSP_PIN_95_DIR
+      children:
+      - children:
+        - attributes:
+            value: Out
+          type: User
+        type: Values
+      type: String
+    BSP_PIN_95_LAT:
+      attributes:
+        id: BSP_PIN_95_LAT
+      children:
+      - children:
+        - attributes:
+            value: High
+          type: User
+        type: Values
+      type: String
+    BSP_PIN_95_OD:
+      attributes:
+        id: BSP_PIN_95_OD
+      children:
+      - children:
+        - attributes:
+            value: 'True'
+          type: User
+        type: Values
+      type: String
+    BSP_PIN_96_DIR:
+      attributes:
+        id: BSP_PIN_96_DIR
+      children:
+      - children:
+        - attributes:
+            value: Out
+          type: User
+        type: Values
+      type: String
+    BSP_PIN_96_LAT:
+      attributes:
+        id: BSP_PIN_96_LAT
+      children:
+      - children:
+        - attributes:
+            value: High
+          type: User
+        type: Values
+      type: String
+    BSP_PIN_96_OD:
+      attributes:
+        id: BSP_PIN_96_OD
+      children:
+      - children:
+        - attributes:
+            value: 'True'
+          type: User
+        type: Values
+      type: String
   userData:
     children:
     - attributes:

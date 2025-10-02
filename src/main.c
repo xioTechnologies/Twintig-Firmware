@@ -23,6 +23,12 @@
 #include "I2C/I2C4.h"
 #include "I2C/I2C5.h"
 #include "I2C/I2CBB1.h"
+#include "I2C/I2CBB2.h"
+#include "I2C/I2CBB3.h"
+#include "I2C/I2CBB4.h"
+#include "I2C/I2CBB5.h"
+#include "I2C/I2CBB6.h"
+#include "I2C/I2CBB7.h"
 #include "Imu/Icm/Icm1.h"
 #include "Imu/Icm/Icm10.h"
 #include "Imu/Icm/Icm11.h"
@@ -78,6 +84,13 @@ int main(void) {
 
     // Initialise modules
     TimerInitialise();
+    I2CBB1BusClear();
+    I2CBB2BusClear();
+    I2CBB3BusClear();
+    I2CBB4BusClear();
+    I2CBB5BusClear();
+    I2CBB6BusClear();
+    I2CBB7BusClear();
     I2C1Initialise(I2CClockFrequency100kHz);
     I2C2Initialise(I2CClockFrequency100kHz);
     I2C3Initialise(I2CClockFrequency100kHz);

@@ -33,6 +33,26 @@
 #define I2CBB2_SDA_PIN                      SDA_HAPTIC_PIN
 #define I2CBB2_HALF_CLOCK_CYCLE             (5)
 
+#define I2CBB3_SCL_PIN                      SCL_CH1_PIN
+#define I2CBB3_SDA_PIN                      SDA_CH1_PIN
+#define I2CBB3_HALF_CLOCK_CYCLE             (5)
+
+#define I2CBB4_SCL_PIN                      SCL_CH2_PIN
+#define I2CBB4_SDA_PIN                      SDA_CH2_PIN
+#define I2CBB4_HALF_CLOCK_CYCLE             (5)
+
+#define I2CBB5_SCL_PIN                      SCL_CH3_PIN
+#define I2CBB5_SDA_PIN                      SDA_CH3_PIN
+#define I2CBB5_HALF_CLOCK_CYCLE             (5)
+
+#define I2CBB6_SCL_PIN                      SCL_CH4_PIN
+#define I2CBB6_SDA_PIN                      SDA_CH4_PIN
+#define I2CBB6_HALF_CLOCK_CYCLE             (5)
+
+#define I2CBB7_SCL_PIN                      SCL_CH5_PIN
+#define I2CBB7_SDA_PIN                      SDA_CH5_PIN
+#define I2CBB7_HALF_CLOCK_CYCLE             (5)
+
 #define NEOPIXELS_1_HAL_NUMBER_OF_PIXELS    (2)
 
 #define NEOPIXELS_2_HAL_NUMBER_OF_PIXELS    (4)

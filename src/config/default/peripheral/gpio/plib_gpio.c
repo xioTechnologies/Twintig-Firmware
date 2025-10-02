@@ -66,8 +66,9 @@ void GPIO_Initialize ( void )
 {
 
     /* PORTA Initialization */
-    LATA = 0x11U; /* Initial Latch Value */
-    TRISACLR = 0x411U; /* Direction Control */
+    ODCASET = 0xc00cU; /* Open Drain Enable */
+    LATA = 0xc01dU; /* Initial Latch Value */
+    TRISACLR = 0xc41dU; /* Direction Control */
     ANSELACLR = 0x603U; /* Digital Mode Enable */
 
     /* Change Notice Enable */
@@ -103,6 +104,9 @@ void GPIO_Initialize ( void )
     TRISECLR = 0x300U; /* Direction Control */
     ANSELECLR = 0x300U; /* Digital Mode Enable */
     /* PORTF Initialization */
+    ODCFSET = 0x134U; /* Open Drain Enable */
+    LATF = 0x134U; /* Initial Latch Value */
+    TRISFCLR = 0x134U; /* Direction Control */
     ANSELFCLR = 0x3000U; /* Digital Mode Enable */
 
     /* Change Notice Enable */
@@ -110,8 +114,9 @@ void GPIO_Initialize ( void )
     PORTF;
     IEC3SET = _IEC3_CNFIE_MASK;
     /* PORTG Initialization */
-    LATG = 0x0U; /* Initial Latch Value */
-    TRISGCLR = 0x200U; /* Direction Control */
+    ODCGSET = 0x180U; /* Open Drain Enable */
+    LATG = 0x180U; /* Initial Latch Value */
+    TRISGCLR = 0x380U; /* Direction Control */
     ANSELGCLR = 0x3c0U; /* Digital Mode Enable */
     /* PORTH Initialization */
     LATH = 0xd8U; /* Initial Latch Value */

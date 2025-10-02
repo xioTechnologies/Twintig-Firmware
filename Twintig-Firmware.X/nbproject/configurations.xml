@@ -185,6 +185,11 @@
           <itemPath>../src/x-io-PIC32-Library/I2C/I2CBB.h</itemPath>
           <itemPath>../src/x-io-PIC32-Library/I2C/I2CBB1.h</itemPath>
           <itemPath>../src/x-io-PIC32-Library/I2C/I2CBB2.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2CBB3.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2CBB4.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2CBB5.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2CBB6.h</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2CBB7.h</itemPath>
         </logicalFolder>
         <logicalFolder name="NeoPixels" displayName="NeoPixels" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/NeoPixels/NeoPixels.h</itemPath>
@@ -412,6 +417,11 @@
           <itemPath>../src/x-io-PIC32-Library/I2C/I2CStartSequence.c</itemPath>
           <itemPath>../src/x-io-PIC32-Library/I2C/I2CBB1.c</itemPath>
           <itemPath>../src/x-io-PIC32-Library/I2C/I2CBB2.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2CBB3.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2CBB4.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2CBB5.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2CBB6.c</itemPath>
+          <itemPath>../src/x-io-PIC32-Library/I2C/I2CBB7.c</itemPath>
         </logicalFolder>
         <logicalFolder name="NeoPixels" displayName="NeoPixels" projectFiles="true">
           <itemPath>../src/x-io-PIC32-Library/NeoPixels/NeoPixels1.c</itemPath>
