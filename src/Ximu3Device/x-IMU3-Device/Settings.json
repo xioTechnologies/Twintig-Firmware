@@ -75,12 +75,12 @@
         {
             "name": "Serial enabled",
             "declaration": "bool name",
-            "default": "{false}"
+            "default": "{true}"
         },
         {
             "name": "Serial baud rate",
             "declaration": "uint32_t name",
-            "default": "{3000000}"
+            "default": "{115200}"
         },
         {
             "name": "Serial RTS/CTS enabled",
@@ -170,7 +170,7 @@
         {
             "name": "Serial data messages enabled",
             "declaration": "bool name",
-            "default": "{true}"
+            "default": "{false}"
         }
     ]
 }

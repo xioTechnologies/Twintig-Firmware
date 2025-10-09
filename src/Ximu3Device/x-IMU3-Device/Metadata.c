@@ -150,8 +150,8 @@ const void* const defaults[] = {
     (void*) (&(FusionVector) {{0.0f, 0.0f, 0.0f}}),
     (void*) (&(char[32]) {"Unknown"}),
     (void*) (&(char[32]) {"Unknown"}),
-    (void*) (&(bool) {false}),
-    (void*) (&(uint32_t) {3000000}),
+    (void*) (&(bool) {true}),
+    (void*) (&(uint32_t) {115200}),
     (void*) (&(bool) {false}),
     (void*) (&(bool) {true}),
     (void*) (&(ImuAntiAliasing) {ImuAntiAliasing42Hz}),
@@ -169,7 +169,7 @@ const void* const defaults[] = {
     (void*) (&(uint32_t) {1}),
     (void*) (&(uint32_t) {0}),
     (void*) (&(bool) {true}),
-    (void*) (&(bool) {true}),
+    (void*) (&(bool) {false}),
 };
 
 const bool preserveds[] = {
