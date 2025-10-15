@@ -10,6 +10,7 @@
 #include "Haptic.h"
 #include "I2C/I2CBB2.h"
 #include "I2C/I2CStartSequence.h"
+#include <stdbool.h>
 #include <stdint.h>
 #include "Timer/Timer.h"
 
