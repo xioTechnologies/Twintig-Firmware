@@ -64,7 +64,7 @@ void NvmRead(void* const destination, const size_t numberOfBytes, void* const co
  */
 void NvmWrite(const void* const data, const size_t numberOfBytes, void* const context) {
     const Context * const context_ = context;
-    EepromWrite(context_->nvm->i2c, context_->nvm->address, data, numberOfBytes);
+    EepromUpdate(context_->nvm->i2c, context_->nvm->address, data, numberOfBytes);
 }
 
 //------------------------------------------------------------------------------
