@@ -19,8 +19,8 @@
  * @brief Interface.
  */
 typedef struct {
-    size_t(*availableWrite)(void);
-    FifoResult(*write)(const void* const data, const size_t numberOfBytes);
+    size_t(*const availableWrite)(void);
+    FifoResult(*const write)(const void* const data, const size_t numberOfBytes);
 } Interface;
 
 //------------------------------------------------------------------------------

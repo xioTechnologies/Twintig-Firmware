@@ -24,9 +24,9 @@
  * @brief Interface.
  */
 typedef struct {
-    bool(*enabled)(void);
-    size_t(*availableWrite)(const MuxChannel channel);
-    FifoResult(*write)(const MuxChannel channel, const void* const data, const size_t numberOfBytes);
+    bool(*const enabled)(void);
+    size_t(*const availableWrite)(const MuxChannel channel);
+    FifoResult(*const write)(const MuxChannel channel, const void* const data, const size_t numberOfBytes);
 } Interface;
 
 //------------------------------------------------------------------------------
