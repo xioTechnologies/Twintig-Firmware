@@ -37,7 +37,7 @@ const Icm icm15 = {
 static SpiBusClient* spiBusClient;
 static uint8_t deviceId;
 static volatile __attribute__((coherent)) IcmSpiPacket spiPacket;
-static volatile uint64_t timestamp;
+static volatile uint64_t ticks;
 static uint8_t fifoData[(100 * sizeof (IcmFifoPacket)) + 1]; // actual FIFO capacity is 1 less than size
 static Fifo fifo = {.data = fifoData, .dataSize = sizeof (fifoData)};
 static volatile uint32_t bufferOverflow;
@@ -199,7 +199,7 @@ static void ExternalInterrupt(GPIO_PIN pin, uintptr_t context) {
     if (ICM15_SPI_BUS.transferInProgress(spiBusClient)) {
         return;
     }
-    timestamp = TimerGetTicks64();
+    ticks = TimerGetTicks64();
     spiPacket.rw = 1;
     spiPacket.address = ICM_TEMP_DATA1_ADDRESS;
     ICM15_SPI_BUS.transfer(spiBusClient, &spiPacket, sizeof (IcmSensorRegisters) + 1, TransferComplete);
@@ -210,7 +210,7 @@ static void ExternalInterrupt(GPIO_PIN pin, uintptr_t context) {
  */
 static void TransferComplete(void) {
     const IcmFifoPacket fifoPacket = {
-        .timestamp = timestamp,
+        .ticks = ticks,
         .registers = *((IcmSensorRegisters*) spiPacket.data),
     };
     if (FifoWrite(&fifo, &fifoPacket, sizeof (fifoPacket)) != FifoResultOk) {
@@ -228,7 +228,7 @@ IcmResult Icm15GetData(IcmData * const data) {
     if (FifoRead(&fifo, &fifoPacket, sizeof (fifoPacket)) == 0) {
         return IcmResultError;
     }
-    data->timestamp = fifoPacket.timestamp;
+    data->ticks = fifoPacket.ticks;
     data->gyroscopeX = (float) fifoPacket.registers.gyroDataX * (1.0f / 16.4f);
     data->gyroscopeY = (float) fifoPacket.registers.gyroDataY * (1.0f / 16.4f);
     data->gyroscopeZ = (float) fifoPacket.registers.gyroDataZ * (1.0f / 16.4f);

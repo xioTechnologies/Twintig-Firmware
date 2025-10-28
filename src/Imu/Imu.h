@@ -132,7 +132,7 @@ typedef struct {
  * @brief Inertial data.
  */
 typedef struct {
-    uint64_t timestamp;
+    uint64_t ticks;
     FusionVector gyroscope;
     FusionVector accelerometer;
 } ImuInertialData;
@@ -141,7 +141,7 @@ typedef struct {
  * @brief AHRS data.
  */
 typedef struct {
-    uint64_t timestamp;
+    uint64_t ticks;
     const FusionAhrs* ahrs;
 } ImuAhrsData;
 
@@ -149,7 +149,7 @@ typedef struct {
  * @brief Temperature data.
  */
 typedef struct {
-    uint64_t timestamp;
+    uint64_t ticks;
     float temperature;
 } ImuTemperatureData;
 
@@ -169,7 +169,7 @@ typedef struct {
     FusionVector downsampledGyroscope; // private
     FusionVector downsampledAccelerometer; // private
     uint32_t downsampledCount; // private
-    uint64_t previousTimestamp; // private
+    uint64_t previousTicks; // private
 } Imu;
 
 //------------------------------------------------------------------------------

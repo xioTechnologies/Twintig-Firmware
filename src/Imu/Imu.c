@@ -112,7 +112,7 @@ void ImuTasks(Imu * const imu) {
         // Inertial callback
         if (imu->inertialDataReady != NULL) {
             ImuInertialData inertialData = {
-                .timestamp = icmData.timestamp,
+                .ticks = icmData.ticks,
                 .gyroscope = gyroscope,
                 .accelerometer = accelerometer,
             };
@@ -122,7 +122,7 @@ void ImuTasks(Imu * const imu) {
         // Temperature callback
         if (imu->temperatureDataReady != NULL) {
             ImuTemperatureData temperatureData = {
-                .timestamp = icmData.timestamp,
+                .ticks = icmData.ticks,
                 .temperature = icmData.temperature,
             };
             imu->temperatureDataReady(&temperatureData, imu->context);
@@ -149,9 +149,9 @@ void ImuTasks(Imu * const imu) {
         imu->downsampledCount = 0;
 
         // Calculate delta time
-        const bool invalid = imu->previousTimestamp == 0;
-        const float deltaTime = (float) ((double) (icmData.timestamp - imu->previousTimestamp) * (1.0 / (double) TIMER_TICKS_PER_SECOND));
-        imu->previousTimestamp = icmData.timestamp;
+        const bool invalid = imu->previousTicks == 0;
+        const float deltaTime = (float) ((double) (icmData.ticks - imu->previousTicks) * (1.0 / (double) TIMER_TICKS_PER_SECOND));
+        imu->previousTicks = icmData.ticks;
         if (invalid) {
             continue;
         }
@@ -162,7 +162,7 @@ void ImuTasks(Imu * const imu) {
         // AHRS callback
         if (imu->ahrsDataReady != NULL) {
             ImuAhrsData ahrsData = {
-                .timestamp = icmData.timestamp,
+                .ticks = icmData.ticks,
                 .ahrs = &imu->ahrs,
             };
             imu->ahrsDataReady(&ahrsData, imu->context);
@@ -206,7 +206,7 @@ void ImuSetSettings(Imu * const imu, const ImuSettings * const settings) {
         (imu->settings.ahrsAxesConvention != settings->ahrsAxesConvention) ||
         (imu->settings.ahrsUpdateRateDivisor != settings->ahrsUpdateRateDivisor)) {
         FusionAhrsReset(&imu->ahrs);
-        imu->previousTimestamp = 0;
+        imu->previousTicks = 0;
     }
 
     // Update settings

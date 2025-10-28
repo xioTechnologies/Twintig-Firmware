@@ -34,7 +34,7 @@ typedef struct {
 
 static void InertialDataReady(const ImuInertialData * const data, void* const context);
 static void AhrsDataReady(const ImuAhrsData * const data, void* const context);
-static void SendAhrsStatus(Send * const send, const uint64_t timestamp, const FusionAhrsFlags * const flags);
+static void SendAhrsStatus(Send * const send, const uint64_t ticks, const FusionAhrsFlags * const flags);
 static void SendQuaternion(Send * const send, const ImuAhrsData * const imuData);
 static void SendRotationMatrix(Send * const send, const ImuAhrsData * const imuData);
 static void SendEulerAngles(Send * const send, const ImuAhrsData * const imuData);
@@ -141,7 +141,7 @@ static void InertialDataReady(const ImuInertialData * const imuData, void* const
 
     // Send message
     const Ximu3DataInertial ximu3Data = {
-        .timestamp = TimestampFrom(imuData->timestamp),
+        .timestamp = TimestampFrom(imuData->ticks),
         .gyroscopeX = gyroscope.axis.x,
         .gyroscopeY = gyroscope.axis.y,
         .gyroscopeZ = gyroscope.axis.z,
@@ -171,7 +171,7 @@ static void AhrsDataReady(const ImuAhrsData * const imuData, void* const context
     const FusionAhrsFlags flags = FusionAhrsGetFlags(imuData->ahrs);
     if (memcmp(&flags, &send->flags, sizeof (flags)) != 0) {
         send->flags = flags;
-        SendAhrsStatus(send, imuData->timestamp, &flags);
+        SendAhrsStatus(send, imuData->ticks, &flags);
     }
 
     // AHRS outputs
@@ -201,12 +201,12 @@ static void AhrsDataReady(const ImuAhrsData * const imuData, void* const context
 /**
  * @brief Sends an AHRS status message.
  * @param send Send structure.
- * @param timestamp Timestamp.
+ * @param ticks Ticks.
  * @param flags Flags.
  */
-static void SendAhrsStatus(Send * const send, const uint64_t timestamp, const FusionAhrsFlags * const flags) {
+static void SendAhrsStatus(Send * const send, const uint64_t ticks, const FusionAhrsFlags * const flags) {
     const Ximu3DataAhrsStatus ximu3Data = {
-        .timestamp = TimestampFrom(timestamp),
+        .timestamp = TimestampFrom(ticks),
         .initialising = flags->initialising,
         .angularRateRecovery = flags->angularRateRecovery,
         .accelerationRecovery = flags->accelerationRecovery,
@@ -230,7 +230,7 @@ static void SendAhrsStatus(Send * const send, const uint64_t timestamp, const Fu
 static void SendQuaternion(Send * const send, const ImuAhrsData * const imuData) {
     const FusionQuaternion quaternion = FusionAhrsGetQuaternion(imuData->ahrs);
     const Ximu3DataQuaternion ximu3Data = {
-        .timestamp = TimestampFrom(imuData->timestamp),
+        .timestamp = TimestampFrom(imuData->ticks),
         .w = quaternion.element.w,
         .x = quaternion.element.x,
         .y = quaternion.element.y,
@@ -254,7 +254,7 @@ static void SendQuaternion(Send * const send, const ImuAhrsData * const imuData)
 static void SendRotationMatrix(Send * const send, const ImuAhrsData * const imuData) {
     const FusionMatrix matrix = FusionQuaternionToMatrix(FusionAhrsGetQuaternion(imuData->ahrs));
     const Ximu3DataRotationMatrix ximu3Data = {
-        .timestamp = TimestampFrom(imuData->timestamp),
+        .timestamp = TimestampFrom(imuData->ticks),
         .xx = matrix.element.xx,
         .xy = matrix.element.xy,
         .xz = matrix.element.xz,
@@ -283,7 +283,7 @@ static void SendRotationMatrix(Send * const send, const ImuAhrsData * const imuD
 static void SendEulerAngles(Send * const send, const ImuAhrsData * const imuData) {
     const FusionEuler euler = FusionQuaternionToEuler(FusionAhrsGetQuaternion(imuData->ahrs));
     const Ximu3DataEulerAngles ximu3Data = {
-        .timestamp = TimestampFrom(imuData->timestamp),
+        .timestamp = TimestampFrom(imuData->ticks),
         .roll = euler.angle.roll,
         .pitch = euler.angle.pitch,
         .yaw = euler.angle.yaw,
@@ -307,7 +307,7 @@ static void SendLinearAcceleration(Send * const send, const ImuAhrsData * const 
     const FusionQuaternion quaternion = FusionAhrsGetQuaternion(imuData->ahrs);
     const FusionVector linearAcceleration = FusionAhrsGetLinearAcceleration(imuData->ahrs);
     const Ximu3DataLinearAcceleration ximu3Data = {
-        .timestamp = TimestampFrom(imuData->timestamp),
+        .timestamp = TimestampFrom(imuData->ticks),
         .quaternionW = quaternion.element.w,
         .quaternionX = quaternion.element.x,
         .quaternionY = quaternion.element.y,
@@ -335,7 +335,7 @@ static void SendEarthAcceleration(Send * const send, const ImuAhrsData * const i
     const FusionQuaternion quaternion = FusionAhrsGetQuaternion(imuData->ahrs);
     const FusionVector earthAcceleration = FusionAhrsGetEarthAcceleration(imuData->ahrs);
     const Ximu3DataEarthAcceleration ximu3Data = {
-        .timestamp = TimestampFrom(imuData->timestamp),
+        .timestamp = TimestampFrom(imuData->ticks),
         .quaternionW = quaternion.element.w,
         .quaternionX = quaternion.element.x,
         .quaternionY = quaternion.element.y,
@@ -378,7 +378,7 @@ static void TemperatureDataReady(const ImuTemperatureData * const imuData, void*
 
     // Send message
     const Ximu3DataTemperature ximu3Data = {
-        .timestamp = TimestampFrom(imuData->timestamp),
+        .timestamp = TimestampFrom(imuData->ticks),
         .temperature = temperature,
     };
     uint8_t message[128];

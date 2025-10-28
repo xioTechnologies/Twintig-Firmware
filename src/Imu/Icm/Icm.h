@@ -35,7 +35,7 @@ typedef struct {
  * @brief FIFO packet.
  */
 typedef struct {
-    uint64_t timestamp;
+    uint64_t ticks;
     IcmSensorRegisters registers;
 } __attribute__((__packed__)) IcmFifoPacket;
 
@@ -90,7 +90,7 @@ typedef enum {
  * @brief Data.
  */
 typedef struct {
-    uint64_t timestamp;
+    uint64_t ticks;
     float gyroscopeX;
     float gyroscopeY;
     float gyroscopeZ;
