@@ -27,7 +27,7 @@ typedef struct {
 // Function declarations
 
 static inline __attribute__((always_inline)) size_t AvailableWrite(const Interface * const interface, const MuxChannel channel);
-static inline __attribute__((always_inline)) size_t Write(const Interface * const interface, const MuxChannel channel, const void* const data, const size_t numberOfBytes);
+static inline __attribute__((always_inline)) FifoResult Write(const Interface * const interface, const MuxChannel channel, const void* const data, const size_t numberOfBytes);
 
 //------------------------------------------------------------------------------
 // Variables
@@ -156,7 +156,7 @@ static inline __attribute__((always_inline)) size_t AvailableWrite(const Interfa
  * @param numberOfBytes Number of bytes.
  * @return Result.
  */
-static inline __attribute__((always_inline)) size_t Write(const Interface * const interface, const MuxChannel channel, const void* const data, const size_t numberOfBytes) {
+static inline __attribute__((always_inline)) FifoResult Write(const Interface * const interface, const MuxChannel channel, const void* const data, const size_t numberOfBytes) {
     if (channel == MuxChannelNone) {
         return interface->write(data, numberOfBytes);
     }
