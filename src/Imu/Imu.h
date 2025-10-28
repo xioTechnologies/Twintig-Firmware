@@ -154,7 +154,7 @@ typedef struct {
 } ImuTemperatureData;
 
 /**
- * @brief IMU structure. All structure members are private.
+ * @brief IMU structure.
  */
 typedef struct {
     const Icm * const icm;
@@ -162,14 +162,14 @@ typedef struct {
     void (*ahrsDataReady)(const ImuAhrsData * const data, void* const context); // NULL if unused
     void (*temperatureDataReady)(const ImuTemperatureData * const data, void* const context); // NULL if unused
     void* context;
-    bool initialised;
-    ImuSettings settings;
-    FusionOffset offset;
-    FusionAhrs ahrs;
-    FusionVector downsampledGyroscope;
-    FusionVector downsampledAccelerometer;
-    uint32_t downsampledCount;
-    uint64_t previousTimestamp;
+    bool initialised; // private
+    ImuSettings settings; // private
+    FusionOffset offset; // private
+    FusionAhrs ahrs; // private
+    FusionVector downsampledGyroscope; // private
+    FusionVector downsampledAccelerometer; // private
+    uint32_t downsampledCount; // private
+    uint64_t previousTimestamp; // private
 } Imu;
 
 //------------------------------------------------------------------------------

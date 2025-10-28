@@ -88,7 +88,7 @@ uint8_t MuxChannelToByte(const MuxChannel channel) {
         case MuxChannel20:
             return 'T';
     }
-    return '\n';
+    return '\n'; // avoid compiler warning
 }
 
 /**
