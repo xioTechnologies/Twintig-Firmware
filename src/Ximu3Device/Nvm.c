@@ -51,7 +51,7 @@ const Nvm nvm20 = {.i2c = &i2c4, .address = 3072};
  * @param numberOfBytes Number of bytes.
  * @param context Context.
  */
-void NvmRead(void* const destination, size_t numberOfBytes, void* const context) {
+void NvmRead(void* const destination, const size_t numberOfBytes, void* const context) {
     const Context * const context_ = context;
     EepromRead(context_->nvm->i2c, context_->nvm->address, destination, numberOfBytes);
 }
