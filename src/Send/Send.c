@@ -409,7 +409,7 @@ void SendNotification(Send * const send, const char* format, ...) {
     // Send message
     const Ximu3DataNotification ximu3Data = {
         .timestamp = TimestampGet(),
-        .string = string
+        .string = string,
     };
     uint8_t message[128];
     size_t messageSize;
@@ -439,7 +439,7 @@ void SendError(Send * const send, const char* format, ...) {
     // Send message
     const Ximu3DataError ximu3Data = {
         .timestamp = TimestampGet(),
-        .string = string
+        .string = string,
     };
     uint8_t message[128];
     size_t messageSize;
