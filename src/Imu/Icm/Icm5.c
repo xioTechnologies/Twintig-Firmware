@@ -118,6 +118,7 @@ void Icm5Initialise(const IcmSettings * const settings) {
     // Configure accelerometer anti-aliasing filter
     IcmAccelConfigStatic2Register accelConfigStatic2Register = {.value = ICM_ACCEL_CONFIG_STATIC2_RESET_VALUE};
     accelConfigStatic2Register.accelAafDis = settings->accelerometerAafDisable ? 1 : 0;
+    accelConfigStatic2Register.accelAafDelt = settings->accelerometerAaf.delt;
     WriteRegister(ICM_ACCEL_CONFIG_STATIC2_ADDRESS, accelConfigStatic2Register.value);
 
     IcmAccelConfigStatic3Register accelConfigStatic3Register = {.value = ICM_ACCEL_CONFIG_STATIC3_RESET_VALUE};
