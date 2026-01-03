@@ -43,6 +43,7 @@ void ApplyNow(Context * const context) {
     ApplySerial(context);
     ApplyImu(context);
     ApplySend(context);
+    Ximu3SettingsClearApplyPending(context->settings);
 }
 
 /**

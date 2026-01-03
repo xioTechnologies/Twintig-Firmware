@@ -71,17 +71,17 @@ static const char* const keys[] = {
 };
 
 const MetadataType types[] = {
-    MetadataTypeCharArray,
-    MetadataTypeCharArray,
-    MetadataTypeCharArray,
+    MetadataTypeString,
+    MetadataTypeString,
+    MetadataTypeString,
     MetadataTypeFusionMatrix,
     MetadataTypeFusionVector,
     MetadataTypeFusionVector,
     MetadataTypeFusionMatrix,
     MetadataTypeFusionVector,
     MetadataTypeFusionVector,
-    MetadataTypeCharArray,
-    MetadataTypeCharArray,
+    MetadataTypeString,
+    MetadataTypeString,
     MetadataTypeBool,
     MetadataTypeUint32,
     MetadataTypeBool,

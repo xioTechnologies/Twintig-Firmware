@@ -11,7 +11,6 @@
 
 typedef enum {
     MetadataTypeBool,
-    MetadataTypeCharArray,
     MetadataTypeFloat,
     MetadataTypeFusionAxesAlignment,
     MetadataTypeFusionConvention,
@@ -20,6 +19,7 @@ typedef enum {
     MetadataTypeImuAntiAliasing,
     MetadataTypeImuSampleRate,
     MetadataTypeSendAhrsMessageType,
+    MetadataTypeString,
     MetadataTypeUint32,
 } MetadataType;
 
