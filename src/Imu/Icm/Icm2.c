@@ -94,40 +94,42 @@ void Icm2Initialise(const IcmSettings * const settings) {
     WriteRegister(ICM_REG_BANK_SEL_ADDRESS, 1);
 
     // Configure gyroscope anti-aliasing filter
+    const IcmAaf gyroscopeAaf = IcmAntiAliasingToAaf(settings->gyroscopeAntiAliasing);
     IcmGyroConfigStatic2Register gyroConfigStatic2Register = {.value = ICM_GYRO_CONFIG_STATIC2_RESET_VALUE};
-    gyroConfigStatic2Register.gyroAafDis = settings->gyroscopeAafDisable ? 1 : 0;
-    gyroConfigStatic2Register.gyroNfDis = settings->gyroscopeNfDisable ? 1 : 0;
+    gyroConfigStatic2Register.gyroAafDis = settings->gyroscopeAntiAliasing == IcmAntiAliasingDisabled ? 1 : 0;
+    gyroConfigStatic2Register.gyroNfDis = settings->gyroscopeNotchFilterEnabled == false ? 1 : 0;
     WriteRegister(ICM_GYRO_CONFIG_STATIC2_ADDRESS, gyroConfigStatic2Register.value);
 
     IcmGyroConfigStatic3Register gyroConfigStatic3Register = {.value = ICM_GYRO_CONFIG_STATIC3_RESET_VALUE};
-    gyroConfigStatic3Register.gyroAafDelt = settings->gyroscopeAaf.delt;
+    gyroConfigStatic3Register.gyroAafDelt = gyroscopeAaf.delt;
     WriteRegister(ICM_GYRO_CONFIG_STATIC3_ADDRESS, gyroConfigStatic3Register.value);
 
     IcmGyroConfigStatic4Register gyroConfigStatic4Register = {.value = ICM_GYRO_CONFIG_STATIC4_RESET_VALUE};
-    gyroConfigStatic4Register.gyroAafDeltsqrLsb = settings->gyroscopeAaf.deltsqr & 0xFF;
+    gyroConfigStatic4Register.gyroAafDeltsqrLsb = gyroscopeAaf.deltsqr & 0xFF;
     WriteRegister(ICM_GYRO_CONFIG_STATIC4_ADDRESS, gyroConfigStatic4Register.value);
 
     IcmGyroConfigStatic5Register gyroConfigStatic5Register = {.value = ICM_GYRO_CONFIG_STATIC5_RESET_VALUE};
-    gyroConfigStatic5Register.gyroAafDeltsqrMsb = settings->gyroscopeAaf.deltsqr >> 8;
-    gyroConfigStatic5Register.gyroAafBitshift = settings->gyroscopeAaf.bitshift;
+    gyroConfigStatic5Register.gyroAafDeltsqrMsb = gyroscopeAaf.deltsqr >> 8;
+    gyroConfigStatic5Register.gyroAafBitshift = gyroscopeAaf.bitshift;
     WriteRegister(ICM_GYRO_CONFIG_STATIC5_ADDRESS, gyroConfigStatic5Register.value);
 
     // Select register bank 2
     WriteRegister(ICM_REG_BANK_SEL_ADDRESS, 2);
 
     // Configure accelerometer anti-aliasing filter
+    const IcmAaf accelerometerAaf = IcmAntiAliasingToAaf(settings->accelerometerAntiAliasing);
     IcmAccelConfigStatic2Register accelConfigStatic2Register = {.value = ICM_ACCEL_CONFIG_STATIC2_RESET_VALUE};
-    accelConfigStatic2Register.accelAafDis = settings->accelerometerAafDisable ? 1 : 0;
-    accelConfigStatic2Register.accelAafDelt = settings->accelerometerAaf.delt;
+    accelConfigStatic2Register.accelAafDis = settings->accelerometerAntiAliasing == IcmAntiAliasingDisabled ? 1 : 0;
+    accelConfigStatic2Register.accelAafDelt = accelerometerAaf.delt;
     WriteRegister(ICM_ACCEL_CONFIG_STATIC2_ADDRESS, accelConfigStatic2Register.value);
 
     IcmAccelConfigStatic3Register accelConfigStatic3Register = {.value = ICM_ACCEL_CONFIG_STATIC3_RESET_VALUE};
-    accelConfigStatic3Register.accelAafDeltsqrLsb = settings->accelerometerAaf.deltsqr & 0xFF;
+    accelConfigStatic3Register.accelAafDeltsqrLsb = accelerometerAaf.deltsqr & 0xFF;
     WriteRegister(ICM_ACCEL_CONFIG_STATIC3_ADDRESS, accelConfigStatic3Register.value);
 
     IcmAccelConfigStatic4Register accelConfigStatic4Register = {.value = ICM_ACCEL_CONFIG_STATIC4_RESET_VALUE};
-    accelConfigStatic4Register.accelAafDeltsqrMsb = settings->accelerometerAaf.deltsqr >> 8;
-    accelConfigStatic4Register.accelAafBitshift = settings->accelerometerAaf.bitshift;
+    accelConfigStatic4Register.accelAafDeltsqrMsb = accelerometerAaf.deltsqr >> 8;
+    accelConfigStatic4Register.accelAafBitshift = accelerometerAaf.bitshift;
     WriteRegister(ICM_ACCEL_CONFIG_STATIC4_ADDRESS, accelConfigStatic4Register.value);
 
     // Select register bank 0
@@ -135,12 +137,12 @@ void Icm2Initialise(const IcmSettings * const settings) {
 
     // Configure gyroscope ODR
     IcmGyroConfig0Register gyroConfig0Register = {.value = ICM_GYRO_CONFIG0_RESET_VALUE};
-    gyroConfig0Register.gyroOdr = settings->odr;
+    gyroConfig0Register.gyroOdr = IcmSampleRateToOdr(settings->sampleRate);
     WriteRegister(ICM_GYRO_CONFIG0_ADDRESS, gyroConfig0Register.value);
 
     // Configure accelerometer ODR
     IcmAccelConfig0Register accelConfig0Register = {.value = ICM_ACCEL_CONFIG0_RESET_VALUE};
-    accelConfig0Register.accelOdr = settings->odr;
+    accelConfig0Register.accelOdr = IcmSampleRateToOdr(settings->sampleRate);
     WriteRegister(ICM_ACCEL_CONFIG0_ADDRESS, accelConfig0Register.value);
 
     // Turn on gyroscope and accelerometer

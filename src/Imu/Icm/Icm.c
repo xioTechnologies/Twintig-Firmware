@@ -86,6 +86,180 @@ const IcmAaf icmAaf3979Hz = {.delt = 63, .deltsqr = 3968, .bitshift = 3};
 // Functions
 
 /**
+ * @brief Returns the AAF for an anti-aliasing.
+ * @param antiAliasing Anti-aliasing.
+ * @return AAF.
+ */
+IcmAaf IcmAntiAliasingToAaf(const IcmAntiAliasing antiAliasing) {
+    switch (antiAliasing) {
+        case IcmAntiAliasingDisabled:
+            return icmAaf585Hz;
+        case IcmAntiAliasing42Hz:
+            return icmAaf42Hz;
+        case IcmAntiAliasing84Hz:
+            return icmAaf84Hz;
+        case IcmAntiAliasing126Hz:
+            return icmAaf126Hz;
+        case IcmAntiAliasing170Hz:
+            return icmAaf170Hz;
+        case IcmAntiAliasing213Hz:
+            return icmAaf213Hz;
+        case IcmAntiAliasing258Hz:
+            return icmAaf258Hz;
+        case IcmAntiAliasing303Hz:
+            return icmAaf303Hz;
+        case IcmAntiAliasing348Hz:
+            return icmAaf348Hz;
+        case IcmAntiAliasing394Hz:
+            return icmAaf394Hz;
+        case IcmAntiAliasing441Hz:
+            return icmAaf441Hz;
+        case IcmAntiAliasing488Hz:
+            return icmAaf488Hz;
+        case IcmAntiAliasing536Hz:
+            return icmAaf536Hz;
+        case IcmAntiAliasing585Hz:
+            return icmAaf585Hz;
+        case IcmAntiAliasing634Hz:
+            return icmAaf634Hz;
+        case IcmAntiAliasing684Hz:
+            return icmAaf684Hz;
+        case IcmAntiAliasing734Hz:
+            return icmAaf734Hz;
+        case IcmAntiAliasing785Hz:
+            return icmAaf785Hz;
+        case IcmAntiAliasing837Hz:
+            return icmAaf837Hz;
+        case IcmAntiAliasing890Hz:
+            return icmAaf890Hz;
+        case IcmAntiAliasing943Hz:
+            return icmAaf943Hz;
+        case IcmAntiAliasing997Hz:
+            return icmAaf997Hz;
+        case IcmAntiAliasing1051Hz:
+            return icmAaf1051Hz;
+        case IcmAntiAliasing1107Hz:
+            return icmAaf1107Hz;
+        case IcmAntiAliasing1163Hz:
+            return icmAaf1163Hz;
+        case IcmAntiAliasing1220Hz:
+            return icmAaf1220Hz;
+        case IcmAntiAliasing1277Hz:
+            return icmAaf1277Hz;
+        case IcmAntiAliasing1336Hz:
+            return icmAaf1336Hz;
+        case IcmAntiAliasing1395Hz:
+            return icmAaf1395Hz;
+        case IcmAntiAliasing1454Hz:
+            return icmAaf1454Hz;
+        case IcmAntiAliasing1515Hz:
+            return icmAaf1515Hz;
+        case IcmAntiAliasing1577Hz:
+            return icmAaf1577Hz;
+        case IcmAntiAliasing1639Hz:
+            return icmAaf1639Hz;
+        case IcmAntiAliasing1702Hz:
+            return icmAaf1702Hz;
+        case IcmAntiAliasing1766Hz:
+            return icmAaf1766Hz;
+        case IcmAntiAliasing1830Hz:
+            return icmAaf1830Hz;
+        case IcmAntiAliasing1896Hz:
+            return icmAaf1896Hz;
+        case IcmAntiAliasing1962Hz:
+            return icmAaf1962Hz;
+        case IcmAntiAliasing2029Hz:
+            return icmAaf2029Hz;
+        case IcmAntiAliasing2097Hz:
+            return icmAaf2097Hz;
+        case IcmAntiAliasing2166Hz:
+            return icmAaf2166Hz;
+        case IcmAntiAliasing2235Hz:
+            return icmAaf2235Hz;
+        case IcmAntiAliasing2306Hz:
+            return icmAaf2306Hz;
+        case IcmAntiAliasing2377Hz:
+            return icmAaf2377Hz;
+        case IcmAntiAliasing2449Hz:
+            return icmAaf2449Hz;
+        case IcmAntiAliasing2522Hz:
+            return icmAaf2522Hz;
+        case IcmAntiAliasing2596Hz:
+            return icmAaf2596Hz;
+        case IcmAntiAliasing2671Hz:
+            return icmAaf2671Hz;
+        case IcmAntiAliasing2746Hz:
+            return icmAaf2746Hz;
+        case IcmAntiAliasing2823Hz:
+            return icmAaf2823Hz;
+        case IcmAntiAliasing2900Hz:
+            return icmAaf2900Hz;
+        case IcmAntiAliasing2978Hz:
+            return icmAaf2978Hz;
+        case IcmAntiAliasing3057Hz:
+            return icmAaf3057Hz;
+        case IcmAntiAliasing3137Hz:
+            return icmAaf3137Hz;
+        case IcmAntiAliasing3217Hz:
+            return icmAaf3217Hz;
+        case IcmAntiAliasing3299Hz:
+            return icmAaf3299Hz;
+        case IcmAntiAliasing3381Hz:
+            return icmAaf3381Hz;
+        case IcmAntiAliasing3464Hz:
+            return icmAaf3464Hz;
+        case IcmAntiAliasing3548Hz:
+            return icmAaf3548Hz;
+        case IcmAntiAliasing3633Hz:
+            return icmAaf3633Hz;
+        case IcmAntiAliasing3718Hz:
+            return icmAaf3718Hz;
+        case IcmAntiAliasing3805Hz:
+            return icmAaf3805Hz;
+        case IcmAntiAliasing3892Hz:
+            return icmAaf3892Hz;
+        case IcmAntiAliasing3979Hz:
+            return icmAaf3979Hz;
+    }
+    return icmAaf585Hz; // avoid compiler warning
+}
+
+/**
+ * @brief Returns the ODR value for a sample rate.
+ * @param sampleRate Sample rate.
+ * @return ODR value.
+ */
+int IcmSampleRateToOdr(const IcmSampleRate sampleRate) {
+    switch (sampleRate) {
+        case IcmSampleRate32kHz:
+            return 0b0001;
+        case IcmSampleRate16kHz:
+            return 0b0010;
+        case IcmSampleRate8kHz:
+            return 0b0011;
+        case IcmSampleRate4kHz:
+            return 0b0100;
+        case IcmSampleRate2kHz:
+            return 0b0101;
+        case IcmSampleRate1kHz:
+            return 0b0110;
+        case IcmSampleRate500Hz:
+            return 0b1111;
+        case IcmSampleRate200Hz:
+            return 0b0111;
+        case IcmSampleRate100Hz:
+            return 0b1000;
+        case IcmSampleRate50Hz:
+            return 0b1001;
+        case IcmSampleRate25Hz:
+            return 0b1010;
+        case IcmSampleRate12Hz:
+            return 0b1011;
+    }
+    return 0b0110; // avoid compiler warning
+}
+
+/**
  * @brief Returns the test result message.
  * @param result Test result.
  * @return Test result message.

@@ -32,14 +32,6 @@ typedef struct {
 } __attribute__((__packed__)) IcmSpiPacket;
 
 /**
- * @brief FIFO packet.
- */
-typedef struct {
-    uint64_t ticks;
-    IcmSensorRegisters registers;
-} __attribute__((__packed__)) IcmFifoPacket;
-
-/**
  * @brief Anti-alias filter.
  */
 typedef struct {
@@ -49,33 +41,109 @@ typedef struct {
 } IcmAaf;
 
 /**
- * @brief ODR.
+ * @brief FIFO packet.
+ */
+typedef struct {
+    uint64_t ticks;
+    IcmSensorRegisters registers;
+} __attribute__((__packed__)) IcmFifoPacket;
+
+/**
+ * @brief Anti-aliasing.
  */
 typedef enum {
-    IcmOdr32kHz = 0b0001,
-    IcmOdr16kHz = 0b0010,
-    IcmOdr8kHz = 0b0011,
-    IcmOdr4kHz = 0b0100,
-    IcmOdr2kHz = 0b0101,
-    IcmOdr1kHz = 0b0110,
-    IcmOdr200Hz = 0b0111,
-    IcmOdr100Hz = 0b1000,
-    IcmOdr50Hz = 0b1001,
-    IcmOdr25Hz = 0b1010,
-    IcmOdr12Hz = 0b1011,
-    IcmOdr500Hz = 0b1111,
-} IcmOdr;
+    IcmAntiAliasingDisabled = 0,
+    IcmAntiAliasing42Hz = 42,
+    IcmAntiAliasing84Hz = 84,
+    IcmAntiAliasing126Hz = 126,
+    IcmAntiAliasing170Hz = 170,
+    IcmAntiAliasing213Hz = 213,
+    IcmAntiAliasing258Hz = 258,
+    IcmAntiAliasing303Hz = 303,
+    IcmAntiAliasing348Hz = 348,
+    IcmAntiAliasing394Hz = 394,
+    IcmAntiAliasing441Hz = 441,
+    IcmAntiAliasing488Hz = 488,
+    IcmAntiAliasing536Hz = 536,
+    IcmAntiAliasing585Hz = 585,
+    IcmAntiAliasing634Hz = 634,
+    IcmAntiAliasing684Hz = 684,
+    IcmAntiAliasing734Hz = 734,
+    IcmAntiAliasing785Hz = 785,
+    IcmAntiAliasing837Hz = 837,
+    IcmAntiAliasing890Hz = 890,
+    IcmAntiAliasing943Hz = 943,
+    IcmAntiAliasing997Hz = 997,
+    IcmAntiAliasing1051Hz = 1051,
+    IcmAntiAliasing1107Hz = 1107,
+    IcmAntiAliasing1163Hz = 1163,
+    IcmAntiAliasing1220Hz = 1220,
+    IcmAntiAliasing1277Hz = 1277,
+    IcmAntiAliasing1336Hz = 1336,
+    IcmAntiAliasing1395Hz = 1395,
+    IcmAntiAliasing1454Hz = 1454,
+    IcmAntiAliasing1515Hz = 1515,
+    IcmAntiAliasing1577Hz = 1577,
+    IcmAntiAliasing1639Hz = 1639,
+    IcmAntiAliasing1702Hz = 1702,
+    IcmAntiAliasing1766Hz = 1766,
+    IcmAntiAliasing1830Hz = 1830,
+    IcmAntiAliasing1896Hz = 1896,
+    IcmAntiAliasing1962Hz = 1962,
+    IcmAntiAliasing2029Hz = 2029,
+    IcmAntiAliasing2097Hz = 2097,
+    IcmAntiAliasing2166Hz = 2166,
+    IcmAntiAliasing2235Hz = 2235,
+    IcmAntiAliasing2306Hz = 2306,
+    IcmAntiAliasing2377Hz = 2377,
+    IcmAntiAliasing2449Hz = 2449,
+    IcmAntiAliasing2522Hz = 2522,
+    IcmAntiAliasing2596Hz = 2596,
+    IcmAntiAliasing2671Hz = 2671,
+    IcmAntiAliasing2746Hz = 2746,
+    IcmAntiAliasing2823Hz = 2823,
+    IcmAntiAliasing2900Hz = 2900,
+    IcmAntiAliasing2978Hz = 2978,
+    IcmAntiAliasing3057Hz = 3057,
+    IcmAntiAliasing3137Hz = 3137,
+    IcmAntiAliasing3217Hz = 3217,
+    IcmAntiAliasing3299Hz = 3299,
+    IcmAntiAliasing3381Hz = 3381,
+    IcmAntiAliasing3464Hz = 3464,
+    IcmAntiAliasing3548Hz = 3548,
+    IcmAntiAliasing3633Hz = 3633,
+    IcmAntiAliasing3718Hz = 3718,
+    IcmAntiAliasing3805Hz = 3805,
+    IcmAntiAliasing3892Hz = 3892,
+    IcmAntiAliasing3979Hz = 3979,
+} IcmAntiAliasing;
+
+/**
+ * @brief Sample rate.
+ */
+typedef enum {
+    IcmSampleRate32kHz = 32000,
+    IcmSampleRate16kHz = 16000,
+    IcmSampleRate8kHz = 8000,
+    IcmSampleRate4kHz = 4000,
+    IcmSampleRate2kHz = 2000,
+    IcmSampleRate1kHz = 1000,
+    IcmSampleRate500Hz = 500,
+    IcmSampleRate200Hz = 200,
+    IcmSampleRate100Hz = 100,
+    IcmSampleRate50Hz = 50,
+    IcmSampleRate25Hz = 25,
+    IcmSampleRate12Hz = 12,
+} IcmSampleRate;
 
 /**
  * @brief Settings.
  */
 typedef struct {
-    bool gyroscopeNfDisable;
-    IcmAaf gyroscopeAaf;
-    bool gyroscopeAafDisable;
-    IcmAaf accelerometerAaf;
-    bool accelerometerAafDisable;
-    IcmOdr odr;
+    bool gyroscopeNotchFilterEnabled;
+    IcmAntiAliasing gyroscopeAntiAliasing;
+    IcmAntiAliasing accelerometerAntiAliasing;
+    IcmSampleRate sampleRate;
 } IcmSettings;
 
 /**
@@ -124,73 +192,11 @@ typedef struct {
 
 extern const SpiSettings icmSpiSettings;
 
-extern const IcmAaf icmAaf42Hz;
-extern const IcmAaf icmAaf84Hz;
-extern const IcmAaf icmAaf126Hz;
-extern const IcmAaf icmAaf170Hz;
-extern const IcmAaf icmAaf213Hz;
-extern const IcmAaf icmAaf258Hz;
-extern const IcmAaf icmAaf303Hz;
-extern const IcmAaf icmAaf348Hz;
-extern const IcmAaf icmAaf394Hz;
-extern const IcmAaf icmAaf441Hz;
-extern const IcmAaf icmAaf488Hz;
-extern const IcmAaf icmAaf536Hz;
-extern const IcmAaf icmAaf585Hz;
-extern const IcmAaf icmAaf634Hz;
-extern const IcmAaf icmAaf684Hz;
-extern const IcmAaf icmAaf734Hz;
-extern const IcmAaf icmAaf785Hz;
-extern const IcmAaf icmAaf837Hz;
-extern const IcmAaf icmAaf890Hz;
-extern const IcmAaf icmAaf943Hz;
-extern const IcmAaf icmAaf997Hz;
-extern const IcmAaf icmAaf1051Hz;
-extern const IcmAaf icmAaf1107Hz;
-extern const IcmAaf icmAaf1163Hz;
-extern const IcmAaf icmAaf1220Hz;
-extern const IcmAaf icmAaf1277Hz;
-extern const IcmAaf icmAaf1336Hz;
-extern const IcmAaf icmAaf1395Hz;
-extern const IcmAaf icmAaf1454Hz;
-extern const IcmAaf icmAaf1515Hz;
-extern const IcmAaf icmAaf1577Hz;
-extern const IcmAaf icmAaf1639Hz;
-extern const IcmAaf icmAaf1702Hz;
-extern const IcmAaf icmAaf1766Hz;
-extern const IcmAaf icmAaf1830Hz;
-extern const IcmAaf icmAaf1896Hz;
-extern const IcmAaf icmAaf1962Hz;
-extern const IcmAaf icmAaf2029Hz;
-extern const IcmAaf icmAaf2097Hz;
-extern const IcmAaf icmAaf2166Hz;
-extern const IcmAaf icmAaf2235Hz;
-extern const IcmAaf icmAaf2306Hz;
-extern const IcmAaf icmAaf2377Hz;
-extern const IcmAaf icmAaf2449Hz;
-extern const IcmAaf icmAaf2522Hz;
-extern const IcmAaf icmAaf2596Hz;
-extern const IcmAaf icmAaf2671Hz;
-extern const IcmAaf icmAaf2746Hz;
-extern const IcmAaf icmAaf2823Hz;
-extern const IcmAaf icmAaf2900Hz;
-extern const IcmAaf icmAaf2978Hz;
-extern const IcmAaf icmAaf3057Hz;
-extern const IcmAaf icmAaf3137Hz;
-extern const IcmAaf icmAaf3217Hz;
-extern const IcmAaf icmAaf3299Hz;
-extern const IcmAaf icmAaf3381Hz;
-extern const IcmAaf icmAaf3464Hz;
-extern const IcmAaf icmAaf3548Hz;
-extern const IcmAaf icmAaf3633Hz;
-extern const IcmAaf icmAaf3718Hz;
-extern const IcmAaf icmAaf3805Hz;
-extern const IcmAaf icmAaf3892Hz;
-extern const IcmAaf icmAaf3979Hz;
-
 //------------------------------------------------------------------------------
 // Function declaration
 
+IcmAaf IcmAntiAliasingToAaf(const IcmAntiAliasing antiAliasing);
+int IcmSampleRateToOdr(const IcmSampleRate sampleRate);
 const char* IcmTestResultToString(const IcmTestResult result);
 
 #endif

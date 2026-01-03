@@ -11,13 +11,13 @@
             <Setting key="serial_baud_rate" name="Baud Rate" type="number" hideKey="serial_mode" hideValues="0"/>
             <Setting key="serial_rts_cts_enabled" name="RTS/CTS" type="bool" hideKey="serial_mode" hideValues="0"/>
         </Group>
+        <Group name="ICM-42688-P" expand="true">
+            <Setting key="gyroscope_notch_filter_enabled" name="Gyroscope Notch Filter" type="bool"/>
+            <Setting key="gyroscope_anti_aliasing" name="Gyroscope Anti-Aliasing" type="IcmAntiAliasing"/>
+            <Setting key="accelerometer_anti_aliasing" name="Accelerometer Anti-Aliasing" type="IcmAntiAliasing"/>
+            <Setting key="sample_rate" name="Sample Rate" type="IcmSampleRate"/>
+        </Group>
         <Group name="IMU" expand="true">
-            <Group name="Signal Path" expand="true">
-                <Setting key="gyroscope_notch_filter_enabled" name="Gyroscope Notch Filter" type="bool"/>
-                <Setting key="gyroscope_anti_aliasing" name="Gyroscope Anti-Aliasing" type="ImuAntiAliasing"/>
-                <Setting key="accelerometer_anti_aliasing" name="Accelerometer Anti-Aliasing" type="ImuAntiAliasing"/>
-                <Setting key="sample_rate" name="Sample Rate" type="ImuSampleRate"/>
-            </Group>
             <Setting key="axes_alignment" name="Axes Alignment" type="FusionAxesAlignment"/>
             <Setting key="gyroscope_offset_correction_enabled" name="Gyroscope Offset Correction" type="bool"/>
             <Group name="AHRS" expand="true">
@@ -74,7 +74,7 @@
             <Enumerator name="East-North-Up (ENU)" value="1"/>
             <Enumerator name="North-East-Down (NED)" value="2"/>
         </Enum>
-        <Enum name="ImuAntiAliasing">
+        <Enum name="IcmAntiAliasing">
             <Enumerator name="Disabled" value="0"/>
             <Enumerator name="42 Hz" value="42"/>
             <Enumerator name="84 Hz" value="84"/>
@@ -140,7 +140,7 @@
             <Enumerator name="3892 Hz" value="3892"/>
             <Enumerator name="3979 Hz" value="3979"/>
         </Enum>
-        <Enum name="ImuSampleRate">
+        <Enum name="IcmSampleRate">
             <Enumerator name="32kHz" value=" 32000"/>
             <Enumerator name="16kHz" value=" 16000"/>
             <Enumerator name="8kHz" value=" 8000"/>

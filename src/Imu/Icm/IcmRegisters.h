@@ -1,7 +1,7 @@
 /**
  * @file IcmRegisters.h
  * @author Seb Madgwick
- * @brief ICM-42688-P driver.
+ * @brief ICM-42688-P registers.
  */
 
 #ifndef ICM_REGISTERS_H

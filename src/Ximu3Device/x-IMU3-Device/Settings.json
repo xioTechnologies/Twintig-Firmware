@@ -1,6 +1,7 @@
 {
     "includes": [
         "\"Imu/Fusion/Fusion.h\"",
+        "\"Imu/Icm/Icm.h\"",
         "\"Imu/Imu.h\"",
         "\"Send/Send.h\"",
         "<stdbool.h>",
@@ -94,18 +95,18 @@
         },
         {
             "name": "Gyroscope anti-aliasing",
-            "declaration": "ImuAntiAliasing name",
-            "default": "{ImuAntiAliasing42Hz}"
+            "declaration": "IcmAntiAliasing name",
+            "default": "{IcmAntiAliasing42Hz}"
         },
         {
             "name": "Accelerometer anti-aliasing",
-            "declaration": "ImuAntiAliasing name",
-            "default": "{ImuAntiAliasing42Hz}"
+            "declaration": "IcmAntiAliasing name",
+            "default": "{IcmAntiAliasing42Hz}"
         },
         {
             "name": "Sample rate",
-            "declaration": "ImuSampleRate name",
-            "default": "{ImuSampleRate100Hz}"
+            "declaration": "IcmSampleRate name",
+            "default": "{IcmSampleRate100Hz}"
         },
         {
             "name": "Axes alignment",
