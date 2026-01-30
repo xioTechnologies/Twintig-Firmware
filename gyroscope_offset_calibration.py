@@ -3,42 +3,39 @@ import time
 import numpy as np
 import ximu3
 
-devices = ximu3.PortScanner.scan()
+devices = ximu3.PortScanner.scan_filter(ximu3.PORT_TYPE_USB)
 
-time.sleep(0.1)  # wait for ports to close
+time.sleep(1)  # wait for OS to release port
 
 devices = [d for d in devices if "Carpus" in d.device_name]
 
 if not devices:
-    raise Exception("Unable to find Carpus")
+    raise Exception("Carpus not found")
 
-carpus_connection = ximu3.Connection(devices[0].connection_info)
+print(f"Found {devices[0]}")
 
-result = carpus_connection.open()
+carpus_connection = ximu3.Connection(devices[0].connection_config)
 
-if result != ximu3.RESULT_OK:
-    raise Exception(f"Unable to open connection {carpus_connection.get_info().to_string()}. {ximu3.result_to_string(result)}")
+carpus_connection.open()
 
 
-class Connection:
-    def __init__(self, connection_info: ximu3.MuxConnectionInfo) -> None:
-        self.__connection = ximu3.Connection(connection_info)
+class ImuConnection:
+    def __init__(self, config: ximu3.MuxConnectionConfig) -> None:
+        self.__connection = ximu3.Connection(config)
 
-        result = self.__connection.open()
+        self.__connection.open()
 
-        if result != ximu3.RESULT_OK:
-            raise Exception(f"Unable to open {connection_info.to_string()}. {ximu3.result_to_string(result)}.")
+    def close(self) -> None:
+        self.__connection.close()
 
     def send_command(self, command: str) -> None:
-        responses = self.__connection.send_commands([command], 2, 500)
+        response = self.__connection.send_command(command)
 
-        if not responses:
-            raise Exception(f"No response. {command} sent to {self.__connection.get_info().to_string()}")
-
-        response = ximu3.CommandMessage.parse(responses[0])
+        if not response:
+            raise Exception(f"No response. {command} for {self.__connection.get_config()}")
 
         if response.error:
-            raise Exception(f"{response.error}. {command} sent to {self.__connection.get_info().to_string()}")
+            raise Exception(f"{response.error}. {command} for {self.__connection.get_config()}")
 
     def start_sampling(self):
         self.__gyroscope_offset = np.zeros(3)
@@ -56,7 +53,7 @@ class Connection:
         self.__number_of_samples += 1
 
 
-imu_connections = [Connection(c) for c in [ximu3.MuxConnectionInfo(c, carpus_connection) for c in range(0x41, 0x55)]]
+imu_connections = [ImuConnection(c) for c in [ximu3.MuxConnectionConfig(c, carpus_connection) for c in range(0x41, 0x55)]]
 
 for imu_connection in imu_connections:
     imu_connection.send_command('{"factory":null}')
@@ -73,3 +70,9 @@ for imu_connection in imu_connections:
 
     imu_connection.send_command(f'{{"gyroscope_offset":{np.array2string(offset, separator=", ")}}}')
     imu_connection.send_command('{"save":null}')
+
+    imu_connection.close()
+
+carpus_connection.close()
+
+print("Complete")

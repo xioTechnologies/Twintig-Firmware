@@ -4,19 +4,21 @@ import ximu3
 
 devices = ximu3.PortScanner.scan()
 
-time.sleep(0.1)  # wait for ports to close
+time.sleep(1)  # wait for OS to release port
 
 devices = [d for d in devices if "Carpus" in d.device_name]
 
 if not devices:
-    raise Exception("Unable to find Carpus")
+    raise Exception("Carpus not found")
 
-connection = ximu3.Connection(devices[0].connection_info)
+print(f"Found {devices[0]}")
 
-result = connection.open()
+connection = ximu3.Connection(devices[0].connection_config)
 
-if result != ximu3.RESULT_OK:
-    raise Exception(f"Unable to open connection {connection.get_info().to_string()}. {ximu3.result_to_string(result)}")
+connection.open()
+
+if connection.send_command('{"serial_number":null}').value != '"Unknown"':
+    raise Exception("Device already has serial number")
 
 commands = [
     '{"factory":null}',
@@ -25,13 +27,13 @@ commands = [
     '{"save":null}',
 ]
 
-for response in connection.send_commands(commands, 2, 500):
-    response = ximu3.CommandMessage.parse(response)
+for response in connection.send_commands(commands):
+    if not response:
+        raise Exception("No response")
 
     if response.error:
-        print(response.error)
-        continue
-
-    print(f"{response.key} : {response.value}")
+        raise Exception(response.error)
 
 connection.close()
+
+print("Complete")
