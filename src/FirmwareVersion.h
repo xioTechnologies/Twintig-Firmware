@@ -10,7 +10,7 @@
 //------------------------------------------------------------------------------
 // Definitions
 
-#define FIRMWARE_VERSION "v1.1.1"
+#define FIRMWARE_VERSION "v1.1.2"
 
 #endif
 
