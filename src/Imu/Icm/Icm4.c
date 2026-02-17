@@ -230,11 +230,11 @@ IcmResult Icm4GetData(IcmData * const data) {
         return IcmResultError;
     }
     data->ticks = fifoPacket.ticks;
-    data->gyroscopeX = (float) fifoPacket.registers.gyroDataX * (1.0f / 16.4f);
-    data->gyroscopeY = (float) fifoPacket.registers.gyroDataY * (1.0f / 16.4f);
+    data->gyroscopeX = (float) fifoPacket.registers.gyroDataX * (-1.0f / 16.4f);
+    data->gyroscopeY = (float) fifoPacket.registers.gyroDataY * (-1.0f / 16.4f);
     data->gyroscopeZ = (float) fifoPacket.registers.gyroDataZ * (1.0f / 16.4f);
-    data->accelerometerX = (float) fifoPacket.registers.accelDataX * (1.0f / 2048.0f);
-    data->accelerometerY = (float) fifoPacket.registers.accelDataY * (1.0f / 2048.0f);
+    data->accelerometerX = (float) fifoPacket.registers.accelDataX * (-1.0f / 2048.0f);
+    data->accelerometerY = (float) fifoPacket.registers.accelDataY * (-1.0f / 2048.0f);
     data->accelerometerZ = (float) fifoPacket.registers.accelDataZ * (1.0f / 2048.0f);
     data->temperature = (float) fifoPacket.registers.tempData * (1.0f / 132.48f) + 25.0f;
     return IcmResultOk;
