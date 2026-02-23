@@ -159,7 +159,7 @@ const void* const defaults[] = {
     (void*) (&(ImuSampleRate) {ImuSampleRate100Hz}),
     (void*) (&(FusionAxesAlignment) {FusionAxesAlignmentPXPYPZ}),
     (void*) (&(bool) {false}),
-    (void*) (&(uint32_t) {0}),
+    (void*) (&(uint32_t) {1}),
     (void*) (&(FusionConvention) {FusionConventionNwu}),
     (void*) (&(float) {0.5f}),
     (void*) (&(float) {10.0f}),

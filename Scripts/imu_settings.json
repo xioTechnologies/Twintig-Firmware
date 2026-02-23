@@ -12,7 +12,8 @@
             "{\"colour\":\"#000F0F\"}",
             "{\"gyroscope_anti_aliasing\":585}",
             "{\"accelerometer_anti_aliasing\":585}",
-            "{\"sample_rate\":1000}"
+            "{\"sample_rate\":1000}",
+            "{\"ahrs_update_rate_divisor\":0}"
         ]
     },
     {
