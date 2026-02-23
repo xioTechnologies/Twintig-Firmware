@@ -6,10 +6,10 @@ devices = ximu3.PortScanner.scan()
 
 time.sleep(1)  # wait for OS to release port
 
-devices = [d for d in devices if "Carpus" in d.device_name]
+devices = [d for d in devices if "Twintig" in d.device_name]
 
 if not devices:
-    raise Exception("Carpus not found")
+    raise Exception("Twintig not found")
 
 print(f"Found {devices[0]}")
 
