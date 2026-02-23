@@ -45,6 +45,14 @@ typedef enum {
 } LedMode;
 
 /**
+ * @brief Colour.
+ */
+typedef struct {
+    LedColour colour;
+    bool pending;
+} LedBlinkQueueItem;
+
+/**
  * @brief Result.
  */
 typedef enum {
@@ -59,7 +67,7 @@ typedef struct {
     NeoPixelsPixel * const pixel;
     LedColour colour;
     LedMode mode;
-    LedColour blinkQueue[LED_BLINK_QUEUE_LENGTH];
+    LedBlinkQueueItem blinkQueue[LED_BLINK_QUEUE_LENGTH];
     uint64_t strobeTimeout;
     bool overrideEnabled;
     LedColour overrideColour;

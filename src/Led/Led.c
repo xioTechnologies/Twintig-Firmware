@@ -178,12 +178,12 @@ static inline __attribute__((always_inline)) void Update(Led * const led, const 
     }
 
     // Blink
-    if (led->blinkQueue[0].rgb != ledColourBlack.rgb) {
-        SetPwm(led, led->blinkQueue[0], BrightnessMedium);
+    if (led->blinkQueue[0].pending) {
+        SetPwm(led, led->blinkQueue[0].colour, led->blinkQueue[0].colour.rgb == led->colour.rgb ? BrightnessLow : BrightnessMedium);
         for (int index = 0; index < (LED_BLINK_QUEUE_LENGTH - 1); index++) {
             led->blinkQueue[index] = led->blinkQueue[index + 1];
         }
-        led->blinkQueue[LED_BLINK_QUEUE_LENGTH - 1] = ledColourBlack;
+        led->blinkQueue[LED_BLINK_QUEUE_LENGTH - 1].pending = false;
         return;
     }
 
@@ -248,13 +248,15 @@ LedResult LedBlink(Led * const led, const LedColour colour) {
     }
     const bool state = EVIC_INT_SourceDisable(INT_SOURCE_TIMER_6);
     for (int index = 0; index < LED_BLINK_QUEUE_LENGTH; index++) {
-        if (led->blinkQueue[index].rgb == colour.rgb) {
-            break;
+        if (led->blinkQueue[index].pending) {
+            if (led->blinkQueue[index].colour.rgb == colour.rgb) {
+                break;
+            }
+            continue;
         }
-        if (led->blinkQueue[index].rgb == ledColourBlack.rgb) {
-            led->blinkQueue[index] = colour;
-            break;
-        }
+        led->blinkQueue[index].colour = colour;
+        led->blinkQueue[index].pending = true;
+        break;
     }
     EVIC_INT_SourceRestore(INT_SOURCE_TIMER_6, state);
     return LedResultOk;
