@@ -211,14 +211,18 @@ static void WriteEpilogue(const Ximu3SettingsIndex index, void* const context) {
  * @return Result.
  */
 static Ximu3Result Mux(const Ximu3CommandInterface * const interface, const uint8_t channel, const void* const message, const size_t messageSize) {
+    Ximu3Result result = Ximu3ResultError;
     for (int index = 0; index < numberOfDevices; index++) {
         Context * const context_ = bridges[index].context;
-        if (channel == MuxChannelToByte(context_->send->channel)) {
+        if (context_->send->channel == MuxChannelNone) {
+            continue;
+        }
+        if ((channel == '^') || (channel == MuxChannelToByte(context_->send->channel))) {
             Ximu3CommandReceive(&bridges[index], interface, message, messageSize);
-            return Ximu3ResultOk;
+            result = Ximu3ResultOk;
         }
     }
-    return Ximu3ResultError;
+    return result;
 }
 
 /**
