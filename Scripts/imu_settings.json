@@ -1,13 +1,17 @@
 [
     {
-        "name": "*",
+        "names": [
+            "*"
+        ],
         "commands": [
             "{\"colour\":null}",
             "{\"default\":null}"
         ]
     },
     {
-        "name": "*",
+        "names": [
+            "*"
+        ],
         "commands": [
             "{\"colour\":\"#000F0F\"}",
             "{\"gyroscope_anti_aliasing\":585}",
@@ -17,7 +21,11 @@
         ]
     },
     {
-        "name": "*CH[123] IMU4",
+        "names": [
+            "I Distal IMU",
+            "II Distal IMU",
+            "III Distal IMU"
+        ],
         "commands": [
             "{\"colour\":\"#0F000F\"}",
             "{\"gyroscope_anti_aliasing\":3979}",
@@ -26,7 +34,9 @@
         ]
     },
     {
-        "name": "*",
+        "names": [
+            "*"
+        ],
         "commands": [
             "{\"colour\":null}",
             "{\"apply\":null}",
