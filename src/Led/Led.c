@@ -248,15 +248,14 @@ LedResult LedBlink(Led * const led, const LedColour colour) {
     }
     const bool state = EVIC_INT_SourceDisable(INT_SOURCE_TIMER_6);
     for (int index = 0; index < LED_BLINK_QUEUE_LENGTH; index++) {
-        if (led->blinkQueue[index].pending) {
-            if (led->blinkQueue[index].colour.rgb == colour.rgb) {
-                break;
-            }
-            continue;
+        if (led->blinkQueue[index].pending == false) {
+            led->blinkQueue[index].colour = colour;
+            led->blinkQueue[index].pending = true;
+            break;
         }
-        led->blinkQueue[index].colour = colour;
-        led->blinkQueue[index].pending = true;
-        break;
+        if (led->blinkQueue[index].colour.rgb == colour.rgb) {
+            break;
+        }
     }
     EVIC_INT_SourceRestore(INT_SOURCE_TIMER_6, state);
     return LedResultOk;
