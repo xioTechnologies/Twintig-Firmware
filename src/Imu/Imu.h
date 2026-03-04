@@ -30,8 +30,8 @@ typedef struct {
     FusionVector accelerometerSensitivity;
     FusionVector accelerometerOffset;
     float sampleRate;
-    FusionAxesAlignment axisAlignment;
-    bool gyroscopeOffsetEnabled;
+    FusionRemapAlignment axesRemap;
+    bool gyroscopeBiasCorrectionEnabled;
     uint32_t ahrsUpdateRateDivisor;
     FusionConvention ahrsAxesConvention;
     float ahrsGain;
@@ -45,7 +45,7 @@ typedef struct {
     ImuSettings settings; // private
     const Icm * const icm; // private
     bool initialised; // private
-    FusionOffset offset; // private
+    FusionBias bias; // private
     FusionAhrs ahrs; // private
     FusionVector downsampledGyroscope; // private
     FusionVector downsampledAccelerometer; // private

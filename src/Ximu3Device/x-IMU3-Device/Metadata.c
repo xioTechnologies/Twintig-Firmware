@@ -21,8 +21,8 @@ static const char* const names[] = {
     "Gyroscope Anti-aliasing",
     "Accelerometer Anti-aliasing",
     "Sample Rate",
-    "Axes Alignment",
-    "Gyroscope Offset Correction Enabled",
+    "Axes Remap",
+    "Gyroscope Bias Correction Enabled",
     "AHRS Update Rate Divisor",
     "AHRS Axes Convention",
     "AHRS Gain",
@@ -55,8 +55,8 @@ static const char* const keys[] = {
     "gyroscope_anti_aliasing",
     "accelerometer_anti_aliasing",
     "sample_rate",
-    "axes_alignment",
-    "gyroscope_offset_correction_enabled",
+    "axes_remap",
+    "gyroscope_bias_correction_enabled",
     "ahrs_update_rate_divisor",
     "ahrs_axes_convention",
     "ahrs_gain",
@@ -89,7 +89,7 @@ const MetadataType types[] = {
     MetadataTypeIcmAntiAliasing,
     MetadataTypeIcmAntiAliasing,
     MetadataTypeIcmSampleRate,
-    MetadataTypeFusionAxesAlignment,
+    MetadataTypeFusionRemapAlignment,
     MetadataTypeBool,
     MetadataTypeUint32,
     MetadataTypeFusionConvention,
@@ -123,8 +123,8 @@ const size_t sizes[] = {
     sizeof (((Ximu3SettingsValues *) 0)->gyroscopeAntiAliasing),
     sizeof (((Ximu3SettingsValues *) 0)->accelerometerAntiAliasing),
     sizeof (((Ximu3SettingsValues *) 0)->sampleRate),
-    sizeof (((Ximu3SettingsValues *) 0)->axesAlignment),
-    sizeof (((Ximu3SettingsValues *) 0)->gyroscopeOffsetCorrectionEnabled),
+    sizeof (((Ximu3SettingsValues *) 0)->axesRemap),
+    sizeof (((Ximu3SettingsValues *) 0)->gyroscopeBiasCorrectionEnabled),
     sizeof (((Ximu3SettingsValues *) 0)->ahrsUpdateRateDivisor),
     sizeof (((Ximu3SettingsValues *) 0)->ahrsAxesConvention),
     sizeof (((Ximu3SettingsValues *) 0)->ahrsGain),
@@ -142,10 +142,10 @@ const void* const defaults[] = {
     (void*) (&(char[16]) {"Unknown"}),
     (void*) (&(char[32]) {"Unknown"}),
     (void*) (&(char[32]) {"Unknown"}),
-    (void*) (&(FusionMatrix) {{{1.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}}}),
+    (void*) (&(FusionMatrix) {{1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f}}),
     (void*) (&(FusionVector) {{1.0f, 1.0f, 1.0f}}),
     (void*) (&(FusionVector) {{0.0f, 0.0f, 0.0f}}),
-    (void*) (&(FusionMatrix) {{{1.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}}}),
+    (void*) (&(FusionMatrix) {{1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f}}),
     (void*) (&(FusionVector) {{1.0f, 1.0f, 1.0f}}),
     (void*) (&(FusionVector) {{0.0f, 0.0f, 0.0f}}),
     (void*) (&(char[32]) {"Unknown"}),
@@ -157,7 +157,7 @@ const void* const defaults[] = {
     (void*) (&(IcmAntiAliasing) {IcmAntiAliasing42Hz}),
     (void*) (&(IcmAntiAliasing) {IcmAntiAliasing42Hz}),
     (void*) (&(IcmSampleRate) {IcmSampleRate100Hz}),
-    (void*) (&(FusionAxesAlignment) {FusionAxesAlignmentPXPYPZ}),
+    (void*) (&(FusionRemapAlignment) {FusionRemapAlignmentPXPYPZ}),
     (void*) (&(bool) {false}),
     (void*) (&(uint32_t) {1}),
     (void*) (&(FusionConvention) {FusionConventionNwu}),
@@ -278,10 +278,10 @@ static void* GetValue(Ximu3Settings * const settings, const Ximu3SettingsIndex i
             return &settings->values.accelerometerAntiAliasing;
         case Ximu3SettingsIndexSampleRate:
             return &settings->values.sampleRate;
-        case Ximu3SettingsIndexAxesAlignment:
-            return &settings->values.axesAlignment;
-        case Ximu3SettingsIndexGyroscopeOffsetCorrectionEnabled:
-            return &settings->values.gyroscopeOffsetCorrectionEnabled;
+        case Ximu3SettingsIndexAxesRemap:
+            return &settings->values.axesRemap;
+        case Ximu3SettingsIndexGyroscopeBiasCorrectionEnabled:
+            return &settings->values.gyroscopeBiasCorrectionEnabled;
         case Ximu3SettingsIndexAhrsUpdateRateDivisor:
             return &settings->values.ahrsUpdateRateDivisor;
         case Ximu3SettingsIndexAhrsAxesConvention:

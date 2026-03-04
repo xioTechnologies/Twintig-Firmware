@@ -12,9 +12,9 @@
 typedef enum {
     MetadataTypeBool,
     MetadataTypeFloat,
-    MetadataTypeFusionAxesAlignment,
     MetadataTypeFusionConvention,
     MetadataTypeFusionMatrix,
+    MetadataTypeFusionRemapAlignment,
     MetadataTypeFusionVector,
     MetadataTypeIcmAntiAliasing,
     MetadataTypeIcmSampleRate,

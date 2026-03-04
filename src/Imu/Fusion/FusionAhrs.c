@@ -1,8 +1,7 @@
 /**
  * @file FusionAhrs.c
  * @author Seb Madgwick
- * @brief AHRS algorithm to combine gyroscope, accelerometer, and magnetometer
- * measurements into a single measurement of orientation relative to the Earth.
+ * @brief Attitude and Heading Reference System (AHRS) algorithm.
  */
 
 //------------------------------------------------------------------------------
@@ -37,32 +36,35 @@ static inline FusionVector Feedback(const FusionVector sensor, const FusionVecto
 static inline int Clamp(const int value, const int min, const int max);
 
 //------------------------------------------------------------------------------
+// Variables
+
+const FusionAhrsSettings fusionAhrsDefaultSettings = {
+    .convention = FusionConventionNwu,
+    .gain = 0.5f,
+    .gyroscopeRange = 0.0f,
+    .accelerationRejection = 90.0f,
+    .magneticRejection = 90.0f,
+    .recoveryTriggerPeriod = 0,
+};
+
+//------------------------------------------------------------------------------
 // Functions
 
 /**
- * @brief Initialises the AHRS algorithm structure.
- * @param ahrs AHRS algorithm structure.
+ * @brief Initialises the AHRS structure.
+ * @param ahrs AHRS structure.
  */
 void FusionAhrsInitialise(FusionAhrs *const ahrs) {
-    const FusionAhrsSettings settings = {
-            .convention = FusionConventionNwu,
-            .gain = 0.5f,
-            .gyroscopeRange = 0.0f,
-            .accelerationRejection = 90.0f,
-            .magneticRejection = 90.0f,
-            .recoveryTriggerPeriod = 0,
-    };
-    FusionAhrsSetSettings(ahrs, &settings);
+    FusionAhrsSetSettings(ahrs, &fusionAhrsDefaultSettings);
     FusionAhrsReset(ahrs);
 }
 
 /**
- * @brief Resets the AHRS algorithm. This is equivalent to reinitialising the
- * algorithm while maintaining the current settings.
- * @param ahrs AHRS algorithm structure.
+ * @brief Resets the AHRS algorithm.
+ * @param ahrs AHRS structure.
  */
 void FusionAhrsReset(FusionAhrs *const ahrs) {
-    ahrs->quaternion = FUSION_IDENTITY_QUATERNION;
+    ahrs->quaternion = FUSION_QUATERNION_IDENTITY;
     ahrs->accelerometer = FUSION_VECTOR_ZERO;
     ahrs->initialising = true;
     ahrs->rampedGain = INITIAL_GAIN;
@@ -78,8 +80,8 @@ void FusionAhrsReset(FusionAhrs *const ahrs) {
 }
 
 /**
- * @brief Sets the AHRS algorithm settings.
- * @param ahrs AHRS algorithm structure.
+ * @brief Sets the settings.
+ * @param ahrs AHRS structure.
  * @param settings Settings.
  */
 void FusionAhrsSetSettings(FusionAhrs *const ahrs, const FusionAhrsSettings *const settings) {
@@ -91,8 +93,8 @@ void FusionAhrsSetSettings(FusionAhrs *const ahrs, const FusionAhrsSettings *con
     ahrs->settings.recoveryTriggerPeriod = settings->recoveryTriggerPeriod;
     ahrs->accelerationRecoveryTimeout = ahrs->settings.recoveryTriggerPeriod;
     ahrs->magneticRecoveryTimeout = ahrs->settings.recoveryTriggerPeriod;
-    if ((settings->gain == 0.0f) || (settings->recoveryTriggerPeriod == 0)) { // disable acceleration and magnetic rejection features if gain is zero
-        ahrs->settings.accelerationRejection = FLT_MAX;
+    if ((settings->gain == 0.0f) || (settings->recoveryTriggerPeriod == 0)) {
+        ahrs->settings.accelerationRejection = FLT_MAX; // disable acceleration and magnetic rejection features if gain is zero
         ahrs->settings.magneticRejection = FLT_MAX;
     }
     if (ahrs->initialising == false) {
@@ -103,17 +105,14 @@ void FusionAhrsSetSettings(FusionAhrs *const ahrs, const FusionAhrsSettings *con
 
 /**
  * @brief Updates the AHRS algorithm using the gyroscope, accelerometer, and
- * magnetometer measurements.
- * @param ahrs AHRS algorithm structure.
- * @param gyroscope Gyroscope measurement in degrees per second.
- * @param accelerometer Accelerometer measurement in g.
- * @param magnetometer Magnetometer measurement in arbitrary units.
+ * magnetometer.
+ * @param ahrs AHRS structure.
+ * @param gyroscope Gyroscope in degrees per second.
+ * @param accelerometer Accelerometer in g.
+ * @param magnetometer Magnetometer in any calibrated units.
  * @param deltaTime Delta time in seconds.
  */
 void FusionAhrsUpdate(FusionAhrs *const ahrs, const FusionVector gyroscope, const FusionVector accelerometer, const FusionVector magnetometer, const float deltaTime) {
-#define Q ahrs->quaternion.element
-
-    // Store accelerometer
     ahrs->accelerometer = accelerometer;
 
     // Reinitialise if gyroscope range exceeded
@@ -141,12 +140,11 @@ void FusionAhrsUpdate(FusionAhrs *const ahrs, const FusionVector gyroscope, cons
     FusionVector halfAccelerometerFeedback = FUSION_VECTOR_ZERO;
     ahrs->accelerometerIgnored = true;
     if (FusionVectorIsZero(accelerometer) == false) {
-
         // Calculate accelerometer feedback scaled by 0.5
         ahrs->halfAccelerometerFeedback = Feedback(FusionVectorNormalise(accelerometer), halfGravity);
 
         // Don't ignore accelerometer if acceleration error below threshold
-        if (ahrs->initialising || ((FusionVectorMagnitudeSquared(ahrs->halfAccelerometerFeedback) <= ahrs->settings.accelerationRejection))) {
+        if (ahrs->initialising || (FusionVectorNormSquared(ahrs->halfAccelerometerFeedback) <= ahrs->settings.accelerationRejection)) {
             ahrs->accelerometerIgnored = false;
             ahrs->accelerationRecoveryTrigger -= 9;
         } else {
@@ -172,15 +170,14 @@ void FusionAhrsUpdate(FusionAhrs *const ahrs, const FusionVector gyroscope, cons
     FusionVector halfMagnetometerFeedback = FUSION_VECTOR_ZERO;
     ahrs->magnetometerIgnored = true;
     if (FusionVectorIsZero(magnetometer) == false) {
-
         // Calculate direction of magnetic field indicated by algorithm
         const FusionVector halfMagnetic = HalfMagnetic(ahrs);
 
         // Calculate magnetometer feedback scaled by 0.5
-        ahrs->halfMagnetometerFeedback = Feedback(FusionVectorNormalise(FusionVectorCrossProduct(halfGravity, magnetometer)), halfMagnetic);
+        ahrs->halfMagnetometerFeedback = Feedback(FusionVectorNormalise(FusionVectorCross(halfGravity, magnetometer)), halfMagnetic);
 
         // Don't ignore magnetometer if magnetic error below threshold
-        if (ahrs->initialising || ((FusionVectorMagnitudeSquared(ahrs->halfMagnetometerFeedback) <= ahrs->settings.magneticRejection))) {
+        if (ahrs->initialising || (FusionVectorNormSquared(ahrs->halfMagnetometerFeedback) <= ahrs->settings.magneticRejection)) {
             ahrs->magnetometerIgnored = false;
             ahrs->magneticRecoveryTrigger -= 9;
         } else {
@@ -203,22 +200,21 @@ void FusionAhrsUpdate(FusionAhrs *const ahrs, const FusionVector gyroscope, cons
     }
 
     // Convert gyroscope to radians per second scaled by 0.5
-    const FusionVector halfGyroscope = FusionVectorMultiplyScalar(gyroscope, FusionDegreesToRadians(0.5f));
+    const FusionVector halfGyroscope = FusionVectorScale(gyroscope, FusionDegreesToRadians(0.5f));
 
     // Apply feedback to gyroscope
-    const FusionVector adjustedHalfGyroscope = FusionVectorAdd(halfGyroscope, FusionVectorMultiplyScalar(FusionVectorAdd(halfAccelerometerFeedback, halfMagnetometerFeedback), ahrs->rampedGain));
+    const FusionVector adjustedHalfGyroscope = FusionVectorAdd(halfGyroscope, FusionVectorScale(FusionVectorAdd(halfAccelerometerFeedback, halfMagnetometerFeedback), ahrs->rampedGain));
 
     // Integrate rate of change of quaternion
-    ahrs->quaternion = FusionQuaternionAdd(ahrs->quaternion, FusionQuaternionMultiplyVector(ahrs->quaternion, FusionVectorMultiplyScalar(adjustedHalfGyroscope, deltaTime)));
+    ahrs->quaternion = FusionQuaternionAdd(ahrs->quaternion, FusionQuaternionVectorProduct(ahrs->quaternion, FusionVectorScale(adjustedHalfGyroscope, deltaTime)));
 
     // Normalise quaternion
     ahrs->quaternion = FusionQuaternionNormalise(ahrs->quaternion);
-#undef Q
 }
 
 /**
  * @brief Returns the direction of gravity scaled by 0.5.
- * @param ahrs AHRS algorithm structure.
+ * @param ahrs AHRS structure.
  * @return Direction of gravity scaled by 0.5.
  */
 static inline FusionVector HalfGravity(const FusionAhrs *const ahrs) {
@@ -226,61 +222,71 @@ static inline FusionVector HalfGravity(const FusionAhrs *const ahrs) {
     switch (ahrs->settings.convention) {
         case FusionConventionNwu:
         case FusionConventionEnu: {
-            const FusionVector halfGravity = {.axis = {
+            const FusionVector halfGravity = {
+                .axis = {
                     .x = Q.x * Q.z - Q.w * Q.y,
                     .y = Q.y * Q.z + Q.w * Q.x,
                     .z = Q.w * Q.w - 0.5f + Q.z * Q.z,
-            }}; // third column of transposed rotation matrix scaled by 0.5
+                }
+            }; // third column of transposed rotation matrix scaled by 0.5
             return halfGravity;
         }
         case FusionConventionNed: {
-            const FusionVector halfGravity = {.axis = {
+            const FusionVector halfGravity = {
+                .axis = {
                     .x = Q.w * Q.y - Q.x * Q.z,
                     .y = -1.0f * (Q.y * Q.z + Q.w * Q.x),
                     .z = 0.5f - Q.w * Q.w - Q.z * Q.z,
-            }}; // third column of transposed rotation matrix scaled by -0.5
+                }
+            }; // third column of transposed rotation matrix scaled by -0.5
             return halfGravity;
         }
     }
-    return FUSION_VECTOR_ZERO; // avoid compiler warning
 #undef Q
+    return FUSION_VECTOR_ZERO; // avoid compiler warning
 }
 
 /**
  * @brief Returns the direction of the magnetic field scaled by 0.5.
- * @param ahrs AHRS algorithm structure.
+ * @param ahrs AHRS structure.
  * @return Direction of the magnetic field scaled by 0.5.
  */
 static inline FusionVector HalfMagnetic(const FusionAhrs *const ahrs) {
 #define Q ahrs->quaternion.element
     switch (ahrs->settings.convention) {
         case FusionConventionNwu: {
-            const FusionVector halfMagnetic = {.axis = {
+            const FusionVector halfMagnetic = {
+                .axis = {
                     .x = Q.x * Q.y + Q.w * Q.z,
                     .y = Q.w * Q.w - 0.5f + Q.y * Q.y,
                     .z = Q.y * Q.z - Q.w * Q.x,
-            }}; // second column of transposed rotation matrix scaled by 0.5
+                }
+            }; // second column of transposed rotation matrix scaled by 0.5
             return halfMagnetic;
         }
         case FusionConventionEnu: {
-            const FusionVector halfMagnetic = {.axis = {
+            const FusionVector halfMagnetic = {
+                .axis = {
                     .x = 0.5f - Q.w * Q.w - Q.x * Q.x,
                     .y = Q.w * Q.z - Q.x * Q.y,
                     .z = -1.0f * (Q.x * Q.z + Q.w * Q.y),
-            }}; // first column of transposed rotation matrix scaled by -0.5
+                }
+            }; // first column of transposed rotation matrix scaled by -0.5
             return halfMagnetic;
         }
         case FusionConventionNed: {
-            const FusionVector halfMagnetic = {.axis = {
+            const FusionVector halfMagnetic = {
+                .axis = {
                     .x = -1.0f * (Q.x * Q.y + Q.w * Q.z),
                     .y = 0.5f - Q.w * Q.w - Q.y * Q.y,
                     .z = Q.w * Q.x - Q.y * Q.z,
-            }}; // second column of transposed rotation matrix scaled by -0.5
+                }
+            }; // second column of transposed rotation matrix scaled by -0.5
             return halfMagnetic;
         }
     }
-    return FUSION_VECTOR_ZERO; // avoid compiler warning
 #undef Q
+    return FUSION_VECTOR_ZERO; // avoid compiler warning
 }
 
 /**
@@ -290,10 +296,10 @@ static inline FusionVector HalfMagnetic(const FusionAhrs *const ahrs) {
  * @return Feedback.
  */
 static inline FusionVector Feedback(const FusionVector sensor, const FusionVector reference) {
-    if (FusionVectorDotProduct(sensor, reference) < 0.0f) { // if error is >90 degrees
-        return FusionVectorNormalise(FusionVectorCrossProduct(sensor, reference));
+    if (FusionVectorDot(sensor, reference) < 0.0f) {
+        return FusionVectorNormalise(FusionVectorCross(sensor, reference)); // if error is >90 degrees
     }
-    return FusionVectorCrossProduct(sensor, reference);
+    return FusionVectorCross(sensor, reference);
 }
 
 /**
@@ -314,16 +320,13 @@ static inline int Clamp(const int value, const int min, const int max) {
 }
 
 /**
- * @brief Updates the AHRS algorithm using the gyroscope and accelerometer
- * measurements only.
- * @param ahrs AHRS algorithm structure.
- * @param gyroscope Gyroscope measurement in degrees per second.
- * @param accelerometer Accelerometer measurement in g.
+ * @brief Updates the AHRS algorithm using the gyroscope and accelerometer.
+ * @param ahrs AHRS structure.
+ * @param gyroscope Gyroscope in degrees per second.
+ * @param accelerometer Accelerometer in g.
  * @param deltaTime Delta time in seconds.
  */
 void FusionAhrsUpdateNoMagnetometer(FusionAhrs *const ahrs, const FusionVector gyroscope, const FusionVector accelerometer, const float deltaTime) {
-
-    // Update AHRS algorithm
     FusionAhrsUpdate(ahrs, gyroscope, accelerometer, FUSION_VECTOR_ZERO, deltaTime);
 
     // Zero heading during initialisation
@@ -333,73 +336,74 @@ void FusionAhrsUpdateNoMagnetometer(FusionAhrs *const ahrs, const FusionVector g
 }
 
 /**
- * @brief Updates the AHRS algorithm using the gyroscope, accelerometer, and
- * heading measurements.
- * @param ahrs AHRS algorithm structure.
- * @param gyroscope Gyroscope measurement in degrees per second.
- * @param accelerometer Accelerometer measurement in g.
- * @param heading Heading measurement in degrees.
+ * @brief Updates the AHRS algorithm using the gyroscope, accelerometer, and an
+ * external measurement of heading.
+ * @param ahrs AHRS structure.
+ * @param gyroscope Gyroscope in degrees per second.
+ * @param accelerometer Accelerometer in g.
+ * @param heading Heading in degrees.
  * @param deltaTime Delta time in seconds.
  */
 void FusionAhrsUpdateExternalHeading(FusionAhrs *const ahrs, const FusionVector gyroscope, const FusionVector accelerometer, const float heading, const float deltaTime) {
 #define Q ahrs->quaternion.element
-
-    // Calculate roll
     const float roll = atan2f(Q.w * Q.x + Q.y * Q.z, 0.5f - Q.y * Q.y - Q.x * Q.x);
+#undef Q
 
-    // Calculate magnetometer
+    // Calculate equivalent magnetometer
     const float headingRadians = FusionDegreesToRadians(heading);
     const float sinHeadingRadians = sinf(headingRadians);
-    const FusionVector magnetometer = {.axis = {
+    const FusionVector magnetometer = {
+        .axis = {
             .x = cosf(headingRadians),
             .y = -1.0f * cosf(roll) * sinHeadingRadians,
             .z = sinHeadingRadians * sinf(roll),
-    }};
+        }
+    };
 
-    // Update AHRS algorithm
+    // Update algorithm
     FusionAhrsUpdate(ahrs, gyroscope, accelerometer, magnetometer, deltaTime);
-#undef Q
 }
 
 /**
- * @brief Returns the quaternion describing the sensor relative to the Earth.
- * @param ahrs AHRS algorithm structure.
- * @return Quaternion describing the sensor relative to the Earth.
+ * @brief Returns the quaternion.
+ * @param ahrs AHRS structure.
+ * @return Quaternion.
  */
 FusionQuaternion FusionAhrsGetQuaternion(const FusionAhrs *const ahrs) {
     return ahrs->quaternion;
 }
 
 /**
- * @brief Sets the quaternion describing the sensor relative to the Earth.
- * @param ahrs AHRS algorithm structure.
- * @param quaternion Quaternion describing the sensor relative to the Earth.
+ * @brief Sets the quaternion.
+ * @param ahrs AHRS structure.
+ * @param quaternion Quaternion.
  */
 void FusionAhrsSetQuaternion(FusionAhrs *const ahrs, const FusionQuaternion quaternion) {
     ahrs->quaternion = quaternion;
 }
 
 /**
- * @brief Returns the direction of gravity in the sensor coordinate frame.
- * @param ahrs AHRS algorithm structure.
- * @return Direction of gravity in the sensor coordinate frame.
+ * @brief Returns the direction of gravity.
+ * @param ahrs AHRS structure.
+ * @return Direction of gravity as a unit vector.
  */
 FusionVector FusionAhrsGetGravity(const FusionAhrs *const ahrs) {
 #define Q ahrs->quaternion.element
-    const FusionVector gravity = {.axis = {
+    const FusionVector gravity = {
+        .axis = {
             .x = 2.0f * (Q.x * Q.z - Q.w * Q.y),
             .y = 2.0f * (Q.y * Q.z + Q.w * Q.x),
             .z = 2.0f * (Q.w * Q.w - 0.5f + Q.z * Q.z),
-    }}; // third column of transposed rotation matrix
-    return gravity;
+        }
+    }; // third column of transposed rotation matrix
 #undef Q
+    return gravity;
 }
 
 /**
- * @brief Returns the linear acceleration measurement equal to the accelerometer
- * measurement with gravity removed.
- * @param ahrs AHRS algorithm structure.
- * @return Linear acceleration measurement in g.
+ * @brief Returns the linear acceleration.
+ * @param ahrs AHRS structure.
+ * @return Linear acceleration in g.
  */
 FusionVector FusionAhrsGetLinearAcceleration(const FusionAhrs *const ahrs) {
     switch (ahrs->settings.convention) {
@@ -415,30 +419,25 @@ FusionVector FusionAhrsGetLinearAcceleration(const FusionAhrs *const ahrs) {
 }
 
 /**
- * @brief Returns the Earth acceleration measurement equal to accelerometer
- * measurement in the Earth coordinate frame with gravity removed.
- * @param ahrs AHRS algorithm structure.
- * @return Earth acceleration measurement in g.
+ * @brief Returns the Earth acceleration.
+ * @param ahrs AHRS structure.
+ * @return Earth acceleration in g.
  */
 FusionVector FusionAhrsGetEarthAcceleration(const FusionAhrs *const ahrs) {
+    // Calculate accelerometer in the Earth frame
 #define Q ahrs->quaternion.element
 #define A ahrs->accelerometer.axis
+    FusionVector accelerometer = {
+        .axis = {
+            .x = 2.0f * ((Q.w * Q.w - 0.5f + Q.x * Q.x) * A.x + (Q.x * Q.y - Q.w * Q.z) * A.y + (Q.x * Q.z + Q.w * Q.y) * A.z),
+            .y = 2.0f * ((Q.x * Q.y + Q.w * Q.z) * A.x + (Q.w * Q.w - 0.5f + Q.y * Q.y) * A.y + (Q.y * Q.z - Q.w * Q.x) * A.z),
+            .z = 2.0f * ((Q.x * Q.z - Q.w * Q.y) * A.x + (Q.y * Q.z + Q.w * Q.x) * A.y + (Q.w * Q.w - 0.5f + Q.z * Q.z) * A.z),
+        }
+    }; // rotation matrix multiplied with the accelerometer
+#undef Q
+#undef A
 
-    // Calculate accelerometer measurement in the Earth coordinate frame
-    const float qwqw = Q.w * Q.w; // calculate common terms to avoid repeated operations
-    const float qwqx = Q.w * Q.x;
-    const float qwqy = Q.w * Q.y;
-    const float qwqz = Q.w * Q.z;
-    const float qxqy = Q.x * Q.y;
-    const float qxqz = Q.x * Q.z;
-    const float qyqz = Q.y * Q.z;
-    FusionVector accelerometer = {.axis = {
-            .x = 2.0f * ((qwqw - 0.5f + Q.x * Q.x) * A.x + (qxqy - qwqz) * A.y + (qxqz + qwqy) * A.z),
-            .y = 2.0f * ((qxqy + qwqz) * A.x + (qwqw - 0.5f + Q.y * Q.y) * A.y + (qyqz - qwqx) * A.z),
-            .z = 2.0f * ((qxqz - qwqy) * A.x + (qyqz + qwqx) * A.y + (qwqw - 0.5f + Q.z * Q.z) * A.z),
-    }}; // rotation matrix multiplied with the accelerometer
-
-    // Remove gravity from accelerometer measurement
+    // Remove gravity in the Earth frame
     switch (ahrs->settings.convention) {
         case FusionConventionNwu:
         case FusionConventionEnu:
@@ -449,61 +448,59 @@ FusionVector FusionAhrsGetEarthAcceleration(const FusionAhrs *const ahrs) {
             break;
     }
     return accelerometer;
-#undef Q
-#undef A
 }
 
 /**
- * @brief Returns the AHRS algorithm internal states.
- * @param ahrs AHRS algorithm structure.
- * @return AHRS algorithm internal states.
+ * @brief Returns the internal states.
+ * @param ahrs AHRS structure.
+ * @return Internal states.
  */
 FusionAhrsInternalStates FusionAhrsGetInternalStates(const FusionAhrs *const ahrs) {
     const FusionAhrsInternalStates internalStates = {
-            .accelerationError = FusionRadiansToDegrees(FusionAsin(2.0f * FusionVectorMagnitude(ahrs->halfAccelerometerFeedback))),
-            .accelerometerIgnored = ahrs->accelerometerIgnored,
-            .accelerationRecoveryTrigger = ahrs->settings.recoveryTriggerPeriod == 0 ? 0.0f : (float) ahrs->accelerationRecoveryTrigger / (float) ahrs->settings.recoveryTriggerPeriod,
-            .magneticError = FusionRadiansToDegrees(FusionAsin(2.0f * FusionVectorMagnitude(ahrs->halfMagnetometerFeedback))),
-            .magnetometerIgnored = ahrs->magnetometerIgnored,
-            .magneticRecoveryTrigger = ahrs->settings.recoveryTriggerPeriod == 0 ? 0.0f : (float) ahrs->magneticRecoveryTrigger / (float) ahrs->settings.recoveryTriggerPeriod,
+        .accelerationError = FusionRadiansToDegrees(FusionArcSin(2.0f * FusionVectorNorm(ahrs->halfAccelerometerFeedback))),
+        .accelerometerIgnored = ahrs->accelerometerIgnored,
+        .accelerationRecoveryTrigger = ahrs->settings.recoveryTriggerPeriod == 0 ? 0.0f : (float) ahrs->accelerationRecoveryTrigger / (float) ahrs->settings.recoveryTriggerPeriod,
+        .magneticError = FusionRadiansToDegrees(FusionArcSin(2.0f * FusionVectorNorm(ahrs->halfMagnetometerFeedback))),
+        .magnetometerIgnored = ahrs->magnetometerIgnored,
+        .magneticRecoveryTrigger = ahrs->settings.recoveryTriggerPeriod == 0 ? 0.0f : (float) ahrs->magneticRecoveryTrigger / (float) ahrs->settings.recoveryTriggerPeriod,
     };
     return internalStates;
 }
 
 /**
- * @brief Returns the AHRS algorithm flags.
- * @param ahrs AHRS algorithm structure.
- * @return AHRS algorithm flags.
+ * @brief Returns the flags.
+ * @param ahrs AHRS structure.
+ * @return Flags.
  */
 FusionAhrsFlags FusionAhrsGetFlags(const FusionAhrs *const ahrs) {
     const FusionAhrsFlags flags = {
-            .initialising = ahrs->initialising,
-            .angularRateRecovery = ahrs->angularRateRecovery,
-            .accelerationRecovery = ahrs->accelerationRecoveryTrigger > ahrs->accelerationRecoveryTimeout,
-            .magneticRecovery= ahrs->magneticRecoveryTrigger > ahrs->magneticRecoveryTimeout,
+        .initialising = ahrs->initialising,
+        .angularRateRecovery = ahrs->angularRateRecovery,
+        .accelerationRecovery = ahrs->accelerationRecoveryTrigger > ahrs->accelerationRecoveryTimeout,
+        .magneticRecovery = ahrs->magneticRecoveryTrigger > ahrs->magneticRecoveryTimeout,
     };
     return flags;
 }
 
 /**
- * @brief Sets the heading of the orientation measurement provided by the AHRS
- * algorithm. This function can be used to reset drift in heading when the AHRS
- * algorithm is being used without a magnetometer.
- * @param ahrs AHRS algorithm structure.
- * @param heading Heading angle in degrees.
+ * @brief Sets the heading.
+ * @param ahrs AHRS structure.
+ * @param heading Heading in degrees.
  */
 void FusionAhrsSetHeading(FusionAhrs *const ahrs, const float heading) {
 #define Q ahrs->quaternion.element
     const float yaw = atan2f(Q.w * Q.z + Q.x * Q.y, 0.5f - Q.y * Q.y - Q.z * Q.z);
+#undef Q
     const float halfYawMinusHeading = 0.5f * (yaw - FusionDegreesToRadians(heading));
-    const FusionQuaternion rotation = {.element = {
+    const FusionQuaternion rotation = {
+        .element = {
             .w = cosf(halfYawMinusHeading),
             .x = 0.0f,
             .y = 0.0f,
             .z = -1.0f * sinf(halfYawMinusHeading),
-    }};
-    ahrs->quaternion = FusionQuaternionMultiply(rotation, ahrs->quaternion);
-#undef Q
+        }
+    };
+    ahrs->quaternion = FusionQuaternionProduct(rotation, ahrs->quaternion);
 }
 
 //------------------------------------------------------------------------------

@@ -1,8 +1,7 @@
 /**
  * @file FusionAhrs.h
  * @author Seb Madgwick
- * @brief AHRS algorithm to combine gyroscope, accelerometer, and magnetometer
- * measurements into a single measurement of orientation relative to the Earth.
+ * @brief Attitude and Heading Reference System (AHRS) algorithm.
  */
 
 #ifndef FUSION_AHRS_H
@@ -19,7 +18,7 @@
 // Definitions
 
 /**
- * @brief AHRS algorithm settings.
+ * @brief Settings.
  */
 typedef struct {
     FusionConvention convention;
@@ -31,8 +30,7 @@ typedef struct {
 } FusionAhrsSettings;
 
 /**
- * @brief AHRS algorithm structure. Structure members are used internally and
- * must not be accessed by the application.
+ * @brief AHRS structure. All members are private.
  */
 typedef struct {
     FusionAhrsSettings settings;
@@ -53,7 +51,7 @@ typedef struct {
 } FusionAhrs;
 
 /**
- * @brief AHRS algorithm internal states.
+ * @brief Internal states.
  */
 typedef struct {
     float accelerationError;
@@ -65,7 +63,7 @@ typedef struct {
 } FusionAhrsInternalStates;
 
 /**
- * @brief AHRS algorithm flags.
+ * @brief Flags.
  */
 typedef struct {
     bool initialising;
@@ -73,6 +71,11 @@ typedef struct {
     bool accelerationRecovery;
     bool magneticRecovery;
 } FusionAhrsFlags;
+
+//------------------------------------------------------------------------------
+// Variable declarations
+
+extern const FusionAhrsSettings fusionAhrsDefaultSettings;
 
 //------------------------------------------------------------------------------
 // Function declarations

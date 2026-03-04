@@ -127,8 +127,8 @@ static void ApplyImu(Context * const context) {
     applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAccelerometerSensitivity);
     applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAccelerometerOffset);
     applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSampleRate);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAxesAlignment);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeOffsetCorrectionEnabled);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAxesRemap);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeBiasCorrectionEnabled);
     applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsUpdateRateDivisor);
     applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsAxesConvention);
     applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsGain);
@@ -149,8 +149,8 @@ static void ApplyImu(Context * const context) {
         .accelerometerSensitivity = Ximu3SettingsGet(context->settings)->accelerometerSensitivity,
         .accelerometerOffset = Ximu3SettingsGet(context->settings)->accelerometerOffset,
         .sampleRate = Ximu3SettingsGet(context->settings)->sampleRate,
-        .axisAlignment = Ximu3SettingsGet(context->settings)->axesAlignment,
-        .gyroscopeOffsetEnabled = Ximu3SettingsGet(context->settings)->gyroscopeOffsetCorrectionEnabled,
+        .axesRemap = Ximu3SettingsGet(context->settings)->axesRemap,
+        .gyroscopeBiasCorrectionEnabled = Ximu3SettingsGet(context->settings)->gyroscopeBiasCorrectionEnabled,
         .ahrsUpdateRateDivisor = Ximu3SettingsGet(context->settings)->ahrsUpdateRateDivisor,
         .ahrsAxesConvention = Ximu3SettingsGet(context->settings)->ahrsAxesConvention,
         .ahrsGain = Ximu3SettingsGet(context->settings)->ahrsGain,

@@ -109,8 +109,8 @@ void SendInertial(Send * const send, const SendInertialData * const inertialData
             return;
         }
         const float reciprocal = 1.0f / (float) send->downsampledInertialCount;
-        gyroscope = FusionVectorMultiplyScalar(send->downsampledGyroscope, reciprocal);
-        accelerometer = FusionVectorMultiplyScalar(send->downsampledAccelerometer, reciprocal);
+        gyroscope = FusionVectorScale(send->downsampledGyroscope, reciprocal);
+        accelerometer = FusionVectorScale(send->downsampledAccelerometer, reciprocal);
     }
     send->downsampledInertialCount = 0;
 

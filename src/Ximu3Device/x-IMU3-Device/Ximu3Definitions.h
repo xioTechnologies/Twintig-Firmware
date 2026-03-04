@@ -18,7 +18,7 @@
 
 #define XIMU3_OBJECT_SIZE 1024
 
-#define XIMU3_MAX_KEY_LENGTH 35
+#define XIMU3_MAX_KEY_LENGTH 33
 
 #define XIMU3_NUMBER_OF_SETTINGS 31
 
@@ -48,8 +48,8 @@ typedef struct {
     IcmAntiAliasing gyroscopeAntiAliasing;
     IcmAntiAliasing accelerometerAntiAliasing;
     IcmSampleRate sampleRate;
-    FusionAxesAlignment axesAlignment;
-    bool gyroscopeOffsetCorrectionEnabled;
+    FusionRemapAlignment axesRemap;
+    bool gyroscopeBiasCorrectionEnabled;
     uint32_t ahrsUpdateRateDivisor;
     FusionConvention ahrsAxesConvention;
     float ahrsGain;
@@ -82,8 +82,8 @@ typedef enum {
     Ximu3SettingsIndexGyroscopeAntiAliasing,
     Ximu3SettingsIndexAccelerometerAntiAliasing,
     Ximu3SettingsIndexSampleRate,
-    Ximu3SettingsIndexAxesAlignment,
-    Ximu3SettingsIndexGyroscopeOffsetCorrectionEnabled,
+    Ximu3SettingsIndexAxesRemap,
+    Ximu3SettingsIndexGyroscopeBiasCorrectionEnabled,
     Ximu3SettingsIndexAhrsUpdateRateDivisor,
     Ximu3SettingsIndexAhrsAxesConvention,
     Ximu3SettingsIndexAhrsGain,

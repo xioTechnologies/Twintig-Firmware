@@ -18,8 +18,8 @@
             <Setting key="sample_rate" name="Sample Rate" type="IcmSampleRate"/>
         </Group>
         <Group name="IMU" expand="true">
-            <Setting key="axes_alignment" name="Axes Alignment" type="FusionAxesAlignment"/>
-            <Setting key="gyroscope_offset_correction_enabled" name="Gyroscope Offset Correction" type="bool"/>
+            <Setting key="axes_remap" name="Axes Remap" type="FusionRemapAlignment"/>
+            <Setting key="gyroscope_bias_correction_enabled" name="Gyroscope Bias Correction" type="bool"/>
             <Group name="AHRS" expand="true">
                 <Setting key="ahrs_update_rate_divisor" name="Update Rate Divisor" type="number"/>
                 <Setting key="ahrs_axes_convention" name="Axes Convention" type="FusionConvention"/>
@@ -43,8 +43,8 @@
         <Margin/>
     </Settings>
     <Enums>
-        <Enum name="FusionAxesAlignment">
-            <Enumerator name="+X+Y+Z" value="0"/>
+        <Enum name="FusionRemapAlignment">
+            <Enumerator name="+X+Y+Z (Disabled)" value="0"/>
             <Enumerator name="+X-Z+Y" value="1"/>
             <Enumerator name="+X-Y-Z" value="2"/>
             <Enumerator name="+X+Z-Y" value="3"/>

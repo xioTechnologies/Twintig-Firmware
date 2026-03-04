@@ -144,32 +144,32 @@ static void SetValue(const Metadata * const metadata, const void* const value) {
             }
             memcpy(metadata->value, value, metadata->size);
             return;
-        case MetadataTypeFusionAxesAlignment:
-            switch (*(FusionAxesAlignment*) value) {
-                case FusionAxesAlignmentPXPYPZ:
-                case FusionAxesAlignmentPXNZPY:
-                case FusionAxesAlignmentPXNYNZ:
-                case FusionAxesAlignmentPXPZNY:
-                case FusionAxesAlignmentNXPYNZ:
-                case FusionAxesAlignmentNXPZPY:
-                case FusionAxesAlignmentNXNYPZ:
-                case FusionAxesAlignmentNXNZNY:
-                case FusionAxesAlignmentPYNXPZ:
-                case FusionAxesAlignmentPYNZNX:
-                case FusionAxesAlignmentPYPXNZ:
-                case FusionAxesAlignmentPYPZPX:
-                case FusionAxesAlignmentNYPXPZ:
-                case FusionAxesAlignmentNYNZPX:
-                case FusionAxesAlignmentNYNXNZ:
-                case FusionAxesAlignmentNYPZNX:
-                case FusionAxesAlignmentPZPYNX:
-                case FusionAxesAlignmentPZPXPY:
-                case FusionAxesAlignmentPZNYPX:
-                case FusionAxesAlignmentPZNXNY:
-                case FusionAxesAlignmentNZPYPX:
-                case FusionAxesAlignmentNZNXPY:
-                case FusionAxesAlignmentNZNYNX:
-                case FusionAxesAlignmentNZPXNY:
+        case MetadataTypeFusionRemapAlignment:
+            switch (*(FusionRemapAlignment*) value) {
+                case FusionRemapAlignmentPXPYPZ:
+                case FusionRemapAlignmentPXNZPY:
+                case FusionRemapAlignmentPXNYNZ:
+                case FusionRemapAlignmentPXPZNY:
+                case FusionRemapAlignmentNXPYNZ:
+                case FusionRemapAlignmentNXPZPY:
+                case FusionRemapAlignmentNXNYPZ:
+                case FusionRemapAlignmentNXNZNY:
+                case FusionRemapAlignmentPYNXPZ:
+                case FusionRemapAlignmentPYNZNX:
+                case FusionRemapAlignmentPYPXNZ:
+                case FusionRemapAlignmentPYPZPX:
+                case FusionRemapAlignmentNYPXPZ:
+                case FusionRemapAlignmentNYNZPX:
+                case FusionRemapAlignmentNYNXNZ:
+                case FusionRemapAlignmentNYPZNX:
+                case FusionRemapAlignmentPZPYNX:
+                case FusionRemapAlignmentPZPXPY:
+                case FusionRemapAlignmentPZNYPX:
+                case FusionRemapAlignmentPZNXNY:
+                case FusionRemapAlignmentNZPYPX:
+                case FusionRemapAlignmentNZNXPY:
+                case FusionRemapAlignmentNZNYNX:
+                case FusionRemapAlignmentNZPXNY:
                     memcpy(metadata->value, value, metadata->size);
                     return;
             }

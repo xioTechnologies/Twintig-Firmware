@@ -79,8 +79,8 @@ void Ximu3SettingsJsonGetValue(Ximu3Settings * const settings, char* const desti
         case MetadataTypeFloat:
             snprintf(destination, destinationSize, "%f", *(float*) metadata.value);
             break;
-        case MetadataTypeFusionAxesAlignment:
         case MetadataTypeFusionConvention:
+        case MetadataTypeFusionRemapAlignment:
         case MetadataTypeIcmAntiAliasing:
         case MetadataTypeIcmSampleRate:
         case MetadataTypeSendAhrsMessageType:
@@ -206,8 +206,8 @@ JsonResult Ximu3SettingsJsonSetKeyValue(Ximu3Settings * const settings, const ch
             return ParseBool(settings, index, value, overrideReadOnly);
         case MetadataTypeFloat:
             return ParseFloat(settings, index, value, overrideReadOnly);
-        case MetadataTypeFusionAxesAlignment:
         case MetadataTypeFusionConvention:
+        case MetadataTypeFusionRemapAlignment:
         case MetadataTypeIcmAntiAliasing:
         case MetadataTypeIcmSampleRate:
         case MetadataTypeSendAhrsMessageType:
@@ -296,7 +296,7 @@ static JsonResult ParseFusionMatrix(Ximu3Settings * const settings, const Ximu3S
 
     // Parse first row
     FusionMatrix matrix;
-    result = ParseFloatArray(matrix.array[0], value);
+    result = ParseFloatArray(&matrix.array[0], value);
     if (result != JsonResultOk) {
         return result;
     }
@@ -308,7 +308,7 @@ static JsonResult ParseFusionMatrix(Ximu3Settings * const settings, const Ximu3S
     }
 
     // Parse second row
-    result = ParseFloatArray(matrix.array[1], value);
+    result = ParseFloatArray(&matrix.array[3], value);
     if (result != JsonResultOk) {
         return result;
     }
@@ -320,7 +320,7 @@ static JsonResult ParseFusionMatrix(Ximu3Settings * const settings, const Ximu3S
     }
 
     // Parse third row
-    result = ParseFloatArray(matrix.array[2], value);
+    result = ParseFloatArray(&matrix.array[6], value);
     if (result != JsonResultOk) {
         return result;
     }

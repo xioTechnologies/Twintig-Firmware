@@ -29,7 +29,7 @@
         {
             "name": "Gyroscope misalignment",
             "declaration": "FusionMatrix name",
-            "default": "{{{1.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}}}",
+            "default": "{{1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f}}",
             "preserved": true
         },
         {
@@ -47,7 +47,7 @@
         {
             "name": "Accelerometer misalignment",
             "declaration": "FusionMatrix name",
-            "default": "{{{1.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}}}",
+            "default": "{{1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f}}",
             "preserved": true
         },
         {
@@ -109,12 +109,12 @@
             "default": "{IcmSampleRate100Hz}"
         },
         {
-            "name": "Axes alignment",
-            "declaration": "FusionAxesAlignment name",
-            "default": "{FusionAxesAlignmentPXPYPZ}"
+            "name": "Axes remap",
+            "declaration": "FusionRemapAlignment name",
+            "default": "{FusionRemapAlignmentPXPYPZ}"
         },
         {
-            "name": "Gyroscope offset correction enabled",
+            "name": "Gyroscope bias correction enabled",
             "declaration": "bool name",
             "default": "{false}"
         },

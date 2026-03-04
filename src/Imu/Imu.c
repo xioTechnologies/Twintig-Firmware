@@ -91,17 +91,17 @@ void ImuTasks(Imu * const imu) {
             .axis.y = icmData.accelerometerY,
             .axis.z = icmData.accelerometerZ,
         };
-        gyroscope = FusionCalibrationInertial(gyroscope, imu->settings.gyroscopeMisalignment, imu->settings.gyroscopeSensitivity, imu->settings.gyroscopeOffset);
-        accelerometer = FusionCalibrationInertial(accelerometer, imu->settings.accelerometerMisalignment, imu->settings.accelerometerSensitivity, imu->settings.accelerometerOffset);
+        gyroscope = FusionModelInertial(gyroscope, imu->settings.gyroscopeMisalignment, imu->settings.gyroscopeSensitivity, imu->settings.gyroscopeOffset);
+        accelerometer = FusionModelInertial(accelerometer, imu->settings.accelerometerMisalignment, imu->settings.accelerometerSensitivity, imu->settings.accelerometerOffset);
 
-        // Update offset algorithm
-        if (imu->settings.gyroscopeOffsetEnabled) {
-            gyroscope = FusionOffsetUpdate(&imu->offset, gyroscope);
+        // Update bias algorithm
+        if (imu->settings.gyroscopeBiasCorrectionEnabled) {
+            gyroscope = FusionBiasUpdate(&imu->bias, gyroscope);
         }
 
         // Axis alignment
-        gyroscope = FusionAxesSwap(gyroscope, imu->settings.axisAlignment);
-        accelerometer = FusionAxesSwap(accelerometer, imu->settings.axisAlignment);
+        gyroscope = FusionRemap(gyroscope, imu->settings.axesRemap);
+        accelerometer = FusionRemap(accelerometer, imu->settings.axesRemap);
 
         // Send inertial data
         const SendInertialData inertialData = {
@@ -133,8 +133,8 @@ void ImuTasks(Imu * const imu) {
                 continue;
             }
             const float reciprocal = 1.0f / (float) imu->downsampledCount;
-            gyroscope = FusionVectorMultiplyScalar(imu->downsampledGyroscope, reciprocal);
-            accelerometer = FusionVectorMultiplyScalar(imu->downsampledAccelerometer, reciprocal);
+            gyroscope = FusionVectorScale(imu->downsampledGyroscope, reciprocal);
+            accelerometer = FusionVectorScale(imu->downsampledAccelerometer, reciprocal);
         }
         imu->downsampledCount = 0;
 
@@ -167,7 +167,7 @@ void ImuSetSettings(Imu * const imu, const ImuSettings * const settings) {
 
     // Initialise offset
     if ((imu->initialised == false) || (imu->settings.sampleRate != settings->sampleRate)) {
-        FusionOffsetInitialise(&imu->offset, (unsigned int) settings->sampleRate);
+        FusionBiasInitialise(&imu->bias, (unsigned int) settings->sampleRate);
     }
 
     // Initialise AHRS
@@ -176,7 +176,7 @@ void ImuSetSettings(Imu * const imu, const ImuSettings * const settings) {
     }
 
     // Reset AHRS
-    if ((imu->settings.axisAlignment != settings->axisAlignment) ||
+    if ((imu->settings.axesRemap != settings->axesRemap) ||
         (imu->settings.ahrsAxesConvention != settings->ahrsAxesConvention) ||
         (imu->settings.ahrsUpdateRateDivisor != settings->ahrsUpdateRateDivisor)) {
         FusionAhrsReset(&imu->ahrs);
