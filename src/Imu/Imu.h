@@ -12,6 +12,7 @@
 
 #include "Fusion/Fusion.h"
 #include "Icm/Icm.h"
+#include "Send/Send.h"
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -38,47 +39,19 @@ typedef struct {
 } ImuSettings;
 
 /**
- * @brief Inertial data.
- */
-typedef struct {
-    uint64_t ticks;
-    FusionVector gyroscope;
-    FusionVector accelerometer;
-} ImuInertialData;
-
-/**
- * @brief AHRS data.
- */
-typedef struct {
-    uint64_t ticks;
-    const FusionAhrs* ahrs;
-} ImuAhrsData;
-
-/**
- * @brief Temperature data.
- */
-typedef struct {
-    uint64_t ticks;
-    float temperature;
-} ImuTemperatureData;
-
-/**
  * @brief IMU structure.
  */
 typedef struct {
-    const Icm * const icm;
-    void (*inertialDataReady)(const ImuInertialData * const data, void* const context); // NULL if unused
-    void (*ahrsDataReady)(const ImuAhrsData * const data, void* const context); // NULL if unused
-    void (*temperatureDataReady)(const ImuTemperatureData * const data, void* const context); // NULL if unused
-    void* context;
-    bool initialised; // private
     ImuSettings settings; // private
+    const Icm * const icm; // private
+    bool initialised; // private
     FusionOffset offset; // private
     FusionAhrs ahrs; // private
     FusionVector downsampledGyroscope; // private
     FusionVector downsampledAccelerometer; // private
     uint32_t downsampledCount; // private
     uint64_t previousTicks; // private
+    Send * const send; // private
 } Imu;
 
 //------------------------------------------------------------------------------

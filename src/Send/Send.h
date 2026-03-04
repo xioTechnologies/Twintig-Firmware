@@ -10,7 +10,7 @@
 //------------------------------------------------------------------------------
 // Includes
 
-#include "Imu/Imu.h"
+#include "Imu/Fusion/Fusion.h"
 #include "Led/Led.h"
 #include "Mux/Mux.h"
 #include <stdbool.h>
@@ -49,18 +49,43 @@ typedef struct {
  */
 typedef struct {
     MuxChannel channel;
-    Led * const led; // private
     SendSettings settings; // private
-    FusionAhrsFlags flags; // private
     FusionVector downsampledGyroscope; // private
     FusionVector downsampledAccelerometer; // private
     uint32_t downsampledInertialCount; // private
+    FusionAhrsFlags flags; // private
     uint32_t downsampledAhrsCount; // private
     float downsampledTemperature; // private
     uint32_t downsampledTemperatureCount; // private
     size_t usbBufferOverflow; // private
     size_t serialBufferOverflow; // private
+    Led * const led; // private
 } Send;
+
+/**
+ * @brief Inertial data.
+ */
+typedef struct {
+    uint64_t ticks;
+    FusionVector gyroscope;
+    FusionVector accelerometer;
+} SendInertialData;
+
+/**
+ * @brief AHRS data.
+ */
+typedef struct {
+    uint64_t ticks;
+    const FusionAhrs * const ahrs;
+} SendAhrsData;
+
+/**
+ * @brief Temperature data.
+ */
+typedef struct {
+    uint64_t ticks;
+    float temperature;
+} SendTemperatureData;
 
 //------------------------------------------------------------------------------
 // Variable declarations
@@ -90,7 +115,10 @@ extern Send send20;
 //------------------------------------------------------------------------------
 // Function declarations
 
-void SendSetSettings(Send * const send, const SendSettings * const settings, Imu * const imu);
+void SendSetSettings(Send * const send, const SendSettings * const settings);
+void SendInertial(Send * const send, const SendInertialData * const inertialData);
+void SendAhrs(Send * const send, const SendAhrsData * const ahrsData);
+void SendTemperature(Send * const send, const SendTemperatureData * const temperatureData);
 void SendNotification(Send * const send, const char* format, ...);
 void SendError(Send * const send, const char* format, ...);
 void SendResponseUsb(Send * const send, const void* const data, const size_t numberOfBytes);

@@ -34,26 +34,26 @@
 //------------------------------------------------------------------------------
 // Variables
 
-Imu imu1 = {.icm = &icm1};
-Imu imu2 = {.icm = &icm2};
-Imu imu3 = {.icm = &icm3};
-Imu imu4 = {.icm = &icm4};
-Imu imu5 = {.icm = &icm5};
-Imu imu6 = {.icm = &icm6};
-Imu imu7 = {.icm = &icm7};
-Imu imu8 = {.icm = &icm8};
-Imu imu9 = {.icm = &icm9};
-Imu imu10 = {.icm = &icm10};
-Imu imu11 = {.icm = &icm11};
-Imu imu12 = {.icm = &icm12};
-Imu imu13 = {.icm = &icm13};
-Imu imu14 = {.icm = &icm14};
-Imu imu15 = {.icm = &icm15};
-Imu imu16 = {.icm = &icm16};
-Imu imu17 = {.icm = &icm17};
-Imu imu18 = {.icm = &icm18};
-Imu imu19 = {.icm = &icm19};
-Imu imu20 = {.icm = &icm20};
+Imu imu1 = {.icm = &icm1, .send = &send1};
+Imu imu2 = {.icm = &icm2, .send = &send2};
+Imu imu3 = {.icm = &icm3, .send = &send3};
+Imu imu4 = {.icm = &icm4, .send = &send4};
+Imu imu5 = {.icm = &icm5, .send = &send5};
+Imu imu6 = {.icm = &icm6, .send = &send6};
+Imu imu7 = {.icm = &icm7, .send = &send7};
+Imu imu8 = {.icm = &icm8, .send = &send8};
+Imu imu9 = {.icm = &icm9, .send = &send9};
+Imu imu10 = {.icm = &icm10, .send = &send10};
+Imu imu11 = {.icm = &icm11, .send = &send11};
+Imu imu12 = {.icm = &icm12, .send = &send12};
+Imu imu13 = {.icm = &icm13, .send = &send13};
+Imu imu14 = {.icm = &icm14, .send = &send14};
+Imu imu15 = {.icm = &icm15, .send = &send15};
+Imu imu16 = {.icm = &icm16, .send = &send16};
+Imu imu17 = {.icm = &icm17, .send = &send17};
+Imu imu18 = {.icm = &icm18, .send = &send18};
+Imu imu19 = {.icm = &icm19, .send = &send19};
+Imu imu20 = {.icm = &icm20, .send = &send20};
 
 //------------------------------------------------------------------------------
 // Functions
@@ -94,7 +94,7 @@ void ImuTasks(Imu * const imu) {
         gyroscope = FusionCalibrationInertial(gyroscope, imu->settings.gyroscopeMisalignment, imu->settings.gyroscopeSensitivity, imu->settings.gyroscopeOffset);
         accelerometer = FusionCalibrationInertial(accelerometer, imu->settings.accelerometerMisalignment, imu->settings.accelerometerSensitivity, imu->settings.accelerometerOffset);
 
-        // Update offset
+        // Update offset algorithm
         if (imu->settings.gyroscopeOffsetEnabled) {
             gyroscope = FusionOffsetUpdate(&imu->offset, gyroscope);
         }
@@ -103,24 +103,20 @@ void ImuTasks(Imu * const imu) {
         gyroscope = FusionAxesSwap(gyroscope, imu->settings.axisAlignment);
         accelerometer = FusionAxesSwap(accelerometer, imu->settings.axisAlignment);
 
-        // Inertial callback
-        if (imu->inertialDataReady != NULL) {
-            ImuInertialData inertialData = {
-                .ticks = icmData.ticks,
-                .gyroscope = gyroscope,
-                .accelerometer = accelerometer,
-            };
-            imu->inertialDataReady(&inertialData, imu->context);
-        }
+        // Send inertial data
+        const SendInertialData inertialData = {
+            .ticks = icmData.ticks,
+            .gyroscope = gyroscope,
+            .accelerometer = accelerometer,
+        };
+        SendInertial(imu->send, &inertialData);
 
-        // Temperature callback
-        if (imu->temperatureDataReady != NULL) {
-            ImuTemperatureData temperatureData = {
-                .ticks = icmData.ticks,
-                .temperature = icmData.temperature,
-            };
-            imu->temperatureDataReady(&temperatureData, imu->context);
-        }
+        // Send temperature data
+        const SendTemperatureData temperatureData = {
+            .ticks = icmData.ticks,
+            .temperature = icmData.temperature,
+        };
+        SendTemperature(imu->send, &temperatureData);
 
         // Downsampling
         if (imu->settings.ahrsUpdateRateDivisor == 0) {
@@ -150,17 +146,15 @@ void ImuTasks(Imu * const imu) {
             continue;
         }
 
-        // Update AHRS
+        // Update AHRS algorithm
         FusionAhrsUpdateNoMagnetometer(&imu->ahrs, gyroscope, accelerometer, deltaTime);
 
         // AHRS callback
-        if (imu->ahrsDataReady != NULL) {
-            ImuAhrsData ahrsData = {
-                .ticks = icmData.ticks,
-                .ahrs = &imu->ahrs,
-            };
-            imu->ahrsDataReady(&ahrsData, imu->context);
-        }
+        const SendAhrsData ahrsData = {
+            .ticks = icmData.ticks,
+            .ahrs = &imu->ahrs,
+        };
+        SendAhrs(imu->send, &ahrsData);
     }
 }
 
