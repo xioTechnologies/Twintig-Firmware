@@ -5,7 +5,6 @@
 
 #include "Imu/Fusion/Fusion.h"
 #include "Imu/Icm/Icm.h"
-#include "Imu/Imu.h"
 #include "Send/Send.h"
 #include <stdbool.h>
 #include <stdint.h>

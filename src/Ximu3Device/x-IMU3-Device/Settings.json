@@ -2,7 +2,6 @@
     "includes": [
         "\"Imu/Fusion/Fusion.h\"",
         "\"Imu/Icm/Icm.h\"",
-        "\"Imu/Imu.h\"",
         "\"Send/Send.h\"",
         "<stdbool.h>",
         "<stdint.h>"
