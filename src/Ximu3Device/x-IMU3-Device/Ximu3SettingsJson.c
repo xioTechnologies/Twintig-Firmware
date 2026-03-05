@@ -21,11 +21,11 @@
 static void Append(char* const destination, const size_t destinationSize, const char* const string);
 static JsonResult ParseBool(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
 static JsonResult ParseFloat(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
-static JsonResult ParseString(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
 static JsonResult ParseFusionMatrix(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
 static JsonResult ParseFusionVector(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
 static JsonResult ParseFloatArray(float* const destination, const char* * const value);
 static JsonResult ParseInt32(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
+static JsonResult ParseString(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
 static JsonResult ParseUint32(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly);
 
 //------------------------------------------------------------------------------
@@ -261,24 +261,6 @@ static JsonResult ParseFloat(Ximu3Settings * const settings, const Ximu3Settings
 }
 
 /**
- * @brief Parse value representing a string.
- * @param settings Settings.
- * @param index Index.
- * @param value Value.
- * @param overrideReadOnly True to override read-only.
- * @return Result.
- */
-static JsonResult ParseString(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly) {
-    char string[XIMU3_VALUE_SIZE];
-    const JsonResult result = JsonParseString(value, string, sizeof (string), NULL);
-    if (result != JsonResultOk) {
-        return result;
-    }
-    Ximu3SettingsSet(settings, index, string, overrideReadOnly);
-    return JsonResultOk;
-}
-
-/**
  * @brief Parse value representing a matrix.
  * @param settings Settings.
  * @param index Index.
@@ -422,6 +404,24 @@ static JsonResult ParseInt32(Ximu3Settings * const settings, const Ximu3Settings
     }
     const int32_t numberInt = (int32_t) numberFloat;
     Ximu3SettingsSet(settings, index, &numberInt, overrideReadOnly);
+    return JsonResultOk;
+}
+
+/**
+ * @brief Parse value representing a string.
+ * @param settings Settings.
+ * @param index Index.
+ * @param value Value.
+ * @param overrideReadOnly True to override read-only.
+ * @return Result.
+ */
+static JsonResult ParseString(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly) {
+    char string[XIMU3_VALUE_SIZE];
+    const JsonResult result = JsonParseString(value, string, sizeof (string), NULL);
+    if (result != JsonResultOk) {
+        return result;
+    }
+    Ximu3SettingsSet(settings, index, string, overrideReadOnly);
     return JsonResultOk;
 }
 
