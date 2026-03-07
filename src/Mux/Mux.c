@@ -47,45 +47,45 @@ uint8_t MuxChannelToByte(const MuxChannel channel) {
     switch (channel) {
         case MuxChannelNone:
             break;
-        case MuxChannel1:
+        case MuxChannelA:
             return 'A';
-        case MuxChannel2:
+        case MuxChannelB:
             return 'B';
-        case MuxChannel3:
+        case MuxChannelC:
             return 'C';
-        case MuxChannel4:
+        case MuxChannelD:
             return 'D';
-        case MuxChannel5:
+        case MuxChannelE:
             return 'E';
-        case MuxChannel6:
+        case MuxChannelF:
             return 'F';
-        case MuxChannel7:
+        case MuxChannelG:
             return 'G';
-        case MuxChannel8:
+        case MuxChannelH:
             return 'H';
-        case MuxChannel9:
+        case MuxChannelI:
             return 'I';
-        case MuxChannel10:
+        case MuxChannelJ:
             return 'J';
-        case MuxChannel11:
+        case MuxChannelK:
             return 'K';
-        case MuxChannel12:
+        case MuxChannelL:
             return 'L';
-        case MuxChannel13:
+        case MuxChannelM:
             return 'M';
-        case MuxChannel14:
+        case MuxChannelN:
             return 'N';
-        case MuxChannel15:
+        case MuxChannelO:
             return 'O';
-        case MuxChannel16:
+        case MuxChannelP:
             return 'P';
-        case MuxChannel17:
+        case MuxChannelQ:
             return 'Q';
-        case MuxChannel18:
+        case MuxChannelR:
             return 'R';
-        case MuxChannel19:
+        case MuxChannelS:
             return 'S';
-        case MuxChannel20:
+        case MuxChannelT:
             return 'T';
     }
     return '\n'; // avoid compiler warning

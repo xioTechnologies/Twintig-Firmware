@@ -86,27 +86,27 @@ extern const LedColour ledColourMagenta;
 extern const LedColour ledColourWhite;
 extern const LedColour ledColourBlack;
 
-extern Led led0;
-extern Led led1;
-extern Led led2;
-extern Led led3;
-extern Led led4;
-extern Led led5;
-extern Led led6;
-extern Led led7;
-extern Led led8;
-extern Led led9;
-extern Led led10;
-extern Led led11;
-extern Led led12;
-extern Led led13;
-extern Led led14;
-extern Led led15;
-extern Led led16;
-extern Led led17;
-extern Led led18;
-extern Led led19;
-extern Led led20;
+extern Led ledMain;
+extern Led ledA;
+extern Led ledB;
+extern Led ledC;
+extern Led ledD;
+extern Led ledE;
+extern Led ledF;
+extern Led ledG;
+extern Led ledH;
+extern Led ledI;
+extern Led ledJ;
+extern Led ledK;
+extern Led ledL;
+extern Led ledM;
+extern Led ledN;
+extern Led ledO;
+extern Led ledP;
+extern Led ledQ;
+extern Led ledR;
+extern Led ledS;
+extern Led ledT;
 
 //------------------------------------------------------------------------------
 // Function declaration

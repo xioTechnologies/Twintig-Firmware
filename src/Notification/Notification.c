@@ -31,10 +31,10 @@ void NotificationTasks(void) {
     // USB host
     switch (ON_CHANGE_POLL_DEBOUNCE(UsbCdcHostConnected())) {
         case OnChangeEdgeLowToHigh:
-            SendNotification(&send0, "USB host connected");
+            SendNotification(&sendMain, "USB host connected");
             break;
         case OnChangeEdgeHighToLow:
-            SendNotification(&send0, "USB host disconnected");
+            SendNotification(&sendMain, "USB host disconnected");
             break;
         default:
             break;
@@ -43,10 +43,10 @@ void NotificationTasks(void) {
     // USB port
     switch (ON_CHANGE_POLL_DEBOUNCE(UsbCdcPortOpen())) {
         case OnChangeEdgeLowToHigh:
-            SendNotification(&send0, "USB port opened");
+            SendNotification(&sendMain, "USB port opened");
             break;
         case OnChangeEdgeHighToLow:
-            SendNotification(&send0, "USB port closed");
+            SendNotification(&sendMain, "USB port closed");
             break;
         default:
             break;
@@ -58,49 +58,49 @@ void NotificationTasks(void) {
     }
 
     // IMU buffer overflow
-    ImuBufferOverflow(&send1, &imu1);
-    ImuBufferOverflow(&send2, &imu2);
-    ImuBufferOverflow(&send3, &imu3);
-    ImuBufferOverflow(&send4, &imu4);
-    ImuBufferOverflow(&send5, &imu5);
-    ImuBufferOverflow(&send6, &imu6);
-    ImuBufferOverflow(&send7, &imu7);
-    ImuBufferOverflow(&send8, &imu8);
-    ImuBufferOverflow(&send9, &imu9);
-    ImuBufferOverflow(&send10, &imu10);
-    ImuBufferOverflow(&send11, &imu11);
-    ImuBufferOverflow(&send12, &imu12);
-    ImuBufferOverflow(&send13, &imu13);
-    ImuBufferOverflow(&send14, &imu14);
-    ImuBufferOverflow(&send15, &imu15);
-    ImuBufferOverflow(&send16, &imu16);
-    ImuBufferOverflow(&send17, &imu17);
-    ImuBufferOverflow(&send18, &imu18);
-    ImuBufferOverflow(&send19, &imu19);
-    ImuBufferOverflow(&send20, &imu20);
+    ImuBufferOverflow(&sendA, &imuA);
+    ImuBufferOverflow(&sendB, &imuB);
+    ImuBufferOverflow(&sendC, &imuC);
+    ImuBufferOverflow(&sendD, &imuD);
+    ImuBufferOverflow(&sendE, &imuE);
+    ImuBufferOverflow(&sendF, &imuF);
+    ImuBufferOverflow(&sendG, &imuG);
+    ImuBufferOverflow(&sendH, &imuH);
+    ImuBufferOverflow(&sendI, &imuI);
+    ImuBufferOverflow(&sendJ, &imuJ);
+    ImuBufferOverflow(&sendK, &imuK);
+    ImuBufferOverflow(&sendM, &imuL);
+    ImuBufferOverflow(&sendM, &imuM);
+    ImuBufferOverflow(&sendN, &imuN);
+    ImuBufferOverflow(&sendO, &imuO);
+    ImuBufferOverflow(&sendP, &imuP);
+    ImuBufferOverflow(&sendQ, &imuQ);
+    ImuBufferOverflow(&sendR, &imuR);
+    ImuBufferOverflow(&sendS, &imuS);
+    ImuBufferOverflow(&sendT, &imuT);
 
     // Send buffer overflow
-    SendBufferOverflow(&send0);
-    SendBufferOverflow(&send1);
-    SendBufferOverflow(&send2);
-    SendBufferOverflow(&send3);
-    SendBufferOverflow(&send4);
-    SendBufferOverflow(&send5);
-    SendBufferOverflow(&send6);
-    SendBufferOverflow(&send7);
-    SendBufferOverflow(&send8);
-    SendBufferOverflow(&send9);
-    SendBufferOverflow(&send10);
-    SendBufferOverflow(&send11);
-    SendBufferOverflow(&send12);
-    SendBufferOverflow(&send13);
-    SendBufferOverflow(&send14);
-    SendBufferOverflow(&send15);
-    SendBufferOverflow(&send16);
-    SendBufferOverflow(&send17);
-    SendBufferOverflow(&send18);
-    SendBufferOverflow(&send19);
-    SendBufferOverflow(&send20);
+    SendBufferOverflow(&sendMain);
+    SendBufferOverflow(&sendA);
+    SendBufferOverflow(&sendB);
+    SendBufferOverflow(&sendC);
+    SendBufferOverflow(&sendD);
+    SendBufferOverflow(&sendE);
+    SendBufferOverflow(&sendF);
+    SendBufferOverflow(&sendG);
+    SendBufferOverflow(&sendH);
+    SendBufferOverflow(&sendI);
+    SendBufferOverflow(&sendJ);
+    SendBufferOverflow(&sendK);
+    SendBufferOverflow(&sendL);
+    SendBufferOverflow(&sendM);
+    SendBufferOverflow(&sendN);
+    SendBufferOverflow(&sendO);
+    SendBufferOverflow(&sendP);
+    SendBufferOverflow(&sendQ);
+    SendBufferOverflow(&sendR);
+    SendBufferOverflow(&sendS);
+    SendBufferOverflow(&sendT);
 }
 
 /**

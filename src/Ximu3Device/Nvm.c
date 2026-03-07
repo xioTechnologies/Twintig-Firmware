@@ -20,27 +20,27 @@
 //------------------------------------------------------------------------------
 // Variables
 
-const Nvm nvm0 = {.i2c = &i2cBB1, .address = 0};
-const Nvm nvm1 = {.i2c = &i2c3, .address = 0};
-const Nvm nvm2 = {.i2c = &i2c3, .address = 1024};
-const Nvm nvm3 = {.i2c = &i2c3, .address = 2048};
-const Nvm nvm4 = {.i2c = &i2c3, .address = 3072};
-const Nvm nvm5 = {.i2c = &i2c2, .address = 0};
-const Nvm nvm6 = {.i2c = &i2c2, .address = 1024};
-const Nvm nvm7 = {.i2c = &i2c2, .address = 2048};
-const Nvm nvm8 = {.i2c = &i2c2, .address = 3072};
-const Nvm nvm9 = {.i2c = &i2c5, .address = 0};
-const Nvm nvm10 = {.i2c = &i2c5, .address = 1024};
-const Nvm nvm11 = {.i2c = &i2c5, .address = 2048};
-const Nvm nvm12 = {.i2c = &i2c5, .address = 3072};
-const Nvm nvm13 = {.i2c = &i2c1, .address = 0};
-const Nvm nvm14 = {.i2c = &i2c1, .address = 1024};
-const Nvm nvm15 = {.i2c = &i2c1, .address = 2048};
-const Nvm nvm16 = {.i2c = &i2c1, .address = 3072};
-const Nvm nvm17 = {.i2c = &i2c4, .address = 0};
-const Nvm nvm18 = {.i2c = &i2c4, .address = 1024};
-const Nvm nvm19 = {.i2c = &i2c4, .address = 2048};
-const Nvm nvm20 = {.i2c = &i2c4, .address = 3072};
+const Nvm nvmMain = {.i2c = &i2cBB1, .address = 0};
+const Nvm nvmA = {.i2c = &i2c3, .address = 0};
+const Nvm nvmB = {.i2c = &i2c3, .address = 1024};
+const Nvm nvmC = {.i2c = &i2c3, .address = 2048};
+const Nvm nvmD = {.i2c = &i2c3, .address = 3072};
+const Nvm nvmE = {.i2c = &i2c2, .address = 0};
+const Nvm nvmF = {.i2c = &i2c2, .address = 1024};
+const Nvm nvmG = {.i2c = &i2c2, .address = 2048};
+const Nvm nvmH = {.i2c = &i2c2, .address = 3072};
+const Nvm nvmI = {.i2c = &i2c5, .address = 0};
+const Nvm nvmJ = {.i2c = &i2c5, .address = 1024};
+const Nvm nvmK = {.i2c = &i2c5, .address = 2048};
+const Nvm nvmL = {.i2c = &i2c5, .address = 3072};
+const Nvm nvmM = {.i2c = &i2c1, .address = 0};
+const Nvm nvmN = {.i2c = &i2c1, .address = 1024};
+const Nvm nvmO = {.i2c = &i2c1, .address = 2048};
+const Nvm nvmP = {.i2c = &i2c1, .address = 3072};
+const Nvm nvmQ = {.i2c = &i2c4, .address = 0};
+const Nvm nvmR = {.i2c = &i2c4, .address = 1024};
+const Nvm nvmS = {.i2c = &i2c4, .address = 2048};
+const Nvm nvmT = {.i2c = &i2c4, .address = 3072};
 
 //------------------------------------------------------------------------------
 // Functions

@@ -28,27 +28,27 @@ typedef struct {
 //------------------------------------------------------------------------------
 // Variable declarations
 
-extern const Nvm nvm0;
-extern const Nvm nvm1;
-extern const Nvm nvm2;
-extern const Nvm nvm3;
-extern const Nvm nvm4;
-extern const Nvm nvm5;
-extern const Nvm nvm6;
-extern const Nvm nvm7;
-extern const Nvm nvm8;
-extern const Nvm nvm9;
-extern const Nvm nvm10;
-extern const Nvm nvm11;
-extern const Nvm nvm12;
-extern const Nvm nvm13;
-extern const Nvm nvm14;
-extern const Nvm nvm15;
-extern const Nvm nvm16;
-extern const Nvm nvm17;
-extern const Nvm nvm18;
-extern const Nvm nvm19;
-extern const Nvm nvm20;
+extern const Nvm nvmMain;
+extern const Nvm nvmA;
+extern const Nvm nvmB;
+extern const Nvm nvmC;
+extern const Nvm nvmD;
+extern const Nvm nvmE;
+extern const Nvm nvmF;
+extern const Nvm nvmG;
+extern const Nvm nvmH;
+extern const Nvm nvmI;
+extern const Nvm nvmJ;
+extern const Nvm nvmK;
+extern const Nvm nvmL;
+extern const Nvm nvmM;
+extern const Nvm nvmN;
+extern const Nvm nvmO;
+extern const Nvm nvmP;
+extern const Nvm nvmQ;
+extern const Nvm nvmR;
+extern const Nvm nvmS;
+extern const Nvm nvmT;
 
 //------------------------------------------------------------------------------
 // Function declarations

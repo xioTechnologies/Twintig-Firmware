@@ -48,27 +48,27 @@ static inline __attribute__((always_inline)) size_t Write(const MuxChannel chann
 static const Interface usb = {.enabled = UsbCdcPortOpen, .availableWrite = MuxUsbAvailableWrite, .write = MuxUsbWrite};
 static const Interface serial = {.enabled = SerialEnabled, .availableWrite = MuxSerialAvailableWrite, .write = MuxSerialWrite};
 
-Send send0 = {.channel = MuxChannelNone, .led = &led0};
-Send send1 = {.channel = MuxChannel1, .led = &led1};
-Send send2 = {.channel = MuxChannel2, .led = &led2};
-Send send3 = {.channel = MuxChannel3, .led = &led3};
-Send send4 = {.channel = MuxChannel4, .led = &led4};
-Send send5 = {.channel = MuxChannel5, .led = &led5};
-Send send6 = {.channel = MuxChannel6, .led = &led6};
-Send send7 = {.channel = MuxChannel7, .led = &led7};
-Send send8 = {.channel = MuxChannel8, .led = &led8};
-Send send9 = {.channel = MuxChannel9, .led = &led9};
-Send send10 = {.channel = MuxChannel10, .led = &led10};
-Send send11 = {.channel = MuxChannel11, .led = &led11};
-Send send12 = {.channel = MuxChannel12, .led = &led12};
-Send send13 = {.channel = MuxChannel13, .led = &led13};
-Send send14 = {.channel = MuxChannel14, .led = &led14};
-Send send15 = {.channel = MuxChannel15, .led = &led15};
-Send send16 = {.channel = MuxChannel16, .led = &led16};
-Send send17 = {.channel = MuxChannel17, .led = &led17};
-Send send18 = {.channel = MuxChannel18, .led = &led18};
-Send send19 = {.channel = MuxChannel19, .led = &led19};
-Send send20 = {.channel = MuxChannel20, .led = &led20};
+Send sendMain = {.channel = MuxChannelNone, .led = &ledMain};
+Send sendA = {.channel = MuxChannelA, .led = &ledA};
+Send sendB = {.channel = MuxChannelB, .led = &ledB};
+Send sendC = {.channel = MuxChannelC, .led = &ledC};
+Send sendD = {.channel = MuxChannelD, .led = &ledD};
+Send sendE = {.channel = MuxChannelE, .led = &ledE};
+Send sendF = {.channel = MuxChannelF, .led = &ledF};
+Send sendG = {.channel = MuxChannelG, .led = &ledG};
+Send sendH = {.channel = MuxChannelH, .led = &ledH};
+Send sendI = {.channel = MuxChannelI, .led = &ledI};
+Send sendJ = {.channel = MuxChannelJ, .led = &ledJ};
+Send sendK = {.channel = MuxChannelK, .led = &ledK};
+Send sendL = {.channel = MuxChannelL, .led = &ledL};
+Send sendM = {.channel = MuxChannelM, .led = &ledM};
+Send sendN = {.channel = MuxChannelN, .led = &ledN};
+Send sendO = {.channel = MuxChannelO, .led = &ledO};
+Send sendP = {.channel = MuxChannelP, .led = &ledP};
+Send sendQ = {.channel = MuxChannelQ, .led = &ledQ};
+Send sendR = {.channel = MuxChannelR, .led = &ledR};
+Send sendS = {.channel = MuxChannelS, .led = &ledS};
+Send sendT = {.channel = MuxChannelT, .led = &ledT};
 
 //------------------------------------------------------------------------------
 // Functions

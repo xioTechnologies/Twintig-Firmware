@@ -34,26 +34,26 @@
 //------------------------------------------------------------------------------
 // Variables
 
-Imu imu1 = {.icm = &icm1, .send = &send1};
-Imu imu2 = {.icm = &icm2, .send = &send2};
-Imu imu3 = {.icm = &icm3, .send = &send3};
-Imu imu4 = {.icm = &icm4, .send = &send4};
-Imu imu5 = {.icm = &icm5, .send = &send5};
-Imu imu6 = {.icm = &icm6, .send = &send6};
-Imu imu7 = {.icm = &icm7, .send = &send7};
-Imu imu8 = {.icm = &icm8, .send = &send8};
-Imu imu9 = {.icm = &icm9, .send = &send9};
-Imu imu10 = {.icm = &icm10, .send = &send10};
-Imu imu11 = {.icm = &icm11, .send = &send11};
-Imu imu12 = {.icm = &icm12, .send = &send12};
-Imu imu13 = {.icm = &icm13, .send = &send13};
-Imu imu14 = {.icm = &icm14, .send = &send14};
-Imu imu15 = {.icm = &icm15, .send = &send15};
-Imu imu16 = {.icm = &icm16, .send = &send16};
-Imu imu17 = {.icm = &icm17, .send = &send17};
-Imu imu18 = {.icm = &icm18, .send = &send18};
-Imu imu19 = {.icm = &icm19, .send = &send19};
-Imu imu20 = {.icm = &icm20, .send = &send20};
+Imu imuA = {.icm = &icm1, .send = &sendA};
+Imu imuB = {.icm = &icm2, .send = &sendB};
+Imu imuC = {.icm = &icm3, .send = &sendC};
+Imu imuD = {.icm = &icm4, .send = &sendD};
+Imu imuE = {.icm = &icm5, .send = &sendE};
+Imu imuF = {.icm = &icm6, .send = &sendF};
+Imu imuG = {.icm = &icm7, .send = &sendG};
+Imu imuH = {.icm = &icm8, .send = &sendH};
+Imu imuI = {.icm = &icm9, .send = &sendI};
+Imu imuJ = {.icm = &icm10, .send = &sendJ};
+Imu imuK = {.icm = &icm11, .send = &sendK};
+Imu imuL = {.icm = &icm12, .send = &sendL};
+Imu imuM = {.icm = &icm13, .send = &sendM};
+Imu imuN = {.icm = &icm14, .send = &sendN};
+Imu imuO = {.icm = &icm15, .send = &sendO};
+Imu imuP = {.icm = &icm16, .send = &sendP};
+Imu imuQ = {.icm = &icm17, .send = &sendQ};
+Imu imuR = {.icm = &icm18, .send = &sendR};
+Imu imuS = {.icm = &icm19, .send = &sendS};
+Imu imuT = {.icm = &icm20, .send = &sendT};
 
 //------------------------------------------------------------------------------
 // Functions
