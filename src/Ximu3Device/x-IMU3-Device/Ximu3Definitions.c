@@ -4,12 +4,6 @@
 
 Ximu3Result Ximu3SettingsIndexFrom(Ximu3SettingsIndex * const index, const int integer) {
     switch (integer) {
-        case Ximu3SettingsIndexSerialNumber:
-            *index = Ximu3SettingsIndexSerialNumber;
-            break;
-        case Ximu3SettingsIndexHardwareVersion:
-            *index = Ximu3SettingsIndexHardwareVersion;
-            break;
         case Ximu3SettingsIndexCalibrationDate:
             *index = Ximu3SettingsIndexCalibrationDate;
             break;
@@ -31,8 +25,23 @@ Ximu3Result Ximu3SettingsIndexFrom(Ximu3SettingsIndex * const index, const int i
         case Ximu3SettingsIndexAccelerometerOffset:
             *index = Ximu3SettingsIndexAccelerometerOffset;
             break;
+        case Ximu3SettingsIndexSoftIronMatrix:
+            *index = Ximu3SettingsIndexSoftIronMatrix;
+            break;
+        case Ximu3SettingsIndexHardIronOffset:
+            *index = Ximu3SettingsIndexHardIronOffset;
+            break;
         case Ximu3SettingsIndexModel:
             *index = Ximu3SettingsIndexModel;
+            break;
+        case Ximu3SettingsIndexSerialNumber:
+            *index = Ximu3SettingsIndexSerialNumber;
+            break;
+        case Ximu3SettingsIndexHardwareVersion:
+            *index = Ximu3SettingsIndexHardwareVersion;
+            break;
+        case Ximu3SettingsIndexBootloaderVersion:
+            *index = Ximu3SettingsIndexBootloaderVersion;
             break;
         case Ximu3SettingsIndexFirmwareVersion:
             *index = Ximu3SettingsIndexFirmwareVersion;

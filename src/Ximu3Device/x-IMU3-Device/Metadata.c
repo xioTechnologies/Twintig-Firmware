@@ -3,8 +3,6 @@
 #include "Metadata.h"
 
 static const char* const names[] = {
-    "Serial Number",
-    "Hardware Version",
     "Calibration Date",
     "Gyroscope Misalignment",
     "Gyroscope Sensitivity",
@@ -12,7 +10,12 @@ static const char* const names[] = {
     "Accelerometer Misalignment",
     "Accelerometer Sensitivity",
     "Accelerometer Offset",
+    "Soft-iron Matrix",
+    "Hard-iron Offset",
     "Model",
+    "Serial Number",
+    "Hardware Version",
+    "Bootloader Version",
     "Firmware Version",
     "Device Name",
     "Serial Enabled",
@@ -38,8 +41,6 @@ static const char* const names[] = {
 };
 
 static const char* const keys[] = {
-    "serial_number",
-    "hardware_version",
     "calibration_date",
     "gyroscope_misalignment",
     "gyroscope_sensitivity",
@@ -47,7 +48,12 @@ static const char* const keys[] = {
     "accelerometer_misalignment",
     "accelerometer_sensitivity",
     "accelerometer_offset",
+    "soft_iron_matrix",
+    "hard_iron_offset",
     "model",
+    "serial_number",
+    "hardware_version",
+    "bootloader_version",
     "firmware_version",
     "device_name",
     "serial_enabled",
@@ -74,14 +80,17 @@ static const char* const keys[] = {
 
 const MetadataType types[] = {
     MetadataTypeString,
-    MetadataTypeString,
-    MetadataTypeString,
     MetadataTypeFusionMatrix,
     MetadataTypeFusionVector,
     MetadataTypeFusionVector,
     MetadataTypeFusionMatrix,
     MetadataTypeFusionVector,
     MetadataTypeFusionVector,
+    MetadataTypeFusionMatrix,
+    MetadataTypeFusionVector,
+    MetadataTypeString,
+    MetadataTypeString,
+    MetadataTypeString,
     MetadataTypeString,
     MetadataTypeString,
     MetadataTypeString,
@@ -108,8 +117,6 @@ const MetadataType types[] = {
 };
 
 const size_t sizes[] = {
-    sizeof (((Ximu3SettingsValues *) 0)->serialNumber),
-    sizeof (((Ximu3SettingsValues *) 0)->hardwareVersion),
     sizeof (((Ximu3SettingsValues *) 0)->calibrationDate),
     sizeof (((Ximu3SettingsValues *) 0)->gyroscopeMisalignment),
     sizeof (((Ximu3SettingsValues *) 0)->gyroscopeSensitivity),
@@ -117,7 +124,12 @@ const size_t sizes[] = {
     sizeof (((Ximu3SettingsValues *) 0)->accelerometerMisalignment),
     sizeof (((Ximu3SettingsValues *) 0)->accelerometerSensitivity),
     sizeof (((Ximu3SettingsValues *) 0)->accelerometerOffset),
+    sizeof (((Ximu3SettingsValues *) 0)->softIronMatrix),
+    sizeof (((Ximu3SettingsValues *) 0)->hardIronOffset),
     sizeof (((Ximu3SettingsValues *) 0)->model),
+    sizeof (((Ximu3SettingsValues *) 0)->serialNumber),
+    sizeof (((Ximu3SettingsValues *) 0)->hardwareVersion),
+    sizeof (((Ximu3SettingsValues *) 0)->bootloaderVersion),
     sizeof (((Ximu3SettingsValues *) 0)->firmwareVersion),
     sizeof (((Ximu3SettingsValues *) 0)->deviceName),
     sizeof (((Ximu3SettingsValues *) 0)->serialEnabled),
@@ -143,16 +155,19 @@ const size_t sizes[] = {
 };
 
 const void* const defaults[] = {
-    (void*) (&(char[16]) {"Unknown"}),
-    (void*) (&(char[32]) {"Unknown"}),
     (void*) (&(char[32]) {"Unknown"}),
     (void*) (&(FusionMatrix) {{1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f}}),
     (void*) (&(FusionVector) {{1.0f, 1.0f, 1.0f}}),
     (void*) (&(FusionVector) {{0.0f, 0.0f, 0.0f}}),
     (void*) (&(FusionMatrix) {{1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f}}),
     (void*) (&(FusionVector) {{1.0f, 1.0f, 1.0f}}),
+    (void*) (&(FusionVector) {{0.0f, 0.0f, 0.0f}}),
+    (void*) (&(FusionMatrix) {{1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f}}),
     (void*) (&(FusionVector) {{0.0f, 0.0f, 0.0f}}),
     (void*) (&(char[32]) {"Twintig"}),
+    (void*) (&(char[32]) {"Unknown"}),
+    (void*) (&(char[32]) {"Unknown"}),
+    (void*) (&(char[32]) {"Unknown"}),
     (void*) (&(char[32]) {"Unknown"}),
     (void*) (&(char[32]) {"Unknown"}),
     (void*) (&(bool) {true}),
@@ -178,6 +193,9 @@ const void* const defaults[] = {
 };
 
 const bool preserveds[] = {
+    true,
+    true,
+    true,
     true,
     true,
     true,
@@ -224,6 +242,9 @@ const bool readOnlys[] = {
     true,
     true,
     true,
+    true,
+    true,
+    true,
     false,
     false,
     false,
@@ -249,10 +270,6 @@ const bool readOnlys[] = {
 
 static void* GetValue(Ximu3Settings * const settings, const Ximu3SettingsIndex index) {
     switch (index) {
-        case Ximu3SettingsIndexSerialNumber:
-            return &settings->values.serialNumber;
-        case Ximu3SettingsIndexHardwareVersion:
-            return &settings->values.hardwareVersion;
         case Ximu3SettingsIndexCalibrationDate:
             return &settings->values.calibrationDate;
         case Ximu3SettingsIndexGyroscopeMisalignment:
@@ -267,8 +284,18 @@ static void* GetValue(Ximu3Settings * const settings, const Ximu3SettingsIndex i
             return &settings->values.accelerometerSensitivity;
         case Ximu3SettingsIndexAccelerometerOffset:
             return &settings->values.accelerometerOffset;
+        case Ximu3SettingsIndexSoftIronMatrix:
+            return &settings->values.softIronMatrix;
+        case Ximu3SettingsIndexHardIronOffset:
+            return &settings->values.hardIronOffset;
         case Ximu3SettingsIndexModel:
             return &settings->values.model;
+        case Ximu3SettingsIndexSerialNumber:
+            return &settings->values.serialNumber;
+        case Ximu3SettingsIndexHardwareVersion:
+            return &settings->values.hardwareVersion;
+        case Ximu3SettingsIndexBootloaderVersion:
+            return &settings->values.bootloaderVersion;
         case Ximu3SettingsIndexFirmwareVersion:
             return &settings->values.firmwareVersion;
         case Ximu3SettingsIndexDeviceName:

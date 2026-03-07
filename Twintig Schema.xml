@@ -4,6 +4,7 @@
             <Setting key="model" name="Model" type="string" readOnly="true"/>
             <Setting key="serial_number" name="Serial Number" type="string" readOnly="true"/>
             <Setting key="hardware_version" name="Hardware Version" type="string" readOnly="true"/>
+            <Setting key="bootloader_version" name="Bootloader Version" type="string" readOnly="true"/>
             <Setting key="firmware_version" name="Firmware Version" type="string" readOnly="true"/>
             <Setting key="device_name" name="Device Name" type="string"/>
         </Group>

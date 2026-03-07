@@ -19,7 +19,7 @@
 
 #define XIMU3_MAX_KEY_LENGTH 33
 
-#define XIMU3_NUMBER_OF_SETTINGS 32
+#define XIMU3_NUMBER_OF_SETTINGS 35
 
 #define XIMU3_MUX_HEADER_SIZE 2
 
@@ -29,8 +29,6 @@ typedef enum {
 } Ximu3Result;
 
 typedef struct {
-    char serialNumber[16];
-    char hardwareVersion[32];
     char calibrationDate[32];
     FusionMatrix gyroscopeMisalignment;
     FusionVector gyroscopeSensitivity;
@@ -38,7 +36,12 @@ typedef struct {
     FusionMatrix accelerometerMisalignment;
     FusionVector accelerometerSensitivity;
     FusionVector accelerometerOffset;
+    FusionMatrix softIronMatrix;
+    FusionVector hardIronOffset;
     char model[32];
+    char serialNumber[32];
+    char hardwareVersion[32];
+    char bootloaderVersion[32];
     char firmwareVersion[32];
     char deviceName[32];
     bool serialEnabled;
@@ -64,8 +67,6 @@ typedef struct {
 } Ximu3SettingsValues;
 
 typedef enum {
-    Ximu3SettingsIndexSerialNumber,
-    Ximu3SettingsIndexHardwareVersion,
     Ximu3SettingsIndexCalibrationDate,
     Ximu3SettingsIndexGyroscopeMisalignment,
     Ximu3SettingsIndexGyroscopeSensitivity,
@@ -73,7 +74,12 @@ typedef enum {
     Ximu3SettingsIndexAccelerometerMisalignment,
     Ximu3SettingsIndexAccelerometerSensitivity,
     Ximu3SettingsIndexAccelerometerOffset,
+    Ximu3SettingsIndexSoftIronMatrix,
+    Ximu3SettingsIndexHardIronOffset,
     Ximu3SettingsIndexModel,
+    Ximu3SettingsIndexSerialNumber,
+    Ximu3SettingsIndexHardwareVersion,
+    Ximu3SettingsIndexBootloaderVersion,
     Ximu3SettingsIndexFirmwareVersion,
     Ximu3SettingsIndexDeviceName,
     Ximu3SettingsIndexSerialEnabled,
