@@ -164,13 +164,13 @@ void CommandsColour(const char* * const value, Ximu3CommandResponse * const resp
  * @param context Context.
  */
 void CommandsHaptic(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
-    float id;
-    if (Ximu3CommandParseNumber(value, response, &id) != Ximu3ResultOk) {
-        return;
-    }
     const Context * const context_ = context;
     if (context_->isMain == false) {
         Ximu3CommandRespondError(response, "Command not applicable");
+        return;
+    }
+    float id;
+    if (Ximu3CommandParseNumber(value, response, &id) != Ximu3ResultOk) {
         return;
     }
     if (HapticPlay((int) id) != HapticResultOk) {
@@ -187,12 +187,12 @@ void CommandsHaptic(const char* * const value, Ximu3CommandResponse * const resp
  * @param context Context.
  */
 void CommandsInitialise(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
-    if (Ximu3CommandParseNull(value, response) != Ximu3ResultOk) {
-        return;
-    }
     const Context * const context_ = context;
     if (context_->imu == NULL) {
         Ximu3CommandRespondError(response, "Command not applicable");
+        return;
+    }
+    if (Ximu3CommandParseNull(value, response) != Ximu3ResultOk) {
         return;
     }
     ImuReset(context_->imu);
@@ -206,13 +206,13 @@ void CommandsInitialise(const char* * const value, Ximu3CommandResponse * const 
  * @param context Context.
  */
 void CommandsHeading(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
-    float heading;
-    if (Ximu3CommandParseNumber(value, response, &heading) != Ximu3ResultOk) {
-        return;
-    }
     const Context * const context_ = context;
     if (context_->imu == NULL) {
         Ximu3CommandRespondError(response, "Command not applicable");
+        return;
+    }
+    float heading;
+    if (Ximu3CommandParseNumber(value, response, &heading) != Ximu3ResultOk) {
         return;
     }
     ImuSetHeading(context_->imu, heading);
