@@ -703,7 +703,7 @@
         <property key="save-temps" value="false"/>
         <property key="stack-smashing" value=""/>
         <property key="wpo-lto" value="false"/>
-        <appendMe value="-Wstrict-prototypes"/>
+        <appendMe value="-Wstrict-prototypes -Wswitch"/>
       </C32Global>
     </conf>
   </confs>
