@@ -18,7 +18,6 @@
 #include "Nvm.h"
 #include "Send/Send.h"
 #include <string.h>
-#include "Timer/Timer.h"
 #include "x-IMU3-Device/Ximu3.h"
 
 //------------------------------------------------------------------------------
