@@ -29,6 +29,7 @@ void CommandsHeading(const char* * const value, Ximu3CommandResponse * const res
 void CommandsNote(const char* * const value, Ximu3CommandResponse * const response, void* const context);
 void CommandsTimestamp(const char* * const value, Ximu3CommandResponse * const response, void* const context);
 void CommandsFactory(const char* * const value, Ximu3CommandResponse * const response, void* const context);
+void CommandsErase(const char* * const value, Ximu3CommandResponse * const response, void* const context);
 bool CommandsOverrideReadOnly(void* const context);
 
 #endif

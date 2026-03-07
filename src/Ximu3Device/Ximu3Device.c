@@ -56,6 +56,7 @@ static const Ximu3CommandMap commands[] = {
     {"note", CommandsNote},
     {"timestamp", CommandsTimestamp},
     {"factory", CommandsFactory},
+    {"erase", CommandsErase},
 };
 
 static const int numberOfCommands = sizeof (commands) / sizeof (Ximu3CommandMap);

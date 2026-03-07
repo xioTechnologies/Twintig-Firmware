@@ -10,6 +10,7 @@
 #include "Apply.h"
 #include "Commands.h"
 #include "Context.h"
+#include "Eeprom/Eeprom.h"
 #include "Haptic/Haptic.h"
 #include "Imu/Imu.h"
 #include "Led/Led.h"
@@ -168,11 +169,13 @@ void CommandsHaptic(const char* * const value, Ximu3CommandResponse * const resp
         return;
     }
     const Context * const context_ = context;
-    if (context_->hapticPlay != NULL) {
-        if (context_->hapticPlay((int) id) != HapticResultOk) {
-            Ximu3CommandRespondError(response, "Invalid ID");
-            return;
-        }
+    if (context_->hapticPlay == NULL) {
+        Ximu3CommandRespondError(response, "Command not applicable");
+        return;
+    }
+    if (context_->hapticPlay((int) id) != HapticResultOk) {
+        Ximu3CommandRespondError(response, "Invalid ID");
+        return;
     }
     Ximu3CommandRespond(response);
 }
@@ -188,9 +191,11 @@ void CommandsInitialise(const char* * const value, Ximu3CommandResponse * const 
         return;
     }
     const Context * const context_ = context;
-    if (context_->imu != NULL) {
-        ImuReset(context_->imu);
+    if (context_->imu == NULL) {
+        Ximu3CommandRespondError(response, "Command not applicable");
+        return;
     }
+    ImuReset(context_->imu);
     Ximu3CommandRespond(response);
 }
 
@@ -206,9 +211,11 @@ void CommandsHeading(const char* * const value, Ximu3CommandResponse * const res
         return;
     }
     const Context * const context_ = context;
-    if (context_->imu != NULL) {
-        ImuSetHeading(context_->imu, heading);
+    if (context_->imu == NULL) {
+        Ximu3CommandRespondError(response, "Command not applicable");
+        return;
     }
+    ImuSetHeading(context_->imu, heading);
     Ximu3CommandRespond(response);
 }
 
@@ -255,6 +262,27 @@ void CommandsFactory(const char* * const value, Ximu3CommandResponse * const res
     }
     Context * const context_ = context;
     context_->factoryMode = true;
+    Ximu3CommandRespond(response);
+}
+
+/**
+ * @brief Erase command.
+ * @param value Value.
+ * @param response Response.
+ * @param context Context.
+ */
+void CommandsErase(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
+    if (Ximu3CommandParseNull(value, response) != Ximu3ResultOk) {
+        return;
+    }
+    Context * const context_ = context;
+    if (context_->factoryMode == false) {
+        Ximu3CommandRespondError(response, "Factory mode disabled");
+        return;
+    }
+    EepromErase(context_->nvm->i2c);
+    Ximu3SettingsDefaults(context_->settings, true);
+    ApplyAfterDelay(context_);
     Ximu3CommandRespond(response);
 }
 
