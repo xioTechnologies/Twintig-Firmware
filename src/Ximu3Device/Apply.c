@@ -62,6 +62,11 @@ void ApplyAfterDelay(Context * const context) {
  */
 void ApplySerial(Context * const context) {
 
+    // Do nothing if not applicable
+    if (context->serialSetSettings == NULL) {
+        return;
+    }
+
     // Do nothing if settings unchanged
     bool applyPending = false;
     applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSerialEnabled);
@@ -72,9 +77,6 @@ void ApplySerial(Context * const context) {
     }
 
     // Apply settings
-    if (context->serialSetSettings == NULL) {
-        return;
-    }
     const SerialSettings serialSettings = {
         .enabled = Ximu3SettingsGet(context->settings)->serialEnabled,
         .baudRate = Ximu3SettingsGet(context->settings)->serialBaudRate,
@@ -89,6 +91,11 @@ void ApplySerial(Context * const context) {
  */
 static void ApplyIcm(Context * const context) {
 
+    // Do nothing if not applicable
+    if (context->imu == NULL) {
+        return;
+    }
+
     // Do nothing if settings unchanged
     bool applyPending = false;
     applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeNotchFilterEnabled);
@@ -100,9 +107,6 @@ static void ApplyIcm(Context * const context) {
     }
 
     // Apply settings
-    if (context->imu == NULL) {
-        return;
-    }
     const IcmSettings icmSettings = {
         .gyroscopeNotchFilterEnabled = Ximu3SettingsGet(context->settings)->gyroscopeNotchFilterEnabled,
         .gyroscopeAntiAliasing = Ximu3SettingsGet(context->settings)->gyroscopeAntiAliasing,
@@ -117,6 +121,11 @@ static void ApplyIcm(Context * const context) {
  * @param context Context.
  */
 static void ApplyImu(Context * const context) {
+
+    // Do nothing if not applicable
+    if (context->imu == NULL) {
+        return;
+    }
 
     // Do nothing if settings unchanged
     bool applyPending = false;
@@ -138,9 +147,6 @@ static void ApplyImu(Context * const context) {
     }
 
     // Apply settings
-    if (context->imu == NULL) {
-        return;
-    }
     const ImuSettings imuSettings = {
         .gyroscopeMisalignment = Ximu3SettingsGet(context->settings)->gyroscopeMisalignment,
         .gyroscopeSensitivity = Ximu3SettingsGet(context->settings)->gyroscopeSensitivity,
