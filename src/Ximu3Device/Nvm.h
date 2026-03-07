@@ -12,6 +12,7 @@
 
 #include "I2C/I2C.h"
 #include <stddef.h>
+#include <stdint.h>
 
 //------------------------------------------------------------------------------
 // Definitions
