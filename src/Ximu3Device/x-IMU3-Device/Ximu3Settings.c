@@ -130,16 +130,19 @@ static void SetValue(const Metadata * const metadata, const void* const value) {
             }
             memcpy(metadata->value, value, metadata->size);
             return;
+        case MetadataTypeFusionConvention:
+            switch (*(FusionConvention*) value) {
+                case FusionConventionNwu:
+                case FusionConventionEnu:
+                case FusionConventionNed:
+                    memcpy(metadata->value, value, metadata->size);
+                    return;
+            }
+            break;
         case MetadataTypeFusionMatrix:
             if (IsNanOrInf(((FusionMatrix *) value)->element.xx) || IsNanOrInf(((FusionMatrix *) value)->element.xx) || IsNanOrInf(((FusionMatrix *) value)->element.xx) ||
                 IsNanOrInf(((FusionMatrix *) value)->element.yy) || IsNanOrInf(((FusionMatrix *) value)->element.yy) || IsNanOrInf(((FusionMatrix *) value)->element.yy) ||
                 IsNanOrInf(((FusionMatrix *) value)->element.zz) || IsNanOrInf(((FusionMatrix *) value)->element.zz) || IsNanOrInf(((FusionMatrix *) value)->element.zz)) {
-                break;
-            }
-            memcpy(metadata->value, value, metadata->size);
-            return;
-        case MetadataTypeFusionVector:
-            if (IsNanOrInf(((FusionVector *) value)->axis.x) || IsNanOrInf(((FusionVector *) value)->axis.y) || IsNanOrInf(((FusionVector *) value)->axis.z)) {
                 break;
             }
             memcpy(metadata->value, value, metadata->size);
@@ -174,15 +177,12 @@ static void SetValue(const Metadata * const metadata, const void* const value) {
                     return;
             }
             break;
-        case MetadataTypeFusionConvention:
-            switch (*(FusionConvention*) value) {
-                case FusionConventionNwu:
-                case FusionConventionEnu:
-                case FusionConventionNed:
-                    memcpy(metadata->value, value, metadata->size);
-                    return;
+        case MetadataTypeFusionVector:
+            if (IsNanOrInf(((FusionVector *) value)->axis.x) || IsNanOrInf(((FusionVector *) value)->axis.y) || IsNanOrInf(((FusionVector *) value)->axis.z)) {
+                break;
             }
-            break;
+            memcpy(metadata->value, value, metadata->size);
+            return;
         case MetadataTypeIcmAntiAliasing:
             switch (*(IcmAntiAliasing*) value) {
                 case IcmAntiAliasingDisabled:
