@@ -139,7 +139,7 @@ void Timer6InterruptHandler(void) {
     Update(&ledT, counter, ticks);
 
     // Update LEDs
-    neoPixels1Pixels[1] = neoPixels1Pixels[0]; // apply to both carpus LEDs
+    neoPixels1Pixels[1] = neoPixels1Pixels[0]; // apply to both main LEDs
     NeoPixels1Update();
     NeoPixels2Update();
     NeoPixels3Update();
