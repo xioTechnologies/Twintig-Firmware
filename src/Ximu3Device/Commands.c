@@ -169,11 +169,11 @@ void CommandsHaptic(const char* * const value, Ximu3CommandResponse * const resp
         return;
     }
     const Context * const context_ = context;
-    if (context_->hapticPlay == NULL) {
+    if (context_->isMain == false) {
         Ximu3CommandRespondError(response, "Command not applicable");
         return;
     }
-    if (context_->hapticPlay((int) id) != HapticResultOk) {
+    if (HapticPlay((int) id) != HapticResultOk) {
         Ximu3CommandRespondError(response, "Invalid ID");
         return;
     }

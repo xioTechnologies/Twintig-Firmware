@@ -169,7 +169,7 @@ const void* const defaults[] = {
     (void*) (&(char[32]) {"Unknown"}),
     (void*) (&(char[32]) {"Unknown"}),
     (void*) (&(char[32]) {"Unknown"}),
-    (void*) (&(char[32]) {"Unknown"}),
+    (void*) (&(char[32]) {"Twintig"}),
     (void*) (&(bool) {true}),
     (void*) (&(uint32_t) {115200}),
     (void*) (&(bool) {false}),

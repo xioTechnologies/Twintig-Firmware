@@ -109,27 +109,27 @@ static Ximu3CommandBridge bridges[] = {
 };
 
 static Context contexts[] = {
-    {.defaultName = "Twintig"/*           */, .settings = &settingsArray[0], .nvm = &nvmMain, .send = &sendMain, .led = &ledMain, .serialSetSettings = &SerialSetSettings, .hapticPlay = HapticPlay},
-    {.defaultName = "Carpus IMU"/*        */, .settings = &settingsArray[1], .nvm = &nvmA, .send = &sendA, .led = &ledA, .imu = &imuA},
-    {.defaultName = "I Metacarpal IMU"/*  */, .settings = &settingsArray[2], .nvm = &nvmB, .send = &sendB, .led = &ledB, .imu = &imuB},
-    {.defaultName = "I Proximal IMU"/*    */, .settings = &settingsArray[3], .nvm = &nvmC, .send = &sendC, .led = &ledC, .imu = &imuC},
-    {.defaultName = "I Distal IMU"/*      */, .settings = &settingsArray[4], .nvm = &nvmD, .send = &sendD, .led = &ledD, .imu = &imuD},
-    {.defaultName = "II Metacarpal IMU"/* */, .settings = &settingsArray[5], .nvm = &nvmE, .send = &sendE, .led = &ledE, .imu = &imuE},
-    {.defaultName = "II Proximal IMU"/*   */, .settings = &settingsArray[6], .nvm = &nvmF, .send = &sendF, .led = &ledF, .imu = &imuF},
-    {.defaultName = "II Middle IMU"/*     */, .settings = &settingsArray[7], .nvm = &nvmG, .send = &sendG, .led = &ledG, .imu = &imuG},
-    {.defaultName = "II Distal IMU"/*     */, .settings = &settingsArray[8], .nvm = &nvmH, .send = &sendH, .led = &ledH, .imu = &imuH},
-    {.defaultName = "III Metacarpal IMU"/**/, .settings = &settingsArray[9], .nvm = &nvmI, .send = &sendI, .led = &ledI, .imu = &imuI},
-    {.defaultName = "III Proximal IMU"/*  */, .settings = &settingsArray[10], .nvm = &nvmJ, .send = &sendJ, .led = &ledJ, .imu = &imuJ},
-    {.defaultName = "III Middle IMU"/*    */, .settings = &settingsArray[11], .nvm = &nvmK, .send = &sendK, .led = &ledK, .imu = &imuK},
-    {.defaultName = "III Distal IMU"/*    */, .settings = &settingsArray[12], .nvm = &nvmL, .send = &sendL, .led = &ledL, .imu = &imuL},
-    {.defaultName = "IV Metacarpal IMU"/* */, .settings = &settingsArray[13], .nvm = &nvmM, .send = &sendM, .led = &ledM, .imu = &imuM},
-    {.defaultName = "IV Proximal IMU"/*   */, .settings = &settingsArray[14], .nvm = &nvmN, .send = &sendN, .led = &ledN, .imu = &imuN},
-    {.defaultName = "IV Middle IMU"/*     */, .settings = &settingsArray[15], .nvm = &nvmO, .send = &sendO, .led = &ledO, .imu = &imuO},
-    {.defaultName = "IV Distal IMU"/*     */, .settings = &settingsArray[16], .nvm = &nvmP, .send = &sendP, .led = &ledP, .imu = &imuP},
-    {.defaultName = "V Metacarpal IMU"/*  */, .settings = &settingsArray[17], .nvm = &nvmQ, .send = &sendQ, .led = &ledQ, .imu = &imuQ},
-    {.defaultName = "V Proximal IMU"/*    */, .settings = &settingsArray[18], .nvm = &nvmR, .send = &sendR, .led = &ledR, .imu = &imuR},
-    {.defaultName = "V Middle IMU"/*      */, .settings = &settingsArray[19], .nvm = &nvmS, .send = &sendS, .led = &ledS, .imu = &imuS},
-    {.defaultName = "V Distal IMU"/*      */, .settings = &settingsArray[20], .nvm = &nvmT, .send = &sendT, .led = &ledT, .imu = &imuT},
+    { .settings = &settingsArray[0], .nvm = &nvmMain, .send = &sendMain, .led = &ledMain, .isMain = true},
+    { .settings = &settingsArray[1], .nvm = &nvmA, .send = &sendA, .led = &ledA, .imu = &imuA, .defaultName = "Carpus IMU"},
+    { .settings = &settingsArray[2], .nvm = &nvmB, .send = &sendB, .led = &ledB, .imu = &imuB, .defaultName = "I Metacarpal IMU"},
+    { .settings = &settingsArray[3], .nvm = &nvmC, .send = &sendC, .led = &ledC, .imu = &imuC, .defaultName = "I Proximal IMU"},
+    { .settings = &settingsArray[4], .nvm = &nvmD, .send = &sendD, .led = &ledD, .imu = &imuD, .defaultName = "I Distal IMU"},
+    { .settings = &settingsArray[5], .nvm = &nvmE, .send = &sendE, .led = &ledE, .imu = &imuE, .defaultName = "II Metacarpal IMU"},
+    { .settings = &settingsArray[6], .nvm = &nvmF, .send = &sendF, .led = &ledF, .imu = &imuF, .defaultName = "II Proximal IMU"},
+    { .settings = &settingsArray[7], .nvm = &nvmG, .send = &sendG, .led = &ledG, .imu = &imuG, .defaultName = "II Middle IMU"},
+    { .settings = &settingsArray[8], .nvm = &nvmH, .send = &sendH, .led = &ledH, .imu = &imuH, .defaultName = "II Distal IMU"},
+    { .settings = &settingsArray[9], .nvm = &nvmI, .send = &sendI, .led = &ledI, .imu = &imuI, .defaultName = "III Metacarpal IMU"},
+    { .settings = &settingsArray[10], .nvm = &nvmJ, .send = &sendJ, .led = &ledJ, .imu = &imuJ, .defaultName = "III Proximal IMU"},
+    { .settings = &settingsArray[11], .nvm = &nvmK, .send = &sendK, .led = &ledK, .imu = &imuK, .defaultName = "III Middle IMU"},
+    { .settings = &settingsArray[12], .nvm = &nvmL, .send = &sendL, .led = &ledL, .imu = &imuL, .defaultName = "III Distal IMU"},
+    { .settings = &settingsArray[13], .nvm = &nvmM, .send = &sendM, .led = &ledM, .imu = &imuM, .defaultName = "IV Metacarpal IMU"},
+    { .settings = &settingsArray[14], .nvm = &nvmN, .send = &sendN, .led = &ledN, .imu = &imuN, .defaultName = "IV Proximal IMU"},
+    { .settings = &settingsArray[15], .nvm = &nvmO, .send = &sendO, .led = &ledO, .imu = &imuO, .defaultName = "IV Middle IMU"},
+    { .settings = &settingsArray[16], .nvm = &nvmP, .send = &sendP, .led = &ledP, .imu = &imuP, .defaultName = "IV Distal IMU"},
+    { .settings = &settingsArray[17], .nvm = &nvmQ, .send = &sendQ, .led = &ledQ, .imu = &imuQ, .defaultName = "V Metacarpal IMU"},
+    { .settings = &settingsArray[18], .nvm = &nvmR, .send = &sendR, .led = &ledR, .imu = &imuR, .defaultName = "V Proximal IMU"},
+    { .settings = &settingsArray[19], .nvm = &nvmS, .send = &sendS, .led = &ledS, .imu = &imuS, .defaultName = "V Middle IMU"},
+    { .settings = &settingsArray[20], .nvm = &nvmT, .send = &sendT, .led = &ledT, .imu = &imuT, .defaultName = "V Distal IMU"},
 };
 
 static const int numberOfDevices = sizeof (bridges) / sizeof (Ximu3CommandBridge);
@@ -194,7 +194,10 @@ static void InitialiseEpilogue(void* const context) {
 static void DefaultsEpilogue(void* const context) {
     Context * const context_ = context;
     Ximu3SettingsSet(context_->settings, Ximu3SettingsIndexFirmwareVersion, FIRMWARE_VERSION, true);
-    Ximu3SettingsSet(context_->settings, Ximu3SettingsIndexDeviceName, context_->defaultName, true);
+    if (context_->isMain == false) {
+        Ximu3SettingsSet(context_->settings, Ximu3SettingsIndexModel, "Twintig IMU", true);
+        Ximu3SettingsSet(context_->settings, Ximu3SettingsIndexDeviceName, context_->defaultName, true);
+    }
 }
 
 /**

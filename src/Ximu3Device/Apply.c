@@ -63,7 +63,7 @@ void ApplyAfterDelay(Context * const context) {
 void ApplySerial(Context * const context) {
 
     // Do nothing if not applicable
-    if (context->serialSetSettings == NULL) {
+    if (context->isMain == false) {
         return;
     }
 
@@ -82,7 +82,7 @@ void ApplySerial(Context * const context) {
         .baudRate = Ximu3SettingsGet(context->settings)->serialBaudRate,
         .rtsCtsEnabled = Ximu3SettingsGet(context->settings)->serialRtsCtsEnabled,
     };
-    context->serialSetSettings(&serialSettings);
+    SerialSetSettings(&serialSettings);
 }
 
 /**

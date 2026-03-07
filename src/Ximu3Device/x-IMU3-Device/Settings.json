@@ -94,7 +94,7 @@
         {
             "name": "Device name",
             "declaration": "char name[32]",
-            "default": "{\"Unknown\"}"
+            "default": "{\"Twintig\"}"
         },
         {
             "name": "Serial enabled",

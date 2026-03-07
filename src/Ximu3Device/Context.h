@@ -10,12 +10,10 @@
 //------------------------------------------------------------------------------
 // Includes
 
-#include "Haptic/Haptic.h"
 #include "Imu/Imu.h"
 #include "Led/Led.h"
 #include "Nvm.h"
 #include "Send/Send.h"
-#include "Serial/Serial.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include "x-IMU3-Device/Ximu3.h"
@@ -27,7 +25,6 @@
  * @brief Context.
  */
 typedef struct {
-    const char* const defaultName;
     Ximu3Settings * const settings;
     bool nvmBlank;
     bool factoryMode;
@@ -35,9 +32,9 @@ typedef struct {
     const Nvm * const nvm;
     Send * const send;
     Led * const led;
-    void(*const serialSetSettings) (const SerialSettings * const settings); // NULL if unused
-    HapticResult(*const hapticPlay)(const int effect); // NULL if unused
+    const bool isMain;
     Imu * const imu; // NULL if unused
+    const char* const defaultName; // NULL if unused
 } Context;
 
 #endif
