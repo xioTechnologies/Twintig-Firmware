@@ -149,7 +149,7 @@ void ImuTasks(Imu * const imu) {
         // Update AHRS algorithm
         FusionAhrsUpdateNoMagnetometer(&imu->ahrs, gyroscope, accelerometer, deltaTime);
 
-        // AHRS callback
+        // Send AHRS data
         const SendAhrsData ahrsData = {
             .ticks = icmData.ticks,
             .ahrs = &imu->ahrs,
@@ -180,7 +180,6 @@ void ImuSetSettings(Imu * const imu, const ImuSettings * const settings) {
         (imu->settings.ahrsAxesConvention != settings->ahrsAxesConvention) ||
         (imu->settings.ahrsUpdateRateDivisor != settings->ahrsUpdateRateDivisor)) {
         FusionAhrsReset(&imu->ahrs);
-        imu->previousTicks = 0;
     }
 
     // Update settings
