@@ -170,14 +170,19 @@ void Ximu3DeviceTasks(void) {
  * @param context Context.
  */
 static void InitialiseEpilogue(void* const context) {
+
+    // Load all defaults if NVM blank
     Context * const context_ = context;
-    const char* const firmwareVersion = Ximu3SettingsGet(context_->settings)->firmwareVersion;
-    if (strspn(firmwareVersion, "?") == strlen(firmwareVersion)) { // if NVM blank
+    const char* const calibrationDate = Ximu3SettingsGet(context_->settings)->calibrationDate;
+    if (strspn(calibrationDate, "?") == strlen(calibrationDate)) { // 0xFF will be replaced with '?' when read as a string
         Ximu3SettingsDefaults(context_->settings, true);
         context_->nvmBlank = true;
         return;
     }
-    if (strncmp(firmwareVersion, FIRMWARE_VERSION, sizeof (FIRMWARE_VERSION)) != 0) { // if firmware changed
+
+    // Load non-preserved defaults if firmware changed
+    const char* const firmwareVersion = Ximu3SettingsGet(context_->settings)->firmwareVersion;
+    if (strncmp(firmwareVersion, FIRMWARE_VERSION, sizeof (FIRMWARE_VERSION)) != 0) {
         Ximu3SettingsDefaults(context_->settings, false);
     }
 }
