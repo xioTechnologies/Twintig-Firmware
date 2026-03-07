@@ -1,10 +1,11 @@
 <DeviceSettings>
     <Settings>
         <Group name="Device Information" expand="true">
-            <Setting key="device_name" name="Device Name" type="string"/>
+            <Setting key="model" name="Model" type="string" readOnly="true"/>
             <Setting key="serial_number" name="Serial Number" type="string" readOnly="true"/>
-            <Setting key="firmware_version" name="Firmware Version" type="string" readOnly="true"/>
             <Setting key="hardware_version" name="Hardware Version" type="string" readOnly="true"/>
+            <Setting key="firmware_version" name="Firmware Version" type="string" readOnly="true"/>
+            <Setting key="device_name" name="Device Name" type="string"/>
         </Group>
         <Group name="Serial" expand="true">
             <Setting key="serial_enabled" name="Enabled" type="bool"/>
@@ -35,7 +36,7 @@
                 <Setting key="ahrs_message_rate_divisor" name="AHRS" type="number"/>
                 <Setting key="temperature_message_rate_divisor" name="Temperature" type="number"/>
             </Group>
-            <Group name="Sending" expand="true">
+            <Group name="Interfaces" expand="true">
                 <Setting key="usb_data_messages_enabled" name="USB" type="bool"/>
                 <Setting key="serial_data_messages_enabled" name="Serial" type="bool"/>
             </Group>

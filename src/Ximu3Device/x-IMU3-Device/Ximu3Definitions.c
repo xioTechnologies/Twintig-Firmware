@@ -31,6 +31,9 @@ Ximu3Result Ximu3SettingsIndexFrom(Ximu3SettingsIndex * const index, const int i
         case Ximu3SettingsIndexAccelerometerOffset:
             *index = Ximu3SettingsIndexAccelerometerOffset;
             break;
+        case Ximu3SettingsIndexModel:
+            *index = Ximu3SettingsIndexModel;
+            break;
         case Ximu3SettingsIndexFirmwareVersion:
             *index = Ximu3SettingsIndexFirmwareVersion;
             break;

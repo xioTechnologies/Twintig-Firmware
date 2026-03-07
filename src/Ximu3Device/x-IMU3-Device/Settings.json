@@ -62,6 +62,12 @@
             "preserved": true
         },
         {
+            "name": "Model",
+            "declaration": "char name[32]",
+            "default": "{\"Twintig\"}",
+            "preserved": true
+        },
+        {
             "name": "Firmware version",
             "declaration": "char name[32]",
             "default": "{\"Unknown\"}",

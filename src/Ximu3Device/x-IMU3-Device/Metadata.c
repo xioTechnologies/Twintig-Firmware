@@ -12,6 +12,7 @@ static const char* const names[] = {
     "Accelerometer Misalignment",
     "Accelerometer Sensitivity",
     "Accelerometer Offset",
+    "Model",
     "Firmware Version",
     "Device Name",
     "Serial Enabled",
@@ -46,6 +47,7 @@ static const char* const keys[] = {
     "accelerometer_misalignment",
     "accelerometer_sensitivity",
     "accelerometer_offset",
+    "model",
     "firmware_version",
     "device_name",
     "serial_enabled",
@@ -82,6 +84,7 @@ const MetadataType types[] = {
     MetadataTypeFusionVector,
     MetadataTypeString,
     MetadataTypeString,
+    MetadataTypeString,
     MetadataTypeBool,
     MetadataTypeUint32,
     MetadataTypeBool,
@@ -114,6 +117,7 @@ const size_t sizes[] = {
     sizeof (((Ximu3SettingsValues *) 0)->accelerometerMisalignment),
     sizeof (((Ximu3SettingsValues *) 0)->accelerometerSensitivity),
     sizeof (((Ximu3SettingsValues *) 0)->accelerometerOffset),
+    sizeof (((Ximu3SettingsValues *) 0)->model),
     sizeof (((Ximu3SettingsValues *) 0)->firmwareVersion),
     sizeof (((Ximu3SettingsValues *) 0)->deviceName),
     sizeof (((Ximu3SettingsValues *) 0)->serialEnabled),
@@ -148,6 +152,7 @@ const void* const defaults[] = {
     (void*) (&(FusionMatrix) {{1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f}}),
     (void*) (&(FusionVector) {{1.0f, 1.0f, 1.0f}}),
     (void*) (&(FusionVector) {{0.0f, 0.0f, 0.0f}}),
+    (void*) (&(char[32]) {"Twintig"}),
     (void*) (&(char[32]) {"Unknown"}),
     (void*) (&(char[32]) {"Unknown"}),
     (void*) (&(bool) {true}),
@@ -182,6 +187,7 @@ const bool preserveds[] = {
     true,
     true,
     true,
+    true,
     false,
     false,
     false,
@@ -207,6 +213,7 @@ const bool preserveds[] = {
 };
 
 const bool readOnlys[] = {
+    true,
     true,
     true,
     true,
@@ -260,6 +267,8 @@ static void* GetValue(Ximu3Settings * const settings, const Ximu3SettingsIndex i
             return &settings->values.accelerometerSensitivity;
         case Ximu3SettingsIndexAccelerometerOffset:
             return &settings->values.accelerometerOffset;
+        case Ximu3SettingsIndexModel:
+            return &settings->values.model;
         case Ximu3SettingsIndexFirmwareVersion:
             return &settings->values.firmwareVersion;
         case Ximu3SettingsIndexDeviceName:
