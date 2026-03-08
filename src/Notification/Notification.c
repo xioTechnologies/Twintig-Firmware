@@ -69,7 +69,7 @@ void NotificationTasks(void) {
     ImuBufferOverflow(&sendI, &imuI);
     ImuBufferOverflow(&sendJ, &imuJ);
     ImuBufferOverflow(&sendK, &imuK);
-    ImuBufferOverflow(&sendM, &imuL);
+    ImuBufferOverflow(&sendL, &imuL);
     ImuBufferOverflow(&sendM, &imuM);
     ImuBufferOverflow(&sendN, &imuN);
     ImuBufferOverflow(&sendO, &imuO);
