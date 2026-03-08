@@ -29,6 +29,25 @@ typedef struct {
     FifoResult(*const write)(const MuxChannel channel, const void* const data, const size_t numberOfBytes);
 } Interface;
 
+/**
+ * @brief Priority.
+ */
+typedef enum {
+    PriorityLow,
+    PriorityMedium,
+    PriorityHigh,
+} Priority;
+
+/**
+ * @brief Medium-priority buffer size.
+ */
+#define MEDIUM_PRIORITY_BUFFER_SIZE (2048)
+
+/**
+ * @brief High-priority buffer size.
+ */
+#define HIGH_PRIORITY_BUFFER_SIZE (1024)
+
 //------------------------------------------------------------------------------
 // Function declarations
 
@@ -38,9 +57,9 @@ static void SendRotationMatrix(Send * const send, const SendAhrsData * const ahr
 static void SendEulerAngles(Send * const send, const SendAhrsData * const ahrsData);
 static void SendLinearAcceleration(Send * const send, const SendAhrsData * const ahrsData);
 static void SendEarthAcceleration(Send * const send, const SendAhrsData * const ahrsData);
-static void SendDataMessage(Send * const send, const void* const data, const size_t numberOfBytes);
-static void SendDataMessagePriority(Send * const send, const void* const data, const size_t numberOfBytes);
-static inline __attribute__((always_inline)) size_t Write(const MuxChannel channel, const Interface * const interface, const void* const data, const size_t numberOfBytes, const bool priority);
+static void SendDataMessage(Send * const send, const void* const data, const size_t numberOfBytes, const Priority priority);
+static inline __attribute__((always_inline)) size_t Write(const MuxChannel channel, const Interface * const interface, const void* const data, const size_t numberOfBytes, const Priority priority);
+static inline __attribute__((always_inline)) bool AvailableWrite(const MuxChannel channel, const Interface * const interface, const size_t numberOfBytes, const Priority priority);
 
 //------------------------------------------------------------------------------
 // Variables
@@ -131,7 +150,7 @@ void SendInertial(Send * const send, const SendInertialData * const inertialData
     } else {
         messageSize = Ximu3DataInertialAscii(message, sizeof (message), &ximu3Data);
     }
-    SendDataMessage(send, message, messageSize);
+    SendDataMessage(send, message, messageSize, PriorityLow);
 }
 
 /**
@@ -199,7 +218,7 @@ static void SendAhrsStatus(Send * const send, const uint64_t ticks, const Fusion
     } else {
         messageSize = Ximu3DataAhrsStatusAscii(message, sizeof (message), &ximu3Data);
     }
-    SendDataMessage(send, message, messageSize);
+    SendDataMessage(send, message, messageSize, PriorityLow);
 }
 
 /**
@@ -223,7 +242,7 @@ static void SendQuaternion(Send * const send, const SendAhrsData * const ahrsDat
     } else {
         messageSize = Ximu3DataQuaternionAscii(message, sizeof (message), &ximu3Data);
     }
-    SendDataMessage(send, message, messageSize);
+    SendDataMessage(send, message, messageSize, PriorityLow);
 }
 
 /**
@@ -252,7 +271,7 @@ static void SendRotationMatrix(Send * const send, const SendAhrsData * const ahr
     } else {
         messageSize = Ximu3DataRotationMatrixAscii(message, sizeof (message), &ximu3Data);
     }
-    SendDataMessage(send, message, messageSize);
+    SendDataMessage(send, message, messageSize, PriorityLow);
 }
 
 /**
@@ -275,7 +294,7 @@ static void SendEulerAngles(Send * const send, const SendAhrsData * const ahrsDa
     } else {
         messageSize = Ximu3DataEulerAnglesAscii(message, sizeof (message), &ximu3Data);
     }
-    SendDataMessage(send, message, messageSize);
+    SendDataMessage(send, message, messageSize, PriorityLow);
 }
 
 /**
@@ -303,7 +322,7 @@ static void SendLinearAcceleration(Send * const send, const SendAhrsData * const
     } else {
         messageSize = Ximu3DataLinearAccelerationAscii(message, sizeof (message), &ximu3Data);
     }
-    SendDataMessage(send, message, messageSize);
+    SendDataMessage(send, message, messageSize, PriorityLow);
 }
 
 /**
@@ -331,7 +350,7 @@ static void SendEarthAcceleration(Send * const send, const SendAhrsData * const 
     } else {
         messageSize = Ximu3DataEarthAccelerationAscii(message, sizeof (message), &ximu3Data);
     }
-    SendDataMessage(send, message, messageSize);
+    SendDataMessage(send, message, messageSize, PriorityLow);
 }
 
 /**
@@ -373,7 +392,7 @@ void SendTemperature(Send * const send, const SendTemperatureData * const temper
     } else {
         messageSize = Ximu3DataTemperatureAscii(message, sizeof (message), &ximu3Data);
     }
-    SendDataMessage(send, message, messageSize);
+    SendDataMessage(send, message, messageSize, PriorityLow);
 }
 
 /**
@@ -403,7 +422,7 @@ void SendNotification(Send * const send, const char* format, ...) {
     } else {
         messageSize = Ximu3DataNotificationAscii(message, sizeof (message), &ximu3Data);
     }
-    SendDataMessagePriority(send, message, messageSize);
+    SendDataMessage(send, message, messageSize, PriorityMedium);
 }
 
 /**
@@ -433,7 +452,7 @@ void SendError(Send * const send, const char* format, ...) {
     } else {
         messageSize = Ximu3DataErrorAscii(message, sizeof (message), &ximu3Data);
     }
-    SendDataMessagePriority(send, message, messageSize);
+    SendDataMessage(send, message, messageSize, PriorityHigh);
 
     // Blink LED
     LedBlink(send->led, ledColourRed);
@@ -444,28 +463,14 @@ void SendError(Send * const send, const char* format, ...) {
  * @param send Send structure.
  * @param data Data.
  * @param numberOfBytes Number of bytes.
+ * @param priority Priority.
  */
-static void SendDataMessage(Send * const send, const void* const data, const size_t numberOfBytes) {
+static void SendDataMessage(Send * const send, const void* const data, const size_t numberOfBytes, const Priority priority) {
     if (send->settings.usbDataMessagesEnabled) {
-        send->usbBufferOverflow += Write(send->channel, &usb, data, numberOfBytes, false);
+        send->usbBufferOverflow += Write(send->channel, &usb, data, numberOfBytes, priority);
     }
     if (send->settings.serialDataMessagesEnabled) {
-        send->serialBufferOverflow += Write(send->channel, &serial, data, numberOfBytes, false);
-    }
-}
-
-/**
- * @brief Sends a data message with priority.
- * @param send Send structure.
- * @param data Data.
- * @param numberOfBytes Number of bytes.
- */
-static void SendDataMessagePriority(Send * const send, const void* const data, const size_t numberOfBytes) {
-    if (send->settings.usbDataMessagesEnabled) {
-        send->usbBufferOverflow += Write(send->channel, &usb, data, numberOfBytes, true);
-    }
-    if (send->settings.serialDataMessagesEnabled) {
-        send->serialBufferOverflow += Write(send->channel, &serial, data, numberOfBytes, true);
+        send->serialBufferOverflow += Write(send->channel, &serial, data, numberOfBytes, priority);
     }
 }
 
@@ -476,7 +481,7 @@ static void SendDataMessagePriority(Send * const send, const void* const data, c
  * @param numberOfBytes Number of bytes.
  */
 void SendResponseUsb(Send * const send, const void* const data, const size_t numberOfBytes) {
-    send->usbBufferOverflow += Write(send->channel, &usb, data, numberOfBytes, true);
+    send->usbBufferOverflow += Write(send->channel, &usb, data, numberOfBytes, PriorityMedium);
 }
 
 /**
@@ -486,7 +491,7 @@ void SendResponseUsb(Send * const send, const void* const data, const size_t num
  * @param numberOfBytes Number of bytes.
  */
 void SendResponseSerial(Send * const send, const void* const data, const size_t numberOfBytes) {
-    send->serialBufferOverflow += Write(send->channel, &serial, data, numberOfBytes, true);
+    send->serialBufferOverflow += Write(send->channel, &serial, data, numberOfBytes, PriorityMedium);
 }
 
 /**
@@ -496,20 +501,40 @@ void SendResponseSerial(Send * const send, const void* const data, const size_t 
  * @param interface Interface.
  * @param data Data.
  * @param numberOfBytes Number of bytes.
- * @param priority True to write with priority.
+ * @param priority Priority.
  * @return Number of samples lost due to buffer overflow.
  */
-static inline __attribute__((always_inline)) size_t Write(const MuxChannel channel, const Interface * const interface, const void* const data, const size_t numberOfBytes, const bool priority) {
+static inline __attribute__((always_inline)) size_t Write(const MuxChannel channel, const Interface * const interface, const void* const data, const size_t numberOfBytes, const Priority priority) {
     if (interface->enabled() == false) {
         return 0;
     }
-    if ((priority == false) && (interface->availableWrite(channel) < (numberOfBytes + (20 * 1024)))) {
+    if (AvailableWrite(channel, interface, numberOfBytes, priority) == false) {
         return numberOfBytes;
     }
     if (interface->write(channel, data, numberOfBytes) != FifoResultOk) {
         return numberOfBytes;
     }
     return 0;
+}
+
+/**
+ * @brief Returns true if there is space available in the write buffer.
+ * @param channel Channel.
+ * @param interface Interface.
+ * @param numberOfBytes Number of bytes.
+ * @param priority Priority.
+ * @return True if there is space available in the write buffer.
+ */
+static inline __attribute__((always_inline)) bool AvailableWrite(const MuxChannel channel, const Interface * const interface, const size_t numberOfBytes, const Priority priority) {
+    switch (priority) {
+        case PriorityLow:
+            return interface->availableWrite(channel) > (numberOfBytes + HIGH_PRIORITY_BUFFER_SIZE + MEDIUM_PRIORITY_BUFFER_SIZE);
+        case PriorityMedium:
+            return interface->availableWrite(channel) > (numberOfBytes + HIGH_PRIORITY_BUFFER_SIZE);
+        case PriorityHigh:
+            return interface->availableWrite(channel) > numberOfBytes;
+    }
+    return false; // avoid compiler warning
 }
 
 /**
