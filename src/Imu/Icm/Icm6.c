@@ -38,7 +38,7 @@ static SpiBusClient* spiBusClient;
 static uint8_t deviceId;
 static volatile __attribute__((coherent)) IcmSpiPacket spiPacket;
 static volatile uint64_t ticks;
-static uint8_t fifoData[(100 * sizeof (IcmFifoPacket)) + 1]; // actual FIFO capacity is 1 less than size
+static uint8_t fifoData[(960 * sizeof (IcmFifoPacket)) + 1]; // actual FIFO capacity is 1 less than size
 static Fifo fifo = {.data = fifoData, .dataSize = sizeof (fifoData)};
 static volatile uint32_t bufferOverflow;
 

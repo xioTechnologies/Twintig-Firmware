@@ -91,7 +91,7 @@
 #define UART3_WRITE_BUFFER_SIZE             (4096)
 
 #define USB_CDC_READ_BUFFER_SIZE            (4096)
-#define USB_CDC_WRITE_BUFFER_SIZE           (20 * 4096)
+#define USB_CDC_WRITE_BUFFER_SIZE           (16384)
 
 #endif
 

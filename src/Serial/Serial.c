@@ -19,7 +19,7 @@ static void WriteComplete(void);
 // Variables
 
 static SerialSettings settings;
-static uint8_t fifoData[20 * 4096];
+static uint8_t fifoData[16384];
 static Fifo fifo = {.data = fifoData, .dataSize = sizeof (fifoData)};
 
 //------------------------------------------------------------------------------
