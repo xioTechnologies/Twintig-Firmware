@@ -178,8 +178,8 @@ static void ApplySend(Context * const context) {
     applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexInertialMessageRateDivisor);
     applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsMessageRateDivisor);
     applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexTemperatureMessageRateDivisor);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexUsbDataMessagesEnabled);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSerialDataMessagesEnabled);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexUsbDataMessageMode);
+    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSerialDataMessageMode);
     if (applyPending == false) {
         return;
     }
@@ -191,8 +191,8 @@ static void ApplySend(Context * const context) {
         .inertialMessageRateDivisor = Ximu3SettingsGet(context->settings)->inertialMessageRateDivisor,
         .ahrsMessageRateDivisor = Ximu3SettingsGet(context->settings)->ahrsMessageRateDivisor,
         .temperatureMessageRateDivisor = Ximu3SettingsGet(context->settings)->temperatureMessageRateDivisor,
-        .usbDataMessagesEnabled = Ximu3SettingsGet(context->settings)->usbDataMessagesEnabled,
-        .serialDataMessagesEnabled = Ximu3SettingsGet(context->settings)->serialDataMessagesEnabled,
+        .usbDataMessageMode = Ximu3SettingsGet(context->settings)->usbDataMessageMode,
+        .serialDataMessageMode = Ximu3SettingsGet(context->settings)->serialDataMessageMode,
     };
     SendSetSettings(context->send, &sendSettings);
 }

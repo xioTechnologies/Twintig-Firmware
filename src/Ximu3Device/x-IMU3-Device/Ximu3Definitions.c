@@ -103,11 +103,11 @@ Ximu3Result Ximu3SettingsIndexFrom(Ximu3SettingsIndex * const index, const int i
         case Ximu3SettingsIndexTemperatureMessageRateDivisor:
             *index = Ximu3SettingsIndexTemperatureMessageRateDivisor;
             break;
-        case Ximu3SettingsIndexUsbDataMessagesEnabled:
-            *index = Ximu3SettingsIndexUsbDataMessagesEnabled;
+        case Ximu3SettingsIndexUsbDataMessageMode:
+            *index = Ximu3SettingsIndexUsbDataMessageMode;
             break;
-        case Ximu3SettingsIndexSerialDataMessagesEnabled:
-            *index = Ximu3SettingsIndexSerialDataMessagesEnabled;
+        case Ximu3SettingsIndexSerialDataMessageMode:
+            *index = Ximu3SettingsIndexSerialDataMessageMode;
             break;
         default:
             return Ximu3ResultError;

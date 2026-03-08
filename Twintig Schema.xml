@@ -38,8 +38,8 @@
                 <Setting key="temperature_message_rate_divisor" name="Temperature" type="number"/>
             </Group>
             <Group name="Interfaces" expand="true">
-                <Setting key="usb_data_messages_enabled" name="USB" type="bool"/>
-                <Setting key="serial_data_messages_enabled" name="Serial" type="bool"/>
+                <Setting key="usb_data_message_mode" name="USB" type="SendDataMessageMode"/>
+                <Setting key="serial_data_message_mode" name="Serial" type="SendDataMessageMode"/>
             </Group>
         </Group>
         <Margin/>
@@ -162,6 +162,11 @@
             <Enumerator name="Euler Angles" value="2"/>
             <Enumerator name="Linear Acceleration" value="3"/>
             <Enumerator name="Earth Acceleration" value="4"/>
+        </Enum>
+        <Enum name="SendDataMessageMode">
+            <Enumerator name="Disabled" value="0"/>
+            <Enumerator name="Blocking" value="1"/>
+            <Enumerator name="Non-Blocking" value="2"/>
         </Enum>
     </Enums>
 </DeviceSettings>

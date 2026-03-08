@@ -187,14 +187,14 @@
             "default": "{0}"
         },
         {
-            "name": "USB data messages enabled",
-            "declaration": "bool name",
-            "default": "{true}"
+            "name": "USB data message mode",
+            "declaration": "SendDataMessageMode name",
+            "default": "{SendDataMessageModeBlocking}"
         },
         {
-            "name": "Serial data messages enabled",
-            "declaration": "bool name",
-            "default": "{false}"
+            "name": "Serial data message mode",
+            "declaration": "SendDataMessageMode name",
+            "default": "{SendDataMessageModeDisabled}"
         }
     ]
 }

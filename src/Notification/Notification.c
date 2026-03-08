@@ -111,7 +111,7 @@ void NotificationTasks(void) {
 static inline __attribute__((always_inline)) void ImuBufferOverflow(Send * const send, Imu * const imu) {
     const uint32_t numberOfSamples = imu->icm->bufferOverflow();
     if (numberOfSamples > 0) {
-        SendError(send, "IMU buffer overflow. %u samples lost.", numberOfSamples);
+        SendError(send, "IMU buffer overflow. %u samples lost. %s blocking.", numberOfSamples, SendWhoseBlocking());
     }
 }
 

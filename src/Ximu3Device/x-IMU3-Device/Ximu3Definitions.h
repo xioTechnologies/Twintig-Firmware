@@ -62,8 +62,8 @@ typedef struct {
     uint32_t inertialMessageRateDivisor;
     uint32_t ahrsMessageRateDivisor;
     uint32_t temperatureMessageRateDivisor;
-    bool usbDataMessagesEnabled;
-    bool serialDataMessagesEnabled;
+    SendDataMessageMode usbDataMessageMode;
+    SendDataMessageMode serialDataMessageMode;
 } Ximu3SettingsValues;
 
 typedef enum {
@@ -100,8 +100,8 @@ typedef enum {
     Ximu3SettingsIndexInertialMessageRateDivisor,
     Ximu3SettingsIndexAhrsMessageRateDivisor,
     Ximu3SettingsIndexTemperatureMessageRateDivisor,
-    Ximu3SettingsIndexUsbDataMessagesEnabled,
-    Ximu3SettingsIndexSerialDataMessagesEnabled,
+    Ximu3SettingsIndexUsbDataMessageMode,
+    Ximu3SettingsIndexSerialDataMessageMode,
 } Ximu3SettingsIndex;
 
 Ximu3Result Ximu3SettingsIndexFrom(Ximu3SettingsIndex * const index, const int integer);

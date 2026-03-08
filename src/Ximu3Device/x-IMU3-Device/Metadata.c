@@ -36,8 +36,8 @@ static const char* const names[] = {
     "Inertial Message Rate Divisor",
     "AHRS Message Rate Divisor",
     "Temperature Message Rate Divisor",
-    "USB Data Messages Enabled",
-    "Serial Data Messages Enabled",
+    "USB Data Message Mode",
+    "Serial Data Message Mode",
 };
 
 static const char* const keys[] = {
@@ -74,8 +74,8 @@ static const char* const keys[] = {
     "inertial_message_rate_divisor",
     "ahrs_message_rate_divisor",
     "temperature_message_rate_divisor",
-    "usb_data_messages_enabled",
-    "serial_data_messages_enabled",
+    "usb_data_message_mode",
+    "serial_data_message_mode",
 };
 
 const MetadataType types[] = {
@@ -112,8 +112,8 @@ const MetadataType types[] = {
     MetadataTypeUint32,
     MetadataTypeUint32,
     MetadataTypeUint32,
-    MetadataTypeBool,
-    MetadataTypeBool,
+    MetadataTypeSendDataMessageMode,
+    MetadataTypeSendDataMessageMode,
 };
 
 const size_t sizes[] = {
@@ -150,8 +150,8 @@ const size_t sizes[] = {
     sizeof (((Ximu3SettingsValues *) 0)->inertialMessageRateDivisor),
     sizeof (((Ximu3SettingsValues *) 0)->ahrsMessageRateDivisor),
     sizeof (((Ximu3SettingsValues *) 0)->temperatureMessageRateDivisor),
-    sizeof (((Ximu3SettingsValues *) 0)->usbDataMessagesEnabled),
-    sizeof (((Ximu3SettingsValues *) 0)->serialDataMessagesEnabled),
+    sizeof (((Ximu3SettingsValues *) 0)->usbDataMessageMode),
+    sizeof (((Ximu3SettingsValues *) 0)->serialDataMessageMode),
 };
 
 const void* const defaults[] = {
@@ -188,8 +188,8 @@ const void* const defaults[] = {
     (void*) (&(uint32_t) {1}),
     (void*) (&(uint32_t) {1}),
     (void*) (&(uint32_t) {0}),
-    (void*) (&(bool) {true}),
-    (void*) (&(bool) {false}),
+    (void*) (&(SendDataMessageMode) {SendDataMessageModeBlocking}),
+    (void*) (&(SendDataMessageMode) {SendDataMessageModeDisabled}),
 };
 
 const bool preserveds[] = {
@@ -336,10 +336,10 @@ static void* GetValue(Ximu3Settings * const settings, const Ximu3SettingsIndex i
             return &settings->values.ahrsMessageRateDivisor;
         case Ximu3SettingsIndexTemperatureMessageRateDivisor:
             return &settings->values.temperatureMessageRateDivisor;
-        case Ximu3SettingsIndexUsbDataMessagesEnabled:
-            return &settings->values.usbDataMessagesEnabled;
-        case Ximu3SettingsIndexSerialDataMessagesEnabled:
-            return &settings->values.serialDataMessagesEnabled;
+        case Ximu3SettingsIndexUsbDataMessageMode:
+            return &settings->values.usbDataMessageMode;
+        case Ximu3SettingsIndexSerialDataMessageMode:
+            return &settings->values.serialDataMessageMode;
 
     }
     return NULL; // avoid compiler warning

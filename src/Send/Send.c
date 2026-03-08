@@ -60,12 +60,15 @@ static void SendEarthAcceleration(Send * const send, const SendAhrsData * const 
 static void SendDataMessage(Send * const send, const void* const data, const size_t numberOfBytes, const Priority priority);
 static inline __attribute__((always_inline)) size_t Write(const MuxChannel channel, const Interface * const interface, const void* const data, const size_t numberOfBytes, const Priority priority);
 static inline __attribute__((always_inline)) bool AvailableWrite(const MuxChannel channel, const Interface * const interface, const size_t numberOfBytes, const Priority priority);
+static inline __attribute__((always_inline)) bool Blocked(const MuxChannel channel, const SendDataMessageMode mode, const Interface * const interface, const size_t numberOfBytes);
 
 //------------------------------------------------------------------------------
 // Variables
 
 static const Interface usb = {.enabled = UsbCdcPortOpen, .availableWrite = MuxUsbAvailableWrite, .write = MuxUsbWrite};
 static const Interface serial = {.enabled = SerialEnabled, .availableWrite = MuxSerialAvailableWrite, .write = MuxSerialWrite};
+
+static const char* whoseBlocking = "";
 
 Send sendMain = {.channel = MuxChannelNone, .led = &ledMain};
 Send sendA = {.channel = MuxChannelA, .led = &ledA};
@@ -466,10 +469,10 @@ void SendError(Send * const send, const char* format, ...) {
  * @param priority Priority.
  */
 static void SendDataMessage(Send * const send, const void* const data, const size_t numberOfBytes, const Priority priority) {
-    if (send->settings.usbDataMessagesEnabled) {
+    if (send->settings.usbDataMessageMode != SendDataMessageModeDisabled) {
         send->usbBufferOverflow += Write(send->channel, &usb, data, numberOfBytes, priority);
     }
-    if (send->settings.serialDataMessagesEnabled) {
+    if (send->settings.serialDataMessageMode != SendDataMessageModeDisabled) {
         send->serialBufferOverflow += Write(send->channel, &serial, data, numberOfBytes, priority);
     }
 }
@@ -518,7 +521,7 @@ static inline __attribute__((always_inline)) size_t Write(const MuxChannel chann
 }
 
 /**
- * @brief Returns true if there is space available in the write buffer.
+ * @brief Returns true if there is enough space available in the write buffer.
  * @param channel Channel.
  * @param interface Interface.
  * @param numberOfBytes Number of bytes.
@@ -535,6 +538,46 @@ static inline __attribute__((always_inline)) bool AvailableWrite(const MuxChanne
             return interface->availableWrite(channel) > numberOfBytes;
     }
     return false; // avoid compiler warning
+}
+
+/**
+ * @brief Returns true if there is enough space available for low-priority data
+ * messages. Only enabled interfaces in blocking mode will limit availability.
+ * @param send Send structure.
+ * @param numberOfBytes Number of bytes.
+ * @return True if there is enough space available for low-priority data
+ * messages.
+ */
+bool SendAvailable(Send * const send, const size_t numberOfBytes) {
+    if (Blocked(send->channel, send->settings.usbDataMessageMode, &usb, numberOfBytes)) {
+        whoseBlocking = "USB";
+        return false;
+    }
+    if (Blocked(send->channel, send->settings.serialDataMessageMode, &serial, numberOfBytes)) {
+        whoseBlocking = "Serial";
+        return false;
+    }
+    return true;
+}
+
+/**
+ * @brief Returns true if the interface is blocked.
+ * @param channel Channel.
+ * @param mode Mode.
+ * @param interface Interface.
+ * @param numberOfBytes Number of bytes.
+ * @return True if the interface is blocked.
+ */
+static inline __attribute__((always_inline)) bool Blocked(const MuxChannel channel, const SendDataMessageMode mode, const Interface * const interface, const size_t numberOfBytes) {
+    return (mode == SendDataMessageModeBlocking) && interface->enabled() && (AvailableWrite(channel, interface, numberOfBytes, PriorityLow) == false);
+}
+
+/**
+ * @brief Returns the name of the last interface to block sending.
+ * @return The name of the last interface to block sending.
+ */
+const char* SendWhoseBlocking(void) {
+    return whoseBlocking;
 }
 
 /**
