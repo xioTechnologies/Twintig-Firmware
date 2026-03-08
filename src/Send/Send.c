@@ -441,6 +441,7 @@ void SendError(Send * const send, const char* format, ...) {
 
 /**
  * @brief Sends a data message.
+ * @param send Send structure.
  * @param data Data.
  * @param numberOfBytes Number of bytes.
  */
@@ -455,6 +456,7 @@ static void SendDataMessage(Send * const send, const void* const data, const siz
 
 /**
  * @brief Sends a data message with priority.
+ * @param send Send structure.
  * @param data Data.
  * @param numberOfBytes Number of bytes.
  */
