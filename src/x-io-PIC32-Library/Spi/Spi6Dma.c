@@ -204,7 +204,7 @@ void Dma7InterruptHandler(void) {
  * @return True while the transfer is in progress.
  */
 bool Spi6DmaTransferInProgress(void) {
-    return DCH7CONbits.CHEN == 1; // if RX DMA channel interrupt enabled
+    return DCH7CONbits.CHEN == 1; // if RX DMA channel enabled
 }
 
 //------------------------------------------------------------------------------
