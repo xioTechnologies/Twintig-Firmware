@@ -50,13 +50,13 @@ void Ximu3SettingsInitialise(Ximu3Settings * const settings) {
 }
 
 /**
- * @brief Loads defaults.
+ * @brief Load defaults.
  * @param settings Settings.
  * @param overwritePreserved True to overwrite preserved settings.
  */
-void Ximu3SettingsDefaults(Ximu3Settings * const settings, const bool overwritePreserved) {
+void Ximu3SettingsLoadDefaults(Ximu3Settings * const settings, const bool overwritePreserved) {
 
-    // Loads defaults
+    // Load defaults
     for (int index = 0; index < XIMU3_NUMBER_OF_SETTINGS; index++) {
         const Metadata metadata = MetadataGet(settings, index);
         if (metadata.preserved && (overwritePreserved == false)) {
@@ -140,9 +140,9 @@ static void SetValue(const Metadata * const metadata, const void* const value) {
             }
             break;
         case MetadataTypeFusionMatrix:
-            if (IsNanOrInf(((FusionMatrix *) value)->element.xx) || IsNanOrInf(((FusionMatrix *) value)->element.xx) || IsNanOrInf(((FusionMatrix *) value)->element.xx) ||
-                IsNanOrInf(((FusionMatrix *) value)->element.yy) || IsNanOrInf(((FusionMatrix *) value)->element.yy) || IsNanOrInf(((FusionMatrix *) value)->element.yy) ||
-                IsNanOrInf(((FusionMatrix *) value)->element.zz) || IsNanOrInf(((FusionMatrix *) value)->element.zz) || IsNanOrInf(((FusionMatrix *) value)->element.zz)) {
+            if (IsNanOrInf(((FusionMatrix *) value)->element.xx) || IsNanOrInf(((FusionMatrix *) value)->element.xy) || IsNanOrInf(((FusionMatrix *) value)->element.xz) ||
+                IsNanOrInf(((FusionMatrix *) value)->element.yx) || IsNanOrInf(((FusionMatrix *) value)->element.yy) || IsNanOrInf(((FusionMatrix *) value)->element.yz) ||
+                IsNanOrInf(((FusionMatrix *) value)->element.zx) || IsNanOrInf(((FusionMatrix *) value)->element.zy) || IsNanOrInf(((FusionMatrix *) value)->element.zz)) {
                 break;
             }
             memcpy(metadata->value, value, metadata->size);
@@ -343,7 +343,7 @@ bool Ximu3SettingsApplyPending(Ximu3Settings * const settings, const Ximu3Settin
 }
 
 /**
- * @brief Clears applied pending.
+ * @brief Clears apply pending.
  * @param settings Settings.
  */
 void Ximu3SettingsClearApplyPending(Ximu3Settings * const settings) {

@@ -33,7 +33,7 @@ void CommandsDefault(const char* * const value, Ximu3CommandResponse * const res
         return;
     }
     Context * const context_ = context;
-    Ximu3SettingsDefaults(context_->settings, false);
+    Ximu3SettingsLoadDefaults(context_->settings, false);
     ApplyAfterDelay(context_);
     Ximu3CommandRespond(response);
 }
@@ -281,7 +281,7 @@ void CommandsErase(const char* * const value, Ximu3CommandResponse * const respo
         return;
     }
     EepromErase(context_->nvm->i2c);
-    Ximu3SettingsDefaults(context_->settings, true);
+    Ximu3SettingsLoadDefaults(context_->settings, true);
     ApplyAfterDelay(context_);
     Ximu3CommandRespond(response);
 }

@@ -175,7 +175,7 @@ static void InitialiseEpilogue(void* const context) {
     Context * const context_ = context;
     const char* const calibrationDate = Ximu3SettingsGet(context_->settings)->calibrationDate;
     if (strspn(calibrationDate, "?") == strlen(calibrationDate)) { // 0xFF will be replaced with '?' when read as a string
-        Ximu3SettingsDefaults(context_->settings, true);
+        Ximu3SettingsLoadDefaults(context_->settings, true);
         context_->nvmBlank = true;
         return;
     }
@@ -183,7 +183,7 @@ static void InitialiseEpilogue(void* const context) {
     // Load non-preserved defaults if firmware changed
     const char* const firmwareVersion = Ximu3SettingsGet(context_->settings)->firmwareVersion;
     if (strncmp(firmwareVersion, FIRMWARE_VERSION, sizeof (FIRMWARE_VERSION)) != 0) {
-        Ximu3SettingsDefaults(context_->settings, false);
+        Ximu3SettingsLoadDefaults(context_->settings, false);
     }
 }
 
