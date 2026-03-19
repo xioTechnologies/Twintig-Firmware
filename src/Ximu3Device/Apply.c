@@ -52,7 +52,7 @@ void ApplyNow(Context * const context) {
  * @brief Applies settings after a delay.
  * @param context Context.
  */
-static void ApplyAfterDelay(Context * const context) {
+void ApplyAfterDelay(Context * const context) {
     context->applyTimeout = TimerGetTicks64() + (2 * TIMER_TICKS_PER_SECOND);
 }
 
