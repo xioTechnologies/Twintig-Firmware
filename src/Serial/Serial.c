@@ -27,7 +27,7 @@ static Fifo fifo = {.data = fifoData, .dataSize = sizeof (fifoData)};
 
 /**
  * @brief Sets the settings.
- * @param settings Settings.
+ * @param settings_ Settings.
  */
 void SerialSetSettings(const SerialSettings * const settings_) {
     settings = *settings_;

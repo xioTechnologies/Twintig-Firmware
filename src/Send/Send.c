@@ -233,7 +233,7 @@ static void SendQuaternion(Send * const send, const SendAhrsData * const ahrsDat
         .w = quaternion.element.w,
         .x = quaternion.element.x,
         .y = quaternion.element.y,
-        .z = quaternion. element.z,
+        .z = quaternion.element.z,
     };
     uint8_t message[128];
     size_t messageSize;
@@ -502,7 +502,7 @@ void SendResponseSerial(Send * const send, const void* const data, const size_t 
  * @param data Data.
  * @param numberOfBytes Number of bytes.
  * @param priority Priority.
- * @return Number of samples lost due to buffer overflow.
+ * @return Number of bytes lost due to buffer overflow.
  */
 static inline __attribute__((always_inline)) size_t Write(const MuxChannel channel, const Interface * const interface, const void* const data, const size_t numberOfBytes, const Priority priority) {
     if (interface->enabled() == false) {
@@ -541,7 +541,7 @@ static inline __attribute__((always_inline)) bool AvailableWrite(const MuxChanne
  * @brief Returns the number of bytes lost due to buffer overflow. Calling
  * this function will reset the value.
  * @param send Send structure.
- * @return Number of samples lost due to buffer overflow.
+ * @return Number of bytes lost due to buffer overflow.
  */
 size_t SendUsbBufferOverflow(Send * const send) {
     const size_t bufferOverflow = send->usbBufferOverflow;
@@ -553,7 +553,7 @@ size_t SendUsbBufferOverflow(Send * const send) {
  * @brief Returns the number of bytes lost due to buffer overflow. Calling
  * this function will reset the value.
  * @param send Send structure.
- * @return Number of samples lost due to buffer overflow.
+ * @return Number of bytes lost due to buffer overflow.
  */
 size_t SendSerialBufferOverflow(Send * const send) {
     const size_t bufferOverflow = send->serialBufferOverflow;

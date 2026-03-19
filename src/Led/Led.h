@@ -45,7 +45,7 @@ typedef enum {
 } LedMode;
 
 /**
- * @brief Colour.
+ * @brief Blink queue item.
  */
 typedef struct {
     LedColour colour;
@@ -109,7 +109,7 @@ extern Led ledS;
 extern Led ledT;
 
 //------------------------------------------------------------------------------
-// Function declaration
+// Function declarations
 
 void LedInitialise(void);
 void LedSet(Led * const led, const LedColour colour, const LedMode mode);

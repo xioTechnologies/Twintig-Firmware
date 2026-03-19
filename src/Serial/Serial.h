@@ -27,7 +27,7 @@ typedef struct {
 } SerialSettings;
 
 //------------------------------------------------------------------------------
-// Function prototypes
+// Function declarations
 
 void SerialSetSettings(const SerialSettings * const settings_);
 bool SerialEnabled(void);

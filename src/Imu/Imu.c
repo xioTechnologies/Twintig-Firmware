@@ -165,12 +165,12 @@ void ImuTasks(Imu * const imu) {
  */
 void ImuSetSettings(Imu * const imu, const ImuSettings * const settings) {
 
-    // Initialise offset
+    // Initialise bias algorithm
     if ((imu->initialised == false) || (imu->settings.sampleRate != settings->sampleRate)) {
         FusionBiasInitialise(&imu->bias, (unsigned int) settings->sampleRate);
     }
 
-    // Initialise AHRS
+    // Initialise AHRS algorithm
     if (imu->initialised == false) {
         FusionAhrsInitialise(&imu->ahrs);
     }
@@ -191,7 +191,7 @@ void ImuSetSettings(Imu * const imu, const ImuSettings * const settings) {
         .gain = imu->settings.ahrsGain,
         .gyroscopeRange = 2000.0f,
         .accelerationRejection = imu->settings.ahrsAccelerationRejection,
-        .recoveryTriggerPeriod = 10 * 100,
+        .recoveryTriggerPeriod = 10 * 100, // 10 seconds * 100 Hz
     };
     FusionAhrsSetSettings(&imu->ahrs, &ahrsSettings);
 

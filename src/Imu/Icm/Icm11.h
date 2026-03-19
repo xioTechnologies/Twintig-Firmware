@@ -11,7 +11,6 @@
 // Includes
 
 #include "Icm.h"
-#include "Icm11.h"
 #include <stdint.h>
 
 //------------------------------------------------------------------------------
@@ -20,7 +19,7 @@
 extern const Icm icm11;
 
 //------------------------------------------------------------------------------
-// Function declaration
+// Function declarations
 
 void Icm11Initialise(const IcmSettings * const settings);
 void Icm11Deinitialise(void);

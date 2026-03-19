@@ -193,7 +193,7 @@ typedef struct {
 extern const SpiSettings icmSpiSettings;
 
 //------------------------------------------------------------------------------
-// Function declaration
+// Function declarations
 
 IcmAaf IcmAntiAliasingToAaf(const IcmAntiAliasing antiAliasing);
 int IcmSampleRateToOdr(const IcmSampleRate sampleRate);

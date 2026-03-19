@@ -78,7 +78,7 @@ int main(void) {
     // Initialise debug UART
     Uart3Initialise(&uartSettingsDefault);
 
-    // Print start up message
+    // Print startup message
     ResetCausePrint(ResetCauseGet());
     printf("Twintig " FIRMWARE_VERSION "\n");
 

@@ -72,7 +72,7 @@ typedef union {
 // Function prototypes
 
 static uint8_t ReadRegister(const uint8_t address);
-static void WriteRegister(const uint8_t address, const uint8_t byte);
+static void WriteRegister(const uint8_t address, const uint8_t value);
 
 //------------------------------------------------------------------------------
 // Functions
@@ -188,7 +188,7 @@ const char* HapticTestResultToString(const HapticTestResult result) {
         case HapticTestResultInvalidId:
             return "Invalid ID";
         case HapticTestResultDiagnosticsFailed:
-            return "Diagnostic failed";
+            return "Diagnostics failed";
         case HapticTestResultOverTemperature:
             return "Over temperature";
         case HapticTestResultOverCurrent:

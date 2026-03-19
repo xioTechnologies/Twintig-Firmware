@@ -31,7 +31,7 @@ typedef enum {
 } HapticTestResult;
 
 //------------------------------------------------------------------------------
-// Function prototypes
+// Function declarations
 
 void HapticInitialise(void);
 HapticResult HapticPlay(const int effect);

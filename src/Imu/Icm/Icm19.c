@@ -193,7 +193,7 @@ static void WriteRegister(const uint8_t address, const uint8_t value) {
 /**
  * @brief External interrupt callback.
  * @param pin Pin.
- * @param context COntext.
+ * @param context Context.
  */
 static void ExternalInterrupt(GPIO_PIN pin, uintptr_t context) {
     if (GPIO_PinRead(pin) == true) { // ignore rising edges

@@ -8,6 +8,7 @@
 // Includes
 
 #include "Imu/Imu.h"
+#include <inttypes.h>
 #include "OnChange.h"
 #include "Periodic.h"
 #include "Send/Send.h"
@@ -111,7 +112,7 @@ void NotificationTasks(void) {
 static inline __attribute__((always_inline)) void ImuBufferOverflow(Send * const send, Imu * const imu) {
     const uint32_t numberOfSamples = imu->icm->bufferOverflow();
     if (numberOfSamples > 0) {
-        SendError(send, "IMU buffer overflow. %u samples lost.", numberOfSamples);
+        SendError(send, "IMU buffer overflow. %" PRIu32 " samples lost.", numberOfSamples);
     }
 }
 
@@ -120,13 +121,13 @@ static inline __attribute__((always_inline)) void ImuBufferOverflow(Send * const
  * @param send Send structure.
  */
 static inline __attribute__((always_inline)) void SendBufferOverflow(Send * const send) {
-    const uint32_t usbBufferOverflow = SendUsbBufferOverflow(send);
+    const size_t usbBufferOverflow = SendUsbBufferOverflow(send);
     if (usbBufferOverflow > 0) {
-        SendError(send, "USB buffer overflow. %u bytes lost.", usbBufferOverflow);
+        SendError(send, "USB buffer overflow. %zu bytes lost.", usbBufferOverflow);
     }
-    const uint32_t serialBufferOverflow = SendSerialBufferOverflow(send);
+    const size_t serialBufferOverflow = SendSerialBufferOverflow(send);
     if (serialBufferOverflow > 0) {
-        SendError(send, "Serial buffer overflow. %u bytes lost.", serialBufferOverflow);
+        SendError(send, "Serial buffer overflow. %zu bytes lost.", serialBufferOverflow);
     }
 }
 
