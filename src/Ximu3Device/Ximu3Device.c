@@ -211,7 +211,7 @@ static void WriteEpilogue(const Ximu3SettingsIndex index, void* const context) {
 }
 
 /**
- * @brief Mux handler.
+ * @brief Mux callback.
  * @param interface Interface.
  * @param channel Channel.
  * @param message Message.
@@ -234,7 +234,7 @@ static Ximu3Result Mux(const Ximu3CommandInterface * const interface, const uint
 }
 
 /**
- * @brief Error handler.
+ * @brief Error callback.
  * @param error error.
  * @param context Context.
  */
