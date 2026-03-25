@@ -175,9 +175,9 @@ HapticTestResult HapticTest(void) {
 }
 
 /**
- * @brief Returns the test result message.
- * @param result Test result.
- * @return Test result message.
+ * @brief Returns a string representation of the result.
+ * @param result Result.
+ * @return String representation of the result.
  */
 const char* HapticTestResultToString(const HapticTestResult result) {
     switch (result) {
