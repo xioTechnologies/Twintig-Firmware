@@ -69,7 +69,7 @@ typedef union {
 } StatusRegister;
 
 //------------------------------------------------------------------------------
-// Function prototypes
+// Function declarations
 
 static uint8_t ReadRegister(const uint8_t address);
 static void WriteRegister(const uint8_t address, const uint8_t value);

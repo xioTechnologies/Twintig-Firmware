@@ -134,7 +134,7 @@ typedef union {
 
     struct {
         unsigned : 4;
-        unsigned intAysncReset : 1;
+        unsigned intAsyncReset : 1;
         unsigned intTdeassertDisable : 1;
         unsigned intTpulseDuration : 1;
         unsigned : 1;

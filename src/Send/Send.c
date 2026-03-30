@@ -401,7 +401,7 @@ void SendTemperature(Send * const send, const SendTemperatureData * const temper
  * @param format Format.
  * @param ... Arguments.
  */
-void SendNotification(Send * const send, const char* format, ...) {
+void SendNotification(Send * const send, const char* const format, ...) {
 
     // Create string
     char string[256];
@@ -431,7 +431,7 @@ void SendNotification(Send * const send, const char* format, ...) {
  * @param format Format.
  * @param ... Arguments.
  */
-void SendError(Send * const send, const char* format, ...) {
+void SendError(Send * const send, const char* const format, ...) {
 
     // Create string
     char string[256];

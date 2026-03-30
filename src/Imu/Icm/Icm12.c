@@ -12,9 +12,9 @@
 #include "Icm12.h"
 #include "IcmConfig.h"
 #include "IcmRegisters.h"
+#include "Spi/SpiBus.h"
 #include <stdbool.h>
 #include <stddef.h>
-#include <string.h>
 #include "Timer/Timer.h"
 
 //------------------------------------------------------------------------------
@@ -82,7 +82,7 @@ void Icm12Initialise(const IcmSettings * const settings) {
     IcmIntConfig1Register intConfig1Register = {.value = ICM_INT_CONFIG1_RESET_VALUE};
     intConfig1Register.intTpulseDuration = 1; // interrupt pulse duration is 8 us. Required if ODR > 4kHz, optional for ODR < 4kHz.
     intConfig1Register.intTdeassertDisable = 1; // disables de-assert duration. Required if ODR > 4kHz, optional for ODR < 4kHz
-    intConfig1Register.intAysncReset = 1; // user should change setting to 0 from default setting of 1, for proper INT1 and INT2 pin operation
+    intConfig1Register.intAsyncReset = 1; // user should change setting to 0 from default setting of 1, for proper INT1 and INT2 pin operation
     WriteRegister(ICM_INT_CONFIG1_ADDRESS, intConfig1Register.value);
 
     // Configure interrupt source
@@ -263,7 +263,7 @@ IcmTestResult Icm12Test(void) {
     }
 
     // Check interrupt
-    const uint32_t timeout = TimerGetTicks64() + (TIMER_TICKS_PER_SECOND / 10);
+    const uint64_t timeout = TimerGetTicks64() + (TIMER_TICKS_PER_SECOND / 10);
     while (true) {
         IcmData data;
         if (Icm12GetData(&data) == IcmResultOk) {
