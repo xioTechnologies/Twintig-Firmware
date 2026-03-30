@@ -14,9 +14,7 @@
         ],
         "commands": [
             "{\"colour\":\"#000F0F\"}",
-            "{\"gyroscope_anti_aliasing\":585}",
-            "{\"accelerometer_anti_aliasing\":585}",
-            "{\"sample_rate\":1000}",
+            "{\"sample_rate\":800}",
             "{\"ahrs_update_rate_divisor\":0}"
         ]
     },
@@ -28,9 +26,7 @@
         ],
         "commands": [
             "{\"colour\":\"#0F000F\"}",
-            "{\"gyroscope_anti_aliasing\":3979}",
-            "{\"accelerometer_anti_aliasing\":3979}",
-            "{\"sample_rate\":8000}"
+            "{\"sample_rate\":6400}"
         ]
     },
     {

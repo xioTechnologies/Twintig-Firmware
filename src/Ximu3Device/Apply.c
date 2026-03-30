@@ -97,20 +97,18 @@ static void ApplyIcm(const Context * const context) {
     }
 
     // Do nothing if settings unchanged
-    if ((Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeNotchFilter)
-        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeAntiAliasing)
-        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAccelerometerAntiAliasing)
-        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSampleRate)) == false) {
+    if ((Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSampleRate)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeLowPassFilter)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAccelerometerLowPassFilter)) == false) {
         return;
     }
 
     // Apply settings
     const Ximu3SettingsValues * const settingsValues = Ximu3SettingsGet(context->settings);
     const IcmSettings icmSettings = {
-        .gyroscopeNotchFilterEnabled = settingsValues->gyroscopeNotchFilter,
-        .gyroscopeAntiAliasing = settingsValues->gyroscopeAntiAliasing,
-        .accelerometerAntiAliasing = settingsValues->accelerometerAntiAliasing,
         .sampleRate = settingsValues->sampleRate,
+        .gyroscopeLowPassFilter = settingsValues->gyroscopeLowPassFilter,
+        .accelerometerLowPassFilter = settingsValues->accelerometerLowPassFilter,
     };
     context->imu->icm->initialise(&icmSettings);
 }

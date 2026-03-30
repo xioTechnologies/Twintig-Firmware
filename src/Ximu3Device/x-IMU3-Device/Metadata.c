@@ -21,10 +21,9 @@ static const char* const names[] = {
     "Serial Enabled",
     "Baud Rate",
     "RTS/CTS",
-    "Gyroscope Notch Filter",
-    "Gyroscope Anti-Aliasing",
-    "Accelerometer Anti-Aliasing",
     "Sample Rate",
+    "Gyroscope Low-Pass Filter",
+    "Accelerometer Low-Pass Filter",
     "Axis Remap",
     "Bias Correction",
     "AHRS Update Rate Divisor",
@@ -60,10 +59,9 @@ static const char* const keys[] = {
     "serial_enabled",
     "baud_rate",
     "rts_cts",
-    "gyroscope_notch_filter",
-    "gyroscope_anti_aliasing",
-    "accelerometer_anti_aliasing",
     "sample_rate",
+    "gyroscope_low_pass_filter",
+    "accelerometer_low_pass_filter",
     "axis_remap",
     "bias_correction",
     "ahrs_update_rate_divisor",
@@ -99,10 +97,9 @@ static const MetadataType types[] = {
     MetadataTypeBool,
     MetadataTypeUint32,
     MetadataTypeBool,
-    MetadataTypeBool,
-    MetadataTypeIcmAntiAliasing,
-    MetadataTypeIcmAntiAliasing,
     MetadataTypeIcmSampleRate,
+    MetadataTypeIcmLowPassFilter,
+    MetadataTypeIcmLowPassFilter,
     MetadataTypeFusionRemapAlignment,
     MetadataTypeBool,
     MetadataTypeUint32,
@@ -138,10 +135,9 @@ static const size_t sizes[] = {
     sizeof (((Ximu3SettingsValues*) 0)->serialEnabled),
     sizeof (((Ximu3SettingsValues*) 0)->baudRate),
     sizeof (((Ximu3SettingsValues*) 0)->rtsCts),
-    sizeof (((Ximu3SettingsValues*) 0)->gyroscopeNotchFilter),
-    sizeof (((Ximu3SettingsValues*) 0)->gyroscopeAntiAliasing),
-    sizeof (((Ximu3SettingsValues*) 0)->accelerometerAntiAliasing),
     sizeof (((Ximu3SettingsValues*) 0)->sampleRate),
+    sizeof (((Ximu3SettingsValues*) 0)->gyroscopeLowPassFilter),
+    sizeof (((Ximu3SettingsValues*) 0)->accelerometerLowPassFilter),
     sizeof (((Ximu3SettingsValues*) 0)->axisRemap),
     sizeof (((Ximu3SettingsValues*) 0)->biasCorrection),
     sizeof (((Ximu3SettingsValues*) 0)->ahrsUpdateRateDivisor),
@@ -177,10 +173,9 @@ static const void* const defaults[] = {
     (void*) (&(bool) {true}),
     (void*) (&(uint32_t) {115200}),
     (void*) (&(bool) {false}),
-    (void*) (&(bool) {true}),
-    (void*) (&(IcmAntiAliasing) {IcmAntiAliasing42Hz}),
-    (void*) (&(IcmAntiAliasing) {IcmAntiAliasing42Hz}),
     (void*) (&(IcmSampleRate) {IcmSampleRate100Hz}),
+    (void*) (&(IcmLowPassFilter) {IcmLowPassFilterBypass}),
+    (void*) (&(IcmLowPassFilter) {IcmLowPassFilterBypass}),
     (void*) (&(FusionRemapAlignment) {FusionRemapAlignmentPXPYPZ}),
     (void*) (&(bool) {false}),
     (void*) (&(uint32_t) {1}),
@@ -233,7 +228,6 @@ static const bool preserveds[] = {
     false,
     false,
     false,
-    false,
 };
 
 static const bool readOnlys[] = {
@@ -251,7 +245,6 @@ static const bool readOnlys[] = {
     true,
     true,
     true,
-    false,
     false,
     false,
     false,
@@ -313,14 +306,12 @@ static void* GetValue(Ximu3Settings * const settings, const Ximu3SettingsIndex i
             return &settings->values.baudRate;
         case Ximu3SettingsIndexRtsCts:
             return &settings->values.rtsCts;
-        case Ximu3SettingsIndexGyroscopeNotchFilter:
-            return &settings->values.gyroscopeNotchFilter;
-        case Ximu3SettingsIndexGyroscopeAntiAliasing:
-            return &settings->values.gyroscopeAntiAliasing;
-        case Ximu3SettingsIndexAccelerometerAntiAliasing:
-            return &settings->values.accelerometerAntiAliasing;
         case Ximu3SettingsIndexSampleRate:
             return &settings->values.sampleRate;
+        case Ximu3SettingsIndexGyroscopeLowPassFilter:
+            return &settings->values.gyroscopeLowPassFilter;
+        case Ximu3SettingsIndexAccelerometerLowPassFilter:
+            return &settings->values.accelerometerLowPassFilter;
         case Ximu3SettingsIndexAxisRemap:
             return &settings->values.axisRemap;
         case Ximu3SettingsIndexBiasCorrection:

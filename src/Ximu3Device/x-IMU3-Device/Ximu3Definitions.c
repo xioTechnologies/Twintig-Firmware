@@ -58,17 +58,14 @@ Ximu3Result Ximu3SettingsIndexFrom(Ximu3SettingsIndex * const index, const int i
         case Ximu3SettingsIndexRtsCts:
             *index = Ximu3SettingsIndexRtsCts;
             break;
-        case Ximu3SettingsIndexGyroscopeNotchFilter:
-            *index = Ximu3SettingsIndexGyroscopeNotchFilter;
-            break;
-        case Ximu3SettingsIndexGyroscopeAntiAliasing:
-            *index = Ximu3SettingsIndexGyroscopeAntiAliasing;
-            break;
-        case Ximu3SettingsIndexAccelerometerAntiAliasing:
-            *index = Ximu3SettingsIndexAccelerometerAntiAliasing;
-            break;
         case Ximu3SettingsIndexSampleRate:
             *index = Ximu3SettingsIndexSampleRate;
+            break;
+        case Ximu3SettingsIndexGyroscopeLowPassFilter:
+            *index = Ximu3SettingsIndexGyroscopeLowPassFilter;
+            break;
+        case Ximu3SettingsIndexAccelerometerLowPassFilter:
+            *index = Ximu3SettingsIndexAccelerometerLowPassFilter;
             break;
         case Ximu3SettingsIndexAxisRemap:
             *index = Ximu3SettingsIndexAxisRemap;

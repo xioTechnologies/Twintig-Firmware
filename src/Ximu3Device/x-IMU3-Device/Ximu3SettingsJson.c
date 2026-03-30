@@ -86,7 +86,7 @@ void Ximu3SettingsJsonGetValue(Ximu3Settings * const settings, char* const desti
             break;
         case MetadataTypeFusionConvention:
         case MetadataTypeFusionRemapAlignment:
-        case MetadataTypeIcmAntiAliasing:
+        case MetadataTypeIcmLowPassFilter:
         case MetadataTypeIcmSampleRate:
         case MetadataTypeSendDataMessageMode:
         case MetadataTypeSendInterfaceMode:
@@ -228,7 +228,7 @@ JsonResult Ximu3SettingsJsonSetKeyValue(Ximu3Settings * const settings, const ch
             return ParseFloat(settings, index, value, overrideReadOnly);
         case MetadataTypeFusionConvention:
         case MetadataTypeFusionRemapAlignment:
-        case MetadataTypeIcmAntiAliasing:
+        case MetadataTypeIcmLowPassFilter:
         case MetadataTypeIcmSampleRate:
         case MetadataTypeSendDataMessageMode:
         case MetadataTypeSendInterfaceMode:

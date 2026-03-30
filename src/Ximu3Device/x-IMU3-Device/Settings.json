@@ -112,24 +112,19 @@
             "default": "{false}"
         },
         {
-            "name": "Gyroscope Notch Filter",
-            "declaration": "bool name",
-            "default": "{true}"
-        },
-        {
-            "name": "Gyroscope Anti-Aliasing",
-            "declaration": "IcmAntiAliasing name",
-            "default": "{IcmAntiAliasing42Hz}"
-        },
-        {
-            "name": "Accelerometer Anti-Aliasing",
-            "declaration": "IcmAntiAliasing name",
-            "default": "{IcmAntiAliasing42Hz}"
-        },
-        {
             "name": "Sample Rate",
             "declaration": "IcmSampleRate name",
             "default": "{IcmSampleRate100Hz}"
+        },
+        {
+            "name": "Gyroscope Low-Pass Filter",
+            "declaration": "IcmLowPassFilter name",
+            "default": "{IcmLowPassFilterBypass}"
+        },
+        {
+            "name": "Accelerometer Low-Pass Filter",
+            "declaration": "IcmLowPassFilter name",
+            "default": "{IcmLowPassFilterBypass}"
         },
         {
             "name": "Axis Remap",

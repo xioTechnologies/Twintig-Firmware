@@ -197,7 +197,7 @@ void ImuSetSettings(Imu * const imu, const ImuSettings * const settings) {
             .convention = imu->settings.axesConvention,
             .headingMode = FusionAhrsHeadingModeRelative,
             .gain = imu->settings.ahrsGain,
-            .gyroscopeRange = imu->settings.overrangeRecovery ? 2000.0f : 0.0f,
+            .gyroscopeRange = imu->settings.overrangeRecovery ? 4000.0f : 0.0f,
             .accelerationRejection = imu->settings.accelerationRejection ? 10.0f : 0.0f,
             .magneticRejection = 0.0f,
             .rejectionTimeout = fusionAhrsDefaultSettings.rejectionTimeout,
