@@ -16,7 +16,7 @@ typedef enum {
     MetadataTypeFusionMatrix,
     MetadataTypeFusionRemapAlignment,
     MetadataTypeFusionVector,
-    MetadataTypeIcmAntiAliasing,
+    MetadataTypeIcmLowPassFilter,
     MetadataTypeIcmSampleRate,
     MetadataTypeSendAhrsMessageType,
     MetadataTypeSendDataMessageMode,
