@@ -1,7 +1,7 @@
 /**
  * @file IcmConfig.h
  * @author Seb Madgwick
- * @brief ICM-42688-P driver.
+ * @brief ICM-45686 driver.
  */
 
 #ifndef ICM_CONFIG_H

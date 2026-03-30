@@ -11,7 +11,7 @@
 
 #define XIMU3_MAX_KEY_LENGTH (33)
 
-#define XIMU3_NUMBER_OF_SETTINGS (35)
+#define XIMU3_NUMBER_OF_SETTINGS (34)
 
 #define XIMU3_TERMINATION '\n'
 
@@ -45,10 +45,9 @@ typedef struct {
     bool serialEnabled;
     uint32_t serialBaudRate;
     bool serialRtsCtsEnabled;
-    bool gyroscopeNotchFilterEnabled;
-    IcmAntiAliasing gyroscopeAntiAliasing;
-    IcmAntiAliasing accelerometerAntiAliasing;
     IcmSampleRate sampleRate;
+    IcmLowPassFilter gyroscopeLowPassFilter;
+    IcmLowPassFilter accelerometerLowPassFilter;
     FusionRemapAlignment axesRemap;
     bool gyroscopeBiasCorrectionEnabled;
     uint32_t ahrsUpdateRateDivisor;
@@ -83,10 +82,9 @@ typedef enum {
     Ximu3SettingsIndexSerialEnabled,
     Ximu3SettingsIndexSerialBaudRate,
     Ximu3SettingsIndexSerialRtsCtsEnabled,
-    Ximu3SettingsIndexGyroscopeNotchFilterEnabled,
-    Ximu3SettingsIndexGyroscopeAntiAliasing,
-    Ximu3SettingsIndexAccelerometerAntiAliasing,
     Ximu3SettingsIndexSampleRate,
+    Ximu3SettingsIndexGyroscopeLowPassFilter,
+    Ximu3SettingsIndexAccelerometerLowPassFilter,
     Ximu3SettingsIndexAxesRemap,
     Ximu3SettingsIndexGyroscopeBiasCorrectionEnabled,
     Ximu3SettingsIndexAhrsUpdateRateDivisor,

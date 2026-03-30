@@ -183,90 +183,31 @@ static void SetValue(const Metadata * const metadata, const void* const value) {
             }
             memcpy(metadata->value, value, metadata->size);
             return;
-        case MetadataTypeIcmAntiAliasing:
-            switch (*(IcmAntiAliasing*) value) {
-                case IcmAntiAliasingDisabled:
-                case IcmAntiAliasing42Hz:
-                case IcmAntiAliasing84Hz:
-                case IcmAntiAliasing126Hz:
-                case IcmAntiAliasing170Hz:
-                case IcmAntiAliasing213Hz:
-                case IcmAntiAliasing258Hz:
-                case IcmAntiAliasing303Hz:
-                case IcmAntiAliasing348Hz:
-                case IcmAntiAliasing394Hz:
-                case IcmAntiAliasing441Hz:
-                case IcmAntiAliasing488Hz:
-                case IcmAntiAliasing536Hz:
-                case IcmAntiAliasing585Hz:
-                case IcmAntiAliasing634Hz:
-                case IcmAntiAliasing684Hz:
-                case IcmAntiAliasing734Hz:
-                case IcmAntiAliasing785Hz:
-                case IcmAntiAliasing837Hz:
-                case IcmAntiAliasing890Hz:
-                case IcmAntiAliasing943Hz:
-                case IcmAntiAliasing997Hz:
-                case IcmAntiAliasing1051Hz:
-                case IcmAntiAliasing1107Hz:
-                case IcmAntiAliasing1163Hz:
-                case IcmAntiAliasing1220Hz:
-                case IcmAntiAliasing1277Hz:
-                case IcmAntiAliasing1336Hz:
-                case IcmAntiAliasing1395Hz:
-                case IcmAntiAliasing1454Hz:
-                case IcmAntiAliasing1515Hz:
-                case IcmAntiAliasing1577Hz:
-                case IcmAntiAliasing1639Hz:
-                case IcmAntiAliasing1702Hz:
-                case IcmAntiAliasing1766Hz:
-                case IcmAntiAliasing1830Hz:
-                case IcmAntiAliasing1896Hz:
-                case IcmAntiAliasing1962Hz:
-                case IcmAntiAliasing2029Hz:
-                case IcmAntiAliasing2097Hz:
-                case IcmAntiAliasing2166Hz:
-                case IcmAntiAliasing2235Hz:
-                case IcmAntiAliasing2306Hz:
-                case IcmAntiAliasing2377Hz:
-                case IcmAntiAliasing2449Hz:
-                case IcmAntiAliasing2522Hz:
-                case IcmAntiAliasing2596Hz:
-                case IcmAntiAliasing2671Hz:
-                case IcmAntiAliasing2746Hz:
-                case IcmAntiAliasing2823Hz:
-                case IcmAntiAliasing2900Hz:
-                case IcmAntiAliasing2978Hz:
-                case IcmAntiAliasing3057Hz:
-                case IcmAntiAliasing3137Hz:
-                case IcmAntiAliasing3217Hz:
-                case IcmAntiAliasing3299Hz:
-                case IcmAntiAliasing3381Hz:
-                case IcmAntiAliasing3464Hz:
-                case IcmAntiAliasing3548Hz:
-                case IcmAntiAliasing3633Hz:
-                case IcmAntiAliasing3718Hz:
-                case IcmAntiAliasing3805Hz:
-                case IcmAntiAliasing3892Hz:
-                case IcmAntiAliasing3979Hz:
+        case MetadataTypeIcmLowPassFilter:
+            switch (*(IcmLowPassFilter*) value) {
+                case IcmLowPassFilterBypass:
+                case IcmLowPassFilter4:
+                case IcmLowPassFilter8:
+                case IcmLowPassFilter16:
+                case IcmLowPassFilter32:
+                case IcmLowPassFilter64:
+                case IcmLowPassFilter128:
                     memcpy(metadata->value, value, metadata->size);
                     return;
             }
             break;
         case MetadataTypeIcmSampleRate:
             switch (*(IcmSampleRate*) value) {
-                case IcmSampleRate32kHz:
-                case IcmSampleRate16kHz:
-                case IcmSampleRate8kHz:
-                case IcmSampleRate4kHz:
-                case IcmSampleRate2kHz:
-                case IcmSampleRate1kHz:
-                case IcmSampleRate500Hz:
-                case IcmSampleRate200Hz:
-                case IcmSampleRate100Hz:
-                case IcmSampleRate50Hz:
-                case IcmSampleRate25Hz:
                 case IcmSampleRate12Hz:
+                case IcmSampleRate25Hz:
+                case IcmSampleRate50Hz:
+                case IcmSampleRate100Hz:
+                case IcmSampleRate200Hz:
+                case IcmSampleRate400Hz:
+                case IcmSampleRate800Hz:
+                case IcmSampleRate1600Hz:
+                case IcmSampleRate3200Hz:
+                case IcmSampleRate6400Hz:
                     memcpy(metadata->value, value, metadata->size);
                     return;
             }
