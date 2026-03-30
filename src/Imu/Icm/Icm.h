@@ -181,10 +181,10 @@ typedef enum {
  * @brief ICM interface.
  */
 typedef struct {
-    void(*initialise)(const IcmSettings * const settings);
-    void (*deinitialise)(void);
-    IcmResult(*getData)(IcmData * const data);
-    uint32_t(*bufferOverflow)(void);
+    void (*const initialise) (const IcmSettings * const settings);
+    void (*const deinitialise) (void);
+    IcmResult(*const getData)(IcmData * const data);
+    uint32_t(*const bufferOverflow)(void);
 } Icm;
 
 //------------------------------------------------------------------------------
