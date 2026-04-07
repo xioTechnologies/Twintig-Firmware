@@ -68,11 +68,9 @@ static void ApplySerial(Context * const context) {
     }
 
     // Do nothing if settings unchanged
-    bool applyPending = false;
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSerialEnabled);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSerialBaudRate);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSerialRtsCtsEnabled);
-    if (applyPending == false) {
+    if ((Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSerialEnabled)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSerialBaudRate)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSerialRtsCtsEnabled)) == false) {
         return;
     }
 
@@ -97,12 +95,10 @@ static void ApplyIcm(Context * const context) {
     }
 
     // Do nothing if settings unchanged
-    bool applyPending = false;
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeNotchFilterEnabled);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeAntiAliasing);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAccelerometerAntiAliasing);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSampleRate);
-    if (applyPending == false) {
+    if ((Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeNotchFilterEnabled)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeAntiAliasing)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAccelerometerAntiAliasing)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSampleRate)) == false) {
         return;
     }
 
@@ -128,21 +124,19 @@ static void ApplyImu(Context * const context) {
     }
 
     // Do nothing if settings unchanged
-    bool applyPending = false;
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeMisalignment);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeSensitivity);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeOffset);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAccelerometerMisalignment);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAccelerometerSensitivity);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAccelerometerOffset);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSampleRate);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAxesRemap);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeBiasCorrectionEnabled);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsUpdateRateDivisor);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsAxesConvention);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsGain);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsAccelerationRejection);
-    if (applyPending == false) {
+    if ((Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeMisalignment)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeSensitivity)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeOffset)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAccelerometerMisalignment)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAccelerometerSensitivity)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAccelerometerOffset)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSampleRate)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAxesRemap)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeBiasCorrectionEnabled)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsUpdateRateDivisor)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsAxesConvention)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsGain)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsAccelerationRejection)) == false) {
         return;
     }
 
@@ -172,15 +166,13 @@ static void ApplyImu(Context * const context) {
 static void ApplySend(Context * const context) {
 
     // Do nothing if settings unchanged
-    bool applyPending = false;
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexBinaryModeEnabled);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsMessageType);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexInertialMessageRateDivisor);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsMessageRateDivisor);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexTemperatureMessageRateDivisor);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexUsbDataMessagesEnabled);
-    applyPending |= Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSerialDataMessagesEnabled);
-    if (applyPending == false) {
+    if ((Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexBinaryModeEnabled)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsMessageType)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexInertialMessageRateDivisor)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsMessageRateDivisor)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexTemperatureMessageRateDivisor)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexUsbDataMessagesEnabled)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSerialDataMessagesEnabled)) == false) {
         return;
     }
 
