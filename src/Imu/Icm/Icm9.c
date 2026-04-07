@@ -34,6 +34,7 @@ const Icm icm9 = {
     .getData = Icm9GetData,
     .bufferOverflow = Icm9BufferOverflow,
 };
+
 static SpiBusClient* spiBusClient;
 static uint8_t deviceId;
 static volatile __attribute__((coherent)) IcmSpiPacket spiPacket;
