@@ -32,6 +32,14 @@
 #include "Timer/Timer.h"
 
 //------------------------------------------------------------------------------
+// Definitions
+
+/**
+ * @brief Max write size.
+ */
+#define MAX_WRITE_SIZE (256)
+
+//------------------------------------------------------------------------------
 // Variables
 
 Imu imuA = {.icm = &icm1, .send = &sendA};
@@ -71,8 +79,7 @@ void ImuTasks(Imu * const imu) {
     }
 
     // Process available data
-    int numberOfSamples = 0;
-    while (numberOfSamples++ < 8) {
+    while (SendAvailable(imu->send, MAX_WRITE_SIZE)) {
 
         // Get data
         IcmData icmData;

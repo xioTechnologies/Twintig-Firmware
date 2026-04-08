@@ -1,7 +1,7 @@
 /**
  * @file Apply.h
  * @author Seb Madgwick
- * @brief Apply.
+ * @brief Applies settings.
  */
 
 #ifndef APPLY_H

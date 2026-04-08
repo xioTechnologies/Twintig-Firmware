@@ -30,7 +30,7 @@
             </Group>
         </Group>
         <Group name="Data Messages" expand="true">
-            <Setting key="binary_mode_enabled" name="Binary Mode" type="bool"/>
+            <Setting key="data_message_mode" name="Mode" type="SendDataMessageMode"/>
             <Setting key="ahrs_message_type" name="AHRS Message Type" type="SendAhrsMessageType"/>
             <Group name="Message Rates" expand="true">
                 <Setting key="inertial_message_rate_divisor" name="Inertial" type="number"/>
@@ -38,8 +38,8 @@
                 <Setting key="temperature_message_rate_divisor" name="Temperature" type="number"/>
             </Group>
             <Group name="Interfaces" expand="true">
-                <Setting key="usb_data_messages_enabled" name="USB" type="bool"/>
-                <Setting key="serial_data_messages_enabled" name="Serial" type="bool"/>
+                <Setting key="usb_send_mode" name="USB" type="SendInterfaceMode"/>
+                <Setting key="serial_send_mode" name="Serial" type="SendInterfaceMode"/>
             </Group>
         </Group>
         <Margin/>
@@ -162,6 +162,15 @@
             <Enumerator name="Euler Angles" value="2"/>
             <Enumerator name="Linear Acceleration" value="3"/>
             <Enumerator name="Earth Acceleration" value="4"/>
+        </Enum>
+        <Enum name="SendDataMessageMode">
+            <Enumerator name="Binary" value="0"/>
+            <Enumerator name="ASCII" value="1"/>
+        </Enum>
+        <Enum name="SendInterfaceMode">
+            <Enumerator name="Disabled" value="0"/>
+            <Enumerator name="Blocking" value="1"/>
+            <Enumerator name="Non-Blocking" value="2"/>
         </Enum>
     </Enums>
 </DeviceSettings>

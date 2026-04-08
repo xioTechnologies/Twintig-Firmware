@@ -19,6 +19,8 @@ typedef enum {
     MetadataTypeIcmAntiAliasing,
     MetadataTypeIcmSampleRate,
     MetadataTypeSendAhrsMessageType,
+    MetadataTypeSendDataMessageMode,
+    MetadataTypeSendInterfaceMode,
     MetadataTypeString,
     MetadataTypeUint32,
 } MetadataType;

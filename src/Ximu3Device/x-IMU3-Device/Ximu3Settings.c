@@ -282,6 +282,23 @@ static void SetValue(const Metadata * const metadata, const void* const value) {
                     return;
             }
             break;
+        case MetadataTypeSendDataMessageMode:
+            switch (*(SendDataMessageMode*) value) {
+                case SendDataMessageModeBinary:
+                case SendDataMessageModeAscii:
+                    memcpy(metadata->value, value, metadata->size);
+                    return;
+            }
+            break;
+        case MetadataTypeSendInterfaceMode:
+            switch (*(SendInterfaceMode*) value) {
+                case SendInterfaceModeDisabled:
+                case SendInterfaceModeBlocking:
+                case SendInterfaceModeNonBlocking:
+                    memcpy(metadata->value, value, metadata->size);
+                    return;
+            }
+            break;
         case MetadataTypeString:
             CopyString(metadata->value, metadata->size, value);
             return;

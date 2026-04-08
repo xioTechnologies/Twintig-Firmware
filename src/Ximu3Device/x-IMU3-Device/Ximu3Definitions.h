@@ -57,13 +57,13 @@ typedef struct {
     FusionConvention ahrsAxesConvention;
     float ahrsGain;
     float ahrsAccelerationRejection;
-    bool binaryModeEnabled;
+    SendDataMessageMode dataMessageMode;
     SendAhrsMessageType ahrsMessageType;
     uint32_t inertialMessageRateDivisor;
     uint32_t ahrsMessageRateDivisor;
     uint32_t temperatureMessageRateDivisor;
-    bool usbDataMessagesEnabled;
-    bool serialDataMessagesEnabled;
+    SendInterfaceMode usbSendMode;
+    SendInterfaceMode serialSendMode;
 } Ximu3SettingsValues;
 
 typedef enum {
@@ -95,13 +95,13 @@ typedef enum {
     Ximu3SettingsIndexAhrsAxesConvention,
     Ximu3SettingsIndexAhrsGain,
     Ximu3SettingsIndexAhrsAccelerationRejection,
-    Ximu3SettingsIndexBinaryModeEnabled,
+    Ximu3SettingsIndexDataMessageMode,
     Ximu3SettingsIndexAhrsMessageType,
     Ximu3SettingsIndexInertialMessageRateDivisor,
     Ximu3SettingsIndexAhrsMessageRateDivisor,
     Ximu3SettingsIndexTemperatureMessageRateDivisor,
-    Ximu3SettingsIndexUsbDataMessagesEnabled,
-    Ximu3SettingsIndexSerialDataMessagesEnabled,
+    Ximu3SettingsIndexUsbSendMode,
+    Ximu3SettingsIndexSerialSendMode,
 } Ximu3SettingsIndex;
 
 Ximu3Result Ximu3SettingsIndexFrom(Ximu3SettingsIndex * const index, const int integer);

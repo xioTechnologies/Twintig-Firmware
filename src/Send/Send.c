@@ -2,6 +2,11 @@
  * @file Send.c
  * @author Seb Madgwick
  * @brief Message sending.
+ *
+ * Send priority:
+ * High     Error data messages
+ * Medium   Command responses and notification data messages
+ * Low      All other data messages
  */
 
 //------------------------------------------------------------------------------
@@ -60,12 +65,15 @@ static void SendEarthAcceleration(Send * const send, const SendAhrsData * const 
 static void SendDataMessage(Send * const send, const void* const data, const size_t numberOfBytes, const Priority priority);
 static inline __attribute__((always_inline)) size_t Write(const MuxChannel channel, const Interface * const interface, const void* const data, const size_t numberOfBytes, const Priority priority);
 static inline __attribute__((always_inline)) bool AvailableWrite(const MuxChannel channel, const Interface * const interface, const size_t numberOfBytes, const Priority priority);
+static inline __attribute__((always_inline)) bool Blocked(const MuxChannel channel, const SendInterfaceMode mode, const Interface * const interface, const size_t numberOfBytes);
 
 //------------------------------------------------------------------------------
 // Variables
 
 static const Interface usb = {.enabled = UsbCdcPortOpen, .availableWrite = MuxUsbAvailableWrite, .write = MuxUsbWrite};
 static const Interface serial = {.enabled = SerialEnabled, .availableWrite = MuxSerialAvailableWrite, .write = MuxSerialWrite};
+
+static const char* whoseBlocking = "";
 
 Send sendMain = {.channel = MuxChannelNone, .led = &ledMain};
 Send sendA = {.channel = MuxChannelA, .led = &ledA};
@@ -145,7 +153,7 @@ void SendInertial(Send * const send, const SendInertialData * const inertialData
     };
     uint8_t message[128];
     size_t messageSize;
-    if (send->settings.binaryModeEnabled) {
+    if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
         messageSize = Ximu3DataInertialBinary(message, sizeof (message), &ximu3Data);
     } else {
         messageSize = Ximu3DataInertialAscii(message, sizeof (message), &ximu3Data);
@@ -213,7 +221,7 @@ static void SendAhrsStatus(Send * const send, const uint64_t ticks, const Fusion
     };
     uint8_t message[128];
     size_t messageSize;
-    if (send->settings.binaryModeEnabled) {
+    if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
         messageSize = Ximu3DataAhrsStatusBinary(message, sizeof (message), &ximu3Data);
     } else {
         messageSize = Ximu3DataAhrsStatusAscii(message, sizeof (message), &ximu3Data);
@@ -237,7 +245,7 @@ static void SendQuaternion(Send * const send, const SendAhrsData * const ahrsDat
     };
     uint8_t message[128];
     size_t messageSize;
-    if (send->settings.binaryModeEnabled) {
+    if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
         messageSize = Ximu3DataQuaternionBinary(message, sizeof (message), &ximu3Data);
     } else {
         messageSize = Ximu3DataQuaternionAscii(message, sizeof (message), &ximu3Data);
@@ -266,7 +274,7 @@ static void SendRotationMatrix(Send * const send, const SendAhrsData * const ahr
     };
     uint8_t message[128];
     size_t messageSize;
-    if (send->settings.binaryModeEnabled) {
+    if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
         messageSize = Ximu3DataRotationMatrixBinary(message, sizeof (message), &ximu3Data);
     } else {
         messageSize = Ximu3DataRotationMatrixAscii(message, sizeof (message), &ximu3Data);
@@ -289,7 +297,7 @@ static void SendEulerAngles(Send * const send, const SendAhrsData * const ahrsDa
     };
     uint8_t message[128];
     size_t messageSize;
-    if (send->settings.binaryModeEnabled) {
+    if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
         messageSize = Ximu3DataEulerAnglesBinary(message, sizeof (message), &ximu3Data);
     } else {
         messageSize = Ximu3DataEulerAnglesAscii(message, sizeof (message), &ximu3Data);
@@ -317,7 +325,7 @@ static void SendLinearAcceleration(Send * const send, const SendAhrsData * const
     };
     uint8_t message[128];
     size_t messageSize;
-    if (send->settings.binaryModeEnabled) {
+    if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
         messageSize = Ximu3DataLinearAccelerationBinary(message, sizeof (message), &ximu3Data);
     } else {
         messageSize = Ximu3DataLinearAccelerationAscii(message, sizeof (message), &ximu3Data);
@@ -345,7 +353,7 @@ static void SendEarthAcceleration(Send * const send, const SendAhrsData * const 
     };
     uint8_t message[128];
     size_t messageSize;
-    if (send->settings.binaryModeEnabled) {
+    if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
         messageSize = Ximu3DataEarthAccelerationBinary(message, sizeof (message), &ximu3Data);
     } else {
         messageSize = Ximu3DataEarthAccelerationAscii(message, sizeof (message), &ximu3Data);
@@ -387,7 +395,7 @@ void SendTemperature(Send * const send, const SendTemperatureData * const temper
     };
     uint8_t message[128];
     size_t messageSize;
-    if (send->settings.binaryModeEnabled) {
+    if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
         messageSize = Ximu3DataTemperatureBinary(message, sizeof (message), &ximu3Data);
     } else {
         messageSize = Ximu3DataTemperatureAscii(message, sizeof (message), &ximu3Data);
@@ -417,7 +425,7 @@ void SendNotification(Send * const send, const char* const format, ...) {
     };
     uint8_t message[128];
     size_t messageSize;
-    if (send->settings.binaryModeEnabled) {
+    if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
         messageSize = Ximu3DataNotificationBinary(message, sizeof (message), &ximu3Data);
     } else {
         messageSize = Ximu3DataNotificationAscii(message, sizeof (message), &ximu3Data);
@@ -447,7 +455,7 @@ void SendError(Send * const send, const char* const format, ...) {
     };
     uint8_t message[128];
     size_t messageSize;
-    if (send->settings.binaryModeEnabled) {
+    if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
         messageSize = Ximu3DataErrorBinary(message, sizeof (message), &ximu3Data);
     } else {
         messageSize = Ximu3DataErrorAscii(message, sizeof (message), &ximu3Data);
@@ -466,10 +474,10 @@ void SendError(Send * const send, const char* const format, ...) {
  * @param priority Priority.
  */
 static void SendDataMessage(Send * const send, const void* const data, const size_t numberOfBytes, const Priority priority) {
-    if (send->settings.usbDataMessagesEnabled) {
+    if (send->settings.usbSendMode != SendInterfaceModeDisabled) {
         send->usbBufferOverflow += Write(send->channel, &usb, data, numberOfBytes, priority);
     }
-    if (send->settings.serialDataMessagesEnabled) {
+    if (send->settings.serialSendMode != SendInterfaceModeDisabled) {
         send->serialBufferOverflow += Write(send->channel, &serial, data, numberOfBytes, priority);
     }
 }
@@ -518,12 +526,12 @@ static inline __attribute__((always_inline)) size_t Write(const MuxChannel chann
 }
 
 /**
- * @brief Returns true if there is space available in the write buffer.
+ * @brief Returns true if there is enough space available in the write buffer.
  * @param channel Channel.
  * @param interface Interface.
  * @param numberOfBytes Number of bytes.
  * @param priority Priority.
- * @return True if there is space available in the write buffer.
+ * @return True if there is enough space available in the write buffer.
  */
 static inline __attribute__((always_inline)) bool AvailableWrite(const MuxChannel channel, const Interface * const interface, const size_t numberOfBytes, const Priority priority) {
     switch (priority) {
@@ -535,6 +543,46 @@ static inline __attribute__((always_inline)) bool AvailableWrite(const MuxChanne
             return interface->availableWrite(channel) > numberOfBytes;
     }
     return false; // avoid compiler warning
+}
+
+/**
+ * @brief Returns true if there is enough space available for low-priority data
+ * messages. Only enabled interfaces in blocking mode will limit availability.
+ * @param send Send structure.
+ * @param numberOfBytes Number of bytes.
+ * @return True if there is enough space available for low-priority data
+ * messages.
+ */
+bool SendAvailable(Send * const send, const size_t numberOfBytes) {
+    if (Blocked(send->channel, send->settings.usbSendMode, &usb, numberOfBytes)) {
+        whoseBlocking = "USB";
+        return false;
+    }
+    if (Blocked(send->channel, send->settings.serialSendMode, &serial, numberOfBytes)) {
+        whoseBlocking = "Serial";
+        return false;
+    }
+    return true;
+}
+
+/**
+ * @brief Returns true if the interface is blocked.
+ * @param channel Channel.
+ * @param mode Mode.
+ * @param interface Interface.
+ * @param numberOfBytes Number of bytes.
+ * @return True if the interface is blocked.
+ */
+static inline __attribute__((always_inline)) bool Blocked(const MuxChannel channel, const SendInterfaceMode mode, const Interface * const interface, const size_t numberOfBytes) {
+    return (mode == SendInterfaceModeBlocking) && interface->enabled() && (AvailableWrite(channel, interface, numberOfBytes, PriorityLow) == false);
+}
+
+/**
+ * @brief Returns the name of the last interface to block sending.
+ * @return The name of the last interface to block sending.
+ */
+const char* SendWhoseBlocking(void) {
+    return whoseBlocking;
 }
 
 /**

@@ -21,6 +21,14 @@
 // Definitions
 
 /**
+ * @brief Data message mode.
+ */
+typedef enum {
+    SendDataMessageModeBinary,
+    SendDataMessageModeAscii,
+} SendDataMessageMode;
+
+/**
  * @brief AHRS message type.
  */
 typedef enum {
@@ -32,16 +40,25 @@ typedef enum {
 } SendAhrsMessageType;
 
 /**
+ * @brief Interface mode.
+ */
+typedef enum {
+    SendInterfaceModeDisabled,
+    SendInterfaceModeBlocking,
+    SendInterfaceModeNonBlocking,
+} SendInterfaceMode;
+
+/**
  * @brief Settings.
  */
 typedef struct {
-    bool binaryModeEnabled;
+    SendDataMessageMode dataMessageMode;
     SendAhrsMessageType ahrsMessageType;
     uint32_t inertialMessageRateDivisor;
     uint32_t ahrsMessageRateDivisor;
     uint32_t temperatureMessageRateDivisor;
-    bool usbDataMessagesEnabled;
-    bool serialDataMessagesEnabled;
+    SendInterfaceMode usbSendMode;
+    SendInterfaceMode serialSendMode;
 } SendSettings;
 
 /**
@@ -123,6 +140,8 @@ void SendNotification(Send * const send, const char* const format, ...);
 void SendError(Send * const send, const char* const format, ...);
 void SendResponseUsb(Send * const send, const void* const data, const size_t numberOfBytes);
 void SendResponseSerial(Send * const send, const void* const data, const size_t numberOfBytes);
+bool SendAvailable(Send * const send, const size_t numberOfBytes);
+const char* SendWhoseBlocking(void);
 size_t SendUsbBufferOverflow(Send * const send);
 size_t SendSerialBufferOverflow(Send * const send);
 

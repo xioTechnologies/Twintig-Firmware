@@ -1,7 +1,7 @@
 /**
  * @file Apply.c
  * @author Seb Madgwick
- * @brief Apply.
+ * @brief Applies settings.
  */
 
 //------------------------------------------------------------------------------
@@ -166,25 +166,25 @@ static void ApplyImu(Context * const context) {
 static void ApplySend(Context * const context) {
 
     // Do nothing if settings unchanged
-    if ((Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexBinaryModeEnabled)
+    if ((Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexDataMessageMode)
         || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsMessageType)
         || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexInertialMessageRateDivisor)
         || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsMessageRateDivisor)
         || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexTemperatureMessageRateDivisor)
-        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexUsbDataMessagesEnabled)
-        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSerialDataMessagesEnabled)) == false) {
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexUsbSendMode)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSerialSendMode)) == false) {
         return;
     }
 
     // Apply settings
     const SendSettings sendSettings = {
-        .binaryModeEnabled = Ximu3SettingsGet(context->settings)->binaryModeEnabled,
+        .dataMessageMode = Ximu3SettingsGet(context->settings)->dataMessageMode,
         .ahrsMessageType = Ximu3SettingsGet(context->settings)->ahrsMessageType,
         .inertialMessageRateDivisor = Ximu3SettingsGet(context->settings)->inertialMessageRateDivisor,
         .ahrsMessageRateDivisor = Ximu3SettingsGet(context->settings)->ahrsMessageRateDivisor,
         .temperatureMessageRateDivisor = Ximu3SettingsGet(context->settings)->temperatureMessageRateDivisor,
-        .usbDataMessagesEnabled = Ximu3SettingsGet(context->settings)->usbDataMessagesEnabled,
-        .serialDataMessagesEnabled = Ximu3SettingsGet(context->settings)->serialDataMessagesEnabled,
+        .usbSendMode = Ximu3SettingsGet(context->settings)->usbSendMode,
+        .serialSendMode = Ximu3SettingsGet(context->settings)->serialSendMode,
     };
     SendSetSettings(context->send, &sendSettings);
 }
