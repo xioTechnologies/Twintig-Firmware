@@ -87,6 +87,76 @@ void CommandsSave(const char* * const value, Ximu3CommandResponse * const respon
 }
 
 /**
+ * @brief Initialise command.
+ * @param value Value.
+ * @param response Response.
+ * @param context Context.
+ */
+void CommandsInitialise(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
+    const Context * const context_ = context;
+    if (context_->imu == NULL) {
+        Ximu3CommandRespondError(response, "Command not applicable");
+        return;
+    }
+    if (Ximu3CommandParseNull(value, response) != Ximu3ResultOk) {
+        return;
+    }
+    ImuReset(context_->imu);
+    Ximu3CommandRespond(response);
+}
+
+/**
+ * @brief Heading command.
+ * @param value Value.
+ * @param response Response.
+ * @param context Context.
+ */
+void CommandsHeading(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
+    const Context * const context_ = context;
+    if (context_->imu == NULL) {
+        Ximu3CommandRespondError(response, "Command not applicable");
+        return;
+    }
+    float heading;
+    if (Ximu3CommandParseNumber(value, response, &heading) != Ximu3ResultOk) {
+        return;
+    }
+    ImuSetHeading(context_->imu, heading);
+    Ximu3CommandRespond(response);
+}
+
+/**
+ * @brief Note command.
+ * @param value Value.
+ * @param response Response.
+ * @param context Context.
+ */
+void CommandsNote(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
+    char string[XIMU3_VALUE_SIZE];
+    if (Ximu3CommandParseString(value, response, string, sizeof (string), NULL) != Ximu3ResultOk) {
+        return;
+    }
+    const Context * const context_ = context;
+    SendNotification(context_->send, string);
+    Ximu3CommandRespond(response);
+}
+
+/**
+ * @brief Timestamp command.
+ * @param value Value.
+ * @param response Response.
+ * @param context Context.
+ */
+void CommandsTimestamp(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
+    uint64_t timestamp;
+    if (Ximu3CommandParseNumberU64(value, response, &timestamp) != Ximu3ResultOk) {
+        return;
+    }
+    TimestampSet(timestamp);
+    Ximu3CommandRespond(response);
+}
+
+/**
  * @brief Blink command.
  * @param value Value.
  * @param response Response.
@@ -177,76 +247,6 @@ void CommandsHaptic(const char* * const value, Ximu3CommandResponse * const resp
         Ximu3CommandRespondError(response, "Invalid ID");
         return;
     }
-    Ximu3CommandRespond(response);
-}
-
-/**
- * @brief Initialise command.
- * @param value Value.
- * @param response Response.
- * @param context Context.
- */
-void CommandsInitialise(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
-    const Context * const context_ = context;
-    if (context_->imu == NULL) {
-        Ximu3CommandRespondError(response, "Command not applicable");
-        return;
-    }
-    if (Ximu3CommandParseNull(value, response) != Ximu3ResultOk) {
-        return;
-    }
-    ImuReset(context_->imu);
-    Ximu3CommandRespond(response);
-}
-
-/**
- * @brief Heading command.
- * @param value Value.
- * @param response Response.
- * @param context Context.
- */
-void CommandsHeading(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
-    const Context * const context_ = context;
-    if (context_->imu == NULL) {
-        Ximu3CommandRespondError(response, "Command not applicable");
-        return;
-    }
-    float heading;
-    if (Ximu3CommandParseNumber(value, response, &heading) != Ximu3ResultOk) {
-        return;
-    }
-    ImuSetHeading(context_->imu, heading);
-    Ximu3CommandRespond(response);
-}
-
-/**
- * @brief Timestamp command.
- * @param value Value.
- * @param response Response.
- * @param context Context.
- */
-void CommandsTimestamp(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
-    uint64_t timestamp;
-    if (Ximu3CommandParseNumberU64(value, response, &timestamp) != Ximu3ResultOk) {
-        return;
-    }
-    TimestampSet(timestamp);
-    Ximu3CommandRespond(response);
-}
-
-/**
- * @brief Note command.
- * @param value Value.
- * @param response Response.
- * @param context Context.
- */
-void CommandsNote(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
-    char string[XIMU3_VALUE_SIZE];
-    if (Ximu3CommandParseString(value, response, string, sizeof (string), NULL) != Ximu3ResultOk) {
-        return;
-    }
-    const Context * const context_ = context;
-    SendNotification(context_->send, string);
     Ximu3CommandRespond(response);
 }
 
