@@ -40,10 +40,10 @@ static Ximu3CommandInterface interfaces[] = {
 static const int numberOfInterfaces = sizeof (interfaces) / sizeof (Ximu3CommandInterface);
 
 static const Ximu3CommandMap commands[] = {
+    {"ping", CommandsPing},
     {"default", CommandsDefault},
     {"apply", CommandsApply},
     {"save", CommandsSave},
-    {"ping", CommandsPing},
     {"blink", CommandsBlink},
     {"strobe", CommandsStrobe},
     {"colour", CommandsColour},
@@ -52,8 +52,8 @@ static const Ximu3CommandMap commands[] = {
     {"initialise", CommandsInitialise},
     {"initialize", CommandsInitialise},
     {"heading", CommandsHeading},
-    {"note", CommandsNote},
     {"timestamp", CommandsTimestamp},
+    {"note", CommandsNote},
     {"factory", CommandsFactory},
     {"erase", CommandsErase},
 };

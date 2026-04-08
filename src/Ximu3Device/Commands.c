@@ -23,6 +23,20 @@
 // Functions
 
 /**
+ * @brief Ping command.
+ * @param value Value.
+ * @param response Response.
+ * @param context Context.
+ */
+void CommandsPing(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
+    if (Ximu3CommandParseNull(value, response) != Ximu3ResultOk) {
+        return;
+    }
+    const Context * const context_ = context;
+    Ximu3CommandRespondPing(response, Ximu3SettingsGet(context_->settings)->deviceName, Ximu3SettingsGet(context_->settings)->serialNumber);
+}
+
+/**
  * @brief Default command.
  * @param value Value.
  * @param response Response.
@@ -70,20 +84,6 @@ void CommandsSave(const char* * const value, Ximu3CommandResponse * const respon
     }
     Ximu3SettingsSave(context_->settings);
     Ximu3CommandRespond(response);
-}
-
-/**
- * @brief Ping command.
- * @param value Value.
- * @param response Response.
- * @param context Context.
- */
-void CommandsPing(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
-    if (Ximu3CommandParseNull(value, response) != Ximu3ResultOk) {
-        return;
-    }
-    const Context * const context_ = context;
-    Ximu3CommandRespondPing(response, Ximu3SettingsGet(context_->settings)->deviceName, Ximu3SettingsGet(context_->settings)->serialNumber);
 }
 
 /**
@@ -220,6 +220,21 @@ void CommandsHeading(const char* * const value, Ximu3CommandResponse * const res
 }
 
 /**
+ * @brief Timestamp command.
+ * @param value Value.
+ * @param response Response.
+ * @param context Context.
+ */
+void CommandsTimestamp(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
+    uint64_t timestamp;
+    if (Ximu3CommandParseNumberU64(value, response, &timestamp) != Ximu3ResultOk) {
+        return;
+    }
+    TimestampSet(timestamp);
+    Ximu3CommandRespond(response);
+}
+
+/**
  * @brief Note command.
  * @param value Value.
  * @param response Response.
@@ -232,21 +247,6 @@ void CommandsNote(const char* * const value, Ximu3CommandResponse * const respon
     }
     const Context * const context_ = context;
     SendNotification(context_->send, string);
-    Ximu3CommandRespond(response);
-}
-
-/**
- * @brief Timestamp command.
- * @param value Value.
- * @param response Response.
- * @param context Context.
- */
-void CommandsTimestamp(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
-    uint64_t timestamp;
-    if (Ximu3CommandParseNumberU64(value, response, &timestamp) != Ximu3ResultOk) {
-        return;
-    }
-    TimestampSet(timestamp);
     Ximu3CommandRespond(response);
 }
 
