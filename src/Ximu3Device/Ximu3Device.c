@@ -37,7 +37,7 @@ static Ximu3CommandInterface interfaces[] = {
     { .name = "Serial", .read = InterfacesSerialRead, .write = InterfacesSerialWrite},
 };
 
-static const int numberOfInterfaces = sizeof (interfaces) / sizeof (Ximu3CommandInterface);
+static const int numberOfInterfaces = (int) (sizeof (interfaces) / sizeof (Ximu3CommandInterface));
 
 static const Ximu3CommandMap commands[] = {
     {"ping", CommandsPing},
@@ -58,7 +58,7 @@ static const Ximu3CommandMap commands[] = {
     {"erase", CommandsErase},
 };
 
-static const int numberOfCommands = sizeof (commands) / sizeof (Ximu3CommandMap);
+static const int numberOfCommands = (int) (sizeof (commands) / sizeof (Ximu3CommandMap));
 
 static Ximu3Settings settingsArray[] = {
     {.nvmRead = NvmRead, .nvmWrite = NvmWrite, .initialiseEpilogue = InitialiseEpilogue, .defaultsEpilogue = DefaultsEpilogue},
@@ -132,7 +132,7 @@ static Context contexts[] = {
     { .settings = &settingsArray[20], .nvm = &nvmT, .send = &sendT, .led = &ledT, .imu = &imuT, .defaultName = "V Distal IMU"},
 };
 
-static const int numberOfDevices = sizeof (bridges) / sizeof (Ximu3CommandBridge);
+static const int numberOfDevices = (int) (sizeof (bridges) / sizeof (Ximu3CommandBridge));
 
 //------------------------------------------------------------------------------
 // Functions
@@ -235,7 +235,7 @@ static Ximu3Result Mux(const Ximu3CommandInterface * const interface, const uint
 
 /**
  * @brief Error callback.
- * @param error error.
+ * @param error Error.
  * @param context Context.
  */
 static void Error(const char* const error, void* const context) {

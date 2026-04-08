@@ -8,6 +8,7 @@
 // Includes
 
 #include "Apply.h"
+#include "Imu/Icm/Icm.h"
 #include "Imu/Imu.h"
 #include "Send/Send.h"
 #include "Serial/Serial.h"
