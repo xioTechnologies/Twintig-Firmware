@@ -174,7 +174,9 @@ void ImuSetSettings(Imu * const imu, const ImuSettings * const settings) {
 
     // Initialise bias algorithm
     if ((imu->initialised == false) || (imu->settings.sampleRate != settings->sampleRate)) {
-        FusionBiasInitialise(&imu->bias, (unsigned int) settings->sampleRate);
+        FusionBiasSettings biasSettings = fusionBiasDefaultSettings;
+        biasSettings.sampleRate = settings->sampleRate;
+        FusionBiasSetSettings(&imu->bias, &biasSettings);
     }
 
     // Initialise AHRS algorithm
@@ -186,7 +188,7 @@ void ImuSetSettings(Imu * const imu, const ImuSettings * const settings) {
     if ((imu->settings.axesRemap != settings->axesRemap) ||
         (imu->settings.ahrsAxesConvention != settings->ahrsAxesConvention) ||
         (imu->settings.ahrsUpdateRateDivisor != settings->ahrsUpdateRateDivisor)) {
-        FusionAhrsReset(&imu->ahrs);
+        FusionAhrsRestart(&imu->ahrs);
     }
 
     // Update settings
@@ -207,11 +209,11 @@ void ImuSetSettings(Imu * const imu, const ImuSettings * const settings) {
 }
 
 /**
- * @brief Resets the AHRS algorithm.
+ * @brief Restarts the AHRS algorithm.
  * @param imu IMU structure.
  */
-void ImuReset(Imu * const imu) {
-    FusionAhrsReset(&imu->ahrs);
+void ImuRestart(Imu * const imu) {
+    FusionAhrsRestart(&imu->ahrs);
 }
 
 /**

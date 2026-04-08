@@ -20,7 +20,7 @@ void CommandsPing(const char* * const value, Ximu3CommandResponse * const respon
 void CommandsDefault(const char* * const value, Ximu3CommandResponse * const response, void* const context);
 void CommandsApply(const char* * const value, Ximu3CommandResponse * const response, void* const context);
 void CommandsSave(const char* * const value, Ximu3CommandResponse * const response, void* const context);
-void CommandsInitialise(const char* * const value, Ximu3CommandResponse * const response, void* const context);
+void CommandsRestart(const char* * const value, Ximu3CommandResponse * const response, void* const context);
 void CommandsHeading(const char* * const value, Ximu3CommandResponse * const response, void* const context);
 void CommandsNote(const char* * const value, Ximu3CommandResponse * const response, void* const context);
 void CommandsTimestamp(const char* * const value, Ximu3CommandResponse * const response, void* const context);

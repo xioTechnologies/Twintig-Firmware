@@ -87,21 +87,17 @@ void CommandsSave(const char* * const value, Ximu3CommandResponse * const respon
 }
 
 /**
- * @brief Initialise command.
+ * @brief Restart command.
  * @param value Value.
  * @param response Response.
  * @param context Context.
  */
-void CommandsInitialise(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
-    const Context * const context_ = context;
-    if (context_->imu == NULL) {
-        Ximu3CommandRespondError(response, "Command not applicable");
-        return;
-    }
+void CommandsRestart(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
     if (Ximu3CommandParseNull(value, response) != Ximu3ResultOk) {
         return;
     }
-    ImuReset(context_->imu);
+    const Context * const context_ = context;
+    ImuRestart(context_->imu);
     Ximu3CommandRespond(response);
 }
 

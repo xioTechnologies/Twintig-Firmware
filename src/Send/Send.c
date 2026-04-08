@@ -214,7 +214,7 @@ void SendAhrs(Send * const send, const SendAhrsData * const ahrsData) {
 static void SendAhrsStatus(Send * const send, const uint64_t ticks, const FusionAhrsFlags * const flags) {
     const Ximu3DataAhrsStatus ximu3Data = {
         .timestamp = TimestampFrom(ticks),
-        .initialising = flags->initialising,
+        .initialising = flags->startup,
         .angularRateRecovery = flags->angularRateRecovery,
         .accelerationRecovery = flags->accelerationRecovery,
         .magneticRecovery = flags->magneticRecovery,

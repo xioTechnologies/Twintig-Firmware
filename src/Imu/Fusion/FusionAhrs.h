@@ -36,7 +36,8 @@ typedef struct {
     FusionAhrsSettings settings;
     FusionQuaternion quaternion;
     FusionVector accelerometer;
-    bool initialising;
+    FusionVector halfGravity;
+    bool startup;
     float rampedGain;
     float rampedGainStep;
     bool angularRateRecovery;
@@ -66,7 +67,7 @@ typedef struct {
  * @brief Flags.
  */
 typedef struct {
-    bool initialising;
+    bool startup;
     bool angularRateRecovery;
     bool accelerationRecovery;
     bool magneticRecovery;
@@ -82,7 +83,7 @@ extern const FusionAhrsSettings fusionAhrsDefaultSettings;
 
 void FusionAhrsInitialise(FusionAhrs *const ahrs);
 
-void FusionAhrsReset(FusionAhrs *const ahrs);
+void FusionAhrsRestart(FusionAhrs *const ahrs);
 
 void FusionAhrsSetSettings(FusionAhrs *const ahrs, const FusionAhrsSettings *const settings);
 

@@ -83,7 +83,7 @@ extern Imu imuT;
 
 void ImuTasks(Imu * const imu);
 void ImuSetSettings(Imu * const imu, const ImuSettings * const settings);
-void ImuReset(Imu * const imu);
+void ImuRestart(Imu * const imu);
 void ImuSetHeading(Imu * const imu, const float heading);
 
 #endif
