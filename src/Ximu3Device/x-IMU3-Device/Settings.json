@@ -50,13 +50,13 @@
             "preserved": true
         },
         {
-            "name": "Soft-iron matrix",
+            "name": "Soft iron matrix",
             "declaration": "FusionMatrix name",
             "default": "{{1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f}}",
             "preserved": true
         },
         {
-            "name": "Hard-iron offset",
+            "name": "Hard iron offset",
             "declaration": "FusionVector name",
             "default": "{{0.0f, 0.0f, 0.0f}}",
             "preserved": true
