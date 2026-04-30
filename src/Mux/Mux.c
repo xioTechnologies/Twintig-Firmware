@@ -142,10 +142,10 @@ static inline __attribute__((always_inline)) size_t AvailableWrite(const Interfa
         return interface->availableWrite();
     }
     const size_t available = interface->availableWrite();
-    if (available < XIMU3_MUX_HEADER_SIZE) {
+    if (available < XIMU3_SIZE_MUX_HEADER) {
         return 0;
     }
-    return available - XIMU3_MUX_HEADER_SIZE;
+    return available - XIMU3_SIZE_MUX_HEADER;
 }
 
 /**

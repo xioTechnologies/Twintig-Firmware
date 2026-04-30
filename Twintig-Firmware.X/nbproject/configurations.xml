@@ -244,7 +244,6 @@
           <logicalFolder name="JSON" displayName="JSON" projectFiles="true">
             <itemPath>../src/Ximu3Device/x-IMU3-Device/JSON/Json.h</itemPath>
           </logicalFolder>
-          <itemPath>../src/Ximu3Device/x-IMU3-Device/Binary.h</itemPath>
           <itemPath>../src/Ximu3Device/x-IMU3-Device/Key.h</itemPath>
           <itemPath>../src/Ximu3Device/x-IMU3-Device/Metadata.h</itemPath>
           <itemPath>../src/Ximu3Device/x-IMU3-Device/Ximu3.h</itemPath>
@@ -253,6 +252,9 @@
           <itemPath>../src/Ximu3Device/x-IMU3-Device/Ximu3Definitions.h</itemPath>
           <itemPath>../src/Ximu3Device/x-IMU3-Device/Ximu3Settings.h</itemPath>
           <itemPath>../src/Ximu3Device/x-IMU3-Device/Ximu3SettingsJson.h</itemPath>
+          <itemPath>../src/Ximu3Device/x-IMU3-Device/Ximu3Ascii.h</itemPath>
+          <itemPath>../src/Ximu3Device/x-IMU3-Device/Ximu3Binary.h</itemPath>
+          <itemPath>../src/Ximu3Device/x-IMU3-Device/Ximu3Size.h</itemPath>
         </logicalFolder>
         <itemPath>../src/Ximu3Device/Apply.h</itemPath>
         <itemPath>../src/Ximu3Device/Commands.h</itemPath>
@@ -472,10 +474,11 @@
           <itemPath>../src/Ximu3Device/x-IMU3-Device/Key.c</itemPath>
           <itemPath>../src/Ximu3Device/x-IMU3-Device/Metadata.c</itemPath>
           <itemPath>../src/Ximu3Device/x-IMU3-Device/Ximu3Command.c</itemPath>
-          <itemPath>../src/Ximu3Device/x-IMU3-Device/Ximu3Data.c</itemPath>
           <itemPath>../src/Ximu3Device/x-IMU3-Device/Ximu3Definitions.c</itemPath>
           <itemPath>../src/Ximu3Device/x-IMU3-Device/Ximu3Settings.c</itemPath>
           <itemPath>../src/Ximu3Device/x-IMU3-Device/Ximu3SettingsJson.c</itemPath>
+          <itemPath>../src/Ximu3Device/x-IMU3-Device/Ximu3Ascii.c</itemPath>
+          <itemPath>../src/Ximu3Device/x-IMU3-Device/Ximu3Binary.c</itemPath>
         </logicalFolder>
         <itemPath>../src/Ximu3Device/Apply.c</itemPath>
         <itemPath>../src/Ximu3Device/Commands.c</itemPath>

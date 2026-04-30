@@ -128,7 +128,7 @@ void CommandsHeading(const char* * const value, Ximu3CommandResponse * const res
  * @param context Context.
  */
 void CommandsNote(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
-    char string[XIMU3_VALUE_SIZE];
+    char string[XIMU3_SIZE_VALUE];
     if (Ximu3CommandParseString(value, response, string, sizeof (string), NULL) != Ximu3ResultOk) {
         return;
     }
@@ -205,7 +205,7 @@ void CommandsColour(const char* * const value, Ximu3CommandResponse * const resp
     }
 
     // Parse string
-    char string[XIMU3_VALUE_SIZE];
+    char string[XIMU3_SIZE_VALUE];
     if (Ximu3CommandParseString(value, response, string, sizeof (string), NULL) != Ximu3ResultOk) {
         return;
     }

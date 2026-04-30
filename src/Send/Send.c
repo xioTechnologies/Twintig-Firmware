@@ -151,12 +151,12 @@ void SendInertial(Send * const send, const SendInertialData * const inertialData
         .accelerometerY = accelerometer.axis.y,
         .accelerometerZ = accelerometer.axis.z,
     };
-    uint8_t message[128];
+    uint8_t message[XIMU3_SIZE_INERTIAL];
     size_t messageSize;
     if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
-        messageSize = Ximu3DataInertialBinary(message, sizeof (message), &ximu3Data);
+        messageSize = Ximu3BinaryInertial(message, sizeof (message), &ximu3Data);
     } else {
-        messageSize = Ximu3DataInertialAscii(message, sizeof (message), &ximu3Data);
+        messageSize = Ximu3AsciiInertial(message, sizeof (message), &ximu3Data);
     }
     SendDataMessage(send, message, messageSize, PriorityLow);
 }
@@ -219,12 +219,12 @@ static void SendAhrsStatus(Send * const send, const uint64_t ticks, const Fusion
         .accelerationRecovery = flags->accelerationRecovery,
         .magneticRecovery = flags->magneticRecovery,
     };
-    uint8_t message[128];
+    uint8_t message[XIMU3_SIZE_AHRS_STATUS];
     size_t messageSize;
     if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
-        messageSize = Ximu3DataAhrsStatusBinary(message, sizeof (message), &ximu3Data);
+        messageSize = Ximu3BinaryAhrsStatus(message, sizeof (message), &ximu3Data);
     } else {
-        messageSize = Ximu3DataAhrsStatusAscii(message, sizeof (message), &ximu3Data);
+        messageSize = Ximu3AsciiAhrsStatus(message, sizeof (message), &ximu3Data);
     }
     SendDataMessage(send, message, messageSize, PriorityLow);
 }
@@ -243,12 +243,12 @@ static void SendQuaternion(Send * const send, const SendAhrsData * const ahrsDat
         .y = quaternion.element.y,
         .z = quaternion.element.z,
     };
-    uint8_t message[128];
+    uint8_t message[XIMU3_SIZE_QUATERNION];
     size_t messageSize;
     if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
-        messageSize = Ximu3DataQuaternionBinary(message, sizeof (message), &ximu3Data);
+        messageSize = Ximu3BinaryQuaternion(message, sizeof (message), &ximu3Data);
     } else {
-        messageSize = Ximu3DataQuaternionAscii(message, sizeof (message), &ximu3Data);
+        messageSize = Ximu3AsciiQuaternion(message, sizeof (message), &ximu3Data);
     }
     SendDataMessage(send, message, messageSize, PriorityLow);
 }
@@ -272,12 +272,12 @@ static void SendRotationMatrix(Send * const send, const SendAhrsData * const ahr
         .zy = matrix.element.zy,
         .zz = matrix.element.zz,
     };
-    uint8_t message[128];
+    uint8_t message[XIMU3_SIZE_ROTATION_MATRIX];
     size_t messageSize;
     if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
-        messageSize = Ximu3DataRotationMatrixBinary(message, sizeof (message), &ximu3Data);
+        messageSize = Ximu3BinaryRotationMatrix(message, sizeof (message), &ximu3Data);
     } else {
-        messageSize = Ximu3DataRotationMatrixAscii(message, sizeof (message), &ximu3Data);
+        messageSize = Ximu3AsciiRotationMatrix(message, sizeof (message), &ximu3Data);
     }
     SendDataMessage(send, message, messageSize, PriorityLow);
 }
@@ -295,12 +295,12 @@ static void SendEulerAngles(Send * const send, const SendAhrsData * const ahrsDa
         .pitch = euler.angle.pitch,
         .yaw = euler.angle.yaw,
     };
-    uint8_t message[128];
+    uint8_t message[XIMU3_SIZE_EULER_ANGLES];
     size_t messageSize;
     if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
-        messageSize = Ximu3DataEulerAnglesBinary(message, sizeof (message), &ximu3Data);
+        messageSize = Ximu3BinaryEulerAngles(message, sizeof (message), &ximu3Data);
     } else {
-        messageSize = Ximu3DataEulerAnglesAscii(message, sizeof (message), &ximu3Data);
+        messageSize = Ximu3AsciiEulerAngles(message, sizeof (message), &ximu3Data);
     }
     SendDataMessage(send, message, messageSize, PriorityLow);
 }
@@ -323,12 +323,12 @@ static void SendLinearAcceleration(Send * const send, const SendAhrsData * const
         .linearAccelerationY = linearAcceleration.axis.y,
         .linearAccelerationZ = linearAcceleration.axis.z,
     };
-    uint8_t message[128];
+    uint8_t message[XIMU3_SIZE_LINEAR_ACCELERATION];
     size_t messageSize;
     if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
-        messageSize = Ximu3DataLinearAccelerationBinary(message, sizeof (message), &ximu3Data);
+        messageSize = Ximu3BinaryLinearAcceleration(message, sizeof (message), &ximu3Data);
     } else {
-        messageSize = Ximu3DataLinearAccelerationAscii(message, sizeof (message), &ximu3Data);
+        messageSize = Ximu3AsciiLinearAcceleration(message, sizeof (message), &ximu3Data);
     }
     SendDataMessage(send, message, messageSize, PriorityLow);
 }
@@ -351,12 +351,12 @@ static void SendEarthAcceleration(Send * const send, const SendAhrsData * const 
         .earthAccelerationY = earthAcceleration.axis.y,
         .earthAccelerationZ = earthAcceleration.axis.z,
     };
-    uint8_t message[128];
+    uint8_t message[XIMU3_SIZE_EARTH_ACCELERATION];
     size_t messageSize;
     if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
-        messageSize = Ximu3DataEarthAccelerationBinary(message, sizeof (message), &ximu3Data);
+        messageSize = Ximu3BinaryEarthAcceleration(message, sizeof (message), &ximu3Data);
     } else {
-        messageSize = Ximu3DataEarthAccelerationAscii(message, sizeof (message), &ximu3Data);
+        messageSize = Ximu3AsciiEarthAcceleration(message, sizeof (message), &ximu3Data);
     }
     SendDataMessage(send, message, messageSize, PriorityLow);
 }
@@ -393,12 +393,12 @@ void SendTemperature(Send * const send, const SendTemperatureData * const temper
         .timestamp = TimestampFrom(temperatureData->ticks),
         .temperature = temperature,
     };
-    uint8_t message[128];
+    uint8_t message[XIMU3_SIZE_TEMPERATURE];
     size_t messageSize;
     if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
-        messageSize = Ximu3DataTemperatureBinary(message, sizeof (message), &ximu3Data);
+        messageSize = Ximu3BinaryTemperature(message, sizeof (message), &ximu3Data);
     } else {
-        messageSize = Ximu3DataTemperatureAscii(message, sizeof (message), &ximu3Data);
+        messageSize = Ximu3AsciiTemperature(message, sizeof (message), &ximu3Data);
     }
     SendDataMessage(send, message, messageSize, PriorityLow);
 }
@@ -412,23 +412,23 @@ void SendTemperature(Send * const send, const SendTemperatureData * const temper
 void SendNotification(Send * const send, const char* const format, ...) {
 
     // Create string
-    char string[256];
+    char notification[XIMU3_SIZE_CHAR_ARRAY];
     va_list arguments;
     va_start(arguments, format);
-    vsnprintf(string, sizeof (string), format, arguments);
+    vsnprintf(notification, sizeof (notification), format, arguments);
     va_end(arguments);
 
     // Send message
     const Ximu3DataNotification ximu3Data = {
         .timestamp = TimestampGet(),
-        .string = string,
+        .notification = notification,
     };
-    uint8_t message[128];
+    uint8_t message[XIMU3_SIZE_NOTIFICATION];
     size_t messageSize;
     if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
-        messageSize = Ximu3DataNotificationBinary(message, sizeof (message), &ximu3Data);
+        messageSize = Ximu3BinaryNotification(message, sizeof (message), &ximu3Data);
     } else {
-        messageSize = Ximu3DataNotificationAscii(message, sizeof (message), &ximu3Data);
+        messageSize = Ximu3AsciiNotification(message, sizeof (message), &ximu3Data);
     }
     SendDataMessage(send, message, messageSize, PriorityMedium);
 }
@@ -442,23 +442,23 @@ void SendNotification(Send * const send, const char* const format, ...) {
 void SendError(Send * const send, const char* const format, ...) {
 
     // Create string
-    char string[256];
+    char error[XIMU3_SIZE_CHAR_ARRAY];
     va_list arguments;
     va_start(arguments, format);
-    vsnprintf(string, sizeof (string), format, arguments);
+    vsnprintf(error, sizeof (error), format, arguments);
     va_end(arguments);
 
     // Send message
     const Ximu3DataError ximu3Data = {
         .timestamp = TimestampGet(),
-        .string = string,
+        .error = error,
     };
-    uint8_t message[128];
+    uint8_t message[XIMU3_SIZE_ERROR];
     size_t messageSize;
     if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
-        messageSize = Ximu3DataErrorBinary(message, sizeof (message), &ximu3Data);
+        messageSize = Ximu3BinaryError(message, sizeof (message), &ximu3Data);
     } else {
-        messageSize = Ximu3DataErrorAscii(message, sizeof (message), &ximu3Data);
+        messageSize = Ximu3AsciiError(message, sizeof (message), &ximu3Data);
     }
     SendDataMessage(send, message, messageSize, PriorityHigh);
 

@@ -14,6 +14,7 @@
 #include <string.h>
 #include "Ximu3Settings.h"
 #include "Ximu3SettingsJson.h"
+#include "Ximu3Size.h"
 
 //------------------------------------------------------------------------------
 // Function declarations
@@ -124,7 +125,7 @@ void Ximu3SettingsJsonGetValue(Ximu3Settings * const settings, char* const desti
  */
 void Ximu3SettingsJsonGetObject(Ximu3Settings * const settings, char* const destination, const size_t destinationSize, const Ximu3SettingsIndex index) {
     const Metadata metadata = MetadataGet(settings, index);
-    char value[XIMU3_VALUE_SIZE];
+    char value[XIMU3_SIZE_VALUE];
     Ximu3SettingsJsonGetValue(settings, value, sizeof (value), index);
     snprintf(destination, destinationSize, "{\"%s\":%s}", metadata.key, value);
 }
@@ -135,11 +136,18 @@ void Ximu3SettingsJsonGetObject(Ximu3Settings * const settings, char* const dest
  * @param settings Settings.
  * @param destination Destination.
  * @param destinationSize Destination size.
+ * @param preamble Preamble key/values. NULL if unused.
  */
-void Ximu3SettingsJsonGetObjectAll(Ximu3Settings * const settings, char* const destination, const size_t destinationSize) {
+void Ximu3SettingsJsonGetFile(Ximu3Settings * const settings, char* const destination, const size_t destinationSize, const char* const preamble) {
 
     // Object start
     snprintf(destination, destinationSize, "{\n");
+
+    // Preamble
+    if (preamble != NULL) {
+        Append(destination, destinationSize, preamble);
+        Append(destination, destinationSize, "\n");
+    }
 
     // Key/value pairs
     for (int index = 0; index < XIMU3_NUMBER_OF_SETTINGS; index++) {
@@ -151,11 +159,11 @@ void Ximu3SettingsJsonGetObjectAll(Ximu3Settings * const settings, char* const d
         Append(destination, destinationSize, "    ");
 
         // Key
-        char key[XIMU3_KEY_SIZE];
+        char key[XIMU3_SIZE_KEY];
         snprintf(key, sizeof (key), "\"%s\"", metadata.name);
 
         // Value
-        char value[XIMU3_VALUE_SIZE];
+        char value[XIMU3_SIZE_VALUE];
         Ximu3SettingsJsonGetValue(settings, value, sizeof (value), index);
 
         // Key/value pair
@@ -197,6 +205,7 @@ JsonResult Ximu3SettingsJsonSetKeyValue(Ximu3Settings * const settings, const ch
     // Get index
     Ximu3SettingsIndex index;
     if (Ximu3SettingsJsonGetIndex(settings, &index, key) != Ximu3ResultOk) {
+        JsonParse(value); // skip value
         return JsonResultOk;
     }
 
@@ -420,7 +429,7 @@ static JsonResult ParseInt32(Ximu3Settings * const settings, const Ximu3Settings
  * @return Result.
  */
 static JsonResult ParseString(Ximu3Settings * const settings, const Ximu3SettingsIndex index, const char* * const value, const bool overrideReadOnly) {
-    char string[XIMU3_VALUE_SIZE];
+    char string[XIMU3_SIZE_VALUE];
     const JsonResult result = JsonParseString(value, string, sizeof (string), NULL);
     if (result != JsonResultOk) {
         return result;
@@ -449,7 +458,8 @@ static JsonResult ParseUint32(Ximu3Settings * const settings, const Ximu3Setting
 }
 
 /**
- * @brief Sets the values from an object.
+ * @brief Sets the values from an object. The object may contain multiple
+ * key/value pairs
  * @param settings Settings.
  * @param object_ Object.
  * @param overrideReadOnly True to override read-only.
@@ -474,7 +484,7 @@ JsonResult Ximu3SettingsJsonSetObject(Ximu3Settings * const settings, const char
     while (true) {
 
         // Parse key
-        char key[XIMU3_KEY_SIZE];
+        char key[XIMU3_SIZE_KEY];
         result = JsonParseKey(object, key, sizeof (key));
         if (result != JsonResultOk) {
             return result;

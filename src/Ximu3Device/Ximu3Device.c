@@ -25,7 +25,7 @@
 
 static void InitialiseEpilogue(void* const context);
 static void DefaultsEpilogue(void* const context);
-static void WriteEpilogue(const Ximu3SettingsIndex index, void* const context);
+static void WriteEpilogue(const Ximu3SettingsIndex index, const void* const value, void* const context);
 static Ximu3Result Mux(const Ximu3CommandInterface * const interface, const uint8_t channel, const void* const message, const size_t messageSize);
 static void Error(const char* const error, void* const context);
 
@@ -202,9 +202,10 @@ static void DefaultsEpilogue(void* const context) {
 /**
  * @brief Write epilogue.
  * @param index Index.
+ * @param value Value.
  * @param context Context.
  */
-static void WriteEpilogue(const Ximu3SettingsIndex index, void* const context) {
+static void WriteEpilogue(const Ximu3SettingsIndex index, const void* const value, void* const context) {
     Context * const context_ = context;
     ApplyAfterDelay(context_);
 }
