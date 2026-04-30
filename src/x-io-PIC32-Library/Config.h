@@ -86,6 +86,9 @@
 #define SPI_BUS_6_SPI                       spi6Dma
 
 #define UART1_READ_BUFFER_SIZE              (4096)
+#define UART1_WRITE_BUFFER_SIZE             (4096)
+#define UART1_DMA_READ_TRANSFER_SIZE        (1024)
+#define UART1_DMA_WRITE_TRANSFER_SIZE       (16384)
 
 #define UART3_READ_BUFFER_SIZE              (16)
 #define UART3_WRITE_BUFFER_SIZE             (4096)

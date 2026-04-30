@@ -11,16 +11,9 @@
 #include "Uart/Uart1DmaTx.h"
 
 //------------------------------------------------------------------------------
-// Function declarations
-
-static void WriteComplete(void);
-
-//------------------------------------------------------------------------------
 // Variables
 
 static SerialSettings settings;
-static uint8_t fifoData[16384];
-static Fifo fifo = {.data = fifoData, .dataSize = sizeof (fifoData)};
 
 //------------------------------------------------------------------------------
 // Functions
@@ -38,7 +31,6 @@ void SerialSetSettings(const SerialSettings * const settings_) {
         Uart1DmaTxInitialise(&uartSettings);
     } else {
         Uart1DmaTxDeinitialise();
-        FifoClear(&fifo);
     }
 }
 
@@ -65,7 +57,7 @@ size_t SerialRead(void* const destination, size_t numberOfBytes) {
  * @return Space available in the write buffer.
  */
 size_t SerialAvailableWrite(void) {
-    return FifoAvailableWrite(&fifo);
+    return Uart1DmaTxAvailableWrite();
 }
 
 /**
@@ -75,22 +67,7 @@ size_t SerialAvailableWrite(void) {
  * @return Result.
  */
 FifoResult SerialWrite(const void* const data, const size_t numberOfBytes) {
-    const FifoResult result = FifoWrite(&fifo, data, numberOfBytes);
-    if (Uart1DmaTxWriteInProgress() == false) {
-        WriteComplete();
-    }
-    return result;
-}
-
-/**
- * @brief Write complete callback.
- */
-static void WriteComplete(void) {
-    static __attribute__((coherent)) uint8_t data[2048];
-    const size_t numberOfBytes = FifoRead(&fifo, data, sizeof (data));
-    if (numberOfBytes > 0) {
-        Uart1DmaTxWrite(data, numberOfBytes, WriteComplete);
-    }
+    return Uart1DmaTxWrite(data, numberOfBytes);
 }
 
 //------------------------------------------------------------------------------

@@ -63,9 +63,9 @@ void Spi3DmaInitialise(const SpiSettings * const settings) {
 
     // Configure TX DMA channel
 #ifdef _SPI3_TX_IRQ
-    DCH2ECONbits.CHSIRQ = _SPI3_TX_IRQ;
+    DCH2ECONbits.CHSIRQ = _SPI3_TX_IRQ; // channel transfer start IRQ
 #else
-    DCH2ECONbits.CHSIRQ = _SPI3_TX_VECTOR;
+    DCH2ECONbits.CHSIRQ = _SPI3_TX_VECTOR; // channel transfer start IRQ
 #endif
     DCH2ECONbits.SIRQEN = 1; // start channel cell transfer if an interrupt matching CHSIRQ occurs
     DCH2DSA = KVA_TO_PA(&SPI3BUF); // destination address
@@ -74,9 +74,9 @@ void Spi3DmaInitialise(const SpiSettings * const settings) {
 
     // Configure RX DMA channel
 #ifdef _SPI3_RX_IRQ
-    DCH3ECONbits.CHSIRQ = _SPI3_RX_IRQ;
+    DCH3ECONbits.CHSIRQ = _SPI3_RX_IRQ; // channel transfer start IRQ
 #else
-    DCH3ECONbits.CHSIRQ = _SPI3_RX_VECTOR;
+    DCH3ECONbits.CHSIRQ = _SPI3_RX_VECTOR; // channel transfer start IRQ
 #endif
     DCH3ECONbits.SIRQEN = 1; // start channel cell transfer if an interrupt matching CHSIRQ occurs
     DCH3SSA = KVA_TO_PA(&SPI3BUF); // source address

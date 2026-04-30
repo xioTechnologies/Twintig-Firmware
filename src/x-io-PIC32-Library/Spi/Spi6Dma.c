@@ -63,9 +63,9 @@ void Spi6DmaInitialise(const SpiSettings * const settings) {
 
     // Configure TX DMA channel
 #ifdef _SPI6_TX_IRQ
-    DCH6ECONbits.CHSIRQ = _SPI6_TX_IRQ;
+    DCH6ECONbits.CHSIRQ = _SPI6_TX_IRQ; // channel transfer start IRQ
 #else
-    DCH6ECONbits.CHSIRQ = _SPI6_TX_VECTOR;
+    DCH6ECONbits.CHSIRQ = _SPI6_TX_VECTOR; // channel transfer start IRQ
 #endif
     DCH6ECONbits.SIRQEN = 1; // start channel cell transfer if an interrupt matching CHSIRQ occurs
     DCH6DSA = KVA_TO_PA(&SPI6BUF); // destination address
@@ -74,9 +74,9 @@ void Spi6DmaInitialise(const SpiSettings * const settings) {
 
     // Configure RX DMA channel
 #ifdef _SPI6_RX_IRQ
-    DCH7ECONbits.CHSIRQ = _SPI6_RX_IRQ;
+    DCH7ECONbits.CHSIRQ = _SPI6_RX_IRQ; // channel transfer start IRQ
 #else
-    DCH7ECONbits.CHSIRQ = _SPI6_RX_VECTOR;
+    DCH7ECONbits.CHSIRQ = _SPI6_RX_VECTOR; // channel transfer start IRQ
 #endif
     DCH7ECONbits.SIRQEN = 1; // start channel cell transfer if an interrupt matching CHSIRQ occurs
     DCH7SSA = KVA_TO_PA(&SPI6BUF); // source address
