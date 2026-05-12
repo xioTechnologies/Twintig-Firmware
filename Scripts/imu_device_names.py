@@ -1,9 +1,8 @@
 import cliny as cli
 import ximu3
-import ximu3_helpers
 
 try:
-    carpus_connection = ximu3_helpers.quick_connect("Twintig")
+    carpus_connection = ximu3.helpers.quick_connect("Twintig")
 
     mux_channels = {
         0x41: "Carpus IMU",
@@ -31,8 +30,8 @@ try:
     imu_connections = {n: ximu3.Connection(ximu3.MuxConnectionConfig(c, carpus_connection)).open() for c, n in mux_channels.items()}
 
     for name, connection in imu_connections.items():
-        ximu3_helpers.send_command(connection, "device_name", name)
-        ximu3_helpers.send_command(connection, "blink")
+        ximu3.helpers.send_command(connection, "device_name", name)
+        ximu3.helpers.send_command(connection, "blink")
 
     cli.print_success("Complete")
 
