@@ -7,7 +7,7 @@ import ximu3
 try:
     twintig_connection = ximu3.helpers.quick_connect("Twintig")
 
-    imu_connections = ximu3.helpers.mux_connect(twintig_connection, 20, dictionary=True)
+    imu_connections = ximu3.helpers.mux_connect_dict(twintig_connection, 20)
 
     with open("imu_settings.json") as file:
         for script in json.load(file):

@@ -8,7 +8,7 @@ import ximu3csv
 try:
     twintig_connection = ximu3.helpers.quick_connect("Twintig")
 
-    imu_connections = ximu3.helpers.mux_connect(twintig_connection, 20, dictionary=True)
+    imu_connections = ximu3.helpers.mux_connect_dict(twintig_connection, 20)
 
     for connection in imu_connections.values():
         ximu3.helpers.send_command(connection, "factory")
