@@ -48,7 +48,7 @@ bool SerialEnabled(void) {
  * @param numberOfBytes Number of bytes.
  * @return Number of bytes read.
  */
-size_t SerialRead(void* const destination, size_t numberOfBytes) {
+size_t SerialRead(void* const destination, const size_t numberOfBytes) {
     return Uart1DmaTxRead(destination, numberOfBytes);
 }
 

@@ -14,6 +14,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "Ximu3Definitions.h"
+#include "Ximu3Settings.h"
 
 //------------------------------------------------------------------------------
 // Function declarations

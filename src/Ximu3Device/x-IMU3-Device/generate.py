@@ -17,12 +17,12 @@ def pascal_case(string: str) -> str:
     return "".join(w.lower().capitalize() for w in split_words(string))
 
 
-def title_case(string: str) -> str:
-    return " ".join(w[0].upper() + w[1:] for w in string.split())
-
-
 def snake_case(string: str) -> str:
     return "_".join(w.lower() for w in split_words(string))
+
+
+def upper_first(string: str) -> str:
+    return string[0].upper() + string[1:]
 
 
 # Load Settings.json
@@ -111,10 +111,8 @@ Ximu3Result Ximu3SettingsIndexFrom(Ximu3SettingsIndex * const index, const int i
 Path("Ximu3Definitions.c").write_text(contents)
 
 # Generate Metadata.h
-type = ("String" if "char name[" in s["declaration"] else title_case(s["declaration"].split()[0].replace("_t", "")) for s in settings)
-type = list(set(type))  # remove duplicates
-type.sort()  # sort alphabetically
-type = "\n".join(f"    MetadataType{t}," for t in type)
+types = sorted({"String" if "char name[" in s["declaration"] else upper_first(s["declaration"].split()[0].replace("_t", "")) for s in settings})
+types = "\n".join(f"    MetadataType{t}," for t in types)
 
 contents = f"""\
 {preamble}
@@ -129,7 +127,7 @@ contents = f"""\
 #include "Ximu3Settings.h"
 
 typedef enum {{
-{type}
+{types}
 }} MetadataType;
 
 typedef struct {{
@@ -152,13 +150,13 @@ Metadata MetadataGet(Ximu3Settings * const settings, const Ximu3SettingsIndex in
 Path("Metadata.h").write_text(contents)
 
 # Generate Metadata.c
-names = "\n".join(f'    "{title_case(s["name"])}",' for s in settings)
+names = "\n".join(f'    "{s["name"]}",' for s in settings)
 
 keys = "\n".join(f'    "{snake_case(s["name"])}",' for s in settings)
 
-types = "\n".join(f"    MetadataType{'String' if 'char name[' in s['declaration'] else title_case(s['declaration'].split()[0].replace('_t', ''))}," for s in settings)
+types = "\n".join(f"    MetadataType{'String' if 'char name[' in s['declaration'] else upper_first(s['declaration'].split()[0].replace('_t', ''))}," for s in settings)
 
-sizes = "\n".join(f"    sizeof (((Ximu3SettingsValues *) 0)->{camel_case(s['name'])})," for s in settings)
+sizes = "\n".join(f"    sizeof (((Ximu3SettingsValues*) 0)->{camel_case(s['name'])})," for s in settings)
 
 defaults = "\n".join(f"    (void*) (&({s['declaration'].replace(' name', '')}) {s['default']})," for s in settings)
 
@@ -185,23 +183,23 @@ static const char* const keys[] = {{
 {keys}
 }};
 
-const MetadataType types[] = {{
+static const MetadataType types[] = {{
 {types}
 }};
 
-const size_t sizes[] = {{
+static const size_t sizes[] = {{
 {sizes}
 }};
 
-const void* const defaults[] = {{
+static const void* const defaults[] = {{
 {defaults}
 }};
 
-const bool preserveds[] = {{
+static const bool preserveds[] = {{
 {preserveds}
 }};
 
-const bool readOnlys[] = {{
+static const bool readOnlys[] = {{
 {read_onlys}
 }};
 
@@ -209,7 +207,7 @@ static void* GetValue(Ximu3Settings * const settings, const Ximu3SettingsIndex i
     switch (index) {{
 {cases}
     }}
-    return NULL; // avoid compiler warning
+    return NULL; // unreachable code: -Werror=switch
 }}
 
 Metadata MetadataGet(Ximu3Settings * const settings, const Ximu3SettingsIndex index) {{

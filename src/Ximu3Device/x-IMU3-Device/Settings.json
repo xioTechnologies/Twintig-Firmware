@@ -8,55 +8,55 @@
     ],
     "settings": [
         {
-            "name": "Calibration date",
+            "name": "Calibration Date",
             "declaration": "char name[32]",
             "default": "{\"Unknown\"}",
             "preserved": true
         },
         {
-            "name": "Gyroscope misalignment",
+            "name": "Gyroscope Misalignment",
             "declaration": "FusionMatrix name",
             "default": "{{1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f}}",
             "preserved": true
         },
         {
-            "name": "Gyroscope sensitivity",
+            "name": "Gyroscope Sensitivity",
             "declaration": "FusionVector name",
             "default": "{{1.0f, 1.0f, 1.0f}}",
             "preserved": true
         },
         {
-            "name": "Gyroscope offset",
+            "name": "Gyroscope Offset",
             "declaration": "FusionVector name",
             "default": "{{0.0f, 0.0f, 0.0f}}",
             "preserved": true
         },
         {
-            "name": "Accelerometer misalignment",
+            "name": "Accelerometer Misalignment",
             "declaration": "FusionMatrix name",
             "default": "{{1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f}}",
             "preserved": true
         },
         {
-            "name": "Accelerometer sensitivity",
+            "name": "Accelerometer Sensitivity",
             "declaration": "FusionVector name",
             "default": "{{1.0f, 1.0f, 1.0f}}",
             "preserved": true
         },
         {
-            "name": "Accelerometer offset",
+            "name": "Accelerometer Offset",
             "declaration": "FusionVector name",
             "default": "{{0.0f, 0.0f, 0.0f}}",
             "preserved": true
         },
         {
-            "name": "Soft iron matrix",
+            "name": "Soft Iron Matrix",
             "declaration": "FusionMatrix name",
             "default": "{{1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f}}",
             "preserved": true
         },
         {
-            "name": "Hard iron offset",
+            "name": "Hard Iron Offset",
             "declaration": "FusionVector name",
             "default": "{{0.0f, 0.0f, 0.0f}}",
             "preserved": true
@@ -68,131 +68,131 @@
             "preserved": true
         },
         {
-            "name": "Serial number",
+            "name": "Serial Number",
             "declaration": "char name[32]",
             "default": "{\"Unknown\"}",
             "preserved": true
         },
         {
-            "name": "Hardware version",
+            "name": "Hardware Version",
             "declaration": "char name[32]",
             "default": "{\"Unknown\"}",
             "preserved": true
         },
         {
-            "name": "Bootloader version",
+            "name": "Bootloader Version",
             "declaration": "char name[32]",
             "default": "{\"Unknown\"}",
             "preserved": true
         },
         {
-            "name": "Firmware version",
+            "name": "Firmware Version",
             "declaration": "char name[32]",
             "default": "{\"Unknown\"}",
             "read-only": true
         },
         {
-            "name": "Device name",
+            "name": "Device Name",
             "declaration": "char name[32]",
             "default": "{\"Twintig\"}"
         },
         {
-            "name": "Serial enabled",
+            "name": "Serial Enabled",
             "declaration": "bool name",
             "default": "{true}"
         },
         {
-            "name": "Serial baud rate",
+            "name": "Baud Rate",
             "declaration": "uint32_t name",
             "default": "{115200}"
         },
         {
-            "name": "Serial RTS/CTS enabled",
+            "name": "RTS/CTS",
             "declaration": "bool name",
             "default": "{false}"
         },
         {
-            "name": "Gyroscope notch filter enabled",
+            "name": "Gyroscope Notch Filter",
             "declaration": "bool name",
             "default": "{true}"
         },
         {
-            "name": "Gyroscope anti-aliasing",
+            "name": "Gyroscope Anti-Aliasing",
             "declaration": "IcmAntiAliasing name",
             "default": "{IcmAntiAliasing42Hz}"
         },
         {
-            "name": "Accelerometer anti-aliasing",
+            "name": "Accelerometer Anti-Aliasing",
             "declaration": "IcmAntiAliasing name",
             "default": "{IcmAntiAliasing42Hz}"
         },
         {
-            "name": "Sample rate",
+            "name": "Sample Rate",
             "declaration": "IcmSampleRate name",
             "default": "{IcmSampleRate100Hz}"
         },
         {
-            "name": "Axes remap",
+            "name": "Axis Remap",
             "declaration": "FusionRemapAlignment name",
             "default": "{FusionRemapAlignmentPXPYPZ}"
         },
         {
-            "name": "Gyroscope bias correction enabled",
+            "name": "Gyroscope Bias Correction Enabled",
             "declaration": "bool name",
             "default": "{false}"
         },
         {
-            "name": "AHRS update rate divisor",
+            "name": "AHRS Update Rate Divisor",
             "declaration": "uint32_t name",
             "default": "{1}"
         },
         {
-            "name": "AHRS axes convention",
+            "name": "Axes Convention",
             "declaration": "FusionConvention name",
             "default": "{FusionConventionNwu}"
         },
         {
-            "name": "AHRS gain",
+            "name": "AHRS Gain",
             "declaration": "float name",
             "default": "{0.5f}"
         },
         {
-            "name": "AHRS acceleration rejection",
-            "declaration": "float name",
-            "default": "{10.0f}"
+            "name": "Acceleration Rejection",
+            "declaration": "bool name",
+            "default": "{true}"
         },
         {
-            "name": "Data message mode",
+            "name": "Data Message Mode",
             "declaration": "SendDataMessageMode name",
             "default": "{SendDataMessageModeBinary}"
         },
         {
-            "name": "AHRS message type",
+            "name": "AHRS Message Type",
             "declaration": "SendAhrsMessageType name",
             "default": "{SendAhrsMessageTypeQuaternion}"
         },
         {
-            "name": "Inertial message rate divisor",
+            "name": "Inertial Message Rate Divisor",
             "declaration": "uint32_t name",
             "default": "{1}"
         },
         {
-            "name": "AHRS message rate divisor",
+            "name": "AHRS Message Rate Divisor",
             "declaration": "uint32_t name",
             "default": "{1}"
         },
         {
-            "name": "Temperature message rate divisor",
+            "name": "Temperature Message Rate Divisor",
             "declaration": "uint32_t name",
             "default": "{0}"
         },
         {
-            "name": "USB send mode",
+            "name": "USB Send Mode",
             "declaration": "SendInterfaceMode name",
             "default": "{SendInterfaceModeBlocking}"
         },
         {
-            "name": "Serial send mode",
+            "name": "Serial Send Mode",
             "declaration": "SendInterfaceMode name",
             "default": "{SendInterfaceModeDisabled}"
         }

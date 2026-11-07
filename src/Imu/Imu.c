@@ -199,7 +199,7 @@ void ImuSetSettings(Imu * const imu, const ImuSettings * const settings) {
         .convention = imu->settings.ahrsAxesConvention,
         .gain = imu->settings.ahrsGain,
         .gyroscopeRange = 2000.0f,
-        .accelerationRejection = imu->settings.ahrsAccelerationRejection,
+        .accelerationRejection = imu->settings.ahrsAccelerationRejection ? 10.0f : 0.0f,
         .recoveryTriggerPeriod = 10 * 100, // 10 seconds * 100 Hz
     };
     FusionAhrsSetSettings(&imu->ahrs, &ahrsSettings);

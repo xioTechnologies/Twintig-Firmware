@@ -17,7 +17,6 @@
 #include "Serial/Serial.h"
 #include <stdarg.h>
 #include <stdio.h>
-#include <string.h>
 #include "Timestamp/Timestamp.h"
 #include "Usb/UsbCdc.h"
 #include "Ximu3Device/x-IMU3-Device/Ximu3.h"
@@ -56,7 +55,7 @@ typedef enum {
 //------------------------------------------------------------------------------
 // Function declarations
 
-static void SendAhrsStatus(Send * const send, const uint64_t ticks, const FusionAhrsFlags * const flags);
+static void SendAhrsStatus(Send * const send, const SendAhrsData * const ahrsData);
 static void SendQuaternion(Send * const send, const SendAhrsData * const ahrsData);
 static void SendRotationMatrix(Send * const send, const SendAhrsData * const ahrsData);
 static void SendEulerAngles(Send * const send, const SendAhrsData * const ahrsData);
@@ -174,12 +173,8 @@ void SendAhrs(Send * const send, const SendAhrsData * const ahrsData) {
         return;
     }
 
-    // AHRS flags
-    const FusionAhrsFlags flags = FusionAhrsGetFlags(ahrsData->ahrs);
-    if (memcmp(&flags, &send->flags, sizeof (flags)) != 0) {
-        send->flags = flags;
-        SendAhrsStatus(send, ahrsData->ticks, &flags);
-    }
+    // AHRS status
+    SendAhrsStatus(send, ahrsData);
 
     // AHRS outputs
     if ((send->settings.ahrsMessageRateDivisor > 1) && (++send->downsampledAhrsCount < send->settings.ahrsMessageRateDivisor)) {
@@ -208,16 +203,30 @@ void SendAhrs(Send * const send, const SendAhrsData * const ahrsData) {
 /**
  * @brief Sends an AHRS status message.
  * @param send Send structure.
- * @param ticks Ticks.
- * @param flags Flags.
+ * @param ahrsData AHRS data.
  */
-static void SendAhrsStatus(Send * const send, const uint64_t ticks, const FusionAhrsFlags * const flags) {
+static void SendAhrsStatus(Send * const send, const SendAhrsData * const ahrsData) {
+
+    // Determine status
+    const FusionAhrsFlags flags = FusionAhrsGetFlags(ahrsData->ahrs);
+    const char* status;
+    if (flags.angularRateRecovery != send->flags.angularRateRecovery) {
+        status = flags.angularRateRecovery ? "Gyroscope overrange" : "Gyroscope overrange recovery complete";
+    } else if (flags.accelerationRecovery != send->flags.accelerationRecovery) {
+        status = flags.accelerationRecovery ? "Acceleration rejection timeout" : "Acceleration recovery complete";
+    } else if (flags.magneticRecovery != send->flags.magneticRecovery) {
+        status = flags.magneticRecovery ? "Magnetic rejection timeout" : "Magnetic recovery complete";
+    } else if (flags.startup != send->flags.startup) {
+        status = flags.startup ? "AHRS startup" : "AHRS startup complete";
+    } else {
+        return;
+    }
+    send->flags = flags;
+
+    // Send message
     const Ximu3DataAhrsStatus ximu3Data = {
-        .timestamp = TimestampFrom(ticks),
-        .initialising = flags->startup,
-        .angularRateRecovery = flags->angularRateRecovery,
-        .accelerationRecovery = flags->accelerationRecovery,
-        .magneticRecovery = flags->magneticRecovery,
+        .timestamp = TimestampFrom(ahrsData->ticks),
+        .status = status,
     };
     uint8_t message[XIMU3_SIZE_AHRS_STATUS];
     size_t messageSize;
@@ -311,17 +320,12 @@ static void SendEulerAngles(Send * const send, const SendAhrsData * const ahrsDa
  * @param ahrsData AHRS data.
  */
 static void SendLinearAcceleration(Send * const send, const SendAhrsData * const ahrsData) {
-    const FusionQuaternion quaternion = FusionAhrsGetQuaternion(ahrsData->ahrs);
     const FusionVector linearAcceleration = FusionAhrsGetLinearAcceleration(ahrsData->ahrs);
     const Ximu3DataLinearAcceleration ximu3Data = {
         .timestamp = TimestampFrom(ahrsData->ticks),
-        .quaternionW = quaternion.element.w,
-        .quaternionX = quaternion.element.x,
-        .quaternionY = quaternion.element.y,
-        .quaternionZ = quaternion.element.z,
-        .linearAccelerationX = linearAcceleration.axis.x,
-        .linearAccelerationY = linearAcceleration.axis.y,
-        .linearAccelerationZ = linearAcceleration.axis.z,
+        .x = linearAcceleration.axis.x,
+        .y = linearAcceleration.axis.y,
+        .z = linearAcceleration.axis.z,
     };
     uint8_t message[XIMU3_SIZE_LINEAR_ACCELERATION];
     size_t messageSize;
@@ -339,17 +343,12 @@ static void SendLinearAcceleration(Send * const send, const SendAhrsData * const
  * @param ahrsData AHRS data.
  */
 static void SendEarthAcceleration(Send * const send, const SendAhrsData * const ahrsData) {
-    const FusionQuaternion quaternion = FusionAhrsGetQuaternion(ahrsData->ahrs);
     const FusionVector earthAcceleration = FusionAhrsGetEarthAcceleration(ahrsData->ahrs);
     const Ximu3DataEarthAcceleration ximu3Data = {
         .timestamp = TimestampFrom(ahrsData->ticks),
-        .quaternionW = quaternion.element.w,
-        .quaternionX = quaternion.element.x,
-        .quaternionY = quaternion.element.y,
-        .quaternionZ = quaternion.element.z,
-        .earthAccelerationX = earthAcceleration.axis.x,
-        .earthAccelerationY = earthAcceleration.axis.y,
-        .earthAccelerationZ = earthAcceleration.axis.z,
+        .x = earthAcceleration.axis.x,
+        .y = earthAcceleration.axis.y,
+        .z = earthAcceleration.axis.z,
     };
     uint8_t message[XIMU3_SIZE_EARTH_ACCELERATION];
     size_t messageSize;

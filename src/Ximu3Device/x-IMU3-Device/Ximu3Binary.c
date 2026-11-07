@@ -7,6 +7,7 @@
 //------------------------------------------------------------------------------
 // Includes
 
+#include <stdint.h>
 #include <string.h>
 #include "Ximu3Ascii.h"
 #include "Ximu3Binary.h"
@@ -154,13 +155,9 @@ size_t Ximu3BinaryEulerAngles(void* const destination, const size_t destinationS
 size_t Ximu3BinaryLinearAcceleration(void* const destination, const size_t destinationSize, const Ximu3DataLinearAcceleration * const data) {
     size_t destinationIndex = 0;
     WriteHeader(destination, destinationSize, &destinationIndex, XIMU3_ASCII_ID_LINEAR_ACCELERATION, data->timestamp);
-    WriteFloat(destination, destinationSize, &destinationIndex, data->quaternionW);
-    WriteFloat(destination, destinationSize, &destinationIndex, data->quaternionX);
-    WriteFloat(destination, destinationSize, &destinationIndex, data->quaternionY);
-    WriteFloat(destination, destinationSize, &destinationIndex, data->quaternionZ);
-    WriteFloat(destination, destinationSize, &destinationIndex, data->linearAccelerationX);
-    WriteFloat(destination, destinationSize, &destinationIndex, data->linearAccelerationY);
-    WriteFloat(destination, destinationSize, &destinationIndex, data->linearAccelerationZ);
+    WriteFloat(destination, destinationSize, &destinationIndex, data->x);
+    WriteFloat(destination, destinationSize, &destinationIndex, data->y);
+    WriteFloat(destination, destinationSize, &destinationIndex, data->z);
     WriteTermination(destination, destinationSize, &destinationIndex);
     return destinationIndex;
 }
@@ -175,13 +172,9 @@ size_t Ximu3BinaryLinearAcceleration(void* const destination, const size_t desti
 size_t Ximu3BinaryEarthAcceleration(void* const destination, const size_t destinationSize, const Ximu3DataEarthAcceleration * const data) {
     size_t destinationIndex = 0;
     WriteHeader(destination, destinationSize, &destinationIndex, XIMU3_ASCII_ID_EARTH_ACCELERATION, data->timestamp);
-    WriteFloat(destination, destinationSize, &destinationIndex, data->quaternionW);
-    WriteFloat(destination, destinationSize, &destinationIndex, data->quaternionX);
-    WriteFloat(destination, destinationSize, &destinationIndex, data->quaternionY);
-    WriteFloat(destination, destinationSize, &destinationIndex, data->quaternionZ);
-    WriteFloat(destination, destinationSize, &destinationIndex, data->earthAccelerationX);
-    WriteFloat(destination, destinationSize, &destinationIndex, data->earthAccelerationY);
-    WriteFloat(destination, destinationSize, &destinationIndex, data->earthAccelerationZ);
+    WriteFloat(destination, destinationSize, &destinationIndex, data->x);
+    WriteFloat(destination, destinationSize, &destinationIndex, data->y);
+    WriteFloat(destination, destinationSize, &destinationIndex, data->z);
     WriteTermination(destination, destinationSize, &destinationIndex);
     return destinationIndex;
 }
@@ -196,10 +189,7 @@ size_t Ximu3BinaryEarthAcceleration(void* const destination, const size_t destin
 size_t Ximu3BinaryAhrsStatus(void* const destination, const size_t destinationSize, const Ximu3DataAhrsStatus * const data) {
     size_t destinationIndex = 0;
     WriteHeader(destination, destinationSize, &destinationIndex, XIMU3_ASCII_ID_AHRS_STATUS, data->timestamp);
-    WriteFloat(destination, destinationSize, &destinationIndex, (float) data->initialising);
-    WriteFloat(destination, destinationSize, &destinationIndex, (float) data->angularRateRecovery);
-    WriteFloat(destination, destinationSize, &destinationIndex, (float) data->accelerationRecovery);
-    WriteFloat(destination, destinationSize, &destinationIndex, (float) data->magneticRecovery);
+    WriteString(destination, destinationSize, &destinationIndex, data->status);
     WriteTermination(destination, destinationSize, &destinationIndex);
     return destinationIndex;
 }
@@ -347,6 +337,7 @@ size_t Ximu3BinaryError(void* const destination, const size_t destinationSize, c
 /**
  * @brief Writes the header.
  * @param destination Destination.
+ * @param destinationSize Destination size.
  * @param destinationIndex Destination index.
  * @param asciiId ASCII data message ID.
  * @param timestamp Timestamp.
@@ -366,8 +357,9 @@ static inline void WriteHeader(void* const destination, const size_t destination
 /**
  * @brief Writes a float.
  * @param destination Destination.
+ * @param destinationSize Destination size.
  * @param destinationIndex Destination index.
- * @param value Value.
+ * @param value_ Value.
  */
 static inline void WriteFloat(void* const destination, const size_t destinationSize, size_t * const destinationIndex, const float value_) {
     uint32_t value;
@@ -381,6 +373,7 @@ static inline void WriteFloat(void* const destination, const size_t destinationS
 /**
  * @brief Writes a string.
  * @param destination Destination.
+ * @param destinationSize Destination size.
  * @param destinationIndex Destination index.
  * @param string String.
  */
@@ -393,6 +386,7 @@ static inline void WriteString(void* const destination, const size_t destination
 /**
  * @brief Writes the termination.
  * @param destination Destination.
+ * @param destinationSize Destination size.
  * @param destinationIndex Destination index.
  */
 static inline void WriteTermination(void* const destination, const size_t destinationSize, size_t * const destinationIndex) {
@@ -408,6 +402,7 @@ static inline void WriteTermination(void* const destination, const size_t destin
 /**
  * @brief Writes a byte with byte stuffing.
  * @param destination Destination.
+ * @param destinationSize Destination size.
  * @param destinationIndex Destination index.
  * @param byte Byte.
  */

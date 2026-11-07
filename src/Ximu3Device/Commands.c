@@ -33,7 +33,8 @@ void CommandsPing(const char* * const value, Ximu3CommandResponse * const respon
         return;
     }
     const Context * const context_ = context;
-    Ximu3CommandRespondPing(response, Ximu3SettingsGet(context_->settings)->deviceName, Ximu3SettingsGet(context_->settings)->serialNumber);
+    const Ximu3SettingsValues * const settingsValues = Ximu3SettingsGet(context_->settings);
+    Ximu3CommandRespondPing(response, settingsValues->model, settingsValues->serialNumber, settingsValues->deviceName);
 }
 
 /**

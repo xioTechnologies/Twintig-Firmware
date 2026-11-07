@@ -261,6 +261,7 @@
         <itemPath>../src/Ximu3Device/Context.h</itemPath>
         <itemPath>../src/Ximu3Device/Interfaces.h</itemPath>
         <itemPath>../src/Ximu3Device/Nvm.h</itemPath>
+        <itemPath>../src/Ximu3Device/Sanitise.h</itemPath>
         <itemPath>../src/Ximu3Device/Ximu3Device.h</itemPath>
       </logicalFolder>
       <itemPath>../src/FirmwareVersion.h</itemPath>
@@ -484,6 +485,7 @@
         <itemPath>../src/Ximu3Device/Commands.c</itemPath>
         <itemPath>../src/Ximu3Device/Interfaces.c</itemPath>
         <itemPath>../src/Ximu3Device/Nvm.c</itemPath>
+        <itemPath>../src/Ximu3Device/Sanitise.c</itemPath>
         <itemPath>../src/Ximu3Device/Ximu3Device.c</itemPath>
       </logicalFolder>
       <itemPath>../src/main.c</itemPath>

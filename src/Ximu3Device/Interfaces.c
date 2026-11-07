@@ -23,7 +23,7 @@
  * @param context Context.
  * @return Number of bytes read.
  */
-size_t InterfacesUsbRead(void* const destination, size_t numberOfBytes, void* const context) {
+size_t InterfacesUsbRead(void* const destination, const size_t numberOfBytes, void* const context) {
     return UsbCdcRead(destination, numberOfBytes);
 }
 
@@ -45,7 +45,7 @@ void InterfacesUsbWrite(const void* const data, const size_t numberOfBytes, void
  * @param context Context.
  * @return Number of bytes read.
  */
-size_t InterfacesSerialRead(void* const destination, size_t numberOfBytes, void* const context) {
+size_t InterfacesSerialRead(void* const destination, const size_t numberOfBytes, void* const context) {
     return SerialRead(destination, numberOfBytes);
 }
 

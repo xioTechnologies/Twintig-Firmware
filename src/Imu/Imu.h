@@ -35,7 +35,7 @@ typedef struct {
     uint32_t ahrsUpdateRateDivisor;
     FusionConvention ahrsAxesConvention;
     float ahrsGain;
-    float ahrsAccelerationRejection;
+    bool ahrsAccelerationRejection;
 } ImuSettings;
 
 /**

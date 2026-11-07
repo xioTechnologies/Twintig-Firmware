@@ -7,12 +7,12 @@
 //------------------------------------------------------------------------------
 // Includes
 
+#include "Imu/Fusion/Fusion.h"
 #include <inttypes.h>
 #include "Key.h"
 #include "Metadata.h"
 #include <stdio.h>
 #include <string.h>
-#include "Ximu3Settings.h"
 #include "Ximu3SettingsJson.h"
 #include "Ximu3Size.h"
 
@@ -40,7 +40,11 @@ static JsonResult ParseUint32(Ximu3Settings * const settings, const Ximu3Setting
  * @return Result.
  */
 Ximu3Result Ximu3SettingsJsonGetIndex(Ximu3Settings * const settings, Ximu3SettingsIndex * const index_, const char* const key) {
-    for (int index = 0; index < XIMU3_NUMBER_OF_SETTINGS; index++) {
+    for (int integer = 0; integer < XIMU3_NUMBER_OF_SETTINGS; integer++) {
+        Ximu3SettingsIndex index;
+        if (Ximu3SettingsIndexFrom(&index, integer) != Ximu3ResultOk) {
+            continue;
+        }
         if (KeyMatches(key, MetadataGet(settings, index).key)) {
             *index_ = index;
             return Ximu3ResultOk;
@@ -78,7 +82,7 @@ void Ximu3SettingsJsonGetValue(Ximu3Settings * const settings, char* const desti
             snprintf(destination, destinationSize, "%s", *(bool*) metadata.value ? "true" : "false");
             break;
         case MetadataTypeFloat:
-            snprintf(destination, destinationSize, "%f", *(float*) metadata.value);
+            snprintf(destination, destinationSize, "%g", *(float*) metadata.value);
             break;
         case MetadataTypeFusionConvention:
         case MetadataTypeFusionRemapAlignment:
@@ -90,7 +94,7 @@ void Ximu3SettingsJsonGetValue(Ximu3Settings * const settings, char* const desti
             snprintf(destination, destinationSize, "%i", *(int*) metadata.value);
             break;
         case MetadataTypeFusionMatrix:
-            snprintf(destination, destinationSize, "[[%f,%f,%f],[%f,%f,%f],[%f,%f,%f]]",
+            snprintf(destination, destinationSize, "[[%g,%g,%g],[%g,%g,%g],[%g,%g,%g]]",
                     (*(FusionMatrix*) metadata.value).element.xx,
                     (*(FusionMatrix*) metadata.value).element.xy,
                     (*(FusionMatrix*) metadata.value).element.xz,
@@ -102,7 +106,7 @@ void Ximu3SettingsJsonGetValue(Ximu3Settings * const settings, char* const desti
                     (*(FusionMatrix*) metadata.value).element.zz);
             break;
         case MetadataTypeFusionVector:
-            snprintf(destination, destinationSize, "[%f,%f,%f]",
+            snprintf(destination, destinationSize, "[%g,%g,%g]",
                     (*(FusionVector*) metadata.value).axis.x,
                     (*(FusionVector*) metadata.value).axis.y,
                     (*(FusionVector*) metadata.value).axis.z);
@@ -111,7 +115,7 @@ void Ximu3SettingsJsonGetValue(Ximu3Settings * const settings, char* const desti
             snprintf(destination, destinationSize, "\"%s\"", (char*) metadata.value);
             break;
         case MetadataTypeUint32:
-            snprintf(destination, destinationSize, "%" PRIu32, *(uint32_t *) metadata.value);
+            snprintf(destination, destinationSize, "%" PRIu32, *(uint32_t*) metadata.value);
             break;
     }
 }
@@ -150,7 +154,11 @@ void Ximu3SettingsJsonGetFile(Ximu3Settings * const settings, char* const destin
     }
 
     // Key/value pairs
-    for (int index = 0; index < XIMU3_NUMBER_OF_SETTINGS; index++) {
+    for (int integer = 0; integer < XIMU3_NUMBER_OF_SETTINGS; integer++) {
+        Ximu3SettingsIndex index;
+        if (Ximu3SettingsIndexFrom(&index, integer) != Ximu3ResultOk) {
+            continue;
+        }
 
         // Get metadata
         const Metadata metadata = MetadataGet(settings, index);
@@ -171,7 +179,7 @@ void Ximu3SettingsJsonGetFile(Ximu3Settings * const settings, char* const destin
         snprintf(&destination[stringLength], destinationSize - stringLength, "%-*s : %s", XIMU3_MAX_KEY_LENGTH + 2, key, value); // 2 extra characters for quotation marks
 
         // Comma
-        if (index < (XIMU3_NUMBER_OF_SETTINGS - 1)) {
+        if (integer < (XIMU3_NUMBER_OF_SETTINGS - 1)) {
             Append(destination, destinationSize, ",");
         }
         Append(destination, destinationSize, "\n");
@@ -235,11 +243,11 @@ JsonResult Ximu3SettingsJsonSetKeyValue(Ximu3Settings * const settings, const ch
         case MetadataTypeUint32:
             return ParseUint32(settings, index, value, overrideReadOnly);
     }
-    return JsonResultOk; // avoid compiler warning
+    return JsonResultOk; // unreachable code: -Werror=switch
 }
 
 /**
- * @brief Parse value representing a bool.
+ * @brief Parses value representing a bool.
  * @param settings Settings.
  * @param index Index.
  * @param value Value.
@@ -257,7 +265,7 @@ static JsonResult ParseBool(Ximu3Settings * const settings, const Ximu3SettingsI
 }
 
 /**
- * @brief Parse value representing a float.
+ * @brief Parses value representing a float.
  * @param settings Settings.
  * @param index Index.
  * @param value Value.
@@ -275,7 +283,7 @@ static JsonResult ParseFloat(Ximu3Settings * const settings, const Ximu3Settings
 }
 
 /**
- * @brief Parse value representing a matrix.
+ * @brief Parses value representing a matrix.
  * @param settings Settings.
  * @param index Index.
  * @param value Value.
@@ -332,7 +340,7 @@ static JsonResult ParseFusionMatrix(Ximu3Settings * const settings, const Ximu3S
 }
 
 /**
- * @brief Parse value representing a vector.
+ * @brief Parses value representing a vector.
  * @param settings Settings.
  * @param index Index.
  * @param value Value.
@@ -350,7 +358,7 @@ static JsonResult ParseFusionVector(Ximu3Settings * const settings, const Ximu3S
 }
 
 /**
- * @brief Parse value representing an array of three floats.
+ * @brief Parses value representing an array of three floats.
  * @param destination Destination.
  * @param value Value.
  * @return Result.
@@ -402,7 +410,7 @@ static JsonResult ParseFloatArray(float* const destination, const char* * const 
 }
 
 /**
- * @brief Parse value representing an int32_t.
+ * @brief Parses value representing an int32_t.
  * @param settings Settings.
  * @param index Index.
  * @param value Value.
@@ -421,7 +429,7 @@ static JsonResult ParseInt32(Ximu3Settings * const settings, const Ximu3Settings
 }
 
 /**
- * @brief Parse value representing a string.
+ * @brief Parses value representing a string.
  * @param settings Settings.
  * @param index Index.
  * @param value Value.
@@ -439,7 +447,7 @@ static JsonResult ParseString(Ximu3Settings * const settings, const Ximu3Setting
 }
 
 /**
- * @brief Parse value representing a uint32_t.
+ * @brief Parses value representing a uint32_t.
  * @param settings Settings.
  * @param index Index.
  * @param value Value.
@@ -459,7 +467,7 @@ static JsonResult ParseUint32(Ximu3Settings * const settings, const Ximu3Setting
 
 /**
  * @brief Sets the values from an object. The object may contain multiple
- * key/value pairs
+ * key/value pairs.
  * @param settings Settings.
  * @param object_ Object.
  * @param overrideReadOnly True to override read-only.

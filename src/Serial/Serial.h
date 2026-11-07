@@ -31,7 +31,7 @@ typedef struct {
 
 void SerialSetSettings(const SerialSettings * const settings_);
 bool SerialEnabled(void);
-size_t SerialRead(void* const destination, size_t numberOfBytes);
+size_t SerialRead(void* const destination, const size_t numberOfBytes);
 size_t SerialAvailableWrite(void);
 FifoResult SerialWrite(const void* const data, const size_t numberOfBytes);
 

@@ -17,7 +17,6 @@
 #include <string.h>
 #include "Ximu3Command.h"
 #include "Ximu3SettingsJson.h"
-#include "Ximu3Size.h"
 
 //------------------------------------------------------------------------------
 // Definitions
@@ -30,7 +29,7 @@
 //------------------------------------------------------------------------------
 // Function declarations
 
-static void Receive(Ximu3CommandBridge * const bridge, Ximu3CommandInterface * const interface);
+static void Receive(const Ximu3CommandBridge * const bridge, Ximu3CommandInterface * const interface);
 static void ParseMessage(const Ximu3CommandBridge * const bridge, const Ximu3CommandInterface * const interface, uint8_t * const message, const size_t messageSize);
 static void ParseMux(const Ximu3CommandBridge * const bridge, const Ximu3CommandInterface * const interface, const uint8_t * const message, const size_t messageSize);
 static void ParseCommand(const Ximu3CommandBridge * const bridge, const Ximu3CommandInterface * const interface, uint8_t * const message, const size_t messageSize);
@@ -44,18 +43,18 @@ static void Error(const Ximu3CommandBridge * const bridge, const char* const for
  * main program loop.
  * @param bridge Bridge.
  */
-void Ximu3CommandTasks(Ximu3CommandBridge * const bridge) {
+void Ximu3CommandTasks(const Ximu3CommandBridge * const bridge) {
     for (int index = 0; index < bridge->numberOfInterfaces; index++) {
         Receive(bridge, &bridge->interfaces[index]);
     }
 }
 
 /**
- * @brief Receive data using the interface read callback.
+ * @brief Receives data using the interface read callback.
  * @param bridge Bridge.
  * @param interface Interface.
  */
-static void Receive(Ximu3CommandBridge * const bridge, Ximu3CommandInterface * const interface) {
+static void Receive(const Ximu3CommandBridge * const bridge, Ximu3CommandInterface * const interface) {
     while (true) {
 
         // Read data
@@ -80,7 +79,7 @@ static void Receive(Ximu3CommandBridge * const bridge, Ximu3CommandInterface * c
 
             // Increment index
             if (++interface->index >= sizeof (interface->buffer)) {
-                Error(bridge, "%s receive error. Buffer overrun.", interface->name);
+                Error(bridge, "%s receive error: Buffer overrun", interface->name);
                 interface->index = 0;
             }
         }
@@ -88,7 +87,7 @@ static void Receive(Ximu3CommandBridge * const bridge, Ximu3CommandInterface * c
 }
 
 /**
- * @brief Receive data as a single, complete message.
+ * @brief Receives data as a single, complete message.
  * @param bridge Bridge.
  * @param interface Interface.
  * @param data Data.
@@ -99,7 +98,7 @@ void Ximu3CommandReceive(const Ximu3CommandBridge * const bridge, const Ximu3Com
     // Copy data
     uint8_t message[XIMU3_SIZE_COMMAND];
     if (numberOfBytes > sizeof (message)) {
-        Error(bridge, "%s receive error. Buffer overrun.", interface->name);
+        Error(bridge, "%s receive error: Buffer overrun", interface->name);
         return;
     }
     memcpy(message, data, numberOfBytes);
@@ -107,12 +106,12 @@ void Ximu3CommandReceive(const Ximu3CommandBridge * const bridge, const Ximu3Com
     // Validate termination
     for (size_t index = 0; index < (numberOfBytes - 1); index++) {
         if (message[index] == XIMU3_TERMINATION) {
-            Error(bridge, "%s receive error. Unexpected termination.", interface->name);
+            Error(bridge, "%s receive error: Unexpected termination", interface->name);
             return;
         }
     }
     if (message[numberOfBytes - 1] != XIMU3_TERMINATION) {
-        Error(bridge, "%s receive error. Missing termination.", interface->name);
+        Error(bridge, "%s receive error: Missing termination", interface->name);
         return;
     }
 
@@ -134,7 +133,7 @@ void Ximu3CommandExecute(const Ximu3CommandBridge * const bridge, const Ximu3Com
 }
 
 /**
- * @brief Parse message.
+ * @brief Parses message.
  * @param bridge Bridge.
  * @param interface Interface.
  * @param message Message.
@@ -149,7 +148,7 @@ static void ParseMessage(const Ximu3CommandBridge * const bridge, const Ximu3Com
 }
 
 /**
- * @brief Parse mux message.
+ * @brief Parses mux message.
  * @param bridge Bridge.
  * @param interface Interface.
  * @param message Message.
@@ -157,25 +156,28 @@ static void ParseMessage(const Ximu3CommandBridge * const bridge, const Ximu3Com
  */
 static void ParseMux(const Ximu3CommandBridge * const bridge, const Ximu3CommandInterface * const interface, const uint8_t * const message, const size_t messageSize) {
     if (messageSize < (XIMU3_SIZE_MUX_HEADER + 1)) { // include termination
-        Error(bridge, "%s receive error. Invalid mux message length.", interface->name);
+        Error(bridge, "%s receive error: Invalid mux message length", interface->name);
         return;
     }
     const uint8_t channel = message[1];
 #ifdef PRINT_MESSAGES
-    printf("%s RX 0x%02X %u bytes\n", interface->name, channel, messageSize - XIMU3_SIZE_MUX_HEADER);
+    printf("%s RX 0x%02X %zu bytes\n", interface->name, channel, messageSize - XIMU3_SIZE_MUX_HEADER);
 #endif
     if (bridge->mux == NULL) {
-        Error(bridge, "%s receive error. Mux not supported.", interface->name);
+        Error(bridge, "%s receive error: Mux not supported", interface->name);
         return;
     }
     if (bridge->mux(interface, channel, &message[XIMU3_SIZE_MUX_HEADER], messageSize - XIMU3_SIZE_MUX_HEADER) != Ximu3ResultOk) {
-        Error(bridge, "%s receive error. Invalid mux channel 0x%02X.", interface->name, channel);
-        return;
+        if (channel == XIMU3_MUX_BROADCAST) {
+            Error(bridge, "%s receive error: Mux broadcast not supported", interface->name);
+        } else {
+            Error(bridge, "%s receive error: Invalid mux channel 0x%02X", interface->name, channel);
+        }
     }
 }
 
 /**
- * @brief Parse command message.
+ * @brief Parses command message.
  * @param bridge Bridge.
  * @param interface Interface.
  * @param message Message.
@@ -196,7 +198,7 @@ static void ParseCommand(const Ximu3CommandBridge * const bridge, const Ximu3Com
     // Parse object start
     JsonResult result = JsonParseObjectStart(json);
     if (result != JsonResultOk) {
-        Error(bridge, "%s receive error. Not a JSON object.", interface->name);
+        Error(bridge, "%s receive error: Not a JSON object", interface->name);
         return;
     }
 
@@ -204,7 +206,7 @@ static void ParseCommand(const Ximu3CommandBridge * const bridge, const Ximu3Com
     char key[XIMU3_SIZE_KEY];
     result = JsonParseKey(json, key, sizeof (key));
     if (result != JsonResultOk) {
-        Error(bridge, "%s receive error. Unable to parse key. %s.", interface->name, JsonResultToString(result));
+        Error(bridge, "%s receive error: %s", interface->name, JsonResultToString(result));
         return;
     }
 
@@ -212,14 +214,14 @@ static void ParseCommand(const Ximu3CommandBridge * const bridge, const Ximu3Com
     const char* value = *json;
     result = JsonParse(json);
     if (result != JsonResultOk) {
-        Error(bridge, "%s receive error. Unable to parse value. %s.", interface->name, JsonResultToString(result));
+        Error(bridge, "%s receive error: %s", interface->name, JsonResultToString(result));
         return;
     }
 
     // Parse object end
     result = JsonParseObjectEnd(json);
     if (result != JsonResultOk) {
-        Error(bridge, "%s receive error. JSON object is not a single key/value pair.", interface->name);
+        Error(bridge, "%s receive error: JSON object is not a single key/value pair", interface->name);
         return;
     }
 
@@ -260,7 +262,7 @@ static void ParseCommand(const Ximu3CommandBridge * const bridge, const Ximu3Com
                 return;
             }
             if (bridge->writeEpilogue != NULL) {
-                bridge->writeEpilogue(index, metadata.value, bridge->context);
+                bridge->writeEpilogue(bridge->context);
             }
             Ximu3SettingsJsonGetValue(bridge->settings, response.value, sizeof (response.value), index);
             Ximu3CommandRespond(&response);
@@ -268,10 +270,10 @@ static void ParseCommand(const Ximu3CommandBridge * const bridge, const Ximu3Com
         }
 
         // Enumerate
-        const char * keyPointer = key;
+        const char* keyPointer = key;
         if (KeyStartsWith(&keyPointer, "enumerate")) {
             int integer;
-            if (sscanf(keyPointer, "%i", &integer) != 1) {
+            if (sscanf(keyPointer, "%d", &integer) != 1) {
                 Ximu3CommandRespondError(&response, "Unable to parse index");
                 return;
             }
@@ -399,11 +401,12 @@ void Ximu3CommandRespond(Ximu3CommandResponse * const response) {
 /**
  * @brief Responds to ping command.
  * @param response Response.
- * @param deviceName Device name.
+ * @param model Model.
  * @param serialNumber Serial number.
+ * @param deviceName Device name.
  */
-void Ximu3CommandRespondPing(Ximu3CommandResponse * const response, const char* const deviceName, const char* const serialNumber) {
-    snprintf(response->value, sizeof (response->value), "{\"interface\":\"%s\",\"name\":\"%s\",\"sn\":\"%s\"}", response->interface->name, deviceName, serialNumber);
+void Ximu3CommandRespondPing(Ximu3CommandResponse * const response, const char* const model, const char* const serialNumber, const char* const deviceName) {
+    snprintf(response->value, sizeof (response->value), "{\"interface\":\"%s\",\"model\":\"%s\",\"sn\":\"%s\",\"name\":\"%s\"}", response->interface->name, model, serialNumber, deviceName);
     Ximu3CommandRespond(response);
 }
 

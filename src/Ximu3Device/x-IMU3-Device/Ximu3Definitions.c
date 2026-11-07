@@ -52,14 +52,14 @@ Ximu3Result Ximu3SettingsIndexFrom(Ximu3SettingsIndex * const index, const int i
         case Ximu3SettingsIndexSerialEnabled:
             *index = Ximu3SettingsIndexSerialEnabled;
             break;
-        case Ximu3SettingsIndexSerialBaudRate:
-            *index = Ximu3SettingsIndexSerialBaudRate;
+        case Ximu3SettingsIndexBaudRate:
+            *index = Ximu3SettingsIndexBaudRate;
             break;
-        case Ximu3SettingsIndexSerialRtsCtsEnabled:
-            *index = Ximu3SettingsIndexSerialRtsCtsEnabled;
+        case Ximu3SettingsIndexRtsCts:
+            *index = Ximu3SettingsIndexRtsCts;
             break;
-        case Ximu3SettingsIndexGyroscopeNotchFilterEnabled:
-            *index = Ximu3SettingsIndexGyroscopeNotchFilterEnabled;
+        case Ximu3SettingsIndexGyroscopeNotchFilter:
+            *index = Ximu3SettingsIndexGyroscopeNotchFilter;
             break;
         case Ximu3SettingsIndexGyroscopeAntiAliasing:
             *index = Ximu3SettingsIndexGyroscopeAntiAliasing;
@@ -70,8 +70,8 @@ Ximu3Result Ximu3SettingsIndexFrom(Ximu3SettingsIndex * const index, const int i
         case Ximu3SettingsIndexSampleRate:
             *index = Ximu3SettingsIndexSampleRate;
             break;
-        case Ximu3SettingsIndexAxesRemap:
-            *index = Ximu3SettingsIndexAxesRemap;
+        case Ximu3SettingsIndexAxisRemap:
+            *index = Ximu3SettingsIndexAxisRemap;
             break;
         case Ximu3SettingsIndexGyroscopeBiasCorrectionEnabled:
             *index = Ximu3SettingsIndexGyroscopeBiasCorrectionEnabled;
@@ -79,14 +79,14 @@ Ximu3Result Ximu3SettingsIndexFrom(Ximu3SettingsIndex * const index, const int i
         case Ximu3SettingsIndexAhrsUpdateRateDivisor:
             *index = Ximu3SettingsIndexAhrsUpdateRateDivisor;
             break;
-        case Ximu3SettingsIndexAhrsAxesConvention:
-            *index = Ximu3SettingsIndexAhrsAxesConvention;
+        case Ximu3SettingsIndexAxesConvention:
+            *index = Ximu3SettingsIndexAxesConvention;
             break;
         case Ximu3SettingsIndexAhrsGain:
             *index = Ximu3SettingsIndexAhrsGain;
             break;
-        case Ximu3SettingsIndexAhrsAccelerationRejection:
-            *index = Ximu3SettingsIndexAhrsAccelerationRejection;
+        case Ximu3SettingsIndexAccelerationRejection:
+            *index = Ximu3SettingsIndexAccelerationRejection;
             break;
         case Ximu3SettingsIndexDataMessageMode:
             *index = Ximu3SettingsIndexDataMessageMode;

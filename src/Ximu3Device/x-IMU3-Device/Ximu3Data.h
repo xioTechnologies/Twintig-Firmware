@@ -92,13 +92,9 @@ typedef struct {
  */
 typedef struct {
     uint64_t timestamp;
-    float quaternionW;
-    float quaternionX;
-    float quaternionY;
-    float quaternionZ;
-    float linearAccelerationX;
-    float linearAccelerationY;
-    float linearAccelerationZ;
+    float x;
+    float y;
+    float z;
 } Ximu3DataLinearAcceleration;
 
 /**
@@ -106,13 +102,9 @@ typedef struct {
  */
 typedef struct {
     uint64_t timestamp;
-    float quaternionW;
-    float quaternionX;
-    float quaternionY;
-    float quaternionZ;
-    float earthAccelerationX;
-    float earthAccelerationY;
-    float earthAccelerationZ;
+    float x;
+    float y;
+    float z;
 } Ximu3DataEarthAcceleration;
 
 /**
@@ -120,10 +112,7 @@ typedef struct {
  */
 typedef struct {
     uint64_t timestamp;
-    bool initialising;
-    bool angularRateRecovery;
-    bool accelerationRecovery;
-    bool magneticRecovery;
+    const char* status;
 } Ximu3DataAhrsStatus;
 
 /**

@@ -111,7 +111,20 @@ static JsonResult CheckType(const char **const json, const JsonType expectedType
         return result;
     }
     if (type != expectedType) {
-        return JsonResultUnexpectedType;
+        switch (expectedType) {
+            case JsonTypeString:
+                return JsonResultExpectedString;
+            case JsonTypeNumber:
+                return JsonResultExpectedNumber;
+            case JsonTypeObject:
+                return JsonResultExpectedObject;
+            case JsonTypeArray:
+                return JsonResultExpectedArray;
+            case JsonTypeBoolean:
+                return JsonResultExpectedBoolean;
+            case JsonTypeNull:
+                return JsonResultExpectedNull;
+        }
     }
     return JsonResultOk;
 }
@@ -705,8 +718,18 @@ const char *JsonResultToString(const JsonResult result) {
             return "Ok";
         case JsonResultInvalidSyntax:
             return "Invalid syntax";
-        case JsonResultUnexpectedType:
-            return "Unexpected type";
+        case JsonResultExpectedString:
+            return "Expected string";
+        case JsonResultExpectedNumber:
+            return "Expected number";
+        case JsonResultExpectedObject:
+            return "Expected object";
+        case JsonResultExpectedArray:
+            return "Expected array";
+        case JsonResultExpectedBoolean:
+            return "Expected boolean";
+        case JsonResultExpectedNull:
+            return "Expected null";
         case JsonResultMissingObjectEnd:
             return "Missing object end";
         case JsonResultMissingArrayEnd:
@@ -736,7 +759,7 @@ const char *JsonResultToString(const JsonResult result) {
         case JsonResultUnableToParseNumber:
             return "Unable to parse number";
     }
-    return ""; // avoid compiler warning
+    return ""; // unreachable code: -Werror=switch
 }
 
 //------------------------------------------------------------------------------

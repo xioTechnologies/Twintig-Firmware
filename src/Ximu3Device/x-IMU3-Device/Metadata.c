@@ -19,18 +19,18 @@ static const char* const names[] = {
     "Firmware Version",
     "Device Name",
     "Serial Enabled",
-    "Serial Baud Rate",
-    "Serial RTS/CTS Enabled",
-    "Gyroscope Notch Filter Enabled",
-    "Gyroscope Anti-aliasing",
-    "Accelerometer Anti-aliasing",
+    "Baud Rate",
+    "RTS/CTS",
+    "Gyroscope Notch Filter",
+    "Gyroscope Anti-Aliasing",
+    "Accelerometer Anti-Aliasing",
     "Sample Rate",
-    "Axes Remap",
+    "Axis Remap",
     "Gyroscope Bias Correction Enabled",
     "AHRS Update Rate Divisor",
-    "AHRS Axes Convention",
+    "Axes Convention",
     "AHRS Gain",
-    "AHRS Acceleration Rejection",
+    "Acceleration Rejection",
     "Data Message Mode",
     "AHRS Message Type",
     "Inertial Message Rate Divisor",
@@ -57,18 +57,18 @@ static const char* const keys[] = {
     "firmware_version",
     "device_name",
     "serial_enabled",
-    "serial_baud_rate",
-    "serial_rts_cts_enabled",
-    "gyroscope_notch_filter_enabled",
+    "baud_rate",
+    "rts_cts",
+    "gyroscope_notch_filter",
     "gyroscope_anti_aliasing",
     "accelerometer_anti_aliasing",
     "sample_rate",
-    "axes_remap",
+    "axis_remap",
     "gyroscope_bias_correction_enabled",
     "ahrs_update_rate_divisor",
-    "ahrs_axes_convention",
+    "axes_convention",
     "ahrs_gain",
-    "ahrs_acceleration_rejection",
+    "acceleration_rejection",
     "data_message_mode",
     "ahrs_message_type",
     "inertial_message_rate_divisor",
@@ -78,7 +78,7 @@ static const char* const keys[] = {
     "serial_send_mode",
 };
 
-const MetadataType types[] = {
+static const MetadataType types[] = {
     MetadataTypeString,
     MetadataTypeFusionMatrix,
     MetadataTypeFusionVector,
@@ -106,7 +106,7 @@ const MetadataType types[] = {
     MetadataTypeUint32,
     MetadataTypeFusionConvention,
     MetadataTypeFloat,
-    MetadataTypeFloat,
+    MetadataTypeBool,
     MetadataTypeSendDataMessageMode,
     MetadataTypeSendAhrsMessageType,
     MetadataTypeUint32,
@@ -116,45 +116,45 @@ const MetadataType types[] = {
     MetadataTypeSendInterfaceMode,
 };
 
-const size_t sizes[] = {
-    sizeof (((Ximu3SettingsValues *) 0)->calibrationDate),
-    sizeof (((Ximu3SettingsValues *) 0)->gyroscopeMisalignment),
-    sizeof (((Ximu3SettingsValues *) 0)->gyroscopeSensitivity),
-    sizeof (((Ximu3SettingsValues *) 0)->gyroscopeOffset),
-    sizeof (((Ximu3SettingsValues *) 0)->accelerometerMisalignment),
-    sizeof (((Ximu3SettingsValues *) 0)->accelerometerSensitivity),
-    sizeof (((Ximu3SettingsValues *) 0)->accelerometerOffset),
-    sizeof (((Ximu3SettingsValues *) 0)->softIronMatrix),
-    sizeof (((Ximu3SettingsValues *) 0)->hardIronOffset),
-    sizeof (((Ximu3SettingsValues *) 0)->model),
-    sizeof (((Ximu3SettingsValues *) 0)->serialNumber),
-    sizeof (((Ximu3SettingsValues *) 0)->hardwareVersion),
-    sizeof (((Ximu3SettingsValues *) 0)->bootloaderVersion),
-    sizeof (((Ximu3SettingsValues *) 0)->firmwareVersion),
-    sizeof (((Ximu3SettingsValues *) 0)->deviceName),
-    sizeof (((Ximu3SettingsValues *) 0)->serialEnabled),
-    sizeof (((Ximu3SettingsValues *) 0)->serialBaudRate),
-    sizeof (((Ximu3SettingsValues *) 0)->serialRtsCtsEnabled),
-    sizeof (((Ximu3SettingsValues *) 0)->gyroscopeNotchFilterEnabled),
-    sizeof (((Ximu3SettingsValues *) 0)->gyroscopeAntiAliasing),
-    sizeof (((Ximu3SettingsValues *) 0)->accelerometerAntiAliasing),
-    sizeof (((Ximu3SettingsValues *) 0)->sampleRate),
-    sizeof (((Ximu3SettingsValues *) 0)->axesRemap),
-    sizeof (((Ximu3SettingsValues *) 0)->gyroscopeBiasCorrectionEnabled),
-    sizeof (((Ximu3SettingsValues *) 0)->ahrsUpdateRateDivisor),
-    sizeof (((Ximu3SettingsValues *) 0)->ahrsAxesConvention),
-    sizeof (((Ximu3SettingsValues *) 0)->ahrsGain),
-    sizeof (((Ximu3SettingsValues *) 0)->ahrsAccelerationRejection),
-    sizeof (((Ximu3SettingsValues *) 0)->dataMessageMode),
-    sizeof (((Ximu3SettingsValues *) 0)->ahrsMessageType),
-    sizeof (((Ximu3SettingsValues *) 0)->inertialMessageRateDivisor),
-    sizeof (((Ximu3SettingsValues *) 0)->ahrsMessageRateDivisor),
-    sizeof (((Ximu3SettingsValues *) 0)->temperatureMessageRateDivisor),
-    sizeof (((Ximu3SettingsValues *) 0)->usbSendMode),
-    sizeof (((Ximu3SettingsValues *) 0)->serialSendMode),
+static const size_t sizes[] = {
+    sizeof (((Ximu3SettingsValues*) 0)->calibrationDate),
+    sizeof (((Ximu3SettingsValues*) 0)->gyroscopeMisalignment),
+    sizeof (((Ximu3SettingsValues*) 0)->gyroscopeSensitivity),
+    sizeof (((Ximu3SettingsValues*) 0)->gyroscopeOffset),
+    sizeof (((Ximu3SettingsValues*) 0)->accelerometerMisalignment),
+    sizeof (((Ximu3SettingsValues*) 0)->accelerometerSensitivity),
+    sizeof (((Ximu3SettingsValues*) 0)->accelerometerOffset),
+    sizeof (((Ximu3SettingsValues*) 0)->softIronMatrix),
+    sizeof (((Ximu3SettingsValues*) 0)->hardIronOffset),
+    sizeof (((Ximu3SettingsValues*) 0)->model),
+    sizeof (((Ximu3SettingsValues*) 0)->serialNumber),
+    sizeof (((Ximu3SettingsValues*) 0)->hardwareVersion),
+    sizeof (((Ximu3SettingsValues*) 0)->bootloaderVersion),
+    sizeof (((Ximu3SettingsValues*) 0)->firmwareVersion),
+    sizeof (((Ximu3SettingsValues*) 0)->deviceName),
+    sizeof (((Ximu3SettingsValues*) 0)->serialEnabled),
+    sizeof (((Ximu3SettingsValues*) 0)->baudRate),
+    sizeof (((Ximu3SettingsValues*) 0)->rtsCts),
+    sizeof (((Ximu3SettingsValues*) 0)->gyroscopeNotchFilter),
+    sizeof (((Ximu3SettingsValues*) 0)->gyroscopeAntiAliasing),
+    sizeof (((Ximu3SettingsValues*) 0)->accelerometerAntiAliasing),
+    sizeof (((Ximu3SettingsValues*) 0)->sampleRate),
+    sizeof (((Ximu3SettingsValues*) 0)->axisRemap),
+    sizeof (((Ximu3SettingsValues*) 0)->gyroscopeBiasCorrectionEnabled),
+    sizeof (((Ximu3SettingsValues*) 0)->ahrsUpdateRateDivisor),
+    sizeof (((Ximu3SettingsValues*) 0)->axesConvention),
+    sizeof (((Ximu3SettingsValues*) 0)->ahrsGain),
+    sizeof (((Ximu3SettingsValues*) 0)->accelerationRejection),
+    sizeof (((Ximu3SettingsValues*) 0)->dataMessageMode),
+    sizeof (((Ximu3SettingsValues*) 0)->ahrsMessageType),
+    sizeof (((Ximu3SettingsValues*) 0)->inertialMessageRateDivisor),
+    sizeof (((Ximu3SettingsValues*) 0)->ahrsMessageRateDivisor),
+    sizeof (((Ximu3SettingsValues*) 0)->temperatureMessageRateDivisor),
+    sizeof (((Ximu3SettingsValues*) 0)->usbSendMode),
+    sizeof (((Ximu3SettingsValues*) 0)->serialSendMode),
 };
 
-const void* const defaults[] = {
+static const void* const defaults[] = {
     (void*) (&(char[32]) {"Unknown"}),
     (void*) (&(FusionMatrix) {{1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f}}),
     (void*) (&(FusionVector) {{1.0f, 1.0f, 1.0f}}),
@@ -182,7 +182,7 @@ const void* const defaults[] = {
     (void*) (&(uint32_t) {1}),
     (void*) (&(FusionConvention) {FusionConventionNwu}),
     (void*) (&(float) {0.5f}),
-    (void*) (&(float) {10.0f}),
+    (void*) (&(bool) {true}),
     (void*) (&(SendDataMessageMode) {SendDataMessageModeBinary}),
     (void*) (&(SendAhrsMessageType) {SendAhrsMessageTypeQuaternion}),
     (void*) (&(uint32_t) {1}),
@@ -192,7 +192,7 @@ const void* const defaults[] = {
     (void*) (&(SendInterfaceMode) {SendInterfaceModeDisabled}),
 };
 
-const bool preserveds[] = {
+static const bool preserveds[] = {
     true,
     true,
     true,
@@ -230,7 +230,7 @@ const bool preserveds[] = {
     false,
 };
 
-const bool readOnlys[] = {
+static const bool readOnlys[] = {
     true,
     true,
     true,
@@ -302,30 +302,30 @@ static void* GetValue(Ximu3Settings * const settings, const Ximu3SettingsIndex i
             return &settings->values.deviceName;
         case Ximu3SettingsIndexSerialEnabled:
             return &settings->values.serialEnabled;
-        case Ximu3SettingsIndexSerialBaudRate:
-            return &settings->values.serialBaudRate;
-        case Ximu3SettingsIndexSerialRtsCtsEnabled:
-            return &settings->values.serialRtsCtsEnabled;
-        case Ximu3SettingsIndexGyroscopeNotchFilterEnabled:
-            return &settings->values.gyroscopeNotchFilterEnabled;
+        case Ximu3SettingsIndexBaudRate:
+            return &settings->values.baudRate;
+        case Ximu3SettingsIndexRtsCts:
+            return &settings->values.rtsCts;
+        case Ximu3SettingsIndexGyroscopeNotchFilter:
+            return &settings->values.gyroscopeNotchFilter;
         case Ximu3SettingsIndexGyroscopeAntiAliasing:
             return &settings->values.gyroscopeAntiAliasing;
         case Ximu3SettingsIndexAccelerometerAntiAliasing:
             return &settings->values.accelerometerAntiAliasing;
         case Ximu3SettingsIndexSampleRate:
             return &settings->values.sampleRate;
-        case Ximu3SettingsIndexAxesRemap:
-            return &settings->values.axesRemap;
+        case Ximu3SettingsIndexAxisRemap:
+            return &settings->values.axisRemap;
         case Ximu3SettingsIndexGyroscopeBiasCorrectionEnabled:
             return &settings->values.gyroscopeBiasCorrectionEnabled;
         case Ximu3SettingsIndexAhrsUpdateRateDivisor:
             return &settings->values.ahrsUpdateRateDivisor;
-        case Ximu3SettingsIndexAhrsAxesConvention:
-            return &settings->values.ahrsAxesConvention;
+        case Ximu3SettingsIndexAxesConvention:
+            return &settings->values.axesConvention;
         case Ximu3SettingsIndexAhrsGain:
             return &settings->values.ahrsGain;
-        case Ximu3SettingsIndexAhrsAccelerationRejection:
-            return &settings->values.ahrsAccelerationRejection;
+        case Ximu3SettingsIndexAccelerationRejection:
+            return &settings->values.accelerationRejection;
         case Ximu3SettingsIndexDataMessageMode:
             return &settings->values.dataMessageMode;
         case Ximu3SettingsIndexAhrsMessageType:
@@ -342,7 +342,7 @@ static void* GetValue(Ximu3Settings * const settings, const Ximu3SettingsIndex i
             return &settings->values.serialSendMode;
 
     }
-    return NULL; // avoid compiler warning
+    return NULL; // unreachable code: -Werror=switch
 }
 
 Metadata MetadataGet(Ximu3Settings * const settings, const Ximu3SettingsIndex index) {

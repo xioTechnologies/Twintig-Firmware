@@ -43,18 +43,18 @@ typedef struct {
     char firmwareVersion[32];
     char deviceName[32];
     bool serialEnabled;
-    uint32_t serialBaudRate;
-    bool serialRtsCtsEnabled;
-    bool gyroscopeNotchFilterEnabled;
+    uint32_t baudRate;
+    bool rtsCts;
+    bool gyroscopeNotchFilter;
     IcmAntiAliasing gyroscopeAntiAliasing;
     IcmAntiAliasing accelerometerAntiAliasing;
     IcmSampleRate sampleRate;
-    FusionRemapAlignment axesRemap;
+    FusionRemapAlignment axisRemap;
     bool gyroscopeBiasCorrectionEnabled;
     uint32_t ahrsUpdateRateDivisor;
-    FusionConvention ahrsAxesConvention;
+    FusionConvention axesConvention;
     float ahrsGain;
-    float ahrsAccelerationRejection;
+    bool accelerationRejection;
     SendDataMessageMode dataMessageMode;
     SendAhrsMessageType ahrsMessageType;
     uint32_t inertialMessageRateDivisor;
@@ -81,18 +81,18 @@ typedef enum {
     Ximu3SettingsIndexFirmwareVersion,
     Ximu3SettingsIndexDeviceName,
     Ximu3SettingsIndexSerialEnabled,
-    Ximu3SettingsIndexSerialBaudRate,
-    Ximu3SettingsIndexSerialRtsCtsEnabled,
-    Ximu3SettingsIndexGyroscopeNotchFilterEnabled,
+    Ximu3SettingsIndexBaudRate,
+    Ximu3SettingsIndexRtsCts,
+    Ximu3SettingsIndexGyroscopeNotchFilter,
     Ximu3SettingsIndexGyroscopeAntiAliasing,
     Ximu3SettingsIndexAccelerometerAntiAliasing,
     Ximu3SettingsIndexSampleRate,
-    Ximu3SettingsIndexAxesRemap,
+    Ximu3SettingsIndexAxisRemap,
     Ximu3SettingsIndexGyroscopeBiasCorrectionEnabled,
     Ximu3SettingsIndexAhrsUpdateRateDivisor,
-    Ximu3SettingsIndexAhrsAxesConvention,
+    Ximu3SettingsIndexAxesConvention,
     Ximu3SettingsIndexAhrsGain,
-    Ximu3SettingsIndexAhrsAccelerationRejection,
+    Ximu3SettingsIndexAccelerationRejection,
     Ximu3SettingsIndexDataMessageMode,
     Ximu3SettingsIndexAhrsMessageType,
     Ximu3SettingsIndexInertialMessageRateDivisor,
