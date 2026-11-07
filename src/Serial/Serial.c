@@ -27,7 +27,7 @@ void SerialSetSettings(const SerialSettings * const settings_) {
     if (settings.enabled) {
         UartSettings uartSettings = uartSettingsDefault;
         uartSettings.baudRate = settings.baudRate;
-        uartSettings.rtsCtsEnabled = settings.rtsCtsEnabled;
+        uartSettings.rtsCtsEnabled = settings.rtsCts;
         Uart1DmaTxInitialise(&uartSettings);
     } else {
         Uart1DmaTxDeinitialise();

@@ -30,12 +30,13 @@ typedef struct {
     FusionVector accelerometerSensitivity;
     FusionVector accelerometerOffset;
     float sampleRate;
-    FusionRemapAlignment axesRemap;
-    bool gyroscopeBiasCorrectionEnabled;
+    FusionRemapAlignment axisRemap;
+    bool biasCorrection;
     uint32_t ahrsUpdateRateDivisor;
-    FusionConvention ahrsAxesConvention;
+    FusionConvention axesConvention;
     float ahrsGain;
-    bool ahrsAccelerationRejection;
+    bool overrangeRecovery;
+    bool accelerationRejection;
 } ImuSettings;
 
 /**
@@ -50,7 +51,6 @@ typedef struct {
     FusionVector downsampledGyroscope; // private
     FusionVector downsampledAccelerometer; // private
     uint32_t downsampledCount; // private
-    uint64_t previousTicks; // private
     Send * const send; // private
 } Imu;
 

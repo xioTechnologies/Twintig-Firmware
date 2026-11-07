@@ -210,8 +210,8 @@ static void SendAhrsStatus(Send * const send, const SendAhrsData * const ahrsDat
     // Determine status
     const FusionAhrsFlags flags = FusionAhrsGetFlags(ahrsData->ahrs);
     const char* status;
-    if (flags.angularRateRecovery != send->flags.angularRateRecovery) {
-        status = flags.angularRateRecovery ? "Gyroscope overrange" : "Gyroscope overrange recovery complete";
+    if (flags.overrangeRecovery != send->flags.overrangeRecovery) {
+        status = flags.overrangeRecovery ? "Gyroscope overrange" : "Gyroscope overrange recovery complete";
     } else if (flags.accelerationRecovery != send->flags.accelerationRecovery) {
         status = flags.accelerationRecovery ? "Acceleration rejection timeout" : "Acceleration recovery complete";
     } else if (flags.magneticRecovery != send->flags.magneticRecovery) {

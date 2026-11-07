@@ -29,7 +29,6 @@
 #include "Imu/Icm/Icm8.h"
 #include "Imu/Icm/Icm9.h"
 #include <stddef.h>
-#include "Timer/Timer.h"
 
 //------------------------------------------------------------------------------
 // Definitions
@@ -102,13 +101,14 @@ void ImuTasks(Imu * const imu) {
         accelerometer = FusionModelInertial(accelerometer, imu->settings.accelerometerMisalignment, imu->settings.accelerometerSensitivity, imu->settings.accelerometerOffset);
 
         // Update bias algorithm
-        if (imu->settings.gyroscopeBiasCorrectionEnabled) {
-            gyroscope = FusionBiasUpdate(&imu->bias, gyroscope);
+        if (imu->settings.biasCorrection) {
+            FusionBiasUpdate(&imu->bias, gyroscope);
+            gyroscope = FusionBiasGetCorrectedGyroscope(&imu->bias);
         }
 
         // Axis alignment
-        gyroscope = FusionRemap(gyroscope, imu->settings.axesRemap);
-        accelerometer = FusionRemap(accelerometer, imu->settings.axesRemap);
+        gyroscope = FusionRemap(gyroscope, imu->settings.axisRemap);
+        accelerometer = FusionRemap(accelerometer, imu->settings.axisRemap);
 
         // Send inertial data
         const SendInertialData inertialData = {
@@ -125,10 +125,12 @@ void ImuTasks(Imu * const imu) {
         };
         SendTemperature(imu->send, &temperatureData);
 
-        // Downsampling
+        // Do nothing else if AHRS disabled
         if (imu->settings.ahrsUpdateRateDivisor == 0) {
             continue;
         }
+
+        // Downsampling
         if (imu->settings.ahrsUpdateRateDivisor > 1) {
             if (imu->downsampledCount == 0) {
                 imu->downsampledGyroscope = FUSION_VECTOR_ZERO;
@@ -145,16 +147,8 @@ void ImuTasks(Imu * const imu) {
         }
         imu->downsampledCount = 0;
 
-        // Calculate delta time
-        const bool invalid = imu->previousTicks == 0;
-        const float deltaTime = (float) ((double) (icmData.ticks - imu->previousTicks) * (1.0 / (double) TIMER_TICKS_PER_SECOND));
-        imu->previousTicks = icmData.ticks;
-        if (invalid) {
-            continue;
-        }
-
         // Update AHRS algorithm
-        FusionAhrsUpdateNoMagnetometer(&imu->ahrs, gyroscope, accelerometer, deltaTime);
+        FusionAhrsUpdateRelative(&imu->ahrs, gyroscope, accelerometer);
 
         // Send AHRS data
         const SendAhrsData ahrsData = {
@@ -172,37 +166,48 @@ void ImuTasks(Imu * const imu) {
  */
 void ImuSetSettings(Imu * const imu, const ImuSettings * const settings) {
 
-    // Initialise bias algorithm
-    if ((imu->initialised == false) || (imu->settings.sampleRate != settings->sampleRate)) {
-        FusionBiasSettings biasSettings = fusionBiasDefaultSettings;
-        biasSettings.sampleRate = settings->sampleRate;
-        FusionBiasSetSettings(&imu->bias, &biasSettings);
-    }
-
-    // Initialise AHRS algorithm
+    // Initialise algorithms
     if (imu->initialised == false) {
         FusionAhrsInitialise(&imu->ahrs);
+        FusionBiasInitialise(&imu->bias);
     }
 
-    // Reset AHRS
-    if ((imu->settings.axesRemap != settings->axesRemap) ||
-        (imu->settings.ahrsAxesConvention != settings->ahrsAxesConvention) ||
+    // Restart AHRS algorithm if certain settings changed
+    if ((imu->settings.axisRemap != settings->axisRemap) ||
+        (imu->settings.axesConvention != settings->axesConvention) ||
         (imu->settings.ahrsUpdateRateDivisor != settings->ahrsUpdateRateDivisor)) {
         FusionAhrsRestart(&imu->ahrs);
     }
 
-    // Update settings
+    // Store new settings
     imu->settings = *settings;
 
-    // Set AHRS settings
-    const FusionAhrsSettings ahrsSettings = (FusionAhrsSettings){
-        .convention = imu->settings.ahrsAxesConvention,
-        .gain = imu->settings.ahrsGain,
-        .gyroscopeRange = 2000.0f,
-        .accelerationRejection = imu->settings.ahrsAccelerationRejection ? 10.0f : 0.0f,
-        .recoveryTriggerPeriod = 10 * 100, // 10 seconds * 100 Hz
+    // Configure AHRS algorithm
+    if (imu->settings.ahrsUpdateRateDivisor > 0) {
+        const FusionAhrsSettings ahrsSettings = {
+            .sampleRate = imu->settings.sampleRate / (float) imu->settings.ahrsUpdateRateDivisor,
+            .convention = imu->settings.axesConvention,
+            .headingMode = FusionAhrsHeadingModeRelative,
+            .gain = imu->settings.ahrsGain,
+            .gyroscopeRange = imu->settings.overrangeRecovery ? 2000.0f : 0.0f,
+            .accelerationRejection = imu->settings.accelerationRejection ? 10.0f : 0.0f,
+            .magneticRejection = 0.0f,
+            .rejectionTimeout = fusionAhrsDefaultSettings.rejectionTimeout,
+            .anchorCutoff = fusionAhrsDefaultSettings.anchorCutoff,
+            .anchorDuration = fusionAhrsDefaultSettings.anchorDuration,
+        };
+        FusionAhrsSetSettings(&imu->ahrs, &ahrsSettings);
+    }
+
+    // Configure bias algorithm
+    const FusionBiasSettings biasSettings = {
+        .sampleRate = imu->settings.sampleRate,
+        .duration = fusionBiasDefaultSettings.duration,
+        .threshold = fusionBiasDefaultSettings.threshold,
+        .continuous = true,
+        .holdoff = fusionBiasDefaultSettings.holdoff,
     };
-    FusionAhrsSetSettings(&imu->ahrs, &ahrsSettings);
+    FusionBiasSetSettings(&imu->bias, &biasSettings);
 
     // Set flag
     imu->initialised = true;
@@ -217,10 +222,9 @@ void ImuRestart(Imu * const imu) {
 }
 
 /**
- * @brief Sets the heading of the orientation measurement provided by the AHRS
- * algorithm.
+ * @brief Sets the heading.
  * @param imu IMU structure.
- * @param heading Heading angle in degrees.
+ * @param heading Heading in degrees.
  */
 void ImuSetHeading(Imu * const imu, const float heading) {
     FusionAhrsSetHeading(&imu->ahrs, heading);

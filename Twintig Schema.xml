@@ -10,23 +10,24 @@
         </Group>
         <Group name="Serial" expand="true">
             <Setting key="serial_enabled" name="Enabled" type="bool"/>
-            <Setting key="serial_baud_rate" name="Baud Rate" type="number" hideKey="serial_mode" hideValues="0"/>
-            <Setting key="serial_rts_cts_enabled" name="RTS/CTS" type="bool" hideKey="serial_mode" hideValues="0"/>
+            <Setting key="baud_rate" name="Baud Rate" type="number" hideKey="serial_mode" hideValues="0"/>
+            <Setting key="rts_cts" name="RTS/CTS" type="bool" hideKey="serial_mode" hideValues="0"/>
         </Group>
         <Group name="ICM-42688-P" expand="true">
-            <Setting key="gyroscope_notch_filter_enabled" name="Gyroscope Notch Filter" type="bool"/>
+            <Setting key="gyroscope_notch_filter" name="Gyroscope Notch Filter" type="bool"/>
             <Setting key="gyroscope_anti_aliasing" name="Gyroscope Anti-Aliasing" type="IcmAntiAliasing"/>
             <Setting key="accelerometer_anti_aliasing" name="Accelerometer Anti-Aliasing" type="IcmAntiAliasing"/>
             <Setting key="sample_rate" name="Sample Rate" type="IcmSampleRate"/>
         </Group>
         <Group name="IMU" expand="true">
-            <Setting key="axes_remap" name="Axes Remap" type="FusionRemapAlignment"/>
-            <Setting key="gyroscope_bias_correction_enabled" name="Gyroscope Bias Correction" type="bool"/>
+            <Setting key="axis_remap" name="Axis Remap" type="FusionRemapAlignment"/>
+            <Setting key="bias_correction" name="Bias Correction" type="bool"/>
             <Group name="AHRS" expand="true">
                 <Setting key="ahrs_update_rate_divisor" name="Update Rate Divisor" type="number"/>
-                <Setting key="ahrs_axes_convention" name="Axes Convention" type="FusionConvention"/>
+                <Setting key="axes_convention" name="Axes Convention" type="FusionConvention"/>
                 <Setting key="ahrs_gain" name="Gain" type="number"/>
-                <Setting key="ahrs_acceleration_rejection" name="Acceleration Rejection" type="number"/>
+                <Setting key="overrange_recovery" name="Overrange Recovery" type="bool"/>
+                <Setting key="acceleration_rejection" name="Acceleration Rejection" type="bool"/>
             </Group>
         </Group>
         <Group name="Data Messages" expand="true">
@@ -46,30 +47,30 @@
     </Settings>
     <Enums>
         <Enum name="FusionRemapAlignment">
-            <Enumerator name="+X+Y+Z (Disabled)" value="0"/>
-            <Enumerator name="+X-Z+Y" value="1"/>
-            <Enumerator name="+X-Y-Z" value="2"/>
-            <Enumerator name="+X+Z-Y" value="3"/>
-            <Enumerator name="-X+Y-Z" value="4"/>
-            <Enumerator name="-X+Z+Y" value="5"/>
-            <Enumerator name="-X-Y+Z" value="6"/>
-            <Enumerator name="-X-Z-Y" value="7"/>
-            <Enumerator name="+Y-X+Z" value="8"/>
-            <Enumerator name="+Y-Z-X" value="9"/>
-            <Enumerator name="+Y+X-Z" value="10"/>
-            <Enumerator name="+Y+Z+X" value="11"/>
-            <Enumerator name="-Y+X+Z" value="12"/>
-            <Enumerator name="-Y-Z+X" value="13"/>
-            <Enumerator name="-Y-X-Z" value="14"/>
-            <Enumerator name="-Y+Z-X" value="15"/>
-            <Enumerator name="+Z+Y-X" value="16"/>
-            <Enumerator name="+Z+X+Y" value="17"/>
-            <Enumerator name="+Z-Y+X" value="18"/>
-            <Enumerator name="+Z-X-Y" value="19"/>
-            <Enumerator name="-Z+Y+X" value="20"/>
-            <Enumerator name="-Z-X+Y" value="21"/>
-            <Enumerator name="-Z-Y-X" value="22"/>
-            <Enumerator name="-Z+X-Y" value="23"/>
+            <Enumerator name="Disabled" value="0"/>
+            <Enumerator name="+X+Z-Y" value="1"/>
+            <Enumerator name="+X-Z+Y" value="2"/>
+            <Enumerator name="+X-Y-Z" value="3"/>
+            <Enumerator name="+Y+X-Z" value="4"/>
+            <Enumerator name="+Y+Z+X" value="5"/>
+            <Enumerator name="+Y-Z-X" value="6"/>
+            <Enumerator name="+Y-X+Z" value="7"/>
+            <Enumerator name="+Z+X+Y" value="8"/>
+            <Enumerator name="+Z+Y-X" value="9"/>
+            <Enumerator name="+Z-Y+X" value="10"/>
+            <Enumerator name="+Z-X-Y" value="11"/>
+            <Enumerator name="-Z+X-Y" value="12"/>
+            <Enumerator name="-Z+Y+X" value="13"/>
+            <Enumerator name="-Z-Y-X" value="14"/>
+            <Enumerator name="-Z-X+Y" value="15"/>
+            <Enumerator name="-Y+X+Z" value="16"/>
+            <Enumerator name="-Y+Z-X" value="17"/>
+            <Enumerator name="-Y-Z+X" value="18"/>
+            <Enumerator name="-Y-X-Z" value="19"/>
+            <Enumerator name="-X+Y-Z" value="20"/>
+            <Enumerator name="-X+Z+Y" value="21"/>
+            <Enumerator name="-X-Z-Y" value="22"/>
+            <Enumerator name="-X-Y+Z" value="23"/>
         </Enum>
         <Enum name="FusionConvention">
             <Enumerator name="North-West-Up (NWU)" value="0"/>

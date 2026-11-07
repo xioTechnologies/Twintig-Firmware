@@ -137,7 +137,7 @@
             "default": "{FusionRemapAlignmentPXPYPZ}"
         },
         {
-            "name": "Gyroscope Bias Correction Enabled",
+            "name": "Bias Correction",
             "declaration": "bool name",
             "default": "{false}"
         },
@@ -155,6 +155,11 @@
             "name": "AHRS Gain",
             "declaration": "float name",
             "default": "{0.5f}"
+        },
+        {
+            "name": "Overrange Recovery",
+            "declaration": "bool name",
+            "default": "{true}"
         },
         {
             "name": "Acceleration Rejection",

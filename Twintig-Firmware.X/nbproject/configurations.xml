@@ -116,10 +116,15 @@
           <itemPath>../src/Imu/Fusion/FusionAhrs.h</itemPath>
           <itemPath>../src/Imu/Fusion/FusionBias.h</itemPath>
           <itemPath>../src/Imu/Fusion/FusionCompass.h</itemPath>
+          <itemPath>../src/Imu/Fusion/FusionConfig.h</itemPath>
           <itemPath>../src/Imu/Fusion/FusionConvention.h</itemPath>
+          <itemPath>../src/Imu/Fusion/FusionHardIron.h</itemPath>
+          <itemPath>../src/Imu/Fusion/FusionInline.h</itemPath>
           <itemPath>../src/Imu/Fusion/FusionMath.h</itemPath>
           <itemPath>../src/Imu/Fusion/FusionModel.h</itemPath>
+          <itemPath>../src/Imu/Fusion/FusionProgress.h</itemPath>
           <itemPath>../src/Imu/Fusion/FusionRemap.h</itemPath>
+          <itemPath>../src/Imu/Fusion/FusionResult.h</itemPath>
         </logicalFolder>
         <logicalFolder name="Icm" displayName="Icm" projectFiles="true">
           <itemPath>../src/Imu/Icm/Icm.h</itemPath>
@@ -358,6 +363,11 @@
           <itemPath>../src/Imu/Fusion/FusionAhrs.c</itemPath>
           <itemPath>../src/Imu/Fusion/FusionBias.c</itemPath>
           <itemPath>../src/Imu/Fusion/FusionCompass.c</itemPath>
+          <itemPath>../src/Imu/Fusion/FusionConvention.c</itemPath>
+          <itemPath>../src/Imu/Fusion/FusionHardIron.c</itemPath>
+          <itemPath>../src/Imu/Fusion/FusionProgress.c</itemPath>
+          <itemPath>../src/Imu/Fusion/FusionRemap.c</itemPath>
+          <itemPath>../src/Imu/Fusion/FusionResult.c</itemPath>
         </logicalFolder>
         <logicalFolder name="Icm" displayName="Icm" projectFiles="true">
           <itemPath>../src/Imu/Icm/Icm.c</itemPath>

@@ -9,9 +9,9 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define XIMU3_MAX_KEY_LENGTH (33)
+#define XIMU3_MAX_KEY_LENGTH (32)
 
-#define XIMU3_NUMBER_OF_SETTINGS (35)
+#define XIMU3_NUMBER_OF_SETTINGS (36)
 
 #define XIMU3_TERMINATION '\n'
 
@@ -50,10 +50,11 @@ typedef struct {
     IcmAntiAliasing accelerometerAntiAliasing;
     IcmSampleRate sampleRate;
     FusionRemapAlignment axisRemap;
-    bool gyroscopeBiasCorrectionEnabled;
+    bool biasCorrection;
     uint32_t ahrsUpdateRateDivisor;
     FusionConvention axesConvention;
     float ahrsGain;
+    bool overrangeRecovery;
     bool accelerationRejection;
     SendDataMessageMode dataMessageMode;
     SendAhrsMessageType ahrsMessageType;
@@ -88,10 +89,11 @@ typedef enum {
     Ximu3SettingsIndexAccelerometerAntiAliasing,
     Ximu3SettingsIndexSampleRate,
     Ximu3SettingsIndexAxisRemap,
-    Ximu3SettingsIndexGyroscopeBiasCorrectionEnabled,
+    Ximu3SettingsIndexBiasCorrection,
     Ximu3SettingsIndexAhrsUpdateRateDivisor,
     Ximu3SettingsIndexAxesConvention,
     Ximu3SettingsIndexAhrsGain,
+    Ximu3SettingsIndexOverrangeRecovery,
     Ximu3SettingsIndexAccelerationRejection,
     Ximu3SettingsIndexDataMessageMode,
     Ximu3SettingsIndexAhrsMessageType,

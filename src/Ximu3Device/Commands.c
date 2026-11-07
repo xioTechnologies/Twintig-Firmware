@@ -20,6 +20,11 @@
 #include "x-IMU3-Device/Ximu3.h"
 
 //------------------------------------------------------------------------------
+// Function declarations
+
+static bool CommandNotApplicable(Ximu3CommandResponse * const response, void* const context);
+
+//------------------------------------------------------------------------------
 // Functions
 
 /**
@@ -94,6 +99,9 @@ void CommandsSave(const char* * const value, Ximu3CommandResponse * const respon
  * @param context Context.
  */
 void CommandsRestart(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
+    if (CommandNotApplicable(response, context)) {
+        return;
+    }
     if (Ximu3CommandParseNull(value, response) != Ximu3ResultOk) {
         return;
     }
@@ -109,15 +117,14 @@ void CommandsRestart(const char* * const value, Ximu3CommandResponse * const res
  * @param context Context.
  */
 void CommandsHeading(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
-    const Context * const context_ = context;
-    if (context_->imu == NULL) {
-        Ximu3CommandRespondError(response, "Command not applicable");
+    if (CommandNotApplicable(response, context)) {
         return;
     }
     float heading;
     if (Ximu3CommandParseNumber(value, response, &heading) != Ximu3ResultOk) {
         return;
     }
+    const Context * const context_ = context;
     ImuSetHeading(context_->imu, heading);
     Ximu3CommandRespond(response);
 }
@@ -281,6 +288,21 @@ void CommandsErase(const char* * const value, Ximu3CommandResponse * const respo
     Ximu3SettingsLoadDefaults(context_->settings, true);
     ApplyAfterDelay(context_);
     Ximu3CommandRespond(response);
+}
+
+/**
+ * @brief Responds with error and returns true if command not applicable.
+ * @param response Response.
+ * @param context Context.
+ * @return True if command not applicable.
+ */
+static bool CommandNotApplicable(Ximu3CommandResponse * const response, void* const context) {
+    const Context * const context_ = context;
+    if (context_->imu != NULL) {
+        return false;
+    }
+    Ximu3CommandRespondError(response, "Command not applicable");
+    return true;
 }
 
 /**

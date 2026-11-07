@@ -73,8 +73,8 @@ Ximu3Result Ximu3SettingsIndexFrom(Ximu3SettingsIndex * const index, const int i
         case Ximu3SettingsIndexAxisRemap:
             *index = Ximu3SettingsIndexAxisRemap;
             break;
-        case Ximu3SettingsIndexGyroscopeBiasCorrectionEnabled:
-            *index = Ximu3SettingsIndexGyroscopeBiasCorrectionEnabled;
+        case Ximu3SettingsIndexBiasCorrection:
+            *index = Ximu3SettingsIndexBiasCorrection;
             break;
         case Ximu3SettingsIndexAhrsUpdateRateDivisor:
             *index = Ximu3SettingsIndexAhrsUpdateRateDivisor;
@@ -84,6 +84,9 @@ Ximu3Result Ximu3SettingsIndexFrom(Ximu3SettingsIndex * const index, const int i
             break;
         case Ximu3SettingsIndexAhrsGain:
             *index = Ximu3SettingsIndexAhrsGain;
+            break;
+        case Ximu3SettingsIndexOverrangeRecovery:
+            *index = Ximu3SettingsIndexOverrangeRecovery;
             break;
         case Ximu3SettingsIndexAccelerationRejection:
             *index = Ximu3SettingsIndexAccelerationRejection;

@@ -23,7 +23,7 @@
 typedef struct {
     bool enabled;
     uint32_t baudRate;
-    bool rtsCtsEnabled;
+    bool rtsCts;
 } SerialSettings;
 
 //------------------------------------------------------------------------------

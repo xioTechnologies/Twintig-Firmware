@@ -1,7 +1,7 @@
 /**
  * @file FusionBias.h
  * @author Seb Madgwick
- * @brief Run-time estimation and compensation of gyroscope offset.
+ * @brief Run-time estimation and correction of gyroscope offset.
  */
 
 #ifndef FUSION_BIAS_H
@@ -11,6 +11,10 @@
 // Includes
 
 #include "FusionMath.h"
+#include "FusionProgress.h"
+#include "FusionResult.h"
+#include <stdbool.h>
+#include <stdint.h>
 
 //------------------------------------------------------------------------------
 // Definitions
@@ -20,19 +24,33 @@
  */
 typedef struct {
     float sampleRate; // Hz
-    float stationaryThreshold; // degrees per second
-    float stationaryPeriod; // seconds
+    float duration; // seconds
+    float threshold; // degrees per second
+    bool continuous;
+    float holdoff; // seconds
 } FusionBiasSettings;
 
 /**
  * @brief Bias structure. All members are private.
  */
 typedef struct {
-    FusionBiasSettings settings;
+    // Settings
     float filterCoefficient;
-    unsigned int timeout;
-    unsigned int timer;
+    uint32_t duration;
+    float threshold;
+    bool continuous;
+    uint32_t holdoff;
+
+    // Outputs
+    FusionVector correctedGyroscope;
     FusionVector offset;
+
+    // Internal states
+    FusionProgressStatus status;
+    FusionResult error;
+    bool completed;
+    uint32_t durationTimer;
+    uint32_t holdoffTimer;
 } FusionBias;
 
 //------------------------------------------------------------------------------
@@ -47,11 +65,23 @@ void FusionBiasInitialise(FusionBias *const bias);
 
 void FusionBiasSetSettings(FusionBias *const bias, const FusionBiasSettings *const settings);
 
-FusionVector FusionBiasUpdate(FusionBias *const bias, FusionVector gyroscope);
+FusionResult FusionBiasUpdate(FusionBias *const bias, const FusionVector gyroscope);
+
+FusionVector FusionBiasGetCorrectedGyroscope(const FusionBias *const bias);
 
 FusionVector FusionBiasGetOffset(const FusionBias *const bias);
 
 void FusionBiasSetOffset(FusionBias *const bias, const FusionVector offset);
+
+void FusionBiasStart(FusionBias *const bias);
+
+FusionProgress FusionBiasGetProgress(const FusionBias *const bias);
+
+FusionResult FusionBiasComplete(FusionBias *const bias);
+
+FusionResult FusionBiasAbort(FusionBias *const bias);
+
+bool FusionBiasCompleted(FusionBias *const bias);
 
 #endif
 

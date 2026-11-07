@@ -79,7 +79,7 @@ static void ApplySerial(Context * const context) {
     const SerialSettings serialSettings = {
         .enabled = Ximu3SettingsGet(context->settings)->serialEnabled,
         .baudRate = Ximu3SettingsGet(context->settings)->baudRate,
-        .rtsCtsEnabled = Ximu3SettingsGet(context->settings)->rtsCts,
+        .rtsCts = Ximu3SettingsGet(context->settings)->rtsCts,
     };
     SerialSetSettings(&serialSettings);
 }
@@ -133,10 +133,11 @@ static void ApplyImu(Context * const context) {
         || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAccelerometerOffset)
         || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSampleRate)
         || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAxisRemap)
-        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexGyroscopeBiasCorrectionEnabled)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexBiasCorrection)
         || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsUpdateRateDivisor)
         || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAxesConvention)
         || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsGain)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexOverrangeRecovery)
         || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAccelerationRejection)) == false) {
         return;
     }
@@ -150,12 +151,13 @@ static void ApplyImu(Context * const context) {
         .accelerometerSensitivity = Ximu3SettingsGet(context->settings)->accelerometerSensitivity,
         .accelerometerOffset = Ximu3SettingsGet(context->settings)->accelerometerOffset,
         .sampleRate = Ximu3SettingsGet(context->settings)->sampleRate,
-        .axesRemap = Ximu3SettingsGet(context->settings)->axisRemap,
-        .gyroscopeBiasCorrectionEnabled = Ximu3SettingsGet(context->settings)->gyroscopeBiasCorrectionEnabled,
+        .axisRemap = Ximu3SettingsGet(context->settings)->axisRemap,
+        .biasCorrection = Ximu3SettingsGet(context->settings)->biasCorrection,
         .ahrsUpdateRateDivisor = Ximu3SettingsGet(context->settings)->ahrsUpdateRateDivisor,
-        .ahrsAxesConvention = Ximu3SettingsGet(context->settings)->axesConvention,
+        .axesConvention = Ximu3SettingsGet(context->settings)->axesConvention,
         .ahrsGain = Ximu3SettingsGet(context->settings)->ahrsGain,
-        .ahrsAccelerationRejection = Ximu3SettingsGet(context->settings)->accelerationRejection,
+        .overrangeRecovery = Ximu3SettingsGet(context->settings)->overrangeRecovery,
+        .accelerationRejection = Ximu3SettingsGet(context->settings)->accelerationRejection,
     };
     ImuSetSettings(context->imu, &imuSettings);
 }

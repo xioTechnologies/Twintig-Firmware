@@ -26,10 +26,11 @@ static const char* const names[] = {
     "Accelerometer Anti-Aliasing",
     "Sample Rate",
     "Axis Remap",
-    "Gyroscope Bias Correction Enabled",
+    "Bias Correction",
     "AHRS Update Rate Divisor",
     "Axes Convention",
     "AHRS Gain",
+    "Overrange Recovery",
     "Acceleration Rejection",
     "Data Message Mode",
     "AHRS Message Type",
@@ -64,10 +65,11 @@ static const char* const keys[] = {
     "accelerometer_anti_aliasing",
     "sample_rate",
     "axis_remap",
-    "gyroscope_bias_correction_enabled",
+    "bias_correction",
     "ahrs_update_rate_divisor",
     "axes_convention",
     "ahrs_gain",
+    "overrange_recovery",
     "acceleration_rejection",
     "data_message_mode",
     "ahrs_message_type",
@@ -107,6 +109,7 @@ static const MetadataType types[] = {
     MetadataTypeFusionConvention,
     MetadataTypeFloat,
     MetadataTypeBool,
+    MetadataTypeBool,
     MetadataTypeSendDataMessageMode,
     MetadataTypeSendAhrsMessageType,
     MetadataTypeUint32,
@@ -140,10 +143,11 @@ static const size_t sizes[] = {
     sizeof (((Ximu3SettingsValues*) 0)->accelerometerAntiAliasing),
     sizeof (((Ximu3SettingsValues*) 0)->sampleRate),
     sizeof (((Ximu3SettingsValues*) 0)->axisRemap),
-    sizeof (((Ximu3SettingsValues*) 0)->gyroscopeBiasCorrectionEnabled),
+    sizeof (((Ximu3SettingsValues*) 0)->biasCorrection),
     sizeof (((Ximu3SettingsValues*) 0)->ahrsUpdateRateDivisor),
     sizeof (((Ximu3SettingsValues*) 0)->axesConvention),
     sizeof (((Ximu3SettingsValues*) 0)->ahrsGain),
+    sizeof (((Ximu3SettingsValues*) 0)->overrangeRecovery),
     sizeof (((Ximu3SettingsValues*) 0)->accelerationRejection),
     sizeof (((Ximu3SettingsValues*) 0)->dataMessageMode),
     sizeof (((Ximu3SettingsValues*) 0)->ahrsMessageType),
@@ -182,6 +186,7 @@ static const void* const defaults[] = {
     (void*) (&(uint32_t) {1}),
     (void*) (&(FusionConvention) {FusionConventionNwu}),
     (void*) (&(float) {0.5f}),
+    (void*) (&(bool) {true}),
     (void*) (&(bool) {true}),
     (void*) (&(SendDataMessageMode) {SendDataMessageModeBinary}),
     (void*) (&(SendAhrsMessageType) {SendAhrsMessageTypeQuaternion}),
@@ -228,6 +233,7 @@ static const bool preserveds[] = {
     false,
     false,
     false,
+    false,
 };
 
 static const bool readOnlys[] = {
@@ -245,6 +251,7 @@ static const bool readOnlys[] = {
     true,
     true,
     true,
+    false,
     false,
     false,
     false,
@@ -316,14 +323,16 @@ static void* GetValue(Ximu3Settings * const settings, const Ximu3SettingsIndex i
             return &settings->values.sampleRate;
         case Ximu3SettingsIndexAxisRemap:
             return &settings->values.axisRemap;
-        case Ximu3SettingsIndexGyroscopeBiasCorrectionEnabled:
-            return &settings->values.gyroscopeBiasCorrectionEnabled;
+        case Ximu3SettingsIndexBiasCorrection:
+            return &settings->values.biasCorrection;
         case Ximu3SettingsIndexAhrsUpdateRateDivisor:
             return &settings->values.ahrsUpdateRateDivisor;
         case Ximu3SettingsIndexAxesConvention:
             return &settings->values.axesConvention;
         case Ximu3SettingsIndexAhrsGain:
             return &settings->values.ahrsGain;
+        case Ximu3SettingsIndexOverrangeRecovery:
+            return &settings->values.overrangeRecovery;
         case Ximu3SettingsIndexAccelerationRejection:
             return &settings->values.accelerationRejection;
         case Ximu3SettingsIndexDataMessageMode:
