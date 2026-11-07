@@ -10,8 +10,8 @@ static const char* const names[] = {
     "Accelerometer Misalignment",
     "Accelerometer Sensitivity",
     "Accelerometer Offset",
-    "Soft Iron Matrix",
-    "Hard Iron Offset",
+    "Soft-Iron Matrix",
+    "Hard-Iron Offset",
     "Model",
     "Serial Number",
     "Hardware Version",
@@ -33,9 +33,9 @@ static const char* const names[] = {
     "Overrange Recovery",
     "Acceleration Rejection",
     "Data Message Mode",
-    "AHRS Message Type",
+    "Orientation Mode",
     "Inertial Message Rate Divisor",
-    "AHRS Message Rate Divisor",
+    "Orientation Message Rate Divisor",
     "Temperature Message Rate Divisor",
     "USB Send Mode",
     "Serial Send Mode",
@@ -72,9 +72,9 @@ static const char* const keys[] = {
     "overrange_recovery",
     "acceleration_rejection",
     "data_message_mode",
-    "ahrs_message_type",
+    "orientation_mode",
     "inertial_message_rate_divisor",
-    "ahrs_message_rate_divisor",
+    "orientation_message_rate_divisor",
     "temperature_message_rate_divisor",
     "usb_send_mode",
     "serial_send_mode",
@@ -111,7 +111,7 @@ static const MetadataType types[] = {
     MetadataTypeBool,
     MetadataTypeBool,
     MetadataTypeSendDataMessageMode,
-    MetadataTypeSendAhrsMessageType,
+    MetadataTypeSendOrientationMode,
     MetadataTypeUint32,
     MetadataTypeUint32,
     MetadataTypeUint32,
@@ -150,9 +150,9 @@ static const size_t sizes[] = {
     sizeof (((Ximu3SettingsValues*) 0)->overrangeRecovery),
     sizeof (((Ximu3SettingsValues*) 0)->accelerationRejection),
     sizeof (((Ximu3SettingsValues*) 0)->dataMessageMode),
-    sizeof (((Ximu3SettingsValues*) 0)->ahrsMessageType),
+    sizeof (((Ximu3SettingsValues*) 0)->orientationMode),
     sizeof (((Ximu3SettingsValues*) 0)->inertialMessageRateDivisor),
-    sizeof (((Ximu3SettingsValues*) 0)->ahrsMessageRateDivisor),
+    sizeof (((Ximu3SettingsValues*) 0)->orientationMessageRateDivisor),
     sizeof (((Ximu3SettingsValues*) 0)->temperatureMessageRateDivisor),
     sizeof (((Ximu3SettingsValues*) 0)->usbSendMode),
     sizeof (((Ximu3SettingsValues*) 0)->serialSendMode),
@@ -189,7 +189,7 @@ static const void* const defaults[] = {
     (void*) (&(bool) {true}),
     (void*) (&(bool) {true}),
     (void*) (&(SendDataMessageMode) {SendDataMessageModeBinary}),
-    (void*) (&(SendAhrsMessageType) {SendAhrsMessageTypeQuaternion}),
+    (void*) (&(SendOrientationMode) {SendOrientationModeQuaternion}),
     (void*) (&(uint32_t) {1}),
     (void*) (&(uint32_t) {1}),
     (void*) (&(uint32_t) {0}),
@@ -337,12 +337,12 @@ static void* GetValue(Ximu3Settings * const settings, const Ximu3SettingsIndex i
             return &settings->values.accelerationRejection;
         case Ximu3SettingsIndexDataMessageMode:
             return &settings->values.dataMessageMode;
-        case Ximu3SettingsIndexAhrsMessageType:
-            return &settings->values.ahrsMessageType;
+        case Ximu3SettingsIndexOrientationMode:
+            return &settings->values.orientationMode;
         case Ximu3SettingsIndexInertialMessageRateDivisor:
             return &settings->values.inertialMessageRateDivisor;
-        case Ximu3SettingsIndexAhrsMessageRateDivisor:
-            return &settings->values.ahrsMessageRateDivisor;
+        case Ximu3SettingsIndexOrientationMessageRateDivisor:
+            return &settings->values.orientationMessageRateDivisor;
         case Ximu3SettingsIndexTemperatureMessageRateDivisor:
             return &settings->values.temperatureMessageRateDivisor;
         case Ximu3SettingsIndexUsbSendMode:

@@ -94,14 +94,14 @@ Ximu3Result Ximu3SettingsIndexFrom(Ximu3SettingsIndex * const index, const int i
         case Ximu3SettingsIndexDataMessageMode:
             *index = Ximu3SettingsIndexDataMessageMode;
             break;
-        case Ximu3SettingsIndexAhrsMessageType:
-            *index = Ximu3SettingsIndexAhrsMessageType;
+        case Ximu3SettingsIndexOrientationMode:
+            *index = Ximu3SettingsIndexOrientationMode;
             break;
         case Ximu3SettingsIndexInertialMessageRateDivisor:
             *index = Ximu3SettingsIndexInertialMessageRateDivisor;
             break;
-        case Ximu3SettingsIndexAhrsMessageRateDivisor:
-            *index = Ximu3SettingsIndexAhrsMessageRateDivisor;
+        case Ximu3SettingsIndexOrientationMessageRateDivisor:
+            *index = Ximu3SettingsIndexOrientationMessageRateDivisor;
             break;
         case Ximu3SettingsIndexTemperatureMessageRateDivisor:
             *index = Ximu3SettingsIndexTemperatureMessageRateDivisor;

@@ -1,0 +1,243 @@
+<Schema name="Twintig IMU">
+    <Commands>
+        <Command key="ping"/>
+        <Command key="default"/>
+        <Command key="apply"/>
+        <Command key="save"/>
+        <Command key="restart"/>
+        <Command key="heading"/>
+        <Command key="note"/>
+        <Command key="blink"/>
+        <Command key="strobe"/>
+        <Command key="colour"/>
+    </Commands>
+    <Settings>
+        <Group name="Device Information" expand="false">
+            <Setting key="model" name="Model" type="string" readOnly="true"/>
+            <Setting key="serial_number" name="Serial Number" type="string" readOnly="true"/>
+            <Setting key="hardware_version" name="Hardware Version" type="string" readOnly="true"/>
+            <Setting key="bootloader_version" name="Bootloader Version" type="string" readOnly="true"/>
+            <Setting key="firmware_version" name="Firmware Version" type="string" readOnly="true"/>
+            <Setting key="device_name" name="Device Name" type="string"/>
+        </Group>
+        <Group name="IMU" expand="false">
+            <Setting key="sample_rate" name="Sample Rate" type="enum">
+                <Enum name="32000 Hz" value="32000"/>
+                <Enum name="16000 Hz" value="16000"/>
+                <Enum name="8000 Hz" value="8000"/>
+                <Enum name="4000 Hz" value="4000"/>
+                <Enum name="2000 Hz" value="2000"/>
+                <Enum name="1000 Hz" value="1000"/>
+                <Enum name="500 Hz" value="500"/>
+                <Enum name="200 Hz" value="200"/>
+                <Enum name="100 Hz" value="100"/>
+                <Enum name="50 Hz" value="50"/>
+                <Enum name="25 Hz" value="25"/>
+                <Enum name="12 Hz" value="12"/>
+            </Setting>
+            <Setting key="gyroscope_notch_filter" name="Gyroscope Notch Filter" type="bool"/>
+            <Group name="Anti-Aliasing Filters">
+                <Setting key="gyroscope_anti_aliasing" name="Gyroscope" type="enum">
+                    <Enum name="Disabled" value="0"/>
+                    <Enum name="42 Hz" value="42"/>
+                    <Enum name="84 Hz" value="84"/>
+                    <Enum name="126 Hz" value="126"/>
+                    <Enum name="170 Hz" value="170"/>
+                    <Enum name="213 Hz" value="213"/>
+                    <Enum name="258 Hz" value="258"/>
+                    <Enum name="303 Hz" value="303"/>
+                    <Enum name="348 Hz" value="348"/>
+                    <Enum name="394 Hz" value="394"/>
+                    <Enum name="441 Hz" value="441"/>
+                    <Enum name="488 Hz" value="488"/>
+                    <Enum name="536 Hz" value="536"/>
+                    <Enum name="585 Hz" value="585"/>
+                    <Enum name="634 Hz" value="634"/>
+                    <Enum name="684 Hz" value="684"/>
+                    <Enum name="734 Hz" value="734"/>
+                    <Enum name="785 Hz" value="785"/>
+                    <Enum name="837 Hz" value="837"/>
+                    <Enum name="890 Hz" value="890"/>
+                    <Enum name="943 Hz" value="943"/>
+                    <Enum name="997 Hz" value="997"/>
+                    <Enum name="1051 Hz" value="1051"/>
+                    <Enum name="1107 Hz" value="1107"/>
+                    <Enum name="1163 Hz" value="1163"/>
+                    <Enum name="1220 Hz" value="1220"/>
+                    <Enum name="1277 Hz" value="1277"/>
+                    <Enum name="1336 Hz" value="1336"/>
+                    <Enum name="1395 Hz" value="1395"/>
+                    <Enum name="1454 Hz" value="1454"/>
+                    <Enum name="1515 Hz" value="1515"/>
+                    <Enum name="1577 Hz" value="1577"/>
+                    <Enum name="1639 Hz" value="1639"/>
+                    <Enum name="1702 Hz" value="1702"/>
+                    <Enum name="1766 Hz" value="1766"/>
+                    <Enum name="1830 Hz" value="1830"/>
+                    <Enum name="1896 Hz" value="1896"/>
+                    <Enum name="1962 Hz" value="1962"/>
+                    <Enum name="2029 Hz" value="2029"/>
+                    <Enum name="2097 Hz" value="2097"/>
+                    <Enum name="2166 Hz" value="2166"/>
+                    <Enum name="2235 Hz" value="2235"/>
+                    <Enum name="2306 Hz" value="2306"/>
+                    <Enum name="2377 Hz" value="2377"/>
+                    <Enum name="2449 Hz" value="2449"/>
+                    <Enum name="2522 Hz" value="2522"/>
+                    <Enum name="2596 Hz" value="2596"/>
+                    <Enum name="2671 Hz" value="2671"/>
+                    <Enum name="2746 Hz" value="2746"/>
+                    <Enum name="2823 Hz" value="2823"/>
+                    <Enum name="2900 Hz" value="2900"/>
+                    <Enum name="2978 Hz" value="2978"/>
+                    <Enum name="3057 Hz" value="3057"/>
+                    <Enum name="3137 Hz" value="3137"/>
+                    <Enum name="3217 Hz" value="3217"/>
+                    <Enum name="3299 Hz" value="3299"/>
+                    <Enum name="3381 Hz" value="3381"/>
+                    <Enum name="3464 Hz" value="3464"/>
+                    <Enum name="3548 Hz" value="3548"/>
+                    <Enum name="3633 Hz" value="3633"/>
+                    <Enum name="3718 Hz" value="3718"/>
+                    <Enum name="3805 Hz" value="3805"/>
+                    <Enum name="3892 Hz" value="3892"/>
+                    <Enum name="3979 Hz" value="3979"/>
+                </Setting>
+                <Setting key="accelerometer_anti_aliasing" name="Accelerometer" type="enum">
+                    <Enum name="Disabled" value="0"/>
+                    <Enum name="42 Hz" value="42"/>
+                    <Enum name="84 Hz" value="84"/>
+                    <Enum name="126 Hz" value="126"/>
+                    <Enum name="170 Hz" value="170"/>
+                    <Enum name="213 Hz" value="213"/>
+                    <Enum name="258 Hz" value="258"/>
+                    <Enum name="303 Hz" value="303"/>
+                    <Enum name="348 Hz" value="348"/>
+                    <Enum name="394 Hz" value="394"/>
+                    <Enum name="441 Hz" value="441"/>
+                    <Enum name="488 Hz" value="488"/>
+                    <Enum name="536 Hz" value="536"/>
+                    <Enum name="585 Hz" value="585"/>
+                    <Enum name="634 Hz" value="634"/>
+                    <Enum name="684 Hz" value="684"/>
+                    <Enum name="734 Hz" value="734"/>
+                    <Enum name="785 Hz" value="785"/>
+                    <Enum name="837 Hz" value="837"/>
+                    <Enum name="890 Hz" value="890"/>
+                    <Enum name="943 Hz" value="943"/>
+                    <Enum name="997 Hz" value="997"/>
+                    <Enum name="1051 Hz" value="1051"/>
+                    <Enum name="1107 Hz" value="1107"/>
+                    <Enum name="1163 Hz" value="1163"/>
+                    <Enum name="1220 Hz" value="1220"/>
+                    <Enum name="1277 Hz" value="1277"/>
+                    <Enum name="1336 Hz" value="1336"/>
+                    <Enum name="1395 Hz" value="1395"/>
+                    <Enum name="1454 Hz" value="1454"/>
+                    <Enum name="1515 Hz" value="1515"/>
+                    <Enum name="1577 Hz" value="1577"/>
+                    <Enum name="1639 Hz" value="1639"/>
+                    <Enum name="1702 Hz" value="1702"/>
+                    <Enum name="1766 Hz" value="1766"/>
+                    <Enum name="1830 Hz" value="1830"/>
+                    <Enum name="1896 Hz" value="1896"/>
+                    <Enum name="1962 Hz" value="1962"/>
+                    <Enum name="2029 Hz" value="2029"/>
+                    <Enum name="2097 Hz" value="2097"/>
+                    <Enum name="2166 Hz" value="2166"/>
+                    <Enum name="2235 Hz" value="2235"/>
+                    <Enum name="2306 Hz" value="2306"/>
+                    <Enum name="2377 Hz" value="2377"/>
+                    <Enum name="2449 Hz" value="2449"/>
+                    <Enum name="2522 Hz" value="2522"/>
+                    <Enum name="2596 Hz" value="2596"/>
+                    <Enum name="2671 Hz" value="2671"/>
+                    <Enum name="2746 Hz" value="2746"/>
+                    <Enum name="2823 Hz" value="2823"/>
+                    <Enum name="2900 Hz" value="2900"/>
+                    <Enum name="2978 Hz" value="2978"/>
+                    <Enum name="3057 Hz" value="3057"/>
+                    <Enum name="3137 Hz" value="3137"/>
+                    <Enum name="3217 Hz" value="3217"/>
+                    <Enum name="3299 Hz" value="3299"/>
+                    <Enum name="3381 Hz" value="3381"/>
+                    <Enum name="3464 Hz" value="3464"/>
+                    <Enum name="3548 Hz" value="3548"/>
+                    <Enum name="3633 Hz" value="3633"/>
+                    <Enum name="3718 Hz" value="3718"/>
+                    <Enum name="3805 Hz" value="3805"/>
+                    <Enum name="3892 Hz" value="3892"/>
+                    <Enum name="3979 Hz" value="3979"/>
+                </Setting>
+            </Group>
+            <Setting key="axis_remap" name="Axis Remap" type="enum">
+                <Enum name="Disabled" value="0"/>
+                <Enum name="+X+Z-Y" value="1"/>
+                <Enum name="+X-Z+Y" value="2"/>
+                <Enum name="+X-Y-Z" value="3"/>
+                <Enum name="+Y+X-Z" value="4"/>
+                <Enum name="+Y+Z+X" value="5"/>
+                <Enum name="+Y-Z-X" value="6"/>
+                <Enum name="+Y-X+Z" value="7"/>
+                <Enum name="+Z+X+Y" value="8"/>
+                <Enum name="+Z+Y-X" value="9"/>
+                <Enum name="+Z-Y+X" value="10"/>
+                <Enum name="+Z-X-Y" value="11"/>
+                <Enum name="-Z+X-Y" value="12"/>
+                <Enum name="-Z+Y+X" value="13"/>
+                <Enum name="-Z-Y-X" value="14"/>
+                <Enum name="-Z-X+Y" value="15"/>
+                <Enum name="-Y+X+Z" value="16"/>
+                <Enum name="-Y+Z-X" value="17"/>
+                <Enum name="-Y-Z+X" value="18"/>
+                <Enum name="-Y-X-Z" value="19"/>
+                <Enum name="-X+Y-Z" value="20"/>
+                <Enum name="-X+Z+Y" value="21"/>
+                <Enum name="-X-Z-Y" value="22"/>
+                <Enum name="-X-Y+Z" value="23"/>
+            </Setting>
+            <Setting key="bias_correction" name="Bias Correction" type="bool"/>
+            <Group name="AHRS">
+                <Setting key="ahrs_update_rate_divisor" name="Update Rate Divisor" type="number"/>
+                <Setting key="axes_convention" name="Axes Convention" type="enum">
+                    <Enum name="North, West, Up (NWU)" value="0"/>
+                    <Enum name="East, North, Up (ENU)" value="1"/>
+                    <Enum name="North, East, Down (NED)" value="2"/>
+                </Setting>
+                <Setting key="ahrs_gain" name="Gain" type="number"/>
+                <Setting key="overrange_recovery" name="Overrange Recovery" type="bool"/>
+                <Setting key="acceleration_rejection" name="Acceleration Rejection" type="bool"/>
+            </Group>
+        </Group>
+        <Group name="Data Messages">
+            <Setting key="data_message_mode" name="Mode" type="enum">
+                <Enum name="Binary" value="0"/>
+                <Enum name="ASCII" value="1"/>
+            </Setting>
+            <Group name="Message Modes">
+                <Setting key="orientation_mode" name="Orientation" type="enum">
+                    <Enum name="Quaternion" value="0"/>
+                    <Enum name="Rotation Matrix" value="1"/>
+                    <Enum name="Euler Angles" value="2"/>
+                </Setting>
+            </Group>
+            <Group name="Message Rate Divisors">
+                <Setting key="inertial_message_rate_divisor" name="Inertial" type="number"/>
+                <Setting key="orientation_message_rate_divisor" name="Orientation" type="number"/>
+                <Setting key="temperature_message_rate_divisor" name="Temperature" type="number"/>
+            </Group>
+            <Group name="Interfaces" expand="false">
+                <Setting key="usb_send_mode" name="USB" type="enum">
+                    <Enum name="Disabled" value="0"/>
+                    <Enum name="Blocking" value="1"/>
+                    <Enum name="Non-Blocking" value="2"/>
+                </Setting>
+                <Setting key="serial_send_mode" name="Serial" type="enum">
+                    <Enum name="Disabled" value="0"/>
+                    <Enum name="Blocking" value="1"/>
+                    <Enum name="Non-Blocking" value="2"/>
+                </Setting>
+            </Group>
+        </Group>
+    </Settings>
+</Schema>

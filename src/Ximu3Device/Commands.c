@@ -17,12 +17,8 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "Timestamp/Timestamp.h"
+#include "x-IMU3-Device/JSON/Json.h"
 #include "x-IMU3-Device/Ximu3.h"
-
-//------------------------------------------------------------------------------
-// Function declarations
-
-static bool CommandNotApplicable(Ximu3CommandResponse * const response, void* const context);
 
 //------------------------------------------------------------------------------
 // Functions
@@ -99,13 +95,14 @@ void CommandsSave(const char* * const value, Ximu3CommandResponse * const respon
  * @param context Context.
  */
 void CommandsRestart(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
-    if (CommandNotApplicable(response, context)) {
+    const Context * const context_ = context;
+    if (context_->imu == NULL) {
+        Ximu3CommandRespondError(response, "Command not applicable");
         return;
     }
     if (Ximu3CommandParseNull(value, response) != Ximu3ResultOk) {
         return;
     }
-    const Context * const context_ = context;
     ImuRestart(context_->imu);
     Ximu3CommandRespond(response);
 }
@@ -117,14 +114,15 @@ void CommandsRestart(const char* * const value, Ximu3CommandResponse * const res
  * @param context Context.
  */
 void CommandsHeading(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
-    if (CommandNotApplicable(response, context)) {
+    const Context * const context_ = context;
+    if (context_->imu == NULL) {
+        Ximu3CommandRespondError(response, "Command not applicable");
         return;
     }
     float heading;
     if (Ximu3CommandParseNumber(value, response, &heading) != Ximu3ResultOk) {
         return;
     }
-    const Context * const context_ = context;
     ImuSetHeading(context_->imu, heading);
     Ximu3CommandRespond(response);
 }
@@ -141,7 +139,7 @@ void CommandsNote(const char* * const value, Ximu3CommandResponse * const respon
         return;
     }
     const Context * const context_ = context;
-    SendNotification(context_->send, string);
+    SendNotification(context_->send, "%s", string);
     Ximu3CommandRespond(response);
 }
 
@@ -152,6 +150,11 @@ void CommandsNote(const char* * const value, Ximu3CommandResponse * const respon
  * @param context Context.
  */
 void CommandsTimestamp(const char* * const value, Ximu3CommandResponse * const response, void* const context) {
+    const Context * const context_ = context;
+    if (context_->isMain == false) {
+        Ximu3CommandRespondError(response, "Command not applicable");
+        return;
+    }
     uint64_t timestamp;
     if (Ximu3CommandParseNumberU64(value, response, &timestamp) != Ximu3ResultOk) {
         return;
@@ -291,22 +294,8 @@ void CommandsErase(const char* * const value, Ximu3CommandResponse * const respo
 }
 
 /**
- * @brief Responds with error and returns true if command not applicable.
- * @param response Response.
- * @param context Context.
- * @return True if command not applicable.
- */
-static bool CommandNotApplicable(Ximu3CommandResponse * const response, void* const context) {
-    const Context * const context_ = context;
-    if (context_->imu != NULL) {
-        return false;
-    }
-    Ximu3CommandRespondError(response, "Command not applicable");
-    return true;
-}
-
-/**
  * @brief Returns true if factory mode enabled.
+ * @param context Context.
  * @return True if factory mode enabled.
  */
 bool CommandsOverrideReadOnly(void* const context) {

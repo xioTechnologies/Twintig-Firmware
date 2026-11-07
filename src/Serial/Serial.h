@@ -12,6 +12,7 @@
 
 #include "Fifo.h"
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 
 //------------------------------------------------------------------------------
@@ -34,6 +35,7 @@ bool SerialEnabled(void);
 size_t SerialRead(void* const destination, const size_t numberOfBytes);
 size_t SerialAvailableWrite(void);
 FifoResult SerialWrite(const void* const data, const size_t numberOfBytes);
+bool SerialReceiveBufferOverflow(void);
 
 #endif
 

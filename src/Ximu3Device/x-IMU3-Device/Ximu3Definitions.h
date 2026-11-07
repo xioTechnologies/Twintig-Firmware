@@ -57,9 +57,9 @@ typedef struct {
     bool overrangeRecovery;
     bool accelerationRejection;
     SendDataMessageMode dataMessageMode;
-    SendAhrsMessageType ahrsMessageType;
+    SendOrientationMode orientationMode;
     uint32_t inertialMessageRateDivisor;
-    uint32_t ahrsMessageRateDivisor;
+    uint32_t orientationMessageRateDivisor;
     uint32_t temperatureMessageRateDivisor;
     SendInterfaceMode usbSendMode;
     SendInterfaceMode serialSendMode;
@@ -96,9 +96,9 @@ typedef enum {
     Ximu3SettingsIndexOverrangeRecovery,
     Ximu3SettingsIndexAccelerationRejection,
     Ximu3SettingsIndexDataMessageMode,
-    Ximu3SettingsIndexAhrsMessageType,
+    Ximu3SettingsIndexOrientationMode,
     Ximu3SettingsIndexInertialMessageRateDivisor,
-    Ximu3SettingsIndexAhrsMessageRateDivisor,
+    Ximu3SettingsIndexOrientationMessageRateDivisor,
     Ximu3SettingsIndexTemperatureMessageRateDivisor,
     Ximu3SettingsIndexUsbSendMode,
     Ximu3SettingsIndexSerialSendMode,

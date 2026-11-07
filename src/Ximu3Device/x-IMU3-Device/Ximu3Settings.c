@@ -298,17 +298,6 @@ static void SetValue(const Metadata * const metadata, const void* const value) {
                     return;
             }
             break;
-        case MetadataTypeSendAhrsMessageType:
-            switch (*(SendAhrsMessageType*) value) {
-                case SendAhrsMessageTypeQuaternion:
-                case SendAhrsMessageTypeRotationMatrix:
-                case SendAhrsMessageTypeEulerAngles:
-                case SendAhrsMessageTypeLinearAcceleration:
-                case SendAhrsMessageTypeEarthAcceleration:
-                    memcpy(metadata->value, value, metadata->size);
-                    return;
-            }
-            break;
         case MetadataTypeSendDataMessageMode:
             switch (*(SendDataMessageMode*) value) {
                 case SendDataMessageModeBinary:
@@ -322,6 +311,15 @@ static void SetValue(const Metadata * const metadata, const void* const value) {
                 case SendInterfaceModeDisabled:
                 case SendInterfaceModeBlocking:
                 case SendInterfaceModeNonBlocking:
+                    memcpy(metadata->value, value, metadata->size);
+                    return;
+            }
+            break;
+        case MetadataTypeSendOrientationMode:
+            switch (*(SendOrientationMode*) value) {
+                case SendOrientationModeQuaternion:
+                case SendOrientationModeRotationMatrix:
+                case SendOrientationModeEulerAngles:
                     memcpy(metadata->value, value, metadata->size);
                     return;
             }

@@ -70,5 +70,14 @@ FifoResult SerialWrite(const void* const data, const size_t numberOfBytes) {
     return Uart1DmaTxWrite(data, numberOfBytes);
 }
 
+/**
+ * @brief Returns true if the receive buffer has overrun. Calling this function
+ * will reset the flag.
+ * @return True if the receive buffer has overrun.
+ */
+bool SerialReceiveBufferOverflow(void) {
+    return Uart1DmaTxReceiveBufferOverrun();
+}
+
 //------------------------------------------------------------------------------
 // End of file

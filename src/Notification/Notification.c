@@ -12,12 +12,13 @@
 #include "OnChange.h"
 #include "Periodic.h"
 #include "Send/Send.h"
+#include "Serial/Serial.h"
 #include "Usb/UsbCdc.h"
 
 //------------------------------------------------------------------------------
 // Function declarations
 
-static inline __attribute__((always_inline)) void ImuBufferOverflow(Send * const send, Imu * const imu);
+static inline __attribute__((always_inline)) void ImuBufferOverflow(Send * const send, const Imu * const imu);
 static inline __attribute__((always_inline)) void SendBufferOverflow(Send * const send);
 
 //------------------------------------------------------------------------------
@@ -31,31 +32,36 @@ void NotificationTasks(void) {
 
     // USB host
     switch (ON_CHANGE_POLL_DEBOUNCE(UsbCdcHostConnected())) {
+        case OnChangeEdgeNone:
+            break;
         case OnChangeEdgeLowToHigh:
             SendNotification(&sendMain, "USB host connected");
             break;
         case OnChangeEdgeHighToLow:
             SendNotification(&sendMain, "USB host disconnected");
             break;
-        default:
-            break;
     }
 
     // USB port
     switch (ON_CHANGE_POLL_DEBOUNCE(UsbCdcPortOpen())) {
+        case OnChangeEdgeNone:
+            break;
         case OnChangeEdgeLowToHigh:
             SendNotification(&sendMain, "USB port opened");
             break;
         case OnChangeEdgeHighToLow:
             SendNotification(&sendMain, "USB port closed");
             break;
-        default:
-            break;
     }
 
     // Do nothing else until polling period elapsed
     if (PERIODIC_POLL(1.0f) == false) {
         return;
+    }
+
+    // Serial receive buffer overflow
+    if (SerialReceiveBufferOverflow()) {
+        SendError(&sendMain, "Serial receive buffer overflow");
     }
 
     // IMU buffer overflow
@@ -105,29 +111,29 @@ void NotificationTasks(void) {
 }
 
 /**
- * @brief IMU buffer overflow.
+ * @brief Sends IMU buffer overflow error message.
  * @param send Send structure.
  * @param imu IMU structure.
  */
-static inline __attribute__((always_inline)) void ImuBufferOverflow(Send * const send, Imu * const imu) {
+static inline __attribute__((always_inline)) void ImuBufferOverflow(Send * const send, const Imu * const imu) {
     const uint32_t numberOfSamples = imu->icm->bufferOverflow();
     if (numberOfSamples > 0) {
-        SendError(send, "IMU buffer overflow. %" PRIu32 " samples lost. %s blocking.", numberOfSamples, SendWhoseBlocking());
+        SendError(send, "IMU buffer overflow: %" PRIu32 " samples lost. %s blocking.", numberOfSamples, SendWhoseBlocking());
     }
 }
 
 /**
- * @brief Send buffer overflow.
+ * @brief Sends buffer overflow error message.
  * @param send Send structure.
  */
 static inline __attribute__((always_inline)) void SendBufferOverflow(Send * const send) {
     const size_t usbBufferOverflow = SendUsbBufferOverflow(send);
     if (usbBufferOverflow > 0) {
-        SendError(send, "USB buffer overflow. %zu bytes lost.", usbBufferOverflow);
+        SendError(send, "USB buffer overflow: %zu bytes lost", usbBufferOverflow);
     }
     const size_t serialBufferOverflow = SendSerialBufferOverflow(send);
     if (serialBufferOverflow > 0) {
-        SendError(send, "Serial buffer overflow. %zu bytes lost.", serialBufferOverflow);
+        SendError(send, "Serial buffer overflow: %zu bytes lost", serialBufferOverflow);
     }
 }
 

@@ -40,13 +40,13 @@ static const Interface serial = {.availableWrite = SerialAvailableWrite, .write 
 
 /**
  * @brief Returns the byte value of the mux channel.
- * @param channel Channel.
+ * @param channel Channel. Must not be MuxChannelNone.
  * @return Byte value of the mux channel.
  */
 uint8_t MuxChannelToByte(const MuxChannel channel) {
     switch (channel) {
         case MuxChannelNone:
-            break;
+            return XIMU3_TERMINATION;
         case MuxChannelA:
             return 'A';
         case MuxChannelB:
@@ -88,7 +88,7 @@ uint8_t MuxChannelToByte(const MuxChannel channel) {
         case MuxChannelT:
             return 'T';
     }
-    return '\n'; // avoid compiler warning
+    return 0; // unreachable code: -Werror=switch
 }
 
 /**
@@ -160,7 +160,7 @@ static inline __attribute__((always_inline)) FifoResult Write(const Interface * 
     if (channel == MuxChannelNone) {
         return interface->write(data, numberOfBytes);
     }
-    const uint8_t header[] = {'^', MuxChannelToByte(channel)};
+    const uint8_t header[XIMU3_SIZE_MUX_HEADER] = {XIMU3_MUX_ID, MuxChannelToByte(channel)};
     if (interface->availableWrite() < (sizeof (header) + numberOfBytes)) {
         return FifoResultError;
     }

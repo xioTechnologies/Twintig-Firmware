@@ -55,13 +55,12 @@ typedef enum {
 //------------------------------------------------------------------------------
 // Function declarations
 
-static void SendAhrsStatus(Send * const send, const SendAhrsData * const ahrsData);
+static void SendAhrsOrientation(Send * const send, const SendAhrsData * const ahrsData);
 static void SendQuaternion(Send * const send, const SendAhrsData * const ahrsData);
 static void SendRotationMatrix(Send * const send, const SendAhrsData * const ahrsData);
 static void SendEulerAngles(Send * const send, const SendAhrsData * const ahrsData);
-static void SendLinearAcceleration(Send * const send, const SendAhrsData * const ahrsData);
-static void SendEarthAcceleration(Send * const send, const SendAhrsData * const ahrsData);
-static void SendDataMessage(Send * const send, const void* const data, const size_t numberOfBytes, const Priority priority);
+static void SendAhrsStatus(Send * const send, const SendAhrsData * const ahrsData);
+static inline __attribute__((always_inline)) void SendAllInterfaces(Send * const send, const void* const data, const size_t numberOfBytes, const Priority priority);
 static inline __attribute__((always_inline)) size_t Write(const MuxChannel channel, const Interface * const interface, const void* const data, const size_t numberOfBytes, const Priority priority);
 static inline __attribute__((always_inline)) bool AvailableWrite(const MuxChannel channel, const Interface * const interface, const size_t numberOfBytes, const Priority priority);
 static inline __attribute__((always_inline)) bool Blocked(const MuxChannel channel, const SendInterfaceMode mode, const Interface * const interface, const size_t numberOfBytes);
@@ -72,7 +71,7 @@ static inline __attribute__((always_inline)) bool Blocked(const MuxChannel chann
 static const Interface usb = {.enabled = UsbCdcPortOpen, .availableWrite = MuxUsbAvailableWrite, .write = MuxUsbWrite};
 static const Interface serial = {.enabled = SerialEnabled, .availableWrite = MuxSerialAvailableWrite, .write = MuxSerialWrite};
 
-static const char* whoseBlocking = "";
+static const char* whoseBlocking = "None";
 
 Send sendMain = {.channel = MuxChannelNone, .led = &ledMain};
 Send sendA = {.channel = MuxChannelA, .led = &ledA};
@@ -157,47 +156,126 @@ void SendInertial(Send * const send, const SendInertialData * const inertialData
     } else {
         messageSize = Ximu3AsciiInertial(message, sizeof (message), &ximu3Data);
     }
-    SendDataMessage(send, message, messageSize, PriorityLow);
+    SendAllInterfaces(send, message, messageSize, PriorityLow);
 }
 
 /**
- * @brief Sends an AHRS message.
+ * @brief Sends AHRS messages.
  * @param send Send structure.
  * @param ahrsData AHRS data.
  */
 void SendAhrs(Send * const send, const SendAhrsData * const ahrsData) {
+    SendAhrsOrientation(send, ahrsData);
+    SendAhrsStatus(send, ahrsData);
+}
+
+/**
+ * @brief Sends an AHRS orientation message.
+ * @param send Send structure.
+ * @param ahrsData AHRS data.
+ */
+static void SendAhrsOrientation(Send * const send, const SendAhrsData * const ahrsData) {
 
     // Message disabled
-    if (send->settings.ahrsMessageRateDivisor == 0) {
-        send->downsampledAhrsCount = 0;
+    if (send->settings.orientationMessageRateDivisor == 0) {
+        send->downsampledOrientationCount = 0;
         return;
     }
 
-    // AHRS status
-    SendAhrsStatus(send, ahrsData);
-
-    // AHRS outputs
-    if ((send->settings.ahrsMessageRateDivisor > 1) && (++send->downsampledAhrsCount < send->settings.ahrsMessageRateDivisor)) {
+    // Downsampling
+    if ((send->settings.orientationMessageRateDivisor > 1) && (++send->downsampledOrientationCount < send->settings.orientationMessageRateDivisor)) {
         return;
     }
-    send->downsampledAhrsCount = 0;
-    switch (send->settings.ahrsMessageType) {
-        case SendAhrsMessageTypeQuaternion:
+    send->downsampledOrientationCount = 0;
+
+    // Send message
+    switch (send->settings.orientationMode) {
+        case SendOrientationModeQuaternion:
             SendQuaternion(send, ahrsData);
             break;
-        case SendAhrsMessageTypeRotationMatrix:
+        case SendOrientationModeRotationMatrix:
             SendRotationMatrix(send, ahrsData);
             break;
-        case SendAhrsMessageTypeEulerAngles:
+        case SendOrientationModeEulerAngles:
             SendEulerAngles(send, ahrsData);
             break;
-        case SendAhrsMessageTypeLinearAcceleration:
-            SendLinearAcceleration(send, ahrsData);
-            break;
-        case SendAhrsMessageTypeEarthAcceleration:
-            SendEarthAcceleration(send, ahrsData);
-            break;
     }
+}
+
+/**
+ * @brief Sends a quaternion message.
+ * @param send Send structure.
+ * @param ahrsData AHRS data.
+ */
+static void SendQuaternion(Send * const send, const SendAhrsData * const ahrsData) {
+    const FusionQuaternion quaternion = FusionAhrsGetQuaternion(ahrsData->ahrs);
+    const Ximu3DataQuaternion ximu3Data = {
+        .timestamp = TimestampFrom(ahrsData->ticks),
+        .w = quaternion.element.w,
+        .x = quaternion.element.x,
+        .y = quaternion.element.y,
+        .z = quaternion.element.z,
+    };
+    uint8_t message[XIMU3_SIZE_QUATERNION];
+    size_t messageSize;
+    if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
+        messageSize = Ximu3BinaryQuaternion(message, sizeof (message), &ximu3Data);
+    } else {
+        messageSize = Ximu3AsciiQuaternion(message, sizeof (message), &ximu3Data);
+    }
+    SendAllInterfaces(send, message, messageSize, PriorityLow);
+}
+
+/**
+ * @brief Sends a rotation matrix message.
+ * @param send Send structure.
+ * @param ahrsData AHRS data.
+ */
+static void SendRotationMatrix(Send * const send, const SendAhrsData * const ahrsData) {
+    const FusionMatrix matrix = FusionQuaternionToMatrix(FusionAhrsGetQuaternion(ahrsData->ahrs));
+    const Ximu3DataRotationMatrix ximu3Data = {
+        .timestamp = TimestampFrom(ahrsData->ticks),
+        .xx = matrix.element.xx,
+        .xy = matrix.element.xy,
+        .xz = matrix.element.xz,
+        .yx = matrix.element.yx,
+        .yy = matrix.element.yy,
+        .yz = matrix.element.yz,
+        .zx = matrix.element.zx,
+        .zy = matrix.element.zy,
+        .zz = matrix.element.zz,
+    };
+    uint8_t message[XIMU3_SIZE_ROTATION_MATRIX];
+    size_t messageSize;
+    if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
+        messageSize = Ximu3BinaryRotationMatrix(message, sizeof (message), &ximu3Data);
+    } else {
+        messageSize = Ximu3AsciiRotationMatrix(message, sizeof (message), &ximu3Data);
+    }
+    SendAllInterfaces(send, message, messageSize, PriorityLow);
+}
+
+/**
+ * @brief Sends an Euler angles message.
+ * @param send Send structure.
+ * @param ahrsData AHRS data.
+ */
+static void SendEulerAngles(Send * const send, const SendAhrsData * const ahrsData) {
+    const FusionEuler euler = FusionQuaternionToEuler(FusionAhrsGetQuaternion(ahrsData->ahrs));
+    const Ximu3DataEulerAngles ximu3Data = {
+        .timestamp = TimestampFrom(ahrsData->ticks),
+        .roll = euler.angle.roll,
+        .pitch = euler.angle.pitch,
+        .yaw = euler.angle.yaw,
+    };
+    uint8_t message[XIMU3_SIZE_EULER_ANGLES];
+    size_t messageSize;
+    if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
+        messageSize = Ximu3BinaryEulerAngles(message, sizeof (message), &ximu3Data);
+    } else {
+        messageSize = Ximu3AsciiEulerAngles(message, sizeof (message), &ximu3Data);
+    }
+    SendAllInterfaces(send, message, messageSize, PriorityLow);
 }
 
 /**
@@ -235,129 +313,7 @@ static void SendAhrsStatus(Send * const send, const SendAhrsData * const ahrsDat
     } else {
         messageSize = Ximu3AsciiAhrsStatus(message, sizeof (message), &ximu3Data);
     }
-    SendDataMessage(send, message, messageSize, PriorityLow);
-}
-
-/**
- * @brief Sends a quaternion message.
- * @param send Send structure.
- * @param ahrsData AHRS data.
- */
-static void SendQuaternion(Send * const send, const SendAhrsData * const ahrsData) {
-    const FusionQuaternion quaternion = FusionAhrsGetQuaternion(ahrsData->ahrs);
-    const Ximu3DataQuaternion ximu3Data = {
-        .timestamp = TimestampFrom(ahrsData->ticks),
-        .w = quaternion.element.w,
-        .x = quaternion.element.x,
-        .y = quaternion.element.y,
-        .z = quaternion.element.z,
-    };
-    uint8_t message[XIMU3_SIZE_QUATERNION];
-    size_t messageSize;
-    if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
-        messageSize = Ximu3BinaryQuaternion(message, sizeof (message), &ximu3Data);
-    } else {
-        messageSize = Ximu3AsciiQuaternion(message, sizeof (message), &ximu3Data);
-    }
-    SendDataMessage(send, message, messageSize, PriorityLow);
-}
-
-/**
- * @brief Sends a rotation matrix message.
- * @param send Send structure.
- * @param ahrsData AHRS data.
- */
-static void SendRotationMatrix(Send * const send, const SendAhrsData * const ahrsData) {
-    const FusionMatrix matrix = FusionQuaternionToMatrix(FusionAhrsGetQuaternion(ahrsData->ahrs));
-    const Ximu3DataRotationMatrix ximu3Data = {
-        .timestamp = TimestampFrom(ahrsData->ticks),
-        .xx = matrix.element.xx,
-        .xy = matrix.element.xy,
-        .xz = matrix.element.xz,
-        .yx = matrix.element.yx,
-        .yy = matrix.element.yy,
-        .yz = matrix.element.yz,
-        .zx = matrix.element.zx,
-        .zy = matrix.element.zy,
-        .zz = matrix.element.zz,
-    };
-    uint8_t message[XIMU3_SIZE_ROTATION_MATRIX];
-    size_t messageSize;
-    if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
-        messageSize = Ximu3BinaryRotationMatrix(message, sizeof (message), &ximu3Data);
-    } else {
-        messageSize = Ximu3AsciiRotationMatrix(message, sizeof (message), &ximu3Data);
-    }
-    SendDataMessage(send, message, messageSize, PriorityLow);
-}
-
-/**
- * @brief Sends an Euler angles message.
- * @param send Send structure.
- * @param ahrsData AHRS data.
- */
-static void SendEulerAngles(Send * const send, const SendAhrsData * const ahrsData) {
-    const FusionEuler euler = FusionQuaternionToEuler(FusionAhrsGetQuaternion(ahrsData->ahrs));
-    const Ximu3DataEulerAngles ximu3Data = {
-        .timestamp = TimestampFrom(ahrsData->ticks),
-        .roll = euler.angle.roll,
-        .pitch = euler.angle.pitch,
-        .yaw = euler.angle.yaw,
-    };
-    uint8_t message[XIMU3_SIZE_EULER_ANGLES];
-    size_t messageSize;
-    if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
-        messageSize = Ximu3BinaryEulerAngles(message, sizeof (message), &ximu3Data);
-    } else {
-        messageSize = Ximu3AsciiEulerAngles(message, sizeof (message), &ximu3Data);
-    }
-    SendDataMessage(send, message, messageSize, PriorityLow);
-}
-
-/**
- * @brief Sends a linear acceleration message.
- * @param send Send structure.
- * @param ahrsData AHRS data.
- */
-static void SendLinearAcceleration(Send * const send, const SendAhrsData * const ahrsData) {
-    const FusionVector linearAcceleration = FusionAhrsGetLinearAcceleration(ahrsData->ahrs);
-    const Ximu3DataLinearAcceleration ximu3Data = {
-        .timestamp = TimestampFrom(ahrsData->ticks),
-        .x = linearAcceleration.axis.x,
-        .y = linearAcceleration.axis.y,
-        .z = linearAcceleration.axis.z,
-    };
-    uint8_t message[XIMU3_SIZE_LINEAR_ACCELERATION];
-    size_t messageSize;
-    if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
-        messageSize = Ximu3BinaryLinearAcceleration(message, sizeof (message), &ximu3Data);
-    } else {
-        messageSize = Ximu3AsciiLinearAcceleration(message, sizeof (message), &ximu3Data);
-    }
-    SendDataMessage(send, message, messageSize, PriorityLow);
-}
-
-/**
- * @brief Sends an earth acceleration message.
- * @param send Send structure.
- * @param ahrsData AHRS data.
- */
-static void SendEarthAcceleration(Send * const send, const SendAhrsData * const ahrsData) {
-    const FusionVector earthAcceleration = FusionAhrsGetEarthAcceleration(ahrsData->ahrs);
-    const Ximu3DataEarthAcceleration ximu3Data = {
-        .timestamp = TimestampFrom(ahrsData->ticks),
-        .x = earthAcceleration.axis.x,
-        .y = earthAcceleration.axis.y,
-        .z = earthAcceleration.axis.z,
-    };
-    uint8_t message[XIMU3_SIZE_EARTH_ACCELERATION];
-    size_t messageSize;
-    if (send->settings.dataMessageMode == SendDataMessageModeBinary) {
-        messageSize = Ximu3BinaryEarthAcceleration(message, sizeof (message), &ximu3Data);
-    } else {
-        messageSize = Ximu3AsciiEarthAcceleration(message, sizeof (message), &ximu3Data);
-    }
-    SendDataMessage(send, message, messageSize, PriorityLow);
+    SendAllInterfaces(send, message, messageSize, PriorityLow);
 }
 
 /**
@@ -399,7 +355,7 @@ void SendTemperature(Send * const send, const SendTemperatureData * const temper
     } else {
         messageSize = Ximu3AsciiTemperature(message, sizeof (message), &ximu3Data);
     }
-    SendDataMessage(send, message, messageSize, PriorityLow);
+    SendAllInterfaces(send, message, messageSize, PriorityLow);
 }
 
 /**
@@ -408,7 +364,7 @@ void SendTemperature(Send * const send, const SendTemperatureData * const temper
  * @param format Format.
  * @param ... Arguments.
  */
-void SendNotification(Send * const send, const char* const format, ...) {
+__attribute__((format(printf, 2, 3))) void SendNotification(Send * const send, const char* const format, ...) {
 
     // Create string
     char notification[XIMU3_SIZE_CHAR_ARRAY];
@@ -429,7 +385,7 @@ void SendNotification(Send * const send, const char* const format, ...) {
     } else {
         messageSize = Ximu3AsciiNotification(message, sizeof (message), &ximu3Data);
     }
-    SendDataMessage(send, message, messageSize, PriorityMedium);
+    SendAllInterfaces(send, message, messageSize, PriorityMedium);
 }
 
 /**
@@ -438,7 +394,7 @@ void SendNotification(Send * const send, const char* const format, ...) {
  * @param format Format.
  * @param ... Arguments.
  */
-void SendError(Send * const send, const char* const format, ...) {
+__attribute__((format(printf, 2, 3))) void SendError(Send * const send, const char* const format, ...) {
 
     // Create string
     char error[XIMU3_SIZE_CHAR_ARRAY];
@@ -459,20 +415,20 @@ void SendError(Send * const send, const char* const format, ...) {
     } else {
         messageSize = Ximu3AsciiError(message, sizeof (message), &ximu3Data);
     }
-    SendDataMessage(send, message, messageSize, PriorityHigh);
+    SendAllInterfaces(send, message, messageSize, PriorityHigh);
 
     // Blink LED
     LedBlink(send->led, ledColourRed);
 }
 
 /**
- * @brief Sends a data message.
+ * @brief Sends to all interfaces.
  * @param send Send structure.
  * @param data Data.
  * @param numberOfBytes Number of bytes.
  * @param priority Priority.
  */
-static void SendDataMessage(Send * const send, const void* const data, const size_t numberOfBytes, const Priority priority) {
+static inline __attribute__((always_inline)) void SendAllInterfaces(Send * const send, const void* const data, const size_t numberOfBytes, const Priority priority) {
     if (send->settings.usbSendMode != SendInterfaceModeDisabled) {
         send->usbBufferOverflow += Write(send->channel, &usb, data, numberOfBytes, priority);
     }
@@ -541,7 +497,7 @@ static inline __attribute__((always_inline)) bool AvailableWrite(const MuxChanne
         case PriorityHigh:
             return interface->availableWrite(channel) > numberOfBytes;
     }
-    return false; // avoid compiler warning
+    return false; // unreachable code: -Werror=switch
 }
 
 /**
@@ -552,7 +508,7 @@ static inline __attribute__((always_inline)) bool AvailableWrite(const MuxChanne
  * @return True if there is enough space available for low-priority data
  * messages.
  */
-bool SendAvailable(Send * const send, const size_t numberOfBytes) {
+bool SendAvailable(const Send * const send, const size_t numberOfBytes) {
     if (Blocked(send->channel, send->settings.usbSendMode, &usb, numberOfBytes)) {
         whoseBlocking = "USB";
         return false;

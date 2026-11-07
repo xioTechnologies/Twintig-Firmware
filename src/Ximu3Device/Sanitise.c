@@ -28,7 +28,7 @@ static void ClampUint32(Ximu3Settings * const settings, const Ximu3SettingsIndex
  * @param context Context.
  */
 void Sanitise(const Ximu3SettingsIndex index, void* const context) {
-    Context * const context_ = context;
+    const Context * const context_ = context;
     const Ximu3SettingsValues * const settingsValues = Ximu3SettingsGet(context_->settings);
     switch (index) {
         case Ximu3SettingsIndexBaudRate:

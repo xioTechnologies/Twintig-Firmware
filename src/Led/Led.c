@@ -36,7 +36,7 @@ typedef enum {
 // Function declarations
 
 static inline __attribute__((always_inline)) void Update(Led * const led, const int counter, const uint64_t ticks);
-static inline __attribute__((always_inline)) void SetPwm(Led * const led, const LedColour colour, const Brightness brightness);
+static inline __attribute__((always_inline)) void SetPwm(const Led * const led, const LedColour colour, const Brightness brightness);
 static inline __attribute__((always_inline)) void SpiBusTransfer(SpiBusClient * const client, volatile void* const data, const size_t numberOfBytes);
 
 //------------------------------------------------------------------------------
@@ -204,7 +204,7 @@ static inline __attribute__((always_inline)) void Update(Led * const led, const 
  * @param colour Colour.
  * @param brightness Brightness.
  */
-static inline __attribute__((always_inline)) void SetPwm(Led * const led, const LedColour colour, const Brightness brightness) {
+static inline __attribute__((always_inline)) void SetPwm(const Led * const led, const LedColour colour, const Brightness brightness) {
     led->pixel->red = colour.red >> brightness;
     led->pixel->green = colour.green >> brightness;
     led->pixel->blue = colour.blue >> brightness;
@@ -289,7 +289,7 @@ void LedOverride(Led * const led, const LedColour colour) {
 }
 
 /**
- * @brief Restores the LED.
+ * @brief Disables the LED override.
  * @param led LED structure.
  */
 void LedDisableOverride(Led * const led) {

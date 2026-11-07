@@ -17,10 +17,10 @@
 //------------------------------------------------------------------------------
 // Function declarations
 
-static void ApplySerial(Context * const context);
-static void ApplyIcm(Context * const context);
-static void ApplyImu(Context * const context);
-static void ApplySend(Context * const context);
+static void ApplySerial(const Context * const context);
+static void ApplyIcm(const Context * const context);
+static void ApplyImu(const Context * const context);
+static void ApplySend(const Context * const context);
 
 //------------------------------------------------------------------------------
 // Functions
@@ -61,7 +61,7 @@ void ApplyAfterDelay(Context * const context) {
  * @brief Applies serial settings.
  * @param context Context.
  */
-static void ApplySerial(Context * const context) {
+static void ApplySerial(const Context * const context) {
 
     // Do nothing if not applicable
     if (context->isMain == false) {
@@ -76,10 +76,11 @@ static void ApplySerial(Context * const context) {
     }
 
     // Apply settings
+    const Ximu3SettingsValues * const settingsValues = Ximu3SettingsGet(context->settings);
     const SerialSettings serialSettings = {
-        .enabled = Ximu3SettingsGet(context->settings)->serialEnabled,
-        .baudRate = Ximu3SettingsGet(context->settings)->baudRate,
-        .rtsCts = Ximu3SettingsGet(context->settings)->rtsCts,
+        .enabled = settingsValues->serialEnabled,
+        .baudRate = settingsValues->baudRate,
+        .rtsCts = settingsValues->rtsCts,
     };
     SerialSetSettings(&serialSettings);
 }
@@ -88,7 +89,7 @@ static void ApplySerial(Context * const context) {
  * @brief Applies ICM settings.
  * @param context Context.
  */
-static void ApplyIcm(Context * const context) {
+static void ApplyIcm(const Context * const context) {
 
     // Do nothing if not applicable
     if (context->imu == NULL) {
@@ -104,11 +105,12 @@ static void ApplyIcm(Context * const context) {
     }
 
     // Apply settings
+    const Ximu3SettingsValues * const settingsValues = Ximu3SettingsGet(context->settings);
     const IcmSettings icmSettings = {
-        .gyroscopeNotchFilterEnabled = Ximu3SettingsGet(context->settings)->gyroscopeNotchFilter,
-        .gyroscopeAntiAliasing = Ximu3SettingsGet(context->settings)->gyroscopeAntiAliasing,
-        .accelerometerAntiAliasing = Ximu3SettingsGet(context->settings)->accelerometerAntiAliasing,
-        .sampleRate = Ximu3SettingsGet(context->settings)->sampleRate,
+        .gyroscopeNotchFilterEnabled = settingsValues->gyroscopeNotchFilter,
+        .gyroscopeAntiAliasing = settingsValues->gyroscopeAntiAliasing,
+        .accelerometerAntiAliasing = settingsValues->accelerometerAntiAliasing,
+        .sampleRate = settingsValues->sampleRate,
     };
     context->imu->icm->initialise(&icmSettings);
 }
@@ -117,7 +119,7 @@ static void ApplyIcm(Context * const context) {
  * @brief Applies IMU settings.
  * @param context Context.
  */
-static void ApplyImu(Context * const context) {
+static void ApplyImu(const Context * const context) {
 
     // Do nothing if not applicable
     if (context->imu == NULL) {
@@ -143,21 +145,22 @@ static void ApplyImu(Context * const context) {
     }
 
     // Apply settings
+    const Ximu3SettingsValues * const settingsValues = Ximu3SettingsGet(context->settings);
     const ImuSettings imuSettings = {
-        .gyroscopeMisalignment = Ximu3SettingsGet(context->settings)->gyroscopeMisalignment,
-        .gyroscopeSensitivity = Ximu3SettingsGet(context->settings)->gyroscopeSensitivity,
-        .gyroscopeOffset = Ximu3SettingsGet(context->settings)->gyroscopeOffset,
-        .accelerometerMisalignment = Ximu3SettingsGet(context->settings)->accelerometerMisalignment,
-        .accelerometerSensitivity = Ximu3SettingsGet(context->settings)->accelerometerSensitivity,
-        .accelerometerOffset = Ximu3SettingsGet(context->settings)->accelerometerOffset,
-        .sampleRate = Ximu3SettingsGet(context->settings)->sampleRate,
-        .axisRemap = Ximu3SettingsGet(context->settings)->axisRemap,
-        .biasCorrection = Ximu3SettingsGet(context->settings)->biasCorrection,
-        .ahrsUpdateRateDivisor = Ximu3SettingsGet(context->settings)->ahrsUpdateRateDivisor,
-        .axesConvention = Ximu3SettingsGet(context->settings)->axesConvention,
-        .ahrsGain = Ximu3SettingsGet(context->settings)->ahrsGain,
-        .overrangeRecovery = Ximu3SettingsGet(context->settings)->overrangeRecovery,
-        .accelerationRejection = Ximu3SettingsGet(context->settings)->accelerationRejection,
+        .gyroscopeMisalignment = settingsValues->gyroscopeMisalignment,
+        .gyroscopeSensitivity = settingsValues->gyroscopeSensitivity,
+        .gyroscopeOffset = settingsValues->gyroscopeOffset,
+        .accelerometerMisalignment = settingsValues->accelerometerMisalignment,
+        .accelerometerSensitivity = settingsValues->accelerometerSensitivity,
+        .accelerometerOffset = settingsValues->accelerometerOffset,
+        .sampleRate = settingsValues->sampleRate,
+        .axisRemap = settingsValues->axisRemap,
+        .biasCorrection = settingsValues->biasCorrection,
+        .ahrsUpdateRateDivisor = settingsValues->ahrsUpdateRateDivisor,
+        .axesConvention = settingsValues->axesConvention,
+        .ahrsGain = settingsValues->ahrsGain,
+        .overrangeRecovery = settingsValues->overrangeRecovery,
+        .accelerationRejection = settingsValues->accelerationRejection,
     };
     ImuSetSettings(context->imu, &imuSettings);
 }
@@ -166,13 +169,13 @@ static void ApplyImu(Context * const context) {
  * @brief Applies send settings.
  * @param context Context.
  */
-static void ApplySend(Context * const context) {
+static void ApplySend(const Context * const context) {
 
     // Do nothing if settings unchanged
     if ((Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexDataMessageMode)
-        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsMessageType)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexOrientationMode)
         || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexInertialMessageRateDivisor)
-        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexAhrsMessageRateDivisor)
+        || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexOrientationMessageRateDivisor)
         || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexTemperatureMessageRateDivisor)
         || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexUsbSendMode)
         || Ximu3SettingsApplyPending(context->settings, Ximu3SettingsIndexSerialSendMode)) == false) {
@@ -180,14 +183,15 @@ static void ApplySend(Context * const context) {
     }
 
     // Apply settings
+    const Ximu3SettingsValues * const settingsValues = Ximu3SettingsGet(context->settings);
     const SendSettings sendSettings = {
-        .dataMessageMode = Ximu3SettingsGet(context->settings)->dataMessageMode,
-        .ahrsMessageType = Ximu3SettingsGet(context->settings)->ahrsMessageType,
-        .inertialMessageRateDivisor = Ximu3SettingsGet(context->settings)->inertialMessageRateDivisor,
-        .ahrsMessageRateDivisor = Ximu3SettingsGet(context->settings)->ahrsMessageRateDivisor,
-        .temperatureMessageRateDivisor = Ximu3SettingsGet(context->settings)->temperatureMessageRateDivisor,
-        .usbSendMode = Ximu3SettingsGet(context->settings)->usbSendMode,
-        .serialSendMode = Ximu3SettingsGet(context->settings)->serialSendMode,
+        .dataMessageMode = settingsValues->dataMessageMode,
+        .orientationMode = settingsValues->orientationMode,
+        .inertialMessageRateDivisor = settingsValues->inertialMessageRateDivisor,
+        .orientationMessageRateDivisor = settingsValues->orientationMessageRateDivisor,
+        .temperatureMessageRateDivisor = settingsValues->temperatureMessageRateDivisor,
+        .usbSendMode = settingsValues->usbSendMode,
+        .serialSendMode = settingsValues->serialSendMode,
     };
     SendSetSettings(context->send, &sendSettings);
 }

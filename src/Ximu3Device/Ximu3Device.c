@@ -34,8 +34,8 @@ static void Error(const char* const error, void* const context);
 // Variables
 
 static Ximu3CommandInterface interfaces[] = {
-    { .name = "USB", .read = InterfacesUsbRead, .write = InterfacesUsbWrite},
-    { .name = "Serial", .read = InterfacesSerialRead, .write = InterfacesSerialWrite},
+    {.name = "USB", .read = InterfacesUsbRead, .write = InterfacesUsbWrite},
+    {.name = "Serial", .read = InterfacesSerialRead, .write = InterfacesSerialWrite},
 };
 
 static const int numberOfInterfaces = (int) (sizeof (interfaces) / sizeof (Ximu3CommandInterface));
@@ -109,27 +109,27 @@ static Ximu3CommandBridge bridges[] = {
 };
 
 static Context contexts[] = {
-    { .settings = &settingsArray[0], .nvm = &nvmMain, .send = &sendMain, .led = &ledMain, .isMain = true},
-    { .settings = &settingsArray[1], .nvm = &nvmA, .send = &sendA, .led = &ledA, .imu = &imuA, .defaultName = "Carpus IMU"},
-    { .settings = &settingsArray[2], .nvm = &nvmB, .send = &sendB, .led = &ledB, .imu = &imuB, .defaultName = "I Metacarpal IMU"},
-    { .settings = &settingsArray[3], .nvm = &nvmC, .send = &sendC, .led = &ledC, .imu = &imuC, .defaultName = "I Proximal IMU"},
-    { .settings = &settingsArray[4], .nvm = &nvmD, .send = &sendD, .led = &ledD, .imu = &imuD, .defaultName = "I Distal IMU"},
-    { .settings = &settingsArray[5], .nvm = &nvmE, .send = &sendE, .led = &ledE, .imu = &imuE, .defaultName = "II Metacarpal IMU"},
-    { .settings = &settingsArray[6], .nvm = &nvmF, .send = &sendF, .led = &ledF, .imu = &imuF, .defaultName = "II Proximal IMU"},
-    { .settings = &settingsArray[7], .nvm = &nvmG, .send = &sendG, .led = &ledG, .imu = &imuG, .defaultName = "II Middle IMU"},
-    { .settings = &settingsArray[8], .nvm = &nvmH, .send = &sendH, .led = &ledH, .imu = &imuH, .defaultName = "II Distal IMU"},
-    { .settings = &settingsArray[9], .nvm = &nvmI, .send = &sendI, .led = &ledI, .imu = &imuI, .defaultName = "III Metacarpal IMU"},
-    { .settings = &settingsArray[10], .nvm = &nvmJ, .send = &sendJ, .led = &ledJ, .imu = &imuJ, .defaultName = "III Proximal IMU"},
-    { .settings = &settingsArray[11], .nvm = &nvmK, .send = &sendK, .led = &ledK, .imu = &imuK, .defaultName = "III Middle IMU"},
-    { .settings = &settingsArray[12], .nvm = &nvmL, .send = &sendL, .led = &ledL, .imu = &imuL, .defaultName = "III Distal IMU"},
-    { .settings = &settingsArray[13], .nvm = &nvmM, .send = &sendM, .led = &ledM, .imu = &imuM, .defaultName = "IV Metacarpal IMU"},
-    { .settings = &settingsArray[14], .nvm = &nvmN, .send = &sendN, .led = &ledN, .imu = &imuN, .defaultName = "IV Proximal IMU"},
-    { .settings = &settingsArray[15], .nvm = &nvmO, .send = &sendO, .led = &ledO, .imu = &imuO, .defaultName = "IV Middle IMU"},
-    { .settings = &settingsArray[16], .nvm = &nvmP, .send = &sendP, .led = &ledP, .imu = &imuP, .defaultName = "IV Distal IMU"},
-    { .settings = &settingsArray[17], .nvm = &nvmQ, .send = &sendQ, .led = &ledQ, .imu = &imuQ, .defaultName = "V Metacarpal IMU"},
-    { .settings = &settingsArray[18], .nvm = &nvmR, .send = &sendR, .led = &ledR, .imu = &imuR, .defaultName = "V Proximal IMU"},
-    { .settings = &settingsArray[19], .nvm = &nvmS, .send = &sendS, .led = &ledS, .imu = &imuS, .defaultName = "V Middle IMU"},
-    { .settings = &settingsArray[20], .nvm = &nvmT, .send = &sendT, .led = &ledT, .imu = &imuT, .defaultName = "V Distal IMU"},
+    {.settings = &settingsArray[0], .nvm = &nvmMain, .send = &sendMain, .led = &ledMain, .isMain = true},
+    {.settings = &settingsArray[1], .nvm = &nvmA, .send = &sendA, .led = &ledA, .imu = &imuA, .defaultName = "Carpus IMU"},
+    {.settings = &settingsArray[2], .nvm = &nvmB, .send = &sendB, .led = &ledB, .imu = &imuB, .defaultName = "I Metacarpal IMU"},
+    {.settings = &settingsArray[3], .nvm = &nvmC, .send = &sendC, .led = &ledC, .imu = &imuC, .defaultName = "I Proximal IMU"},
+    {.settings = &settingsArray[4], .nvm = &nvmD, .send = &sendD, .led = &ledD, .imu = &imuD, .defaultName = "I Distal IMU"},
+    {.settings = &settingsArray[5], .nvm = &nvmE, .send = &sendE, .led = &ledE, .imu = &imuE, .defaultName = "II Metacarpal IMU"},
+    {.settings = &settingsArray[6], .nvm = &nvmF, .send = &sendF, .led = &ledF, .imu = &imuF, .defaultName = "II Proximal IMU"},
+    {.settings = &settingsArray[7], .nvm = &nvmG, .send = &sendG, .led = &ledG, .imu = &imuG, .defaultName = "II Middle IMU"},
+    {.settings = &settingsArray[8], .nvm = &nvmH, .send = &sendH, .led = &ledH, .imu = &imuH, .defaultName = "II Distal IMU"},
+    {.settings = &settingsArray[9], .nvm = &nvmI, .send = &sendI, .led = &ledI, .imu = &imuI, .defaultName = "III Metacarpal IMU"},
+    {.settings = &settingsArray[10], .nvm = &nvmJ, .send = &sendJ, .led = &ledJ, .imu = &imuJ, .defaultName = "III Proximal IMU"},
+    {.settings = &settingsArray[11], .nvm = &nvmK, .send = &sendK, .led = &ledK, .imu = &imuK, .defaultName = "III Middle IMU"},
+    {.settings = &settingsArray[12], .nvm = &nvmL, .send = &sendL, .led = &ledL, .imu = &imuL, .defaultName = "III Distal IMU"},
+    {.settings = &settingsArray[13], .nvm = &nvmM, .send = &sendM, .led = &ledM, .imu = &imuM, .defaultName = "IV Metacarpal IMU"},
+    {.settings = &settingsArray[14], .nvm = &nvmN, .send = &sendN, .led = &ledN, .imu = &imuN, .defaultName = "IV Proximal IMU"},
+    {.settings = &settingsArray[15], .nvm = &nvmO, .send = &sendO, .led = &ledO, .imu = &imuO, .defaultName = "IV Middle IMU"},
+    {.settings = &settingsArray[16], .nvm = &nvmP, .send = &sendP, .led = &ledP, .imu = &imuP, .defaultName = "IV Distal IMU"},
+    {.settings = &settingsArray[17], .nvm = &nvmQ, .send = &sendQ, .led = &ledQ, .imu = &imuQ, .defaultName = "V Metacarpal IMU"},
+    {.settings = &settingsArray[18], .nvm = &nvmR, .send = &sendR, .led = &ledR, .imu = &imuR, .defaultName = "V Proximal IMU"},
+    {.settings = &settingsArray[19], .nvm = &nvmS, .send = &sendS, .led = &ledS, .imu = &imuS, .defaultName = "V Middle IMU"},
+    {.settings = &settingsArray[20], .nvm = &nvmT, .send = &sendT, .led = &ledT, .imu = &imuT, .defaultName = "V Distal IMU"},
 };
 
 static const int numberOfDevices = (int) (sizeof (bridges) / sizeof (Ximu3CommandBridge));
@@ -173,8 +173,8 @@ static void InitialiseEpilogue(void* const context) {
 
     // Load all defaults if NVM blank
     Context * const context_ = context;
-    const char* const calibrationDate = Ximu3SettingsGet(context_->settings)->calibrationDate;
-    if (strspn(calibrationDate, "?") == strlen(calibrationDate)) { // 0xFF will be replaced with '?' when read as a string
+    const char* const serialNumber = Ximu3SettingsGet(context_->settings)->serialNumber;
+    if (strspn(serialNumber, "?") == strlen(serialNumber)) { // 0xFF will be replaced with '?' when read as a string
         Ximu3SettingsLoadDefaults(context_->settings, true);
         context_->nvmBlank = true;
         return;
@@ -192,7 +192,7 @@ static void InitialiseEpilogue(void* const context) {
  * @param context Context.
  */
 static void DefaultsEpilogue(void* const context) {
-    Context * const context_ = context;
+    const Context * const context_ = context;
     Ximu3SettingsSet(context_->settings, Ximu3SettingsIndexFirmwareVersion, FIRMWARE_VERSION, true);
     if (context_->isMain == false) {
         Ximu3SettingsSet(context_->settings, Ximu3SettingsIndexModel, "Twintig IMU", true);
@@ -220,11 +220,11 @@ static void WriteEpilogue(void* const context) {
 static Ximu3Result Mux(const Ximu3CommandInterface * const interface, const uint8_t channel, const void* const message, const size_t messageSize) {
     Ximu3Result result = Ximu3ResultError;
     for (int index = 0; index < numberOfDevices; index++) {
-        Context * const context_ = bridges[index].context;
+        const Context * const context_ = bridges[index].context;
         if (context_->send->channel == MuxChannelNone) {
             continue;
         }
-        if ((channel == '^') || (channel == MuxChannelToByte(context_->send->channel))) {
+        if ((channel == XIMU3_MUX_BROADCAST) || (channel == MuxChannelToByte(context_->send->channel))) {
             Ximu3CommandReceive(&bridges[index], interface, message, messageSize);
             result = Ximu3ResultOk;
         }
@@ -238,8 +238,8 @@ static Ximu3Result Mux(const Ximu3CommandInterface * const interface, const uint
  * @param context Context.
  */
 static void Error(const char* const error, void* const context) {
-    Context * const context_ = context;
-    SendError(context_->send, error);
+    const Context * const context_ = context;
+    SendError(context_->send, "%s", error);
 }
 
 //------------------------------------------------------------------------------

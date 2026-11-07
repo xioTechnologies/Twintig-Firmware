@@ -51,6 +51,7 @@ typedef struct {
     FusionVector downsampledGyroscope; // private
     FusionVector downsampledAccelerometer; // private
     uint32_t downsampledCount; // private
+    uint64_t previousTicks; // private
     Send * const send; // private
 } Imu;
 

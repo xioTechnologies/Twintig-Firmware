@@ -29,15 +29,13 @@ typedef enum {
 } SendDataMessageMode;
 
 /**
- * @brief AHRS message type.
+ * @brief Orientation mode.
  */
 typedef enum {
-    SendAhrsMessageTypeQuaternion,
-    SendAhrsMessageTypeRotationMatrix,
-    SendAhrsMessageTypeEulerAngles,
-    SendAhrsMessageTypeLinearAcceleration,
-    SendAhrsMessageTypeEarthAcceleration,
-} SendAhrsMessageType;
+    SendOrientationModeQuaternion,
+    SendOrientationModeRotationMatrix,
+    SendOrientationModeEulerAngles,
+} SendOrientationMode;
 
 /**
  * @brief Interface mode.
@@ -53,9 +51,9 @@ typedef enum {
  */
 typedef struct {
     SendDataMessageMode dataMessageMode;
-    SendAhrsMessageType ahrsMessageType;
+    SendOrientationMode orientationMode;
     uint32_t inertialMessageRateDivisor;
-    uint32_t ahrsMessageRateDivisor;
+    uint32_t orientationMessageRateDivisor;
     uint32_t temperatureMessageRateDivisor;
     SendInterfaceMode usbSendMode;
     SendInterfaceMode serialSendMode;
@@ -70,8 +68,8 @@ typedef struct {
     FusionVector downsampledGyroscope; // private
     FusionVector downsampledAccelerometer; // private
     uint32_t downsampledInertialCount; // private
+    uint32_t downsampledOrientationCount; // private
     FusionAhrsFlags flags; // private
-    uint32_t downsampledAhrsCount; // private
     float downsampledTemperature; // private
     uint32_t downsampledTemperatureCount; // private
     size_t usbBufferOverflow; // private
@@ -136,11 +134,11 @@ void SendSetSettings(Send * const send, const SendSettings * const settings);
 void SendInertial(Send * const send, const SendInertialData * const inertialData);
 void SendAhrs(Send * const send, const SendAhrsData * const ahrsData);
 void SendTemperature(Send * const send, const SendTemperatureData * const temperatureData);
-void SendNotification(Send * const send, const char* const format, ...);
-void SendError(Send * const send, const char* const format, ...);
+__attribute__((format(printf, 2, 3))) void SendNotification(Send * const send, const char* const format, ...);
+__attribute__((format(printf, 2, 3))) void SendError(Send * const send, const char* const format, ...);
 void SendResponseUsb(Send * const send, const void* const data, const size_t numberOfBytes);
 void SendResponseSerial(Send * const send, const void* const data, const size_t numberOfBytes);
-bool SendAvailable(Send * const send, const size_t numberOfBytes);
+bool SendAvailable(const Send * const send, const size_t numberOfBytes);
 const char* SendWhoseBlocking(void);
 size_t SendUsbBufferOverflow(Send * const send);
 size_t SendSerialBufferOverflow(Send * const send);

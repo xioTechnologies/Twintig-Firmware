@@ -50,13 +50,13 @@
             "preserved": true
         },
         {
-            "name": "Soft Iron Matrix",
+            "name": "Soft-Iron Matrix",
             "declaration": "FusionMatrix name",
             "default": "{{1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f}}",
             "preserved": true
         },
         {
-            "name": "Hard Iron Offset",
+            "name": "Hard-Iron Offset",
             "declaration": "FusionVector name",
             "default": "{{0.0f, 0.0f, 0.0f}}",
             "preserved": true
@@ -172,9 +172,9 @@
             "default": "{SendDataMessageModeBinary}"
         },
         {
-            "name": "AHRS Message Type",
-            "declaration": "SendAhrsMessageType name",
-            "default": "{SendAhrsMessageTypeQuaternion}"
+            "name": "Orientation Mode",
+            "declaration": "SendOrientationMode name",
+            "default": "{SendOrientationModeQuaternion}"
         },
         {
             "name": "Inertial Message Rate Divisor",
@@ -182,7 +182,7 @@
             "default": "{1}"
         },
         {
-            "name": "AHRS Message Rate Divisor",
+            "name": "Orientation Message Rate Divisor",
             "declaration": "uint32_t name",
             "default": "{1}"
         },

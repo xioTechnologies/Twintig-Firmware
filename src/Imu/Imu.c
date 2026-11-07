@@ -29,6 +29,8 @@
 #include "Imu/Icm/Icm8.h"
 #include "Imu/Icm/Icm9.h"
 #include <stddef.h>
+#include "Timer/Timer.h"
+#include "Ximu3Device/x-IMU3-Device/Ximu3.h"
 
 //------------------------------------------------------------------------------
 // Definitions
@@ -36,7 +38,7 @@
 /**
  * @brief Max write size.
  */
-#define MAX_WRITE_SIZE (256)
+#define MAX_WRITE_SIZE (XIMU3_SIZE_INERTIAL + XIMU3_SIZE_ROTATION_MATRIX + XIMU3_SIZE_AHRS_STATUS + XIMU3_SIZE_TEMPERATURE)
 
 //------------------------------------------------------------------------------
 // Variables
@@ -147,6 +149,10 @@ void ImuTasks(Imu * const imu) {
         }
         imu->downsampledCount = 0;
 
+        // Calculate delta time
+        FusionAhrsSetSamplePeriod(&imu->ahrs, (float) ((double) (icmData.ticks - imu->previousTicks) * (1.0 / (double) TIMER_TICKS_PER_SECOND)));
+        imu->previousTicks = icmData.ticks;
+
         // Update AHRS algorithm
         FusionAhrsUpdateRelative(&imu->ahrs, gyroscope, accelerometer);
 
@@ -177,6 +183,9 @@ void ImuSetSettings(Imu * const imu, const ImuSettings * const settings) {
         (imu->settings.axesConvention != settings->axesConvention) ||
         (imu->settings.ahrsUpdateRateDivisor != settings->ahrsUpdateRateDivisor)) {
         FusionAhrsRestart(&imu->ahrs);
+        if (settings->ahrsGain == 0.0f) {
+            FusionAhrsSkipStartup(&imu->ahrs);
+        }
     }
 
     // Store new settings
@@ -219,6 +228,9 @@ void ImuSetSettings(Imu * const imu, const ImuSettings * const settings) {
  */
 void ImuRestart(Imu * const imu) {
     FusionAhrsRestart(&imu->ahrs);
+    if (imu->settings.ahrsGain == 0.0f) {
+        FusionAhrsSkipStartup(&imu->ahrs);
+    }
 }
 
 /**

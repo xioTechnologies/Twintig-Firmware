@@ -78,8 +78,8 @@ static void WriteRegister(const uint8_t address, const uint8_t value);
 // Functions
 
 /**
- * @brief Initialises module. This function should be called once, on system
- * start up.
+ * @brief Initialises the module. This function must only be called once, on
+ * system startup.
  */
 void HapticInitialise(void) {
     TimerDelayMicroseconds(250); // see initialise procedure on page 59 of datasheet
@@ -89,7 +89,7 @@ void HapticInitialise(void) {
 }
 
 /**
- * @brief Plays waveform library effect.
+ * @brief Plays a waveform library effect.
  * @param effect Effect ID. See page 63 of datasheet.
  * @return Result.
  */
@@ -103,7 +103,7 @@ HapticResult HapticPlay(const int effect) {
 }
 
 /**
- * @brief Reads register value.
+ * @brief Reads the register value.
  * @param address Address.
  * @return Value.
  */
@@ -119,7 +119,7 @@ static uint8_t ReadRegister(const uint8_t address) {
 }
 
 /**
- * @brief Writes register value.
+ * @brief Writes the register value.
  * @param address Address.
  * @param value Value.
  */
@@ -164,10 +164,10 @@ HapticTestResult HapticTest(void) {
         return HapticTestResultDiagnosticsFailed;
     }
     if (status.overTemp == 1) {
-        return HapticTestResultOverTemperature;
+        return HapticTestResultOvertemperature;
     }
     if (status.ocDetect == 1) {
-        return HapticTestResultOverCurrent;
+        return HapticTestResultOvercurrent;
     }
 
     // Self-test passed
@@ -189,12 +189,12 @@ const char* HapticTestResultToString(const HapticTestResult result) {
             return "Invalid ID";
         case HapticTestResultDiagnosticsFailed:
             return "Diagnostics failed";
-        case HapticTestResultOverTemperature:
-            return "Over temperature";
-        case HapticTestResultOverCurrent:
-            return "Over current";
+        case HapticTestResultOvertemperature:
+            return "Overtemperature";
+        case HapticTestResultOvercurrent:
+            return "Overcurrent";
     }
-    return ""; // avoid compiler warning
+    return ""; // unreachable code: -Werror=switch
 }
 
 //------------------------------------------------------------------------------
