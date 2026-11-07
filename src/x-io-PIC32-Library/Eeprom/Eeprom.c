@@ -17,7 +17,7 @@
 // Definitions
 
 /**
- * @brief Print line length. Must be a multiple of the EEPROM size.
+ * @brief Print line length. EEPROM_SIZE must be divisible by this value.
  */
 #define PRINT_LINE_LENGTH (32)
 
@@ -40,12 +40,12 @@ static void PrintData(const uint8_t * const data);
 void EepromRead(const I2C * const i2c, const uint16_t address, void* const destination, const size_t numberOfBytes) {
     StartSequence(i2c, address);
     i2c->repeatedStart();
-    i2c->sendAddressRead(EEPROM_I2C_ADDRESS);
+    i2c->transmitAddressRead(EEPROM_I2C_ADDRESS);
     const size_t endIndex = numberOfBytes - 1;
     size_t destinationIndex = 0;
     while (destinationIndex < numberOfBytes) {
         const bool ack = destinationIndex < endIndex;
-        ((uint8_t*) destination)[destinationIndex] = i2c->receive(ack);
+        ((uint8_t*) destination)[destinationIndex] = ack ? i2c->receiveAck() : i2c->receiveNack();
         destinationIndex++;
     }
     i2c->stop();
@@ -64,7 +64,7 @@ void EepromWrite(const I2C * const i2c, uint16_t address, const void* const data
     uint8_t* dataByte = (uint8_t*) data;
     int currentPageIndex = address / EEPROM_PAGE_SIZE;
     while (address < endAddress) {
-        i2c->send(*dataByte++);
+        i2c->transmit(*dataByte++);
         const int nextPageIndex = ++address / EEPROM_PAGE_SIZE;
         if (nextPageIndex != currentPageIndex) { // if crossing page boundary
             currentPageIndex = nextPageIndex;
@@ -110,12 +110,13 @@ void EepromUpdate(const I2C * const i2c, uint16_t address, const void* const dat
  */
 static void StartSequence(const I2C * const i2c, const uint16_t address) {
     I2CStartSequence(i2c, EEPROM_I2C_ADDRESS, 5); // 5 ms
-    i2c->send(address >> 8);
-    i2c->send(address & 0xFF);
+    i2c->transmit(address >> 8);
+    i2c->transmit(address & 0xFF);
 }
 
 /**
  * @brief Erases the EEPROM. All data bytes are set to 0xFF.
+ * @param i2c I2C interface.
  */
 void EepromErase(const I2C * const i2c) {
     const uint8_t blankPage[] = {[0 ... (EEPROM_PAGE_SIZE - 1)] = 0xFF};
@@ -238,7 +239,7 @@ const char* EepromTestResultToString(const EepromTestResult result) {
         case EepromTestResultDataMismatch:
             return "Data mismatch";
     }
-    return ""; // avoid compiler warning
+    return ""; // unreachable code: -Werror=switch
 }
 
 //------------------------------------------------------------------------------

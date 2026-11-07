@@ -109,11 +109,11 @@ HapticResult HapticPlay(const int effect) {
  */
 static uint8_t ReadRegister(const uint8_t address) {
     I2CBB2Start();
-    I2CBB2SendAddressWrite(I2C_CLIENT_ADDRESS);
-    I2CBB2Send(address);
+    I2CBB2TransmitAddressWrite(I2C_CLIENT_ADDRESS);
+    I2CBB2Transmit(address);
     I2CBB2RepeatedStart();
-    I2CBB2SendAddressRead(I2C_CLIENT_ADDRESS);
-    const uint8_t byte = I2CBB2Receive(false);
+    I2CBB2TransmitAddressRead(I2C_CLIENT_ADDRESS);
+    const uint8_t byte = I2CBB2ReceiveNack();
     I2CBB2Stop();
     return byte;
 }
@@ -125,9 +125,9 @@ static uint8_t ReadRegister(const uint8_t address) {
  */
 static void WriteRegister(const uint8_t address, const uint8_t value) {
     I2CBB2Start();
-    I2CBB2SendAddressWrite(I2C_CLIENT_ADDRESS);
-    I2CBB2Send(address);
-    I2CBB2Send(value);
+    I2CBB2TransmitAddressWrite(I2C_CLIENT_ADDRESS);
+    I2CBB2Transmit(address);
+    I2CBB2Transmit(value);
     I2CBB2Stop();
 }
 

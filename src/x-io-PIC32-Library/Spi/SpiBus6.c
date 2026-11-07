@@ -13,7 +13,7 @@
 //------------------------------------------------------------------------------
 // Function declarations
 
-static void BeginTrasnfer(SpiBusClient * const client);
+static void BeginTransfer(SpiBusClient * const client);
 static void TransferComplete(void);
 
 //------------------------------------------------------------------------------
@@ -64,7 +64,7 @@ void SpiBus6Transfer(SpiBusClient * const client, volatile void* const data, con
     client->numberOfBytes = numberOfBytes;
     client->transferComplete = transferComplete;
     client->inProgress = true; // set this member last else interrupt may use invalid structure
-    BeginTrasnfer(client);
+    BeginTransfer(client);
 }
 
 /**
@@ -83,16 +83,16 @@ bool SpiBus6TransferInProgress(const SpiBusClient * const client) {
  * @brief Begins transfer.
  * @param client Client.
  */
-static void BeginTrasnfer(SpiBusClient * const client) {
-    static int lock;
-    if (__sync_lock_test_and_set(&lock, 1) == 1) {
-        return;
-    }
-    if (activeClient == NULL) {
+static void BeginTransfer(SpiBusClient * const client) {
+    const bool state = EVIC_INT_Disable();
+    const bool idle = activeClient == NULL;
+    if (idle) {
         activeClient = client;
+    }
+    EVIC_INT_Restore(state);
+    if (idle) {
         SPI_BUS_6_SPI.transfer(activeClient->csPin, activeClient->data, activeClient->numberOfBytes, TransferComplete);
     }
-    __sync_lock_release(&lock);
 }
 
 /**
@@ -110,7 +110,7 @@ static void TransferComplete(void) {
     // Begin next transfer
     for (int index = 0; index < SPI_BUS_6_MAX_NUMBER_OF_CLIENTS; index++) {
         if (clients[index].inProgress) {
-            BeginTrasnfer(&clients[index]);
+            BeginTransfer(&clients[index]);
             return;
         }
     }
