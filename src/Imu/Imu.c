@@ -28,7 +28,6 @@
 #include "Imu/Icm/Icm7.h"
 #include "Imu/Icm/Icm8.h"
 #include "Imu/Icm/Icm9.h"
-#include <stddef.h>
 #include "Timer/Timer.h"
 #include "Ximu3Device/x-IMU3-Device/Ximu3.h"
 
@@ -36,7 +35,7 @@
 // Definitions
 
 /**
- * @brief Max write size.
+ * @brief Max write size. Does not account for mux overhead.
  */
 #define MAX_WRITE_SIZE (XIMU3_SIZE_INERTIAL + XIMU3_SIZE_ROTATION_MATRIX + XIMU3_SIZE_AHRS_STATUS + XIMU3_SIZE_TEMPERATURE)
 

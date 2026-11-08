@@ -11,7 +11,6 @@
 #include "Commands.h"
 #include "Context.h"
 #include "FirmwareVersion.h"
-#include "Haptic/Haptic.h"
 #include "Imu/Imu.h"
 #include "Interfaces.h"
 #include "Led/Led.h"
