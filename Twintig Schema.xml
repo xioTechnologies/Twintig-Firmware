@@ -12,7 +12,7 @@
         <Command key="haptic"/>
     </Commands>
     <Settings>
-        <Group name="Device Information" expand="false">
+        <Group name="Device Information">
             <Setting key="model" name="Model" type="string" readOnly="true"/>
             <Setting key="serial_number" name="Serial Number" type="string" readOnly="true"/>
             <Setting key="hardware_version" name="Hardware Version" type="string" readOnly="true"/>
@@ -20,17 +20,17 @@
             <Setting key="firmware_version" name="Firmware Version" type="string" readOnly="true"/>
             <Setting key="device_name" name="Device Name" type="string"/>
         </Group>
-        <Group name="Serial" expand="false">
+        <Group name="Serial">
             <Setting key="serial_enabled" name="Enabled" type="bool"/>
-            <Setting key="baud_rate" name="Baud Rate" type="number"/>
-            <Setting key="rts_cts" name="RTS/CTS" type="bool"/>
+            <Setting key="baud_rate" name="Baud Rate" type="number" dependsOnKey="serial_enabled" dependsOnValues="true"/>
+            <Setting key="rts_cts" name="RTS/CTS" type="bool" dependsOnKey="serial_enabled" dependsOnValues="true"/>
         </Group>
         <Group name="Data Messages">
             <Setting key="data_message_mode" name="Mode" type="enum">
                 <Enum name="Binary" value="0"/>
                 <Enum name="ASCII" value="1"/>
             </Setting>
-            <Group name="Interfaces" expand="false">
+            <Group name="Interfaces">
                 <Setting key="usb_send_mode" name="USB" type="enum">
                     <Enum name="Disabled" value="0"/>
                     <Enum name="Blocking" value="1"/>

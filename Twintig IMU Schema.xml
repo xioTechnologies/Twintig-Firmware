@@ -12,7 +12,7 @@
         <Command key="colour"/>
     </Commands>
     <Settings>
-        <Group name="Device Information" expand="false">
+        <Group name="Device Information">
             <Setting key="model" name="Model" type="string" readOnly="true"/>
             <Setting key="serial_number" name="Serial Number" type="string" readOnly="true"/>
             <Setting key="hardware_version" name="Hardware Version" type="string" readOnly="true"/>
@@ -20,7 +20,7 @@
             <Setting key="firmware_version" name="Firmware Version" type="string" readOnly="true"/>
             <Setting key="device_name" name="Device Name" type="string"/>
         </Group>
-        <Group name="IMU" expand="false">
+        <Group name="IMU">
             <Setting key="sample_rate" name="Sample Rate" type="enum">
                 <Enum name="32000 Hz" value="32000"/>
                 <Enum name="16000 Hz" value="16000"/>
@@ -226,7 +226,7 @@
                 <Setting key="orientation_message_rate_divisor" name="Orientation" type="number"/>
                 <Setting key="temperature_message_rate_divisor" name="Temperature" type="number"/>
             </Group>
-            <Group name="Interfaces" expand="false">
+            <Group name="Interfaces">
                 <Setting key="usb_send_mode" name="USB" type="enum">
                     <Enum name="Disabled" value="0"/>
                     <Enum name="Blocking" value="1"/>
