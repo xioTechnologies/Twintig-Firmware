@@ -5,11 +5,11 @@ try:
     if not cli.yes_or_no("Are you sure?"):
         raise RuntimeError("Aborted by user")
 
-    carpus_connection = ximu3.helpers.quick_connect("Twintig")
+    twintig_connection = ximu3.helpers.connect("Twintig")
 
-    imu_connections = ximu3.helpers.mux_connect(carpus_connection, 20)
+    imu_connections = ximu3.helpers.mux_connect_list(twintig_connection, 20)
 
-    for connection in [carpus_connection] + imu_connections:
+    for connection in [twintig_connection] + imu_connections:
         ximu3.helpers.send_command(connection, "factory")
         ximu3.helpers.send_command(connection, "erase", timeout=5000)
         ximu3.helpers.send_command(connection, "blink")

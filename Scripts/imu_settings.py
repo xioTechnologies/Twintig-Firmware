@@ -5,7 +5,7 @@ import cliny as cli
 import ximu3
 
 try:
-    twintig_connection = ximu3.helpers.quick_connect("Twintig")
+    twintig_connection = ximu3.helpers.connect("Twintig")
 
     imu_connections = ximu3.helpers.mux_connect_dict(twintig_connection, 20)
 

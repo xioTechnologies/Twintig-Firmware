@@ -4,9 +4,9 @@ import cliny as cli
 import ximu3
 
 try:
-    carpus_connection = ximu3.helpers.quick_connect("Twintig")
+    twintig_connection = ximu3.helpers.connect("Twintig")
 
-    imu_connections = ximu3.helpers.mux_connect(carpus_connection, 20)
+    imu_connections = ximu3.helpers.mux_connect_list(twintig_connection, 20)
 
     unix_timestamp = int(time.time())
 
@@ -14,7 +14,7 @@ try:
         serial_number = ximu3.helpers.send_command(imu_connections[4 * ch_index], "serial_number")
 
         if serial_number != "Unknown":
-            cli.print_warning(f"CH{ch_index + 1} already has serial number {serial_number}")
+            cli.print_warning(f"CH{ch_index + 1} already has serial number: {serial_number}")
             continue
 
         for imu_index in range(4):

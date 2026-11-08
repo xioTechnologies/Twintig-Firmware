@@ -6,14 +6,14 @@ import ximu3
 import ximu3csv
 
 try:
-    twintig_connection = ximu3.helpers.quick_connect("Twintig")
+    twintig_connection = ximu3.helpers.connect("Twintig")
 
     imu_connections = ximu3.helpers.mux_connect_dict(twintig_connection, 20)
 
     for connection in imu_connections.values():
         ximu3.helpers.send_command(connection, "factory")
         ximu3.helpers.send_command(connection, "gyroscope_offset", [0, 0, 0])
-        ximu3.helpers.send_command(connection, "gyroscope_bias_correction_enabled", False)
+        ximu3.helpers.send_command(connection, "bias_correction", False)
         ximu3.helpers.send_command(connection, "apply")
 
     data_logger = ximu3.helpers.DataLogger(list(imu_connections.values()), seconds=5, overwrite=True)
@@ -23,7 +23,7 @@ try:
     for device in devices:
         connection = imu_connections[device.device_name]
 
-        offset: np.ndarray = device.inertial.gyroscope.xyz.mean(axis=0)
+        offset: np.ndarray = device.inertial.gyroscope_xyz.mean(axis=0)
 
         ximu3.helpers.send_command(connection, "calibration_date", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         ximu3.helpers.send_command(connection, "gyroscope_offset", offset.tolist())
